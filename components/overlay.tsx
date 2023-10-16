@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react"
 
 import { cn } from "@/lib/utils"
@@ -6,7 +8,7 @@ export interface OverlayProps {
   className?: string
 }
 
-export default function Overlay({ className }: OverlayProps) {
+export function Overlay({ className }: OverlayProps) {
   return (
     <div
       className={cn(

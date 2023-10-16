@@ -2,7 +2,7 @@ export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
   name: "sound-of-dust",
-  description: "",
+  description: "Enjoy graphic & sound from real dust data",
   mainNav: [
     {
       title: "Home",
@@ -10,7 +10,7 @@ export const siteConfig = {
     },
   ],
   links: {
-    github: "https://github.com/shadcn/ui",
-    docs: "https://ui.shadcn.com",
+    github: "https://github.com/kimaramy/sound-of-dust",
+    docs: "https://signalone.notion.site/Signal-d8c759e472a149beab6cff27782e9440?pvs=25",
   },
 }

@@ -1,37 +1,43 @@
 "use client"
 
-import React, { useCallback, useEffect, useState } from "react"
-import { LucidePauseCircle, LucidePlayCircle } from "lucide-react"
+import React, { useCallback, useState } from "react"
+import { PauseCircle, PlayCircle } from "lucide-react"
 
-import Bit from "./Bit"
-import Overlay from "./Overlay"
+import { Bit } from "./bit"
+import { Overlay } from "./overlay"
 import { Button } from "./ui/button"
+
+export interface SceneData {
+  id: number
+  label: string
+  value: number
+}
 
 export interface SceneProps {
   id: string
   context: string[]
-  decimal: number
+  data: SceneData
   length?: number
   active?: boolean
   className?: string
 }
 
-export default function Scene({
+export function Scene({
   id,
   context,
-  decimal,
+  data,
   length = 8,
   active = false,
 }: SceneProps) {
-  const binaries = decimal.toString(2).split("")
+  const binaries = data.value.toString(2).split("")
 
   const [isMouseOver, setMouseOver] = useState(false)
 
-  const handleMouseOver = useCallback(() => {
+  const handleMouseOver = useCallback<React.MouseEventHandler>(() => {
     setMouseOver(true)
   }, [])
 
-  const handleMouseOut = useCallback(() => {
+  const handleMouseOut = useCallback<React.MouseEventHandler>(() => {
     setMouseOver(false)
   }, [])
 
@@ -55,9 +61,12 @@ export default function Scene({
   // }, [sequenceHeight])
 
   return (
-    <li id={id} className="flex h-full items-center gap-8">
+    <li id={id} className="flex h-full items-center gap-6">
+      <h4 className="w-12 truncate text-xs">
+        {data.label}
+      </h4>
       <Button variant="ghost" size="icon">
-        {active ? <LucidePauseCircle /> : <LucidePlayCircle />}
+        {active ? <PauseCircle /> : <PlayCircle />}
       </Button>
       <ul
         className="relative grid h-full w-full gap-2 lg:gap-4"
