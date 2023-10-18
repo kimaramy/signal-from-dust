@@ -16,7 +16,7 @@ export function Spinner({ relative = false }: SpinnerProps) {
     if (documentBody.current) {
       documentBody.current.style.pointerEvents = "none"
     } else {
-      documentBody.current = document.body;
+      documentBody.current = document.body
     }
 
     return () => {
@@ -24,7 +24,7 @@ export function Spinner({ relative = false }: SpinnerProps) {
         documentBody.current.style.pointerEvents = "auto"
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [documentBody.current])
 
   return (

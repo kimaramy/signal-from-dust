@@ -19,16 +19,16 @@ export function QueryClientProvider({ children }: QueryClientProviderProps) {
     new QueryClient({
       defaultOptions: {
         queries: {
-          suspense: true,
+          suspense: false,
           useErrorBoundary: true,
           retry: false,
           refetchOnWindowFocus: false,
         },
       },
       queryCache: new QueryCache({
-        onError(unknownError, query) {
+        onError(unknownError, unknownQuery) {
           let errorMessage =
-            (query.meta?.errorMessage as string) ??
+            (unknownQuery.meta?.errorMessage as string) ??
             (unknownError as Error)?.message ??
             ""
 

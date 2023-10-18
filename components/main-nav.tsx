@@ -2,7 +2,11 @@ import Link from "next/link"
 
 import { NavItem } from "@/types/nav"
 import { siteConfig } from "@/config/site"
-import { Button } from "./ui/button"
+
+import { DataUnitSelect } from "./data-unit-select"
+import { LocationSelect } from "./location-select"
+import { MonthSelect } from "./month-select"
+import { YearSelect } from "./year-select"
 
 interface MainNavProps {
   items?: NavItem[]
@@ -15,9 +19,11 @@ export function MainNav({ items }: MainNavProps) {
         {/* <div className="h-6 w-6"></div> */}
         <span className="inline-block font-bold">{siteConfig.name}</span>
       </Link>
-      <div>
-        <Button variant="ghost" size="sm" className="text-xs">Day</Button>
-        <Button variant="ghost" size="sm" className="text-xs">Weekday</Button>
+      <div className="flex gap-2">
+        <LocationSelect />
+        <DataUnitSelect />
+        <YearSelect />
+        <MonthSelect />
       </div>
       {/* {items?.length ? (
         <nav className="flex gap-6">

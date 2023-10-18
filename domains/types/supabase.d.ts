@@ -40,24 +40,51 @@ export interface Database {
           id: number
           location: string
           month: number
-          pm10: number | null
-          "pm2.5": number | null
+          pm_large: number | null
+          pm_small: number | null
         }
         Insert: {
           day: number
           id?: number
           location: string
           month: number
-          pm10?: number | null
-          "pm2.5"?: number | null
+          pm_large?: number | null
+          pm_small?: number | null
         }
         Update: {
           day?: number
           id?: number
           location?: string
           month?: number
-          pm10?: number | null
-          "pm2.5"?: number | null
+          pm_large?: number | null
+          pm_small?: number | null
+        }
+        Relationships: []
+      }
+      monthly: {
+        Row: {
+          id: number
+          location: string
+          month: number
+          pm_large: number | null
+          pm_small: number | null
+          year: number
+        }
+        Insert: {
+          id?: number
+          location: string
+          month: number
+          pm_large?: number | null
+          pm_small?: number | null
+          year: number
+        }
+        Update: {
+          id?: number
+          location?: string
+          month?: number
+          pm_large?: number | null
+          pm_small?: number | null
+          year?: number
         }
         Relationships: []
       }
@@ -66,25 +93,76 @@ export interface Database {
           id: number
           location: string
           month: number
-          pm10: number | null
-          "pm2.5": number | null
+          pm_large: number | null
+          pm_small: number | null
           weekday: string
         }
         Insert: {
           id?: number
           location: string
           month: number
-          pm10?: number | null
-          "pm2.5"?: number | null
+          pm_large?: number | null
+          pm_small?: number | null
           weekday: string
         }
         Update: {
           id?: number
           location?: string
           month?: number
-          pm10?: number | null
-          "pm2.5"?: number | null
+          pm_large?: number | null
+          pm_small?: number | null
           weekday?: string
+        }
+        Relationships: []
+      }
+      weekly: {
+        Row: {
+          id: number
+          location: string
+          pm_large: number | null
+          pm_small: number | null
+          week: number
+          year: number
+        }
+        Insert: {
+          id?: number
+          location: string
+          pm_large?: number | null
+          pm_small?: number | null
+          week: number
+          year: number
+        }
+        Update: {
+          id?: number
+          location?: string
+          pm_large?: number | null
+          pm_small?: number | null
+          week?: number
+          year?: number
+        }
+        Relationships: []
+      }
+      yearly: {
+        Row: {
+          id: number
+          location: string
+          pm_large: number | null
+          pm_small: number | null
+          year: number
+        }
+        Insert: {
+          id?: number
+          location: string
+          pm_large?: number | null
+          pm_small?: number | null
+          year: number
+        }
+        Update: {
+          id?: number
+          location?: string
+          pm_large?: number | null
+          pm_small?: number | null
+          year?: number
         }
         Relationships: []
       }

@@ -4,13 +4,14 @@ import React, { useCallback, useState } from "react"
 import { PauseCircle, PlayCircle } from "lucide-react"
 
 import { Bit } from "./bit"
-import { Overlay } from "./overlay"
+// import { Overlay } from "./overlay"
 import { Button } from "./ui/button"
+import { Skeleton } from "./ui/skeleton"
 
 export interface SceneData {
   id: number
   label: string
-  value: number
+  value: number | null
 }
 
 export interface SceneProps {
@@ -29,7 +30,7 @@ export function Scene({
   length = 8,
   active = false,
 }: SceneProps) {
-  const binaries = data.value.toString(2).split("")
+  const binaries = data.value?.toString(2).split("")
 
   const [isMouseOver, setMouseOver] = useState(false)
 
@@ -62,11 +63,13 @@ export function Scene({
 
   return (
     <li id={id} className="flex h-full items-center gap-6">
-      <h4 className="w-12 truncate text-xs">
-        {data.label}
-      </h4>
+      <h4 className="w-12 truncate text-xs">{data.label}</h4>
       <Button variant="ghost" size="icon">
-        {active ? <PauseCircle /> : <PlayCircle />}
+        {active ? (
+          <PauseCircle className="h-5 w-5" />
+        ) : (
+          <PlayCircle className="h-5 w-5" />
+        )}
       </Button>
       <ul
         className="relative grid h-full w-full gap-2 lg:gap-4"
@@ -76,20 +79,24 @@ export function Scene({
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
       >
-        {binaries.map((binary, i) => {
-          const bitContext = context.concat(`${i}`)
-          const bitId = bitContext.join("-")
-          return (
-            <Bit
-              key={bitId}
-              id={bitId}
-              context={bitContext}
-              binary={binary}
-              active={bitContext[1] === "0" && bitContext[2] === "0"}
-            />
-          )
-        })}
-        {isMouseOver ? <Overlay /> : null}
+        {binaries ? (
+          binaries.map((binary, i) => {
+            const bitContext = context.concat(`${i}`)
+            const bitId = bitContext.join("-")
+            return (
+              <Bit
+                key={bitId}
+                id={bitId}
+                context={bitContext}
+                binary={binary}
+                active={bitContext[1] === "0"}
+              />
+            )
+          })
+        ) : (
+          <Skeleton className="h-full" />
+        )}
+        {/* {isMouseOver ? <Overlay /> : null} */}
       </ul>
     </li>
   )

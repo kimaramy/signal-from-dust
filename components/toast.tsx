@@ -1,6 +1,6 @@
 "use client"
 
-import { CheckCircle, AlertCircle } from "lucide-react"
+import { AlertCircle, CheckCircle } from "lucide-react"
 import { Toaster } from "react-hot-toast"
 
 export function Toast() {

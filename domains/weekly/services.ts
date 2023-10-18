@@ -1,24 +1,24 @@
 import { supabaseClient } from "../supabase-client"
-import type { DailyData } from "../types"
+import type { WeeklyData } from "../types"
 
-export const fetchDailyDataList = async (month: number) => {
+export const fetchWeeklyDataList = async (year: number) => {
   const response = await supabaseClient
-    .from("daily")
+    .from("weekly")
     .select("*")
-    .eq("month", month)
-    .returns<DailyData[]>()
+    .eq("year", year)
+    .returns<WeeklyData[]>()
 
   if (response.error) throw response
 
   return response.data
 }
 
-export const fetchDailyData = async (dataId: number) => {
+export const fetchWeeklyData = async (dataId: number) => {
   const response = await supabaseClient
-    .from("daily")
+    .from("weekly")
     .select("*")
     .eq("id", dataId)
-    .returns<DailyData>()
+    .returns<WeeklyData>()
 
   if (response.error) throw response
 

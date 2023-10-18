@@ -4,6 +4,7 @@ import type { DailyData, SupabaseError } from "../types"
 import { DailyDataKeys, dailyDataKeys } from "./query-keys"
 
 export function useDailyDataListQuery<T = DailyData[]>(
+  month: number = 0,
   options?: UseQueryOptions<
     DailyData[],
     SupabaseError,
@@ -12,11 +13,11 @@ export function useDailyDataListQuery<T = DailyData[]>(
   >
 ) {
   const { data } = useQuery({
-    ...dailyDataKeys.list(),
+    ...dailyDataKeys.list(month),
     staleTime: Infinity,
     ...options,
   })
-  return data!
+  return data
 }
 
 export function useDailyDataQuery<T = DailyData>(
@@ -33,5 +34,5 @@ export function useDailyDataQuery<T = DailyData>(
     staleTime: Infinity,
     ...options,
   })
-  return data!
+  return data
 }

@@ -11,35 +11,37 @@ export type QueryErrorBoundaryProps = {
 export function QueryErrorBoundary({ children }: QueryErrorBoundaryProps) {
   return (
     <QueryErrorResetBoundary>
-      {({ reset }) => { 
+      {({ reset }) => {
         return (
-        <ErrorBoundary
-          onReset={() => reset()}
-          fallbackRender={({ error }) => {
-            const isSupabaseError = SupabaseErrorSchema.safeParse(error).success
+          <ErrorBoundary
+            onReset={() => reset()}
+            fallbackRender={({ error }) => {
+              const isSupabaseError =
+                SupabaseErrorSchema.safeParse(error).success
 
-            if (isSupabaseError) {
-              const supabaseError = error as unknown as SupabaseError
+              if (isSupabaseError) {
+                const supabaseError = error as unknown as SupabaseError
+                return (
+                  <div>
+                    <code className="flex rounded bg-gray-100 p-4 font-mono text-xs">
+                      [{supabaseError.error.code}] {supabaseError.error.message}
+                    </code>
+                  </div>
+                )
+              }
               return (
                 <div>
                   <code className="flex rounded bg-gray-100 p-4 font-mono text-xs">
-                    [{supabaseError.error.code}] {supabaseError.error.message}
+                    {JSON.stringify(error, null, 2)}
                   </code>
                 </div>
               )
-            }
-            return (
-              <div>
-                <code className="flex rounded bg-gray-100 p-4 font-mono text-xs">
-                  {JSON.stringify(error, null, 2)}
-                </code>
-              </div>
-            )
-          }}
-        >
-          {children}
-        </ErrorBoundary>
-      )}}
+            }}
+          >
+            {children}
+          </ErrorBoundary>
+        )
+      }}
     </QueryErrorResetBoundary>
   )
 }

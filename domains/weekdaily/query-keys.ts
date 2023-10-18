@@ -7,9 +7,9 @@ export const weekDailyDataKeys = createQueryKeys("weekdaily", {
     queryKey: [dataId],
     queryFn: () => services.fetchWeekDailyData(dataId),
   }),
-  list: (filters?: {}) => ({
-    queryKey: [{ ...filters }],
-    queryFn: () => services.fetchWeekDailyDataList(filters),
+  list: (month: number) => ({
+    queryKey: [{ month }],
+    queryFn: () => services.fetchWeekDailyDataList(month),
   }),
 })
 
