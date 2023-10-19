@@ -1,7 +1,5 @@
 "use client"
 
-import { useMemo } from "react"
-import { useSearchParams } from "next/navigation"
 import {
   DataUnit,
   useDailyDataListQuery,
@@ -10,52 +8,51 @@ import {
   useWeeklyDataListQuery,
   useYearlyDataListQuery,
 } from "@/domains"
+import { useNumberQueryParam, useQueryParam } from "@/hooks"
 
-import {
-  Sequence,
+import { QueryParamEnum } from "@/lib/utils"
+import Sequence, {
   toDailySceneDataList,
   toMonthlySceneDataList,
   toWeekDailySceneDataList,
   toWeeklySceneDataList,
   toYearlySceneDataList,
-} from "@/components/sequence"
+} from "@/components/Sequence"
 
 export default function IndexPage() {
-  const searchParams = useSearchParams()
+  const dataUnit = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, "daily")
 
-  const q = (searchParams.get("q") as DataUnit) ?? "daily"
+  const year = useNumberQueryParam(QueryParamEnum.Year, "0")
 
-  const year = searchParams.get("year") ?? "0"
-
-  const month = searchParams.get("month") ?? "0"
+  const month = useNumberQueryParam(QueryParamEnum.Month, "0")
 
   const dailySceneDataList = useDailyDataListQuery(Number(month), {
-    enabled: q === "daily",
+    enabled: dataUnit === "daily",
     select: toDailySceneDataList,
   })
 
   const weekDailySceneDataList = useWeekDailyDataListQuery(Number(month), {
-    enabled: q === "weekdaily",
+    enabled: dataUnit === "weekdaily",
     select: toWeekDailySceneDataList,
   })
 
   const weeklySceneDataList = useWeeklyDataListQuery(Number(year), {
-    enabled: q === "weekly",
+    enabled: dataUnit === "weekly",
     select: toWeeklySceneDataList,
   })
 
   const monthlySceneDataList = useMonthlyDataListQuery(Number(year), {
-    enabled: q === "monthly",
+    enabled: dataUnit === "monthly",
     select: toMonthlySceneDataList,
   })
 
   const yearlySceneDataList = useYearlyDataListQuery({
-    enabled: q === "yearly",
+    enabled: dataUnit === "yearly",
     select: toYearlySceneDataList,
   })
 
-  const dataset = useMemo(() => {
-    switch (q) {
+  const dataset = (function () {
+    switch (dataUnit) {
       case "yearly":
         return yearlySceneDataList
       case "monthly":
@@ -68,18 +65,11 @@ export default function IndexPage() {
       default:
         return dailySceneDataList
     }
-  }, [
-    dailySceneDataList,
-    monthlySceneDataList,
-    q,
-    weekDailySceneDataList,
-    weeklySceneDataList,
-    yearlySceneDataList,
-  ])
+  })()
 
   return (
-    <main className="container">
-      <Sequence id="first" dataset={dataset} />
+    <main className="h-main overflow-y-auto">
+      <Sequence id="first" dataset={dataset} dataUnit={dataUnit} />
     </main>
   )
 }

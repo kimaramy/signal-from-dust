@@ -1,7 +1,7 @@
 import { UseQueryOptions, useQuery } from "@tanstack/react-query"
 
 import type { SupabaseError, WeekDailyData } from "../types"
-import { WeekDailyDataKeys, weekDailyDataKeys } from "./query-keys"
+import { WeekDailyDataKeys, weekDailyDataKeys } from "./queryKeys"
 
 export function useWeekDailyDataListQuery<T = WeekDailyData[]>(
   month: number = 0,

@@ -3,7 +3,7 @@
 import { AlertCircle, CheckCircle } from "lucide-react"
 import { Toaster } from "react-hot-toast"
 
-export function Toast() {
+export default function ToastProvider() {
   return (
     <Toaster
       position="top-right"

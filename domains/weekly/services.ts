@@ -1,4 +1,4 @@
-import { supabaseClient } from "../supabase-client"
+import { supabaseClient } from "../supabaseClient"
 import type { WeeklyData } from "../types"
 
 export const fetchWeeklyDataList = async (year: number) => {

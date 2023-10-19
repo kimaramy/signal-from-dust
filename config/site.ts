@@ -1,9 +1,9 @@
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name: "sound-of-dust",
-  description: "Enjoy graphic & sound from real dust data",
-  mainNav: [
+  name: "Sound Of Dust",
+  description: "Enjoy graphics and sound generated from dust statistics data",
+  routes: [
     {
       title: "Home",
       href: "/",

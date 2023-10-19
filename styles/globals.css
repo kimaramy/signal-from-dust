@@ -4,7 +4,8 @@
 
 @layer base {
   :root {
-    --body: 0 0% 100%;
+    --body: 37.5 23.5% 93.3%;
+
     --background: 0 0% 100%;
     --foreground: 222.2 47.4% 11.2%;
 
@@ -40,7 +41,8 @@
   }
 
   .dark {
-    --body: 0 0% 0%;
+    --body: 224 71% 4%;
+
     --background: 224 71% 4%;
     --foreground: 213 31% 91%;
 
@@ -87,9 +89,9 @@
 @layer utilities {
   /* radial */
   .grainy-to-left {
-    background: radial-gradient(ellipse at right, #7f7261, transparent),
+    background: radial-gradient(ellipse at right, #565656, transparent),
       url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    filter: contrast(190%) brightness(150%);
+    filter: contrast(300%) brightness(250%);
   }
   .grainy-to-left--disabled {
     background: radial-gradient(ellipse at right, #7f7261, transparent),
@@ -107,9 +109,9 @@
     filter: contrast(220%) brightness(160%) invert(100%) grayscale(100%);
   }
   .grainy-to-right {
-    background: radial-gradient(farthest-corner at left, #7f7261, transparent),
+    background: radial-gradient(farthest-corner at left, #565656, transparent),
       url("data:image/svg+xml,%3Csvg viewBox='0 0 200 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    filter: contrast(190%) brightness(150%);
+    filter: contrast(300%) brightness(250%);
   }
   .grainy-to-right--disabled {
     background: radial-gradient(farthest-corner at left, #7f7261, transparent),

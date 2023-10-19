@@ -8,7 +8,7 @@ export interface OverlayProps {
   className?: string
 }
 
-export function Overlay({ className }: OverlayProps) {
+export default function Overlay({ className }: OverlayProps) {
   return (
     <div
       className={cn(

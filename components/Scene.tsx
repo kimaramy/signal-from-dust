@@ -1,11 +1,12 @@
 "use client"
 
 import React, { useCallback, useState } from "react"
-import { PauseCircle, PlayCircle } from "lucide-react"
 
-import { Bit } from "./bit"
+// import { PauseCircle, PlayCircle } from "lucide-react"
+
+import Bit from "./Bit"
 // import { Overlay } from "./overlay"
-import { Button } from "./ui/button"
+// import { Button } from "./ui/button"
 import { Skeleton } from "./ui/skeleton"
 
 export interface SceneData {
@@ -16,14 +17,14 @@ export interface SceneData {
 
 export interface SceneProps {
   id: string
-  context: string[]
+  context: (string | number)[]
   data: SceneData
   length?: number
   active?: boolean
   className?: string
 }
 
-export function Scene({
+export default function Scene({
   id,
   context,
   data,
@@ -62,15 +63,18 @@ export function Scene({
   // }, [sequenceHeight])
 
   return (
-    <li id={id} className="flex h-full items-center gap-6">
-      <h4 className="w-12 truncate text-xs">{data.label}</h4>
+    <li
+      id={id}
+      className="flex h-full cursor-pointer items-center gap-6 hover:ring-1 dark:hover:bg-card"
+    >
+      {/* <h4 className="w-12 truncate text-xs">{data.label}</h4>
       <Button variant="ghost" size="icon">
         {active ? (
           <PauseCircle className="h-5 w-5" />
         ) : (
           <PlayCircle className="h-5 w-5" />
         )}
-      </Button>
+      </Button> */}
       <ul
         className="relative grid h-full w-full gap-2 lg:gap-4"
         style={{
@@ -81,7 +85,7 @@ export function Scene({
       >
         {binaries ? (
           binaries.map((binary, i) => {
-            const bitContext = context.concat(`${i}`)
+            const bitContext = context.concat(i)
             const bitId = bitContext.join("-")
             return (
               <Bit

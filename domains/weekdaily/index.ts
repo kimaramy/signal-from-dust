@@ -1,3 +1,3 @@
-export * from "./query-keys"
+export * from "./queryKeys"
 export * from "./services"
 export * from "./queries"

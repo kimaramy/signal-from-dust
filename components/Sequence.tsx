@@ -12,7 +12,7 @@ import { getDataUnitCount } from "@/domains/utils"
 
 import { toMonthName, toOrdinalNumberName } from "@/lib/utils"
 
-import { Scene, SceneData } from "./scene"
+import Scene, { SceneData } from "./Scene"
 
 export interface SequenceProps {
   id: string
@@ -21,7 +21,7 @@ export interface SequenceProps {
   disabled?: boolean
 }
 
-export function Sequence({
+export default function Sequence({
   id,
   dataset,
   dataUnit = "daily",
@@ -36,7 +36,7 @@ export function Sequence({
   const longestSceneLength = Math.max(...decimals).toString(2).length
 
   return (
-    <section id={id} className="relative h-full w-full px-2 py-6">
+    <section id={id} className="relative h-full w-full p-4 md:p-6 lg:p-8">
       <ul
         className="grid h-full gap-2 lg:gap-4"
         style={{
@@ -97,7 +97,7 @@ export function toWeeklySceneDataList(dataset: WeeklyData[]) {
 export function toMonthlySceneDataList(dataset: MonthlyData[]) {
   return dataset.map((data) => ({
     id: data.id,
-    label: toMonthName(data.month, 'short'),
+    label: toMonthName(data.month, "short"),
     value: data.pm_small,
   }))
 }

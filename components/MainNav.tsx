@@ -3,16 +3,16 @@ import Link from "next/link"
 import { NavItem } from "@/types/nav"
 import { siteConfig } from "@/config/site"
 
-import { DataUnitSelect } from "./data-unit-select"
-import { LocationSelect } from "./location-select"
-import { MonthSelect } from "./month-select"
-import { YearSelect } from "./year-select"
+import DataUnitSelect from "./DataUnitSelect"
+import LocationSelect from "./LocationSelect"
+import MonthSelect from "./MonthSelect"
+import YearSelect from "./YearSelect"
 
-interface MainNavProps {
-  items?: NavItem[]
+export interface MainNavProps {
+  routes?: NavItem[]
 }
 
-export function MainNav({ items }: MainNavProps) {
+export default function MainNav({ routes }: MainNavProps) {
   return (
     <div className="flex gap-6 md:gap-10">
       <Link href="/" className="flex items-center space-x-2">

@@ -1,7 +1,7 @@
 import { UseQueryOptions, useQuery } from "@tanstack/react-query"
 
 import type { DailyData, SupabaseError } from "../types"
-import { DailyDataKeys, dailyDataKeys } from "./query-keys"
+import { DailyDataKeys, dailyDataKeys } from "./queryKeys"
 
 export function useDailyDataListQuery<T = DailyData[]>(
   month: number = 0,

@@ -5,11 +5,11 @@ import { useLayoutEffect, useRef } from "react"
 
 import { cn } from "@/lib/utils"
 
-export type SpinnerProps = {
+export interface SpinnerProps {
   relative?: boolean
 }
 
-export function Spinner({ relative = false }: SpinnerProps) {
+export default function Spinner({ relative = false }: SpinnerProps) {
   const documentBody = useRef<HTMLElement | null>(null)
 
   useLayoutEffect(() => {

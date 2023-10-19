@@ -4,11 +4,13 @@ import { SupabaseError, SupabaseErrorSchema } from "@/domains"
 import { QueryErrorResetBoundary } from "@tanstack/react-query"
 import { ErrorBoundary } from "react-error-boundary"
 
-export type QueryErrorBoundaryProps = {
+type QueryErrorBoundaryProps = {
   children: React.ReactNode
 }
 
-export function QueryErrorBoundary({ children }: QueryErrorBoundaryProps) {
+export default function QueryErrorBoundary({
+  children,
+}: QueryErrorBoundaryProps) {
   return (
     <QueryErrorResetBoundary>
       {({ reset }) => {

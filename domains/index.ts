@@ -1,4 +1,4 @@
-export * from "./supabase-client"
+export * from "./supabaseClient"
 export * from "./types/index.d"
 export * from "./utils"
 

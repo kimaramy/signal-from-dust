@@ -1,17 +1,14 @@
 import "@/styles/globals.css"
-import { Suspense } from "react"
 import { Metadata } from "next"
 
 import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
-import { QueryClientProvider } from "@/components/query-client-provider"
-import { QueryErrorBoundary } from "@/components/query-error-boundary"
-import { SiteHeader } from "@/components/site-header"
-import { Spinner } from "@/components/spinner"
-import { TailwindIndicator } from "@/components/tailwind-indicator"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Toast } from "@/components/toast"
+import Gnb from "@/components/Gnb"
+import QueryClientProvider from "@/components/QueryClientProvider"
+import TailwindIndicator from "@/components/TailwindIndicator"
+import ThemeProvider from "@/components/ThemeProvider"
+import ToastProvider from "@/components/ToastProvider"
 
 export const metadata: Metadata = {
   title: {
@@ -45,20 +42,16 @@ export default function RootLayout({ children }: RootLayoutProps) {
             fontSans.variable
           )}
         >
-          <QueryClientProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <QueryErrorBoundary>
-                <Suspense fallback={<Spinner />}>
-                  <div className="relative flex min-h-screen flex-col">
-                    <SiteHeader />
-                    <div className="flex-1">{children}</div>
-                  </div>
-                </Suspense>
-              </QueryErrorBoundary>
-              <Toast />
-              <TailwindIndicator />
-            </ThemeProvider>
-          </QueryClientProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <QueryClientProvider>
+              <div className="relative flex min-h-screen flex-col">
+                <Gnb />
+                <div className="flex-1">{children}</div>
+              </div>
+            </QueryClientProvider>
+            <ToastProvider />
+            <TailwindIndicator />
+          </ThemeProvider>
         </body>
       </html>
     </>
