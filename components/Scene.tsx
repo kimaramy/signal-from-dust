@@ -1,27 +1,30 @@
-"use client"
+'use client';
 
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useState } from 'react';
+import { PauseCircle, PlayCircle } from 'lucide-react';
 
 // import { PauseCircle, PlayCircle } from "lucide-react"
 
-import Bit from "./Bit"
+import Bit from './Bit';
+import Overlay from './Overlay';
+import { Button } from './ui/button';
 // import { Overlay } from "./overlay"
 // import { Button } from "./ui/button"
-import { Skeleton } from "./ui/skeleton"
+import { Skeleton } from './ui/skeleton';
 
 export interface SceneData {
-  id: number
-  label: string
-  value: number | null
+  id: number;
+  label: string;
+  value: number | null;
 }
 
 export interface SceneProps {
-  id: string
-  context: (string | number)[]
-  data: SceneData
-  length?: number
-  active?: boolean
-  className?: string
+  id: string;
+  context: (string | number)[];
+  data: SceneData;
+  length?: number;
+  active?: boolean;
+  className?: string;
 }
 
 export default function Scene({
@@ -31,17 +34,19 @@ export default function Scene({
   length = 8,
   active = false,
 }: SceneProps) {
-  const binaries = data.value?.toString(2).split("")
+  const binaries = data.value?.toString(2).split('');
 
-  const [isMouseOver, setMouseOver] = useState(false)
+  const [isPlaying, setPlaying] = useState(false);
+
+  const [isMouseOver, setMouseOver] = useState(false);
 
   const handleMouseOver = useCallback<React.MouseEventHandler>(() => {
-    setMouseOver(true)
-  }, [])
+    setMouseOver(true);
+  }, []);
 
   const handleMouseOut = useCallback<React.MouseEventHandler>(() => {
-    setMouseOver(false)
-  }, [])
+    setMouseOver(false);
+  }, []);
 
   // const [sequenceHeight, setSequenceHeight] = useState(0)
 
@@ -65,43 +70,42 @@ export default function Scene({
   return (
     <li
       id={id}
-      className="flex h-full cursor-pointer items-center gap-6 hover:ring-1 dark:hover:bg-card"
+      className="relative flex h-full cursor-pointer items-center gap-6 hover:ring-1 p-2"
+      onMouseOver={handleMouseOver}
+      onMouseOut={handleMouseOut}
     >
-      {/* <h4 className="w-12 truncate text-xs">{data.label}</h4>
-      <Button variant="ghost" size="icon">
-        {active ? (
+      {/* <Button variant="ghost" size="lg" onClick={() => setPlaying(!isPlaying)}>
+        {isPlaying ? (
           <PauseCircle className="h-5 w-5" />
         ) : (
           <PlayCircle className="h-5 w-5" />
         )}
       </Button> */}
       <ul
-        className="relative grid h-full w-full gap-2 lg:gap-4"
+        className="grid h-full w-full gap-1 lg:gap-2"
         style={{
           gridTemplateColumns: `repeat(${length}, 1fr)`,
         }}
-        onMouseOver={handleMouseOver}
-        onMouseOut={handleMouseOut}
       >
         {binaries ? (
           binaries.map((binary, i) => {
-            const bitContext = context.concat(i)
-            const bitId = bitContext.join("-")
+            const bitContext = context.concat(i);
+            const bitId = bitContext.join('-');
             return (
               <Bit
                 key={bitId}
                 id={bitId}
                 context={bitContext}
                 binary={binary}
-                active={bitContext[1] === "0"}
+                isActive={isPlaying}
               />
-            )
+            );
           })
         ) : (
           <Skeleton className="h-full" />
         )}
-        {/* {isMouseOver ? <Overlay /> : null} */}
       </ul>
+      {isMouseOver ? <Overlay onClick={() => setPlaying(!isPlaying)} /> : null}
     </li>
-  )
+  );
 }

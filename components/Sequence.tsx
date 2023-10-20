@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import type {
   DailyData,
@@ -7,45 +7,45 @@ import type {
   WeekDailyData,
   WeeklyData,
   YearlyData,
-} from "@/domains/types"
-import { getDataUnitCount } from "@/domains/utils"
+} from '@/domains/types';
+import { getDataUnitCount } from '@/domains/utils';
 
-import { toMonthName, toOrdinalNumberName } from "@/lib/utils"
+import { toMonthName, toOrdinalNumberName } from '@/lib/utils';
 
-import Scene, { SceneData } from "./Scene"
+import Scene, { SceneData } from './Scene';
 
 export interface SequenceProps {
-  id: string
-  dataset?: SceneData[]
-  dataUnit?: DataUnit
-  disabled?: boolean
+  id: string;
+  dataset?: SceneData[];
+  dataUnit?: DataUnit;
+  disabled?: boolean;
 }
 
 export default function Sequence({
   id,
   dataset,
-  dataUnit = "daily",
+  dataUnit = 'daily',
   disabled = false,
 }: SequenceProps) {
-  const sequenceContext = [id]
+  const sequenceContext = [id];
 
-  const safeDataset = dataset ?? getFallbackSceneDataList(dataUnit)
+  const safeDataset = dataset ?? getFallbackSceneDataList(dataUnit);
 
-  const decimals = safeDataset.map((data) => data.value ?? 0)
+  const decimals = safeDataset.map((data) => data.value ?? 0);
 
-  const longestSceneLength = Math.max(...decimals).toString(2).length
+  const longestSceneLength = Math.max(...decimals).toString(2).length;
 
   return (
     <section id={id} className="relative h-full w-full p-4 md:p-6 lg:p-8">
       <ul
-        className="grid h-full gap-2 lg:gap-4"
+        className="grid h-full gap-1 lg:gap-2"
         style={{
-          gridTemplateRows: `repeat(${decimals.length}, minmax(2rem, 1fr))`,
+          gridTemplateRows: `repeat(${decimals.length}, minmax(3rem, 1fr))`,
         }}
       >
         {safeDataset.map((data, i) => {
-          const sceneContext = sequenceContext.concat(`${i}`)
-          const sceneId = sceneContext.join("-")
+          const sceneContext = sequenceContext.concat(`${i}`);
+          const sceneId = sceneContext.join('-');
           return (
             <Scene
               key={sceneId}
@@ -55,19 +55,19 @@ export default function Sequence({
               data={data}
               active={i === 0}
             />
-          )
+          );
         })}
       </ul>
     </section>
-  )
+  );
 }
 
 function getFallbackSceneDataList(dataUnit: DataUnit): SceneData[] {
   return new Array(getDataUnitCount(dataUnit)).fill(null).map((value, i) => ({
     id: i + 1,
-    label: "TBD",
+    label: 'TBD',
     value,
-  }))
+  }));
 }
 
 export function toDailySceneDataList(dataset: DailyData[]) {
@@ -75,7 +75,7 @@ export function toDailySceneDataList(dataset: DailyData[]) {
     id: data.id,
     label: toOrdinalNumberName(data.day),
     value: data.pm_small,
-  }))
+  }));
 }
 
 export function toWeekDailySceneDataList(dataset: WeekDailyData[]) {
@@ -83,7 +83,7 @@ export function toWeekDailySceneDataList(dataset: WeekDailyData[]) {
     id: data.id,
     label: data.weekday.slice(0, 3),
     value: data.pm_small,
-  }))
+  }));
 }
 
 export function toWeeklySceneDataList(dataset: WeeklyData[]) {
@@ -91,15 +91,15 @@ export function toWeeklySceneDataList(dataset: WeeklyData[]) {
     id: data.id,
     label: toOrdinalNumberName(data.week),
     value: data.pm_small,
-  }))
+  }));
 }
 
 export function toMonthlySceneDataList(dataset: MonthlyData[]) {
   return dataset.map((data) => ({
     id: data.id,
-    label: toMonthName(data.month, "short"),
+    label: toMonthName(data.month, 'short'),
     value: data.pm_small,
-  }))
+  }));
 }
 
 export function toYearlySceneDataList(dataset: YearlyData[]) {
@@ -107,5 +107,5 @@ export function toYearlySceneDataList(dataset: YearlyData[]) {
     id: data.id,
     label: data.year.toString(),
     value: data.pm_small,
-  }))
+  }));
 }
