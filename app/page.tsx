@@ -20,11 +20,11 @@ import Sequence, {
 } from "@/components/Sequence"
 
 export default function IndexPage() {
-  const dataUnit = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, "daily")
+  const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, "daily")
 
-  const year = useNumberQueryParam(QueryParamEnum.Year, "0")
+  const [year] = useNumberQueryParam(QueryParamEnum.Year, "0")
 
-  const month = useNumberQueryParam(QueryParamEnum.Month, "0")
+  const [month] = useNumberQueryParam(QueryParamEnum.Month, "0")
 
   const dailySceneDataList = useDailyDataListQuery(Number(month), {
     enabled: dataUnit === "daily",

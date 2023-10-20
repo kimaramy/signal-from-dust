@@ -17,9 +17,9 @@ export const months = new Array(12).fill(0).map((_, i) => i + 1)
 export interface MonthSelectProps {}
 
 export default function MonthSelect() {
-  const dataUnit = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, "daily")
+  const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, "daily")
 
-  const month = useQueryParam(QueryParamEnum.Month, "0")
+  const [month] = useQueryParam(QueryParamEnum.Month, "0")
 
   const setMonth = useSetQueryParam(QueryParamEnum.Month)
 

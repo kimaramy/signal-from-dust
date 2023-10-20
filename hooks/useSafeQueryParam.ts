@@ -15,38 +15,41 @@ import useQueryParam from "./useQueryParam"
  * @returns 쿼리 파라미터 값
  */
 function useSafeParam<
-  V extends string = string,
-  K extends string = string,
-  FV extends V = V
+  TValue extends string = string,
+  TKey extends string = string,
+  TFallbackValue extends TValue = TValue
 >(
-  name: K,
-  fallbackValue: FV | undefined = undefined,
+  name: TKey,
+  fallbackValue: TFallbackValue,
   options: {
-    validator: (value: V) => boolean
-    errorMessage?: string | ((value: V) => string)
+    validator: (value: TValue[]) => boolean
+    errorMessage?: string | ((value: TValue[]) => string)
     strict?: boolean
   }
 ) {
   const { validator, errorMessage, strict = false } = options
 
-  const value = useQueryParam<V, K>(name, fallbackValue)
+  const values = useQueryParam<TValue, TKey, TFallbackValue>(
+    name,
+    fallbackValue
+  )
 
   useEffect(() => {
-    if (!value) return
+    if (!values) return
 
-    if (validator(value)) return
+    if (validator(values)) return
 
     const _errorMessage =
-      typeof errorMessage === "function" ? errorMessage(value) : errorMessage
+      typeof errorMessage === "function" ? errorMessage(values) : errorMessage
 
     if (strict) {
       throw new TypeError(_errorMessage)
     } else {
       console.error(_errorMessage)
     }
-  }, [value, validator, errorMessage, strict])
+  }, [values, validator, errorMessage, strict])
 
-  return value
+  return values
 }
 
 export default useSafeParam

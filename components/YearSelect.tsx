@@ -18,9 +18,9 @@ export const years = new Array(8).fill(2015).map((value, i) => value + i + 1)
 export interface YearSelectProps {}
 
 export default function YearSelect() {
-  const dataUnit = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, "daily")
+  const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, "daily")
 
-  const year = useQueryParam(QueryParamEnum.Year, "0")
+  const [year] = useQueryParam(QueryParamEnum.Year, "0")
 
   const setYear = useSetQueryParam(QueryParamEnum.Year)
 

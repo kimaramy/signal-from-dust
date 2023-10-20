@@ -15,7 +15,7 @@ import {
 export interface DataUnitSelectProps {}
 
 export default function DataUnitSelect() {
-  const dataUnit = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, "daily")
+  const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, "daily")
 
   const setDataUnit = useSetQueryParam(QueryParamEnum.DataUnit)
 

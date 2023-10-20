@@ -14,7 +14,7 @@ import {
 export interface LocationSelectProps {}
 
 export default function LocationSelect() {
-  const location = useQueryParam(QueryParamEnum.Location, "Seoul")
+  const [location] = useQueryParam(QueryParamEnum.Location, "Seoul")
 
   return (
     <Select value={location}>
