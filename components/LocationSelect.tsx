@@ -1,20 +1,20 @@
-"use client"
+'use client';
 
-import { useQueryParam } from "@/hooks"
+import { useQueryParam } from '@/hooks';
 
-import { QueryParamEnum } from "@/lib/utils"
+import { QueryParamEnum } from '@/lib/utils';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from '@/components/ui/select';
 
 export interface LocationSelectProps {}
 
 export default function LocationSelect() {
-  const [location] = useQueryParam(QueryParamEnum.Location, "Seoul")
+  const [location] = useQueryParam(QueryParamEnum.Location, 'Seoul');
 
   return (
     <Select value={location}>
@@ -25,5 +25,5 @@ export default function LocationSelect() {
         <SelectItem value="Seoul">서울</SelectItem>
       </SelectContent>
     </Select>
-  )
+  );
 }

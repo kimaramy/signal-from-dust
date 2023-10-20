@@ -1,10 +1,10 @@
-import Link from "next/link"
-import { Github } from "lucide-react"
+import Link from 'next/link';
+import { Github } from 'lucide-react';
 
-import { siteConfig } from "@/config/site"
-import { buttonVariants } from "@/components/ui/button"
-import MainNav from "@/components/MainNav"
-import ThemeToggleButton from "@/components/ThemeToggleButton"
+import { siteConfig } from '@/config/site';
+import { buttonVariants } from '@/components/ui/button';
+import MainNav from '@/components/MainNav';
+import ThemeToggleButton from '@/components/ThemeToggleButton';
 
 export default function Gnb() {
   return (
@@ -20,8 +20,8 @@ export default function Gnb() {
             >
               <div
                 className={buttonVariants({
-                  size: "icon",
-                  variant: "ghost",
+                  size: 'icon',
+                  variant: 'ghost',
                 })}
               >
                 <Github className="h-4 w-4" />
@@ -33,5 +33,5 @@ export default function Gnb() {
         </div>
       </div>
     </header>
-  )
+  );
 }

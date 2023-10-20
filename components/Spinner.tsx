@@ -1,37 +1,37 @@
 /* eslint-disable tailwindcss/migration-from-tailwind-2 */
-"use client"
+'use client';
 
-import { useLayoutEffect, useRef } from "react"
+import { useLayoutEffect, useRef } from 'react';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 
 export interface SpinnerProps {
-  relative?: boolean
+  relative?: boolean;
 }
 
 export default function Spinner({ relative = false }: SpinnerProps) {
-  const documentBody = useRef<HTMLElement | null>(null)
+  const documentBody = useRef<HTMLElement | null>(null);
 
   useLayoutEffect(() => {
     if (documentBody.current) {
-      documentBody.current.style.pointerEvents = "none"
+      documentBody.current.style.pointerEvents = 'none';
     } else {
-      documentBody.current = document.body
+      documentBody.current = document.body;
     }
 
     return () => {
       if (documentBody.current) {
-        documentBody.current.style.pointerEvents = "auto"
+        documentBody.current.style.pointerEvents = 'auto';
       }
-    }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [documentBody.current])
+  }, [documentBody.current]);
 
   return (
     <div
       className={cn(
-        "pointer-events-none right-0 top-0 z-[999] flex h-full w-full items-center justify-center bg-white bg-opacity-50",
-        relative ? "absolute" : "fixed"
+        'pointer-events-none right-0 top-0 z-[999] flex h-full w-full items-center justify-center bg-white bg-opacity-50',
+        relative ? 'absolute' : 'fixed'
       )}
     >
       <div role="status">
@@ -54,5 +54,5 @@ export default function Spinner({ relative = false }: SpinnerProps) {
         <span className="sr-only">Loading...</span>
       </div>
     </div>
-  )
+  );
 }

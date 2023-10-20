@@ -1,4 +1,4 @@
-import useSafeQueryParam from "./useSafeQueryParam"
+import useSafeQueryParam from './useSafeQueryParam';
 
 function useEnumQueryParam<
   TValue extends string = string,
@@ -12,7 +12,7 @@ function useEnumQueryParam<
       `'${value}'(the value of '${name}') is not included in the ${JSON.stringify(
         enums
       )}`,
-  })
+  });
 }
 
-export default useEnumQueryParam
+export default useEnumQueryParam;

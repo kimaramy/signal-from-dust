@@ -1,8 +1,11 @@
-import { createQueryKeys, inferQueryKeys } from "@lukemorales/query-key-factory"
+import {
+  createQueryKeys,
+  inferQueryKeys,
+} from '@lukemorales/query-key-factory';
 
-import * as services from "./services"
+import * as services from './services';
 
-export const yearlyDataKeys = createQueryKeys("yearly", {
+export const yearlyDataKeys = createQueryKeys('yearly', {
   detail: (dataId: number) => ({
     queryKey: [dataId],
     queryFn: () => services.fetchYearlyData(dataId),
@@ -11,6 +14,6 @@ export const yearlyDataKeys = createQueryKeys("yearly", {
     queryKey: [{ ...filters }],
     queryFn: () => services.fetchYearlyDataList(filters),
   }),
-})
+});
 
-export type YearlyDataKeys = inferQueryKeys<typeof yearlyDataKeys>
+export type YearlyDataKeys = inferQueryKeys<typeof yearlyDataKeys>;

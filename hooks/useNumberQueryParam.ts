@@ -1,4 +1,4 @@
-import useSafeQueryParam from "./useSafeQueryParam"
+import useSafeQueryParam from './useSafeQueryParam';
 
 function useNumberQueryParam<
   TValue extends string = string,
@@ -13,7 +13,7 @@ function useNumberQueryParam<
       `Type of '${name}' must be a digit-like string. But received ${JSON.stringify(
         value
       )}.`,
-  })
+  });
 }
 
-export default useNumberQueryParam
+export default useNumberQueryParam;

@@ -1,15 +1,15 @@
-import Link from "next/link"
+import Link from 'next/link';
 
-import { NavItem } from "@/types/nav"
-import { siteConfig } from "@/config/site"
+import { NavItem } from '@/types/nav';
+import { siteConfig } from '@/config/site';
 
-import DataUnitSelect from "./DataUnitSelect"
-import LocationSelect from "./LocationSelect"
-import MonthSelect from "./MonthSelect"
-import YearSelect from "./YearSelect"
+import DataUnitSelect from './DataUnitSelect';
+import LocationSelect from './LocationSelect';
+import MonthSelect from './MonthSelect';
+import YearSelect from './YearSelect';
 
 export interface MainNavProps {
-  routes?: NavItem[]
+  routes?: NavItem[];
 }
 
 export default function MainNav({ routes }: MainNavProps) {
@@ -45,5 +45,5 @@ export default function MainNav({ routes }: MainNavProps) {
         </nav>
       ) : null} */}
     </div>
-  )
+  );
 }

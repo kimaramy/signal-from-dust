@@ -1,16 +1,16 @@
-export type SiteConfig = typeof siteConfig
+export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Sound Of Dust",
-  description: "Enjoy graphics and sound generated from dust statistics data",
+  name: 'Sound Of Dust',
+  description: 'Enjoy graphics and sound generated from dust statistics data',
   routes: [
     {
-      title: "Home",
-      href: "/",
+      title: 'Home',
+      href: '/',
     },
   ],
   links: {
-    github: "https://github.com/kimaramy/sound-of-dust",
-    docs: "https://signalone.notion.site/Signal-d8c759e472a149beab6cff27782e9440?pvs=25",
+    github: 'https://github.com/kimaramy/sound-of-dust',
+    docs: 'https://signalone.notion.site/Signal-d8c759e472a149beab6cff27782e9440?pvs=25',
   },
-}
+};

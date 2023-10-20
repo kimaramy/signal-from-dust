@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   DataUnit,
@@ -7,62 +7,62 @@ import {
   useWeekDailyDataListQuery,
   useWeeklyDataListQuery,
   useYearlyDataListQuery,
-} from "@/domains";
-import { useNumberQueryParam, useQueryParam } from "@/hooks";
+} from '@/domains';
+import { useNumberQueryParam, useQueryParam } from '@/hooks';
 
-import { QueryParamEnum } from "@/lib/utils";
+import { QueryParamEnum } from '@/lib/utils';
 import Sequence, {
   toDailySceneDataList,
   toMonthlySceneDataList,
   toWeekDailySceneDataList,
   toWeeklySceneDataList,
   toYearlySceneDataList,
-} from "@/components/Sequence";
-import SoundFilter from "@/components/SoundFilter";
+} from '@/components/Sequence';
+import SoundFilter from '@/components/SoundFilter';
 
 export default function IndexPage() {
-  const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, "daily");
+  const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, 'daily');
 
-  const [year] = useNumberQueryParam(QueryParamEnum.Year, "0");
+  const [year] = useNumberQueryParam(QueryParamEnum.Year, '0');
 
-  const [month] = useNumberQueryParam(QueryParamEnum.Month, "0");
+  const [month] = useNumberQueryParam(QueryParamEnum.Month, '0');
 
   const dailySceneDataList = useDailyDataListQuery(Number(month), {
-    enabled: dataUnit === "daily",
+    enabled: dataUnit === 'daily',
     select: toDailySceneDataList,
   });
 
   const weekDailySceneDataList = useWeekDailyDataListQuery(Number(month), {
-    enabled: dataUnit === "weekdaily",
+    enabled: dataUnit === 'weekdaily',
     select: toWeekDailySceneDataList,
   });
 
   const weeklySceneDataList = useWeeklyDataListQuery(Number(year), {
-    enabled: dataUnit === "weekly",
+    enabled: dataUnit === 'weekly',
     select: toWeeklySceneDataList,
   });
 
   const monthlySceneDataList = useMonthlyDataListQuery(Number(year), {
-    enabled: dataUnit === "monthly",
+    enabled: dataUnit === 'monthly',
     select: toMonthlySceneDataList,
   });
 
   const yearlySceneDataList = useYearlyDataListQuery({
-    enabled: dataUnit === "yearly",
+    enabled: dataUnit === 'yearly',
     select: toYearlySceneDataList,
   });
 
   const dataset = (function () {
     switch (dataUnit) {
-      case "yearly":
+      case 'yearly':
         return yearlySceneDataList;
-      case "monthly":
+      case 'monthly':
         return monthlySceneDataList;
-      case "weekly":
+      case 'weekly':
         return weeklySceneDataList;
-      case "weekdaily":
+      case 'weekdaily':
         return weekDailySceneDataList;
-      case "daily":
+      case 'daily':
       default:
         return dailySceneDataList;
     }
@@ -70,7 +70,7 @@ export default function IndexPage() {
 
   return (
     <>
-      <main className="h-main relative overflow-y-auto">
+      <main className="relative h-main overflow-y-auto">
         <Sequence id="first" dataset={dataset} dataUnit={dataUnit} />
         <SoundFilter />
       </main>

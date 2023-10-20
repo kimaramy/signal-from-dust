@@ -131,7 +131,7 @@ export default function Bit({
         <>
           <div
             className={cn(
-              'animate-in fade-in zoom-in slide-in-from-left sound-filter-bg flex duration-500 ease-out',
+              'sound-filter-bg flex duration-500 ease-out animate-in fade-in zoom-in slide-in-from-left',
               binary === '0'
                 ? 'min-w-[50%] xl:min-w-[auto]'
                 : 'min-w-full xl:min-w-[auto]'
@@ -153,7 +153,7 @@ export default function Bit({
               )}
             ></div>
           </div>
-          <div className="bg-body absolute left-0 top-0 h-full w-full mix-blend-multiply dark:mix-blend-difference"></div>
+          <div className="absolute left-0 top-0 h-full w-full bg-body mix-blend-multiply dark:mix-blend-difference"></div>
         </>
       ) : null}
     </li>

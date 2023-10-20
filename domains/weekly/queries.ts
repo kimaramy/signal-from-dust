@@ -1,7 +1,7 @@
-import { UseQueryOptions, useQuery } from "@tanstack/react-query"
+import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 
-import type { SupabaseError, WeeklyData } from "../types"
-import { WeeklyDataKeys, weeklyDataKeys } from "./queryKeys"
+import type { SupabaseError, WeeklyData } from '../types';
+import { WeeklyDataKeys, weeklyDataKeys } from './queryKeys';
 
 export function useWeeklyDataListQuery<T = WeeklyData[]>(
   year: number = 0,
@@ -9,15 +9,15 @@ export function useWeeklyDataListQuery<T = WeeklyData[]>(
     WeeklyData[],
     SupabaseError,
     T,
-    WeeklyDataKeys["list"]["queryKey"]
+    WeeklyDataKeys['list']['queryKey']
   >
 ) {
   const { data } = useQuery({
     ...weeklyDataKeys.list(year),
     staleTime: Infinity,
     ...options,
-  })
-  return data
+  });
+  return data;
 }
 
 export function useWeeklyDataQuery<T = WeeklyData>(
@@ -26,13 +26,13 @@ export function useWeeklyDataQuery<T = WeeklyData>(
     WeeklyData,
     SupabaseError,
     T,
-    WeeklyDataKeys["detail"]["queryKey"]
+    WeeklyDataKeys['detail']['queryKey']
   >
 ) {
   const { data } = useQuery({
     ...weeklyDataKeys.detail(dataId),
     staleTime: Infinity,
     ...options,
-  })
-  return data
+  });
+  return data;
 }

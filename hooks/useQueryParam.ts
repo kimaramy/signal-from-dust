@@ -1,8 +1,8 @@
-import { useSearchParams } from "next/navigation"
+import { useSearchParams } from 'next/navigation';
 
 type ConditionalType<TValue, TFallbackValue> = TFallbackValue extends undefined
   ? TValue | null
-  : TValue
+  : TValue;
 
 /**
  * 단일 쿼리 파라미터 값을 읽어와 반환하는 Getter 함수입니다.
@@ -17,11 +17,11 @@ function useQueryParam<
   TKey extends string = string,
   TFallbackValue extends TValue = TValue
 >(name: TKey, fallbackValue: TFallbackValue) {
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
-  const values = searchParams.getAll(name) as TValue[] // 값이 없다면 빈배열 반환
+  const values = searchParams.getAll(name) as TValue[]; // 값이 없다면 빈배열 반환
 
-  return values.length > 0 ? values : [fallbackValue]
+  return values.length > 0 ? values : [fallbackValue];
 }
 
-export default useQueryParam
+export default useQueryParam;

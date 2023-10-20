@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import { AlertCircle, CheckCircle } from "lucide-react"
-import { Toaster } from "react-hot-toast"
+import { AlertCircle, CheckCircle } from 'lucide-react';
+import { Toaster } from 'react-hot-toast';
 
 export default function ToastProvider() {
   return (
@@ -14,7 +14,7 @@ export default function ToastProvider() {
       toastOptions={{
         // Define default options
         duration: 3000,
-        className: "bg-white text-gray-700",
+        className: 'bg-white text-gray-700',
         // Default options for specific status
         success: {
           icon: <CheckCircle className="h-5 w-5 text-green-700" />,
@@ -24,5 +24,5 @@ export default function ToastProvider() {
         },
       }}
     />
-  )
+  );
 }

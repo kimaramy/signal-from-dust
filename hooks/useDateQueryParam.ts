@@ -1,4 +1,4 @@
-import useSafeQueryParam from "./useSafeQueryParam"
+import useSafeQueryParam from './useSafeQueryParam';
 
 function useDateQueryParam<
   TValue extends string = string,
@@ -13,7 +13,7 @@ function useDateQueryParam<
       `Type of '${name}' must be a date-like string. But received ${JSON.stringify(
         value
       )}.`,
-  })
+  });
 }
 
-export default useDateQueryParam
+export default useDateQueryParam;

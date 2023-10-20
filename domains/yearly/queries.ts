@@ -1,22 +1,22 @@
-import { UseQueryOptions, useQuery } from "@tanstack/react-query"
+import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 
-import type { SupabaseError, YearlyData } from "../types"
-import { YearlyDataKeys, yearlyDataKeys } from "./queryKeys"
+import type { SupabaseError, YearlyData } from '../types';
+import { YearlyDataKeys, yearlyDataKeys } from './queryKeys';
 
 export function useYearlyDataListQuery<T = YearlyData[]>(
   options?: UseQueryOptions<
     YearlyData[],
     SupabaseError,
     T,
-    YearlyDataKeys["list"]["queryKey"]
+    YearlyDataKeys['list']['queryKey']
   >
 ) {
   const { data } = useQuery({
     ...yearlyDataKeys.list(),
     staleTime: Infinity,
     ...options,
-  })
-  return data
+  });
+  return data;
 }
 
 export function useYearlyDataQuery<T = YearlyData>(
@@ -25,13 +25,13 @@ export function useYearlyDataQuery<T = YearlyData>(
     YearlyData,
     SupabaseError,
     T,
-    YearlyDataKeys["detail"]["queryKey"]
+    YearlyDataKeys['detail']['queryKey']
   >
 ) {
   const { data } = useQuery({
     ...yearlyDataKeys.detail(dataId),
     staleTime: Infinity,
     ...options,
-  })
-  return data
+  });
+  return data;
 }

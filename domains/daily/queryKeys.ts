@@ -1,8 +1,11 @@
-import { createQueryKeys, inferQueryKeys } from "@lukemorales/query-key-factory"
+import {
+  createQueryKeys,
+  inferQueryKeys,
+} from '@lukemorales/query-key-factory';
 
-import * as services from "./services"
+import * as services from './services';
 
-export const dailyDataKeys = createQueryKeys("daily", {
+export const dailyDataKeys = createQueryKeys('daily', {
   detail: (dataId: number) => ({
     queryKey: [dataId],
     queryFn: () => services.fetchDailyData(dataId),
@@ -11,6 +14,6 @@ export const dailyDataKeys = createQueryKeys("daily", {
     queryKey: [{ month }],
     queryFn: () => services.fetchDailyDataList(month),
   }),
-})
+});
 
-export type DailyDataKeys = inferQueryKeys<typeof dailyDataKeys>
+export type DailyDataKeys = inferQueryKeys<typeof dailyDataKeys>;

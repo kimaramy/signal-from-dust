@@ -1,23 +1,23 @@
-"use client"
+'use client';
 
-import { DataUnit } from "@/domains"
-import { useQueryParam, useSetQueryParam } from "@/hooks"
+import { DataUnit } from '@/domains';
+import { useQueryParam, useSetQueryParam } from '@/hooks';
 
-import { QueryParamEnum } from "@/lib/utils"
+import { QueryParamEnum } from '@/lib/utils';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from '@/components/ui/select';
 
 export interface DataUnitSelectProps {}
 
 export default function DataUnitSelect() {
-  const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, "daily")
+  const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, 'daily');
 
-  const setDataUnit = useSetQueryParam(QueryParamEnum.DataUnit)
+  const setDataUnit = useSetQueryParam(QueryParamEnum.DataUnit);
 
   return (
     <Select value={dataUnit} onValueChange={(value) => setDataUnit(value)}>
@@ -32,5 +32,5 @@ export default function DataUnitSelect() {
         <SelectItem value="weekdaily">요일별</SelectItem>
       </SelectContent>
     </Select>
-  )
+  );
 }

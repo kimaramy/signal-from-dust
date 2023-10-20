@@ -1,6 +1,6 @@
-import { useEffect } from "react"
+import { useEffect } from 'react';
 
-import useQueryParam from "./useQueryParam"
+import useQueryParam from './useQueryParam';
 
 /**
  * 단일 쿼리 파라미터 값을 안정성 있게 사용하기 위한 Getter 함수입니다.
@@ -22,34 +22,34 @@ function useSafeParam<
   name: TKey,
   fallbackValue: TFallbackValue,
   options: {
-    validator: (value: TValue[]) => boolean
-    errorMessage?: string | ((value: TValue[]) => string)
-    strict?: boolean
+    validator: (value: TValue[]) => boolean;
+    errorMessage?: string | ((value: TValue[]) => string);
+    strict?: boolean;
   }
 ) {
-  const { validator, errorMessage, strict = false } = options
+  const { validator, errorMessage, strict = false } = options;
 
   const values = useQueryParam<TValue, TKey, TFallbackValue>(
     name,
     fallbackValue
-  )
+  );
 
   useEffect(() => {
-    if (!values) return
+    if (!values) return;
 
-    if (validator(values)) return
+    if (validator(values)) return;
 
     const _errorMessage =
-      typeof errorMessage === "function" ? errorMessage(values) : errorMessage
+      typeof errorMessage === 'function' ? errorMessage(values) : errorMessage;
 
     if (strict) {
-      throw new TypeError(_errorMessage)
+      throw new TypeError(_errorMessage);
     } else {
-      console.error(_errorMessage)
+      console.error(_errorMessage);
     }
-  }, [values, validator, errorMessage, strict])
+  }, [values, validator, errorMessage, strict]);
 
-  return values
+  return values;
 }
 
-export default useSafeParam
+export default useSafeParam;

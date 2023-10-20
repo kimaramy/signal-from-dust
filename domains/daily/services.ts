@@ -1,26 +1,26 @@
-import { supabaseClient } from "../supabaseClient"
-import type { DailyData } from "../types"
+import { supabaseClient } from '../supabaseClient';
+import type { DailyData } from '../types';
 
 export const fetchDailyDataList = async (month: number) => {
   const response = await supabaseClient
-    .from("daily")
-    .select("*")
-    .eq("month", month)
-    .returns<DailyData[]>()
+    .from('daily')
+    .select('*')
+    .eq('month', month)
+    .returns<DailyData[]>();
 
-  if (response.error) throw response
+  if (response.error) throw response;
 
-  return response.data
-}
+  return response.data;
+};
 
 export const fetchDailyData = async (dataId: number) => {
   const response = await supabaseClient
-    .from("daily")
-    .select("*")
-    .eq("id", dataId)
-    .returns<DailyData>()
+    .from('daily')
+    .select('*')
+    .eq('id', dataId)
+    .returns<DailyData>();
 
-  if (response.error) throw response
+  if (response.error) throw response;
 
-  return response.data
-}
+  return response.data;
+};

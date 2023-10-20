@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from 'zod';
 
 export const SupabaseErrorSchema = z.object({
   status: z.number(),
@@ -11,6 +11,6 @@ export const SupabaseErrorSchema = z.object({
   }),
   data: z.null(),
   count: z.null(),
-})
+});
 
-export type SupabaseError = z.infer<typeof SupabaseErrorSchema>
+export type SupabaseError = z.infer<typeof SupabaseErrorSchema>;

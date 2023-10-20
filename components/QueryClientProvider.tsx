@@ -1,19 +1,19 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { SupabaseError, SupabaseErrorSchema } from "@/domains"
+import { useState } from 'react';
+import { SupabaseError, SupabaseErrorSchema } from '@/domains';
 import {
   MutationCache,
   QueryCache,
   QueryClient,
   QueryClientProvider as ReactQueryClientProvider,
-} from "@tanstack/react-query"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import toast from "react-hot-toast"
+} from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import toast from 'react-hot-toast';
 
 type QueryClientProviderProps = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 export default function QueryClientProvider({
   children,
@@ -37,17 +37,17 @@ export default function QueryClientProvider({
           let errorMessage =
             (unknownQuery.meta?.errorMessage as string) ??
             (unknownError as Error)?.message ??
-            ""
+            '';
 
           const isSupabaseError =
-            SupabaseErrorSchema.safeParse(unknownError).success
+            SupabaseErrorSchema.safeParse(unknownError).success;
 
           if (isSupabaseError) {
-            const { error } = unknownError as SupabaseError
-            errorMessage = `[${error.code}] ${error.message}`
+            const { error } = unknownError as SupabaseError;
+            errorMessage = `[${error.code}] ${error.message}`;
           }
 
-          toast.error(errorMessage)
+          toast.error(errorMessage);
         },
       }),
       mutationCache: new MutationCache({
@@ -60,26 +60,26 @@ export default function QueryClientProvider({
           let errorMessage =
             (unknownMutation.meta?.errorMessage as string) ??
             (unknownError as Error)?.message ??
-            ""
+            '';
 
           const isSupabaseError =
-            SupabaseErrorSchema.safeParse(unknownError).success
+            SupabaseErrorSchema.safeParse(unknownError).success;
 
           if (isSupabaseError) {
-            const { error } = unknownError as SupabaseError
-            errorMessage = `[${error.code}] ${error.message}`
+            const { error } = unknownError as SupabaseError;
+            errorMessage = `[${error.code}] ${error.message}`;
           }
 
-          toast.error(errorMessage)
+          toast.error(errorMessage);
         },
       }),
     })
-  )
+  );
 
   return (
     <ReactQueryClientProvider client={queryClient}>
       {children}
       <ReactQueryDevtools initialIsOpen={false} />
     </ReactQueryClientProvider>
-  )
+  );
 }

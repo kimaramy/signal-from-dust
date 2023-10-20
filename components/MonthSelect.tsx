@@ -1,31 +1,31 @@
-"use client"
+'use client';
 
-import { DataUnit } from "@/domains"
-import { useQueryParam, useSetQueryParam } from "@/hooks"
+import { DataUnit } from '@/domains';
+import { useQueryParam, useSetQueryParam } from '@/hooks';
 
-import { QueryParamEnum, toMonthName } from "@/lib/utils"
+import { QueryParamEnum, toMonthName } from '@/lib/utils';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from '@/components/ui/select';
 
-export const months = new Array(12).fill(0).map((_, i) => i + 1)
+export const months = new Array(12).fill(0).map((_, i) => i + 1);
 
 export interface MonthSelectProps {}
 
 export default function MonthSelect() {
-  const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, "daily")
+  const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, 'daily');
 
-  const [month] = useQueryParam(QueryParamEnum.Month, "0")
+  const [month] = useQueryParam(QueryParamEnum.Month, '0');
 
-  const setMonth = useSetQueryParam(QueryParamEnum.Month)
+  const setMonth = useSetQueryParam(QueryParamEnum.Month);
 
-  const isVisible = dataUnit === "daily" || dataUnit === "weekdaily"
+  const isVisible = dataUnit === 'daily' || dataUnit === 'weekdaily';
 
-  if (!isVisible) return null
+  if (!isVisible) return null;
 
   return (
     <Select value={month} onValueChange={(value) => setMonth(value)}>
@@ -36,10 +36,10 @@ export default function MonthSelect() {
         <SelectItem value="0">월 전체</SelectItem>
         {months.map((month) => (
           <SelectItem key={month} value={`${month}`}>
-            {toMonthName(month, "long")}
+            {toMonthName(month, 'long')}
           </SelectItem>
         ))}
       </SelectContent>
     </Select>
-  )
+  );
 }

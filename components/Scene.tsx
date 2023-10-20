@@ -70,7 +70,7 @@ export default function Scene({
   return (
     <li
       id={id}
-      className="relative flex h-full cursor-pointer items-center gap-6 hover:ring-1 p-2"
+      className="relative flex h-full cursor-pointer items-center gap-6 p-2 hover:ring-1"
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
     >

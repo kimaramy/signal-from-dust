@@ -1,34 +1,34 @@
-"use client"
+'use client';
 
-import { useEffect } from "react"
-import type { DataUnit } from "@/domains"
-import { useQueryParam, useSetQueryParam } from "@/hooks"
+import { useEffect } from 'react';
+import type { DataUnit } from '@/domains';
+import { useQueryParam, useSetQueryParam } from '@/hooks';
 
-import { QueryParamEnum } from "@/lib/utils"
+import { QueryParamEnum } from '@/lib/utils';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from '@/components/ui/select';
 
-export const years = new Array(8).fill(2015).map((value, i) => value + i + 1)
+export const years = new Array(8).fill(2015).map((value, i) => value + i + 1);
 
 export interface YearSelectProps {}
 
 export default function YearSelect() {
-  const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, "daily")
+  const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, 'daily');
 
-  const [year] = useQueryParam(QueryParamEnum.Year, "0")
+  const [year] = useQueryParam(QueryParamEnum.Year, '0');
 
-  const setYear = useSetQueryParam(QueryParamEnum.Year)
+  const setYear = useSetQueryParam(QueryParamEnum.Year);
 
-  const isDiabled = dataUnit !== "weekly" && dataUnit !== "monthly"
+  const isDiabled = dataUnit !== 'weekly' && dataUnit !== 'monthly';
 
   useEffect(() => {
-    if (dataUnit === "yearly") setYear("0")
-  }, [dataUnit])
+    if (dataUnit === 'yearly') setYear('0');
+  }, [dataUnit]);
 
   return (
     <Select
@@ -48,5 +48,5 @@ export default function YearSelect() {
         ))}
       </SelectContent>
     </Select>
-  )
+  );
 }

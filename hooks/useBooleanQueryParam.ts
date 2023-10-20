@@ -1,4 +1,4 @@
-import useSafeQueryParam from "./useSafeQueryParam"
+import useSafeQueryParam from './useSafeQueryParam';
 
 function useBooleanQueryParam<
   TValue extends string = string,
@@ -8,12 +8,12 @@ function useBooleanQueryParam<
   return useSafeQueryParam<TValue, TKey, TFallbackValue>(name, fallbackValue, {
     strict: true,
     validator: (values) =>
-      values.every((value) => value === "true" || value === "false"),
+      values.every((value) => value === 'true' || value === 'false'),
     errorMessage: (value) =>
       `Type of '${name}' must be a boolean-like string. But received ${JSON.stringify(
         value
       )}.`,
-  })
+  });
 }
 
-export default useBooleanQueryParam
+export default useBooleanQueryParam;

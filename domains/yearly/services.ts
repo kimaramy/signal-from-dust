@@ -1,25 +1,25 @@
-import { supabaseClient } from "../supabaseClient"
-import type { YearlyData } from "../types"
+import { supabaseClient } from '../supabaseClient';
+import type { YearlyData } from '../types';
 
 export const fetchYearlyDataList = async (filters?: unknown) => {
   const response = await supabaseClient
-    .from("yearly")
-    .select("*")
-    .returns<YearlyData[]>()
+    .from('yearly')
+    .select('*')
+    .returns<YearlyData[]>();
 
-  if (response.error) throw response
+  if (response.error) throw response;
 
-  return response.data
-}
+  return response.data;
+};
 
 export const fetchYearlyData = async (dataId: number) => {
   const response = await supabaseClient
-    .from("yearly")
-    .select("*")
-    .eq("id", dataId)
-    .returns<YearlyData>()
+    .from('yearly')
+    .select('*')
+    .eq('id', dataId)
+    .returns<YearlyData>();
 
-  if (response.error) throw response
+  if (response.error) throw response;
 
-  return response.data
-}
+  return response.data;
+};

@@ -1,9 +1,10 @@
 /** @type {import('prettier').Config} */
 module.exports = {
   endOfLine: "lf",
-  semi: false,
-  singleQuote: false,
+  semi: true,
+  singleQuote: true,
   tabWidth: 2,
+  useTabs: false,
   trailingComma: "es5",
   importOrder: [
     "^(react/(.*)$)|^(react$)",
@@ -29,4 +30,4 @@ module.exports = {
   importOrderMergeDuplicateImports: true,
   importOrderCombineTypeAndValueImports: true,
   plugins: ["@ianvs/prettier-plugin-sort-imports"],
-}
+};
