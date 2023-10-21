@@ -3,7 +3,7 @@ import useSafeQueryParam from './useSafeQueryParam';
 function useNumberQueryParam<
   TValue extends string = string,
   TKey extends string = string,
-  TFallbackValue extends TValue = TValue
+  TFallbackValue extends TValue = TValue,
 >(name: TKey, fallbackValue: TFallbackValue) {
   return useSafeQueryParam<TValue, TKey, TFallbackValue>(name, fallbackValue, {
     strict: true,

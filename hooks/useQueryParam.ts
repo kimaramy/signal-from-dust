@@ -15,7 +15,7 @@ type ConditionalType<TValue, TFallbackValue> = TFallbackValue extends undefined
 function useQueryParam<
   TValue extends string = string,
   TKey extends string = string,
-  TFallbackValue extends TValue = TValue
+  TFallbackValue extends TValue = TValue,
 >(name: TKey, fallbackValue: TFallbackValue) {
   const searchParams = useSearchParams();
 

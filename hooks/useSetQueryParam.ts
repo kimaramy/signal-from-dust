@@ -2,11 +2,11 @@ import { useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 /**
- * 단일 쿼리 파라미터 값을 Upsert하는 Seeter 함수입니다.
+ * 단일 쿼리 파라미터 값을 Upsert하는 Setter 함수입니다.
  */
 function useSetQueryParam<
   TValue extends string = string,
-  TKey extends string = string
+  TKey extends string = string,
 >(
   name: TKey,
   options?: {

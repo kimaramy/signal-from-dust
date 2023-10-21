@@ -288,7 +288,7 @@ export interface Database {
             columns: ['bucket_id'];
             referencedRelation: 'buckets';
             referencedColumns: ['id'];
-          }
+          },
         ];
       };
     };

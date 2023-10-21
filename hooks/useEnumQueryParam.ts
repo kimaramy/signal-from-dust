@@ -3,7 +3,7 @@ import useSafeQueryParam from './useSafeQueryParam';
 function useEnumQueryParam<
   TValue extends string = string,
   TKey extends string = string,
-  TFallbackValue extends TValue = TValue
+  TFallbackValue extends TValue = TValue,
 >(name: TKey, enums: TValue[], fallbackValue: TFallbackValue) {
   return useSafeQueryParam<TValue, TKey, TFallbackValue>(name, fallbackValue, {
     strict: true,

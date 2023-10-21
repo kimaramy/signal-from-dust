@@ -1,4 +1,4 @@
-import { UseQueryOptions, useQuery } from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
 import type { MonthlyData, SupabaseError } from '../types';
 import { MonthlyDataKeys, monthlyDataKeys } from './queryKeys';

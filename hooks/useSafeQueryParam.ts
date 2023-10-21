@@ -17,7 +17,7 @@ import useQueryParam from './useQueryParam';
 function useSafeParam<
   TValue extends string = string,
   TKey extends string = string,
-  TFallbackValue extends TValue = TValue
+  TFallbackValue extends TValue = TValue,
 >(
   name: TKey,
   fallbackValue: TFallbackValue,
