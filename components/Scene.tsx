@@ -2,9 +2,10 @@
 
 import React, { useCallback, useState } from 'react';
 
-import Bit from './Bit';
+import type { Display } from '@/components/display';
+
+import Bit, { Binary } from './Bit';
 import Overlay from './Overlay';
-import type { View } from './ViewSelect';
 import { Skeleton } from './ui/skeleton';
 
 export interface SceneData {
@@ -17,7 +18,7 @@ export interface SceneProps {
   id: string;
   context: (string | number)[];
   data: SceneData;
-  view: View;
+  display: Display;
   length?: number;
   active?: boolean;
   className?: string;
@@ -27,11 +28,11 @@ export default function Scene({
   id,
   context,
   data,
+  display,
   length = 8,
-  view,
   active = false,
 }: SceneProps) {
-  const binaries = data.value?.toString(2).split('');
+  const binaries = data.value?.toString(2).split('') as Binary[] | undefined;
 
   const [isPlaying, setPlaying] = useState(false);
 
@@ -87,7 +88,7 @@ export default function Scene({
                 id={bitId}
                 context={bitContext}
                 binary={binary}
-                view={view}
+                display={display}
                 isActive={isPlaying}
               />
             );
@@ -99,4 +100,8 @@ export default function Scene({
       {isMouseOver ? <Overlay onClick={() => setPlaying(!isPlaying)} /> : null}
     </li>
   );
+}
+
+export function getSceneLength(decimal: number) {
+  return decimal.toString(2).length;
 }

@@ -6,14 +6,15 @@ import { Power0, TimelineLite } from 'gsap';
 import { random } from 'lodash-es';
 
 import { cn } from '@/lib/utils';
+import type { Display } from '@/components/display';
 
-import { type View } from './ViewSelect';
+export type Binary = '0' | '1';
 
 export interface BitProps {
   id: string;
   context: (string | number)[];
-  binary: string;
-  view: View;
+  binary: Binary;
+  display: Display;
   isActive?: boolean;
   className?: string;
 }
@@ -22,7 +23,7 @@ export default function Bit({
   id,
   context,
   binary,
-  view,
+  display,
   isActive = false,
   className,
 }: BitProps) {
@@ -49,9 +50,12 @@ export default function Bit({
   useEffect(() => {
     const bitIndex = context[2] as number;
 
-    const timeout = setTimeout(() => {
-      setEntered(true);
-    }, (bitIndex + 1) * 200);
+    const timeout = setTimeout(
+      () => {
+        setEntered(true);
+      },
+      (bitIndex + 1) * 200
+    );
 
     return () => {
       clearTimeout(timeout);
@@ -60,8 +64,9 @@ export default function Bit({
 
   useEffect(() => {
     if (isEntered) {
+      const filterId = display === '2d' ? '#sound-filter-y' : '#sound-filter-x';
       $turbulence.current = document.querySelectorAll(
-        '#sound-filter feTurbulence'
+        `${filterId} feTurbulence`
       )[0] as SVGFETurbulenceElement;
       timelineOne.current = new TimelineLite({
         paused: true,
@@ -91,7 +96,8 @@ export default function Bit({
         0
       );
     }
-  }, [isEntered]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEntered, display]);
 
   function handlePlay() {
     if (isPlaying) {
@@ -110,7 +116,8 @@ export default function Bit({
       setPlaying(false);
     } else {
       timelineOne.current?.play();
-      ($container.current as HTMLElement).style.filter = 'url(#sound-filter)';
+      const filterId = display === '2d' ? '#sound-filter-y' : '#sound-filter-x';
+      ($container.current as HTMLElement).style.filter = `url(${filterId})`;
       setPlaying(true);
     }
   }
@@ -133,11 +140,10 @@ export default function Bit({
     >
       {isEntered ? (
         <>
-          {view === 'perspective' && <div className="flex w-2/5"></div>}
+          {display === '3d' && <div className="flex w-2/5"></div>}
           <div
             className={cn(
-              'flex w-full duration-500 ease-out animate-in fade-in zoom-in slide-in-from-left',
-              view === 'grid' && 'sound-filter-bg',
+              'sound-filter flex w-full duration-500 ease-out animate-in fade-in zoom-in slide-in-from-left',
               binary === '0'
                 ? 'min-w-[50%] xl:min-w-[auto]'
                 : 'min-w-full xl:min-w-[auto]'

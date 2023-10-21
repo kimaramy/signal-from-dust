@@ -11,6 +11,7 @@ import {
 import { useNumberQueryParam, useQueryParam } from '@/hooks';
 
 import { QueryParamEnum } from '@/lib/utils';
+import { useDisplayValue } from '@/components/display';
 import Sequence, {
   toDailySceneDataList,
   toMonthlySceneDataList,
@@ -18,11 +19,9 @@ import Sequence, {
   toWeeklySceneDataList,
   toYearlySceneDataList,
 } from '@/components/Sequence';
-import SoundFilter from '@/components/SoundFilter';
-import { type View } from '@/components/ViewSelect';
 
 export default function IndexPage() {
-  const [view] = useQueryParam<View>(QueryParamEnum.View, 'perspective');
+  const display = useDisplayValue();
 
   const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, 'daily');
 
@@ -76,11 +75,10 @@ export default function IndexPage() {
       <main className="relative h-main overflow-y-auto">
         <Sequence
           id="first"
+          display={display}
           dataset={dataset}
           dataUnit={dataUnit}
-          view={view}
         />
-        <SoundFilter />
       </main>
     </>
   );

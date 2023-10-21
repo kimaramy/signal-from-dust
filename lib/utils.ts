@@ -7,10 +7,10 @@ export function cn(...inputs: ClassValue[]) {
 
 export enum QueryParamEnum {
   DataUnit = 'q',
-  Year = 'year',
-  Month = 'month',
+  Year = 'y',
+  Month = 'm',
   Location = 'loc',
-  View = 'view',
+  Display = 'dp',
 }
 
 export function toOrdinalNumberName(num: number) {

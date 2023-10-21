@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import type {
   DailyData,
   DataUnit,
@@ -12,23 +12,23 @@ import type {
 import { getDataUnitCount } from '@/domains/utils';
 
 import { cn, toMonthName, toOrdinalNumberName } from '@/lib/utils';
+import type { Display } from '@/components/display';
 
-import Scene, { SceneData } from './Scene';
-import type { View } from './ViewSelect';
+import Scene, { getSceneLength, SceneData } from './Scene';
 
 export interface SequenceProps {
   id: string;
   dataset?: SceneData[];
+  display: Display;
   dataUnit?: DataUnit;
-  view: View;
   disabled?: boolean;
 }
 
 export default function Sequence({
   id,
+  display,
   dataset,
   dataUnit = 'daily',
-  view,
   disabled = false,
 }: SequenceProps) {
   const sequenceContext = [id];
@@ -37,39 +37,25 @@ export default function Sequence({
 
   const decimals = safeDataset.map((data) => data.value ?? 0);
 
-  const longestSceneLength = Math.max(...decimals).toString(2).length;
-
-  // const [transform, setTransform] = useState<React.CSSProperties['transform']>(
-  //   view === 'perspective' ? `rotateX(40deg) translateY(-10%)` : undefined
-  // );
-
-  // useEffect(() => {
-  //   const newValue =
-  //     view === 'perspective' ? `rotateX(40deg) translateY(-10%)` : undefined;
-  //   setTransform(newValue);
-  // }, [view]);
-
   return (
     <section
       id={id}
       className="relative h-full w-full p-4 lg:p-6"
       style={{
-        perspective: view === 'perspective' ? `2000px` : undefined,
+        perspective: display === '3d' ? `2000px` : undefined,
       }}
     >
       <ul
         className={cn(
           'h-full gap-1 lg:gap-2',
-          view === 'grid' ? 'grid' : undefined
+          display === '2d' ? 'grid' : undefined
         )}
         style={{
           transform:
-            view === 'perspective'
-              ? `rotateX(45deg) translateY(-10%)`
-              : undefined,
-          transformStyle: view === 'perspective' ? 'preserve-3d' : undefined,
+            display === '3d' ? `rotateX(45deg) translateY(-10%)` : undefined,
+          transformStyle: display === '3d' ? 'preserve-3d' : undefined,
           gridTemplateRows:
-            view === 'grid'
+            display === '2d'
               ? `repeat(${decimals.length}, minmax(3rem, 1fr))`
               : undefined,
           // transform: `rotateX(45deg) rotateZ(45deg) translateZ(-1em)`,
@@ -83,13 +69,13 @@ export default function Sequence({
               key={sceneId}
               id={sceneId}
               context={sceneContext}
-              length={
-                view === 'grid'
-                  ? longestSceneLength
-                  : data.value?.toString(2).length
-              }
               data={data}
-              view={view ?? 'grid'}
+              display={display}
+              length={
+                display === '2d'
+                  ? getSceneLength(Math.max(...decimals))
+                  : getSceneLength(data.value ?? 0)
+              }
               active={i === 0}
             />
           );
