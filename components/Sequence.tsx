@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
 import type {
   DailyData,
   DataUnit,
@@ -10,14 +11,16 @@ import type {
 } from '@/domains/types';
 import { getDataUnitCount } from '@/domains/utils';
 
-import { toMonthName, toOrdinalNumberName } from '@/lib/utils';
+import { cn, toMonthName, toOrdinalNumberName } from '@/lib/utils';
 
 import Scene, { SceneData } from './Scene';
+import type { View } from './ViewSelect';
 
 export interface SequenceProps {
   id: string;
   dataset?: SceneData[];
   dataUnit?: DataUnit;
+  view: View;
   disabled?: boolean;
 }
 
@@ -25,6 +28,7 @@ export default function Sequence({
   id,
   dataset,
   dataUnit = 'daily',
+  view,
   disabled = false,
 }: SequenceProps) {
   const sequenceContext = [id];
@@ -35,12 +39,40 @@ export default function Sequence({
 
   const longestSceneLength = Math.max(...decimals).toString(2).length;
 
+  // const [transform, setTransform] = useState<React.CSSProperties['transform']>(
+  //   view === 'perspective' ? `rotateX(40deg) translateY(-10%)` : undefined
+  // );
+
+  // useEffect(() => {
+  //   const newValue =
+  //     view === 'perspective' ? `rotateX(40deg) translateY(-10%)` : undefined;
+  //   setTransform(newValue);
+  // }, [view]);
+
   return (
-    <section id={id} className="relative h-full w-full p-4 md:p-6 lg:p-8">
+    <section
+      id={id}
+      className="relative h-full w-full p-4 lg:p-6"
+      style={{
+        perspective: view === 'perspective' ? `2000px` : undefined,
+      }}
+    >
       <ul
-        className="grid h-full gap-1 lg:gap-2"
+        className={cn(
+          'h-full gap-1 lg:gap-2',
+          view === 'grid' ? 'grid' : undefined
+        )}
         style={{
-          gridTemplateRows: `repeat(${decimals.length}, minmax(3rem, 1fr))`,
+          transform:
+            view === 'perspective'
+              ? `rotateX(45deg) translateY(-10%)`
+              : undefined,
+          transformStyle: view === 'perspective' ? 'preserve-3d' : undefined,
+          gridTemplateRows:
+            view === 'grid'
+              ? `repeat(${decimals.length}, minmax(3rem, 1fr))`
+              : undefined,
+          // transform: `rotateX(45deg) rotateZ(45deg) translateZ(-1em)`,
         }}
       >
         {safeDataset.map((data, i) => {
@@ -51,8 +83,13 @@ export default function Sequence({
               key={sceneId}
               id={sceneId}
               context={sceneContext}
-              length={longestSceneLength}
+              length={
+                view === 'grid'
+                  ? longestSceneLength
+                  : data.value?.toString(2).length
+              }
               data={data}
+              view={view ?? 'grid'}
               active={i === 0}
             />
           );

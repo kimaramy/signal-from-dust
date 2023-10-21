@@ -6,6 +6,7 @@ import { siteConfig } from '@/config/site';
 import DataUnitSelect from './DataUnitSelect';
 import LocationSelect from './LocationSelect';
 import MonthSelect from './MonthSelect';
+import ViewSelect from './ViewSelect';
 import YearSelect from './YearSelect';
 
 export interface MainNavProps {
@@ -20,6 +21,7 @@ export default function MainNav({ routes }: MainNavProps) {
         <span className="inline-block font-bold">{siteConfig.name}</span>
       </Link>
       <div className="flex gap-2">
+        <ViewSelect />
         <LocationSelect />
         <DataUnitSelect />
         <YearSelect />

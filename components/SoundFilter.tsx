@@ -18,7 +18,7 @@ const SoundFilter = React.forwardRef<SVGFilterElement>(function SoundFilter(
             numOctaves="1"
             result="warp"
           />
-          <feOffset dx="0" dy="-90" result="warpOffset" />
+          <feOffset dx="0" dy="-100" result="warpOffset" />
           <feDisplacementMap
             xChannelSelector="R"
             yChannelSelector="G"

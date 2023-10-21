@@ -19,8 +19,11 @@ import Sequence, {
   toYearlySceneDataList,
 } from '@/components/Sequence';
 import SoundFilter from '@/components/SoundFilter';
+import { type View } from '@/components/ViewSelect';
 
 export default function IndexPage() {
+  const [view] = useQueryParam<View>(QueryParamEnum.View, 'perspective');
+
   const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, 'daily');
 
   const [year] = useNumberQueryParam(QueryParamEnum.Year, '0');
@@ -71,7 +74,12 @@ export default function IndexPage() {
   return (
     <>
       <main className="relative h-main overflow-y-auto">
-        <Sequence id="first" dataset={dataset} dataUnit={dataUnit} />
+        <Sequence
+          id="first"
+          dataset={dataset}
+          dataUnit={dataUnit}
+          view={view}
+        />
         <SoundFilter />
       </main>
     </>

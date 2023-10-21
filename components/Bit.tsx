@@ -7,10 +7,13 @@ import { random } from 'lodash-es';
 
 import { cn } from '@/lib/utils';
 
+import { type View } from './ViewSelect';
+
 export interface BitProps {
   id: string;
   context: (string | number)[];
   binary: string;
+  view: View;
   isActive?: boolean;
   className?: string;
 }
@@ -19,6 +22,7 @@ export default function Bit({
   id,
   context,
   binary,
+  view,
   isActive = false,
   className,
 }: BitProps) {
@@ -129,9 +133,11 @@ export default function Bit({
     >
       {isEntered ? (
         <>
+          {view === 'perspective' && <div className="flex w-2/5"></div>}
           <div
             className={cn(
-              'sound-filter-bg flex duration-500 ease-out animate-in fade-in zoom-in slide-in-from-left',
+              'flex w-full duration-500 ease-out animate-in fade-in zoom-in slide-in-from-left',
+              view === 'grid' && 'sound-filter-bg',
               binary === '0'
                 ? 'min-w-[50%] xl:min-w-[auto]'
                 : 'min-w-full xl:min-w-[auto]'
@@ -153,7 +159,7 @@ export default function Bit({
               )}
             ></div>
           </div>
-          <div className="absolute left-0 top-0 h-full w-full bg-body mix-blend-multiply dark:mix-blend-difference"></div>
+          <div className="absolute left-0 top-0 z-10 h-full w-full bg-body mix-blend-multiply dark:mix-blend-lighten"></div>
         </>
       ) : null}
     </li>

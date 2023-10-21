@@ -10,6 +10,7 @@ export enum QueryParamEnum {
   Year = 'year',
   Month = 'month',
   Location = 'loc',
+  View = 'view',
 }
 
 export function toOrdinalNumberName(num: number) {

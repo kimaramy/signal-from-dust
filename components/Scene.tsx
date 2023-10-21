@@ -1,15 +1,10 @@
 'use client';
 
 import React, { useCallback, useState } from 'react';
-import { PauseCircle, PlayCircle } from 'lucide-react';
-
-// import { PauseCircle, PlayCircle } from "lucide-react"
 
 import Bit from './Bit';
 import Overlay from './Overlay';
-import { Button } from './ui/button';
-// import { Overlay } from "./overlay"
-// import { Button } from "./ui/button"
+import type { View } from './ViewSelect';
 import { Skeleton } from './ui/skeleton';
 
 export interface SceneData {
@@ -22,6 +17,7 @@ export interface SceneProps {
   id: string;
   context: (string | number)[];
   data: SceneData;
+  view: View;
   length?: number;
   active?: boolean;
   className?: string;
@@ -32,6 +28,7 @@ export default function Scene({
   context,
   data,
   length = 8,
+  view,
   active = false,
 }: SceneProps) {
   const binaries = data.value?.toString(2).split('');
@@ -70,17 +67,10 @@ export default function Scene({
   return (
     <li
       id={id}
-      className="relative flex h-full cursor-pointer items-center gap-6 p-2 hover:ring-1"
+      className="relative flex h-full cursor-pointer items-center gap-6 p-1 hover:ring-1"
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
     >
-      {/* <Button variant="ghost" size="lg" onClick={() => setPlaying(!isPlaying)}>
-        {isPlaying ? (
-          <PauseCircle className="h-5 w-5" />
-        ) : (
-          <PlayCircle className="h-5 w-5" />
-        )}
-      </Button> */}
       <ul
         className="grid h-full w-full gap-1 lg:gap-2"
         style={{
@@ -97,6 +87,7 @@ export default function Scene({
                 id={bitId}
                 context={bitContext}
                 binary={binary}
+                view={view}
                 isActive={isPlaying}
               />
             );
