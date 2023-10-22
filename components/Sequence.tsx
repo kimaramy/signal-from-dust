@@ -38,27 +38,17 @@ export default function Sequence({
   const decimals = safeDataset.map((data) => data.value ?? 0);
 
   return (
-    <section
-      id={id}
-      className="relative h-full w-full p-4 lg:p-6"
-      style={{
-        perspective: display === '3d' ? `2000px` : undefined,
-      }}
-    >
+    <section id={id} className="relative h-full w-full p-4 lg:p-6">
       <ul
         className={cn(
           'h-full gap-1 lg:gap-2',
           display === '2d' ? 'grid' : undefined
         )}
         style={{
-          transform:
-            display === '3d' ? `rotateX(45deg) translateY(-10%)` : undefined,
-          transformStyle: display === '3d' ? 'preserve-3d' : undefined,
           gridTemplateRows:
             display === '2d'
               ? `repeat(${decimals.length}, minmax(3rem, 1fr))`
               : undefined,
-          // transform: `rotateX(45deg) rotateZ(45deg) translateZ(-1em)`,
         }}
       >
         {safeDataset.map((data, i) => {

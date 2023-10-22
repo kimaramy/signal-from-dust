@@ -39,8 +39,15 @@ export default function Bit({
   const timelineTwo = useRef<TimelineLite | null>(null);
 
   const randomLength = useMemo(
-    () => (binary === '0' ? random(20, 40) : random(80, 100)),
-    [binary]
+    () =>
+      binary === '0'
+        ? display === '3d'
+          ? random(55, 60)
+          : random(30, 40)
+        : display === '3d'
+        ? random(95, 100)
+        : random(80, 100),
+    [binary, display]
   );
 
   const [isEntered, setEntered] = useState(false);
@@ -64,7 +71,7 @@ export default function Bit({
 
   useEffect(() => {
     if (isEntered) {
-      const filterId = display === '2d' ? '#sound-filter-y' : '#sound-filter-x';
+      const filterId = display === '2d' ? '#sound-filter-y' : '#sound-filter-y';
       $turbulence.current = document.querySelectorAll(
         `${filterId} feTurbulence`
       )[0] as SVGFETurbulenceElement;
@@ -116,7 +123,7 @@ export default function Bit({
       setPlaying(false);
     } else {
       timelineOne.current?.play();
-      const filterId = display === '2d' ? '#sound-filter-y' : '#sound-filter-x';
+      const filterId = display === '2d' ? '#sound-filter-y' : '#sound-filter-y';
       ($container.current as HTMLElement).style.filter = `url(${filterId})`;
       setPlaying(true);
     }
@@ -140,28 +147,38 @@ export default function Bit({
     >
       {isEntered ? (
         <>
-          {display === '3d' && <div className="flex w-2/5"></div>}
           <div
             className={cn(
               'sound-filter flex w-full duration-500 ease-out animate-in fade-in zoom-in slide-in-from-left',
               binary === '0'
-                ? 'min-w-[50%] xl:min-w-[auto]'
-                : 'min-w-full xl:min-w-[auto]'
+                ? 'min-w-[60%] xl:min-w-[auto]'
+                : 'min-w-full xl:min-w-[auto]',
+              display === '3d' &&
+                '!left-1/2 !top-1/2 !-translate-x-1/2 !-translate-y-1/2'
             )}
             style={{
               width: `${randomLength}%`,
+              height: display === '3d' ? `${randomLength}%` : undefined,
             }}
           >
             <div
               className={cn(
+                'grainy-to-left-darken dark:grainy-to-left-darken--dark w-2/5 flex-initial bg-blend-soft-light dark:bg-blend-lighten',
+                display !== '3d' && 'hidden'
+              )}
+            ></div>
+            <div
+              className={cn(
                 'w-4 flex-none lg:w-6 2xl:w-8',
-                'grainy-to-left dark:grainy-to-left--dark'
+                'grainy-to-left dark:grainy-to-left--dark',
+                display === '3d' && 'bg-blend-difference dark:hidden'
               )}
             ></div>
             <div
               className={cn(
                 'w-full flex-1',
-                'grainy-to-right dark:grainy-to-right--dark'
+                'grainy-to-right dark:grainy-to-right--dark',
+                display === '3d' && 'bg-blend-difference'
               )}
             ></div>
           </div>

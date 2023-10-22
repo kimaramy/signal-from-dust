@@ -48,7 +48,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <QueryClientProvider>
               <div className="relative flex min-h-screen flex-col">
-                <Gnb />
+                {/* <Gnb /> */}
                 <SoundFilterX />
                 <SoundFilterY />
                 <div className="flex-1">{children}</div>

@@ -2,6 +2,7 @@
 
 import React, { useCallback, useState } from 'react';
 
+import { cn } from '@/lib/utils';
 import type { Display } from '@/components/display';
 
 import Bit, { Binary } from './Bit';
@@ -68,15 +69,44 @@ export default function Scene({
   return (
     <li
       id={id}
-      className="relative flex h-full cursor-pointer items-center gap-6 p-1 hover:ring-1"
-      onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}
+      className="relative flex h-full cursor-pointer justify-between gap-6"
+      // style={{
+      //   perspective: display === '3d' ? `2000px` : undefined,
+      // }}
+      // onMouseOver={handleMouseOver}
+      // onMouseOut={handleMouseOut}
     >
-      <ul
-        className="grid h-full w-full gap-1 lg:gap-2"
+      <div
+        className="absolute left-[1%] top-[40%] z-20 w-auto translate-x-[-1%] translate-y-[-40%] p-4"
         style={{
-          gridTemplateColumns: `repeat(${length}, 1fr)`,
+          transform: `rotateX(45deg) rotateZ(-45deg) translateZ(-1em)`,
+          transformStyle: 'preserve-3d',
         }}
+      >
+        <h3 className="font-mono text-2xl font-bold">{data.value}(㎍/㎥)</h3>
+        <h4 className="text-2xl">{data.label}</h4>
+      </div>
+      <ul
+        className={cn(
+          'relative grid h-full w-full flex-none p-1 hover:ring-1',
+          display === '3d' ? 'gap-0' : 'gap-1 lg:gap-2'
+        )}
+        style={{
+          gridTemplateColumns:
+            display === '3d'
+              ? binaries
+                  ?.map((binary) => (binary === '0' ? '1fr' : '1.5fr'))
+                  .join(' ')
+              : `repeat(${length}, 1fr)`,
+          transform:
+            display === '3d'
+              ? `rotateX(45deg) rotateZ(45deg) translateZ(-1em)`
+              : undefined,
+          transformStyle: display === '3d' ? 'preserve-3d' : undefined,
+          // transform: `rotateX(45deg) rotateZ(45deg) translateZ(-1em)`,
+        }}
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}
       >
         {binaries ? (
           binaries.map((binary, i) => {
@@ -96,8 +126,10 @@ export default function Scene({
         ) : (
           <Skeleton className="h-full" />
         )}
+        {isMouseOver ? (
+          <Overlay onClick={() => setPlaying(!isPlaying)} />
+        ) : null}
       </ul>
-      {isMouseOver ? <Overlay onClick={() => setPlaying(!isPlaying)} /> : null}
     </li>
   );
 }

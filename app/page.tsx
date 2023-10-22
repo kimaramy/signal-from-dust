@@ -72,7 +72,7 @@ export default function IndexPage() {
 
   return (
     <>
-      <main className="relative h-main overflow-y-auto">
+      <main className="relative h-screen overflow-y-auto">
         <Sequence
           id="first"
           display={display}
