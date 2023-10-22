@@ -38,7 +38,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <>
       <html lang="ko" suppressHydrationWarning>
-        <head />
+        <head>{/* <script defer src="grained.js"></script> */}</head>
         <body
           className={cn(
             'min-h-screen bg-body font-sans antialiased',

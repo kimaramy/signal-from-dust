@@ -42,10 +42,10 @@ export default function Bit({
     () =>
       binary === '0'
         ? display === '3d'
-          ? random(55, 60)
+          ? 70
           : random(30, 40)
         : display === '3d'
-        ? random(95, 100)
+        ? 100
         : random(80, 100),
     [binary, display]
   );
@@ -138,6 +138,21 @@ export default function Bit({
     handlePlay();
   }, [isActive]);
 
+  // useEffect(() => {
+  //   if (isPlaying) {
+  //     // @ts-ignore
+  //     grained?.(`#${id}`, {
+  //       animate: true,
+  //       patternWidth: 200,
+  //       patternHeight: 200,
+  //       grainOpacity: 0.1,
+  //       grainDensity: 1,
+  //       grainWidth: 1,
+  //       grainHeight: 1,
+  //     });
+  //   }
+  // }, [isPlaying]);
+
   return (
     <li
       id={id}
@@ -169,7 +184,7 @@ export default function Bit({
             ></div>
             <div
               className={cn(
-                'w-4 flex-none lg:w-6 2xl:w-8',
+                'w-8 flex-none',
                 'grainy-to-left dark:grainy-to-left--dark',
                 display === '3d' && 'bg-blend-difference dark:hidden'
               )}
