@@ -164,7 +164,7 @@ export default function Bit({
         <>
           <div
             className={cn(
-              'sound-filter flex w-full duration-500 ease-out animate-in fade-in zoom-in slide-in-from-left',
+              'sound-filter mask-circle flex w-full duration-500 ease-out animate-in fade-in zoom-in slide-in-from-left',
               binary === '0'
                 ? 'min-w-[60%] xl:min-w-[auto]'
                 : 'min-w-full xl:min-w-[auto]',
@@ -178,13 +178,19 @@ export default function Bit({
           >
             <div
               className={cn(
-                'grainy-to-left-darken dark:grainy-to-left-darken--dark w-2/5 flex-initial bg-blend-soft-light dark:bg-blend-lighten',
+                'grainy-to-left-darken dark:grainy-to-left-darken--dark w-2/5 flex-initial bg-blend-soft-light dark:bg-blend-hue',
                 display !== '3d' && 'hidden'
               )}
             ></div>
+            {/* <div
+                  className={cn(
+                    'grainy-to-left dark:grainy-to-left-darken--dark w-2/5 flex-initial bg-blend-difference dark:bg-blend-lighten',
+                    display !== '3d' && 'hidden'
+                  )}
+                ></div> */}
             <div
               className={cn(
-                'w-8 flex-none',
+                'w-8 flex-none rounded-full',
                 'grainy-to-left dark:grainy-to-left--dark',
                 display === '3d' && 'bg-blend-difference dark:hidden'
               )}
@@ -193,9 +199,17 @@ export default function Bit({
               className={cn(
                 'w-full flex-1',
                 'grainy-to-right dark:grainy-to-right--dark',
-                display === '3d' && 'bg-blend-difference'
+                display === '3d' &&
+                  'bg-blend-difference dark:bg-blend-saturation'
               )}
             ></div>
+            {/* <div
+                className={cn(
+                  'w-full flex-1',
+                  'grainy-to-right-darken dark:grainy-to-right--dark',
+                  display === '3d' && 'bg-blend-soft-light'
+                )}
+              ></div> */}
           </div>
           <div className="absolute left-0 top-0 z-10 h-full w-full bg-body mix-blend-multiply dark:mix-blend-lighten"></div>
         </>
