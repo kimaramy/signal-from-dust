@@ -6,11 +6,12 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export enum QueryParamEnum {
-  DataUnit = 'q',
-  Year = 'y',
-  Month = 'm',
-  Location = 'loc',
-  Display = 'dp',
+  Collection = 'collection',
+  Year = 'year',
+  Season = 'season',
+  Month = 'month',
+  Location = 'location',
+  Display = 'display',
 }
 
 export function toOrdinalNumberName(num: number) {
@@ -24,12 +25,6 @@ export function toOrdinalNumberName(num: number) {
     default:
       return `${num}th`;
   }
-}
-
-export function toMonthName(num: number, length: 'long' | 'short' = 'short') {
-  const date = new Date();
-  date.setMonth(num - 1);
-  return date.toLocaleString('ko-KR', { month: length });
 }
 
 export const isServer = typeof window === 'undefined';

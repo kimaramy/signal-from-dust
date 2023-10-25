@@ -1,6 +1,5 @@
 export * from './supabaseClient';
 export * from './types/index.d';
-export * from './utils';
 
 export * from './daily';
 export * from './weekdaily';

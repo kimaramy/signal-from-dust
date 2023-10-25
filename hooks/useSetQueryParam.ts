@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
  * 단일 쿼리 파라미터 값을 Upsert하는 Setter 함수입니다.
  */
 function useSetQueryParam<
-  TValue extends string = string,
+  TValue extends string | number,
   TKey extends string = string,
 >(
   name: TKey,
@@ -22,7 +22,7 @@ function useSetQueryParam<
       const mutableSearchParams = new URLSearchParams(
         Array.from(searchParams.entries())
       );
-      mutableSearchParams.set(name, value);
+      mutableSearchParams.set(name, value.toString());
       router[options?.method ?? 'push'](`?${mutableSearchParams.toString()}`);
     },
     [name, options, router, searchParams]

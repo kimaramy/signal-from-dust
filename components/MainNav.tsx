@@ -2,12 +2,13 @@ import Link from 'next/link';
 
 import { NavItem } from '@/types/nav';
 import { siteConfig } from '@/config/site';
+import { CollectionSelect } from '@/components/collection';
 import { DisplaySelect } from '@/components/display';
+import { MonthSelect } from '@/components/month';
+import { SeasonSelect } from '@/components/season';
+import { YearSelect } from '@/components/year';
 
-import DataUnitSelect from './DataUnitSelect';
 import LocationSelect from './LocationSelect';
-import MonthSelect from './MonthSelect';
-import YearSelect from './YearSelect';
 
 export interface MainNavProps {
   routes?: NavItem[];
@@ -23,8 +24,9 @@ export default function MainNav({ routes }: MainNavProps) {
       <div className="flex gap-2">
         <DisplaySelect />
         <LocationSelect />
-        <DataUnitSelect />
+        <CollectionSelect />
         <YearSelect />
+        <SeasonSelect />
         <MonthSelect />
       </div>
       {/* {items?.length ? (

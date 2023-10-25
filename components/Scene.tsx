@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import { cn } from '@/lib/utils';
 import type { Display } from '@/components/display';
@@ -11,29 +12,47 @@ import { Skeleton } from './ui/skeleton';
 
 export interface SceneData {
   id: number;
-  label: string;
+  location: string;
+  date: string;
   value: number | null;
+  valueType: string;
+  rank: number | null;
 }
 
 export interface SceneProps {
   id: string;
-  context: (string | number)[];
   data: SceneData;
+  dataIndex: number;
   display: Display;
   length?: number;
   active?: boolean;
   className?: string;
+  onSceneChange: (data: SceneData) => void;
 }
 
 export default function Scene({
   id,
-  context,
   data,
+  dataIndex,
   display,
   length = 8,
   active = false,
+  onSceneChange,
 }: SceneProps) {
+  const sceneId = id;
+
   const binaries = data.value?.toString(2).split('') as Binary[] | undefined;
+
+  const { ref } = useInView({
+    threshold: 0.8,
+    initialInView: dataIndex === 0,
+    skip: display === '2d',
+    onChange(inView) {
+      if (inView) {
+        onSceneChange(data);
+      }
+    },
+  });
 
   const [isPlaying, setPlaying] = useState(false);
 
@@ -47,48 +66,32 @@ export default function Scene({
     setMouseOver(false);
   }, []);
 
-  // const [sequenceHeight, setSequenceHeight] = useState(0)
-
-  // useEffect(() => {
-  //   const sequenceElement = document.getElementById(context[0]) as HTMLElement
-  //   const resizeObserver = new ResizeObserver((event) => {
-  //     // Depending on the layout, you may need to swap inlineSize with blockSize
-  //     // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserverEntry/contentBoxSize
-  //     setSequenceHeight(event[0].contentBoxSize[0].blockSize)
-  //   })
-  //   resizeObserver.observe(sequenceElement)
-  //   return () => {
-  //     resizeObserver.unobserve(sequenceElement)
-  //   }
-  // }, [context])
-
-  // useEffect(() => {
-  //   console.log(sequenceHeight)
-  // }, [sequenceHeight])
+  useEffect(() => {
+    if (display === '2d') {
+      onSceneChange(data);
+    }
+  }, [data, display]);
 
   return (
     <li
       id={id}
-      className="relative flex h-full cursor-pointer justify-between gap-6"
+      ref={ref}
+      className={cn(
+        'flex h-full gap-6 overflow-x-hidden',
+        display === '3d' && 'justify-center pb-[var(--player-height)]'
+      )}
       // style={{
-      //   perspective: display === '3d' ? `2000px` : undefined,
+      //   perspective: display === '3d' ? `1500px` : undefined,
       // }}
-      // onMouseOver={handleMouseOver}
-      // onMouseOut={handleMouseOut}
     >
-      <div
-        className="absolute left-[1%] top-[40%] z-20 w-auto translate-x-[-1%] translate-y-[-40%] p-4"
-        style={{
-          transform: `rotateX(45deg) rotateZ(-45deg) translateZ(-1em)`,
-          transformStyle: 'preserve-3d',
-        }}
-      >
-        <h3 className="font-mono text-2xl font-bold">{data.value}(㎍/㎥)</h3>
-        <h4 className="text-2xl">{data.label}</h4>
-      </div>
+      {display === '2d' && (
+        <div className="flex w-32 flex-none items-center justify-start pl-3">
+          <h4 className="w-full text-xs">{data.date}</h4>
+        </div>
+      )}
       <ul
         className={cn(
-          'relative grid h-full w-full flex-none p-1 hover:ring-1',
+          'relative grid h-full w-full flex-1 cursor-pointer p-1',
           display === '3d' ? 'gap-0' : 'gap-1 lg:gap-2'
         )}
         style={{
@@ -100,24 +103,22 @@ export default function Scene({
               : `repeat(${length}, 1fr)`,
           transform:
             display === '3d'
-              ? `rotateX(45deg) rotateZ(45deg) translateZ(-1em)`
+              ? `rotateX(70deg) rotateZ(40deg) translateZ(0em) scaleX(1.15) scaleY(1.35)`
               : undefined,
           transformStyle: display === '3d' ? 'preserve-3d' : undefined,
-          // transform: `rotateX(45deg) rotateZ(45deg) translateZ(-1em)`,
         }}
         onMouseOver={handleMouseOver}
         onMouseOut={handleMouseOut}
       >
         {binaries ? (
-          binaries.map((binary, i) => {
-            const bitContext = context.concat(i);
-            const bitId = bitContext.join('-');
+          binaries.map((binary, index, arr) => {
+            const bitId = [sceneId, index].join('-');
             return (
               <Bit
                 key={bitId}
                 id={bitId}
-                context={bitContext}
                 binary={binary}
+                binaryIndex={index}
                 display={display}
                 isActive={isPlaying}
               />

@@ -41,7 +41,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <head>{/* <script defer src="grained.js"></script> */}</head>
         <body
           className={cn(
-            'min-h-screen bg-body font-sans antialiased',
+            'scrollbar-hide min-h-screen bg-body font-sans antialiased',
             fontSans.variable
           )}
         >
@@ -55,7 +55,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               </div>
             </QueryClientProvider>
             <ToastProvider />
-            <TailwindIndicator />
+            {/* <TailwindIndicator /> */}
           </ThemeProvider>
         </body>
       </html>

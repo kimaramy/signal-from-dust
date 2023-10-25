@@ -12,8 +12,8 @@ export type Binary = '0' | '1';
 
 export interface BitProps {
   id: string;
-  context: (string | number)[];
   binary: Binary;
+  binaryIndex: number;
   display: Display;
   isActive?: boolean;
   className?: string;
@@ -21,8 +21,8 @@ export interface BitProps {
 
 export default function Bit({
   id,
-  context,
   binary,
+  binaryIndex,
   display,
   isActive = false,
   className,
@@ -38,36 +38,35 @@ export default function Bit({
   const timelineOne = useRef<TimelineLite | null>(null);
   const timelineTwo = useRef<TimelineLite | null>(null);
 
-  const randomLength = useMemo(
-    () =>
+  const size = useMemo(() => {
+    const width =
       binary === '0'
         ? display === '3d'
           ? 70
           : random(30, 40)
         : display === '3d'
         ? 100
-        : random(80, 100),
-    [binary, display]
-  );
+        : random(80, 100);
+    const height = binary === '0' ? width * 0.8 : width;
+    return [width, height];
+  }, [binary, display]);
 
   const [isEntered, setEntered] = useState(false);
 
   const [isPlaying, setPlaying] = useState(false);
 
   useEffect(() => {
-    const bitIndex = context[2] as number;
-
     const timeout = setTimeout(
       () => {
         setEntered(true);
       },
-      (bitIndex + 1) * 200
+      (binaryIndex + 1) * 200
     );
 
     return () => {
       clearTimeout(timeout);
     };
-  }, [context]);
+  }, [binaryIndex]);
 
   useEffect(() => {
     if (isEntered) {
@@ -164,16 +163,16 @@ export default function Bit({
         <>
           <div
             className={cn(
-              'sound-filter mask-circle flex w-full duration-500 ease-out animate-in fade-in zoom-in slide-in-from-left',
+              'sound-filter flex w-full duration-500 ease-out animate-in fade-in zoom-in slide-in-from-left',
               binary === '0'
                 ? 'min-w-[60%] xl:min-w-[auto]'
                 : 'min-w-full xl:min-w-[auto]',
               display === '3d' &&
-                '!left-1/2 !top-1/2 !-translate-x-1/2 !-translate-y-1/2'
+                'mask-circle !left-1/2 !top-1/2 !-translate-x-1/2 !-translate-y-1/2'
             )}
             style={{
-              width: `${randomLength}%`,
-              height: display === '3d' ? `${randomLength}%` : undefined,
+              width: `${size[0]}%`,
+              height: display === '3d' ? `${size[1]}%` : undefined,
             }}
           >
             <div
@@ -182,17 +181,12 @@ export default function Bit({
                 display !== '3d' && 'hidden'
               )}
             ></div>
-            {/* <div
-                  className={cn(
-                    'grainy-to-left dark:grainy-to-left-darken--dark w-2/5 flex-initial bg-blend-difference dark:bg-blend-lighten',
-                    display !== '3d' && 'hidden'
-                  )}
-                ></div> */}
             <div
               className={cn(
-                'w-8 flex-none rounded-full',
+                'w-4 flex-none',
                 'grainy-to-left dark:grainy-to-left--dark',
-                display === '3d' && 'bg-blend-difference dark:hidden'
+                display === '3d' &&
+                  'rounded-full bg-blend-difference dark:hidden'
               )}
             ></div>
             <div
@@ -203,13 +197,6 @@ export default function Bit({
                   'bg-blend-difference dark:bg-blend-saturation'
               )}
             ></div>
-            {/* <div
-                className={cn(
-                  'w-full flex-1',
-                  'grainy-to-right-darken dark:grainy-to-right--dark',
-                  display === '3d' && 'bg-blend-soft-light'
-                )}
-              ></div> */}
           </div>
           <div className="absolute left-0 top-0 z-10 h-full w-full bg-body mix-blend-multiply dark:mix-blend-lighten"></div>
         </>

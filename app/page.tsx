@@ -1,17 +1,20 @@
 'use client';
 
+import { useRef } from 'react';
 import {
-  DataUnit,
   useDailyDataListQuery,
   useMonthlyDataListQuery,
+  useMonthlyDataListQueryBySeaon,
   useWeekDailyDataListQuery,
   useWeeklyDataListQuery,
   useYearlyDataListQuery,
 } from '@/domains';
-import { useNumberQueryParam, useQueryParam } from '@/hooks';
 
-import { QueryParamEnum } from '@/lib/utils';
+import { useCollectionValue } from '@/components/collection';
 import { useDisplayValue } from '@/components/display';
+import Minimap from '@/components/MiniMap';
+import { useMonthValue } from '@/components/month';
+import { useSeasonValue } from '@/components/season';
 import Sequence, {
   toDailySceneDataList,
   toMonthlySceneDataList,
@@ -19,52 +22,64 @@ import Sequence, {
   toWeeklySceneDataList,
   toYearlySceneDataList,
 } from '@/components/Sequence';
+import { useYearValue } from '@/components/year';
 
 export default function IndexPage() {
+  // const mainRef = useRef(null);
+
   const display = useDisplayValue();
 
-  const [dataUnit] = useQueryParam<DataUnit>(QueryParamEnum.DataUnit, 'daily');
+  const collection = useCollectionValue();
 
-  const [year] = useNumberQueryParam(QueryParamEnum.Year, '0');
+  const year = useYearValue();
 
-  const [month] = useNumberQueryParam(QueryParamEnum.Month, '0');
+  const season = useSeasonValue();
 
-  const dailySceneDataList = useDailyDataListQuery(Number(month), {
-    enabled: dataUnit === 'daily',
+  const month = useMonthValue();
+
+  const dailySceneDataList = useDailyDataListQuery(month, {
+    enabled: collection === 'Daily',
     select: toDailySceneDataList,
   });
 
-  const weekDailySceneDataList = useWeekDailyDataListQuery(Number(month), {
-    enabled: dataUnit === 'weekdaily',
+  const weekDailySceneDataList = useWeekDailyDataListQuery(month, {
+    enabled: collection === 'Weekdaily',
     select: toWeekDailySceneDataList,
   });
 
-  const weeklySceneDataList = useWeeklyDataListQuery(Number(year), {
-    enabled: dataUnit === 'weekly',
+  const weeklySceneDataList = useWeeklyDataListQuery(year, {
+    enabled: collection === 'Weekly',
     select: toWeeklySceneDataList,
   });
 
-  const monthlySceneDataList = useMonthlyDataListQuery(Number(year), {
-    enabled: dataUnit === 'monthly',
+  const monthlySceneDataList = useMonthlyDataListQuery(year, {
+    enabled: collection === 'Monthly',
+    select: toMonthlySceneDataList,
+  });
+
+  const seasonalSceneDataList = useMonthlyDataListQueryBySeaon(year, season, {
+    enabled: collection === 'Seasonally',
     select: toMonthlySceneDataList,
   });
 
   const yearlySceneDataList = useYearlyDataListQuery({
-    enabled: dataUnit === 'yearly',
+    enabled: collection === 'Yearly',
     select: toYearlySceneDataList,
   });
 
   const dataset = (function () {
-    switch (dataUnit) {
-      case 'yearly':
+    switch (collection) {
+      case 'Yearly':
         return yearlySceneDataList;
-      case 'monthly':
+      case 'Seasonally':
+        return seasonalSceneDataList;
+      case 'Monthly':
         return monthlySceneDataList;
-      case 'weekly':
+      case 'Weekly':
         return weeklySceneDataList;
-      case 'weekdaily':
+      case 'Weekdaily':
         return weekDailySceneDataList;
-      case 'daily':
+      case 'Daily':
       default:
         return dailySceneDataList;
     }
@@ -72,12 +87,13 @@ export default function IndexPage() {
 
   return (
     <>
-      <main className="relative h-main overflow-y-auto">
+      <Minimap />
+      <main className="relative h-main">
         <Sequence
-          id="first"
+          id="container"
+          collection={collection}
           display={display}
           dataset={dataset}
-          dataUnit={dataUnit}
         />
       </main>
     </>

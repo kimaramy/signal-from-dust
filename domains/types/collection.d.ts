@@ -2,7 +2,7 @@ import type { Database } from './supabase';
 
 export type Tables = Database['public']['Tables'];
 
-export type DataUnit = keyof Tables;
+export type TableKeys = keyof Tables;
 
 export type DailyData = Tables['daily']['Row'];
 

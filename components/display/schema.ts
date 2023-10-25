@@ -7,6 +7,8 @@ export const displayMap = Object.freeze({
   ...displaySchema.Enum,
 });
 
-export const displaySet = [...new Set(Object.values(displayMap))];
+export const displaySet = Object.freeze([
+  ...new Set(Object.values(displayMap)),
+]);
 
 export type Display = z.infer<typeof displaySchema>;

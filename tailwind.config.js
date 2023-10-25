@@ -60,7 +60,9 @@ module.exports = {
       },
       height: {
         nav: 'var(--nav-height)',
+        player: 'var(--player-height)',
         main: 'calc(100vh - var(--nav-height))',
+        minimap: 'calc(100vh - var(--nav-height) - var(--player-height))',
       },
       keyframes: {
         'accordion-down': {
@@ -78,5 +80,9 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate'), require('tailwindcss-animated')],
+  plugins: [
+    require('tailwindcss-animate'),
+    require('tailwindcss-animated'),
+    require('tailwind-scrollbar-hide'),
+  ],
 };

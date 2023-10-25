@@ -38,6 +38,7 @@
     --radius: 0.5rem;
 
     --nav-height: calc(3.5rem - 1px);
+    --player-height: calc(4rem - 1px);
   }
 
   .dark {
