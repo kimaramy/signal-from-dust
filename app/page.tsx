@@ -39,32 +39,32 @@ export default function IndexPage() {
 
   const dailySceneDataList = useDailyDataListQuery(month, {
     enabled: collection === 'Daily',
-    select: toDailySceneDataList,
+    select: (dataset) => toDailySceneDataList(dataset, collection),
   });
 
   const weekDailySceneDataList = useWeekDailyDataListQuery(month, {
     enabled: collection === 'Weekdaily',
-    select: toWeekDailySceneDataList,
+    select: (dataset) => toWeekDailySceneDataList(dataset, collection),
   });
 
   const weeklySceneDataList = useWeeklyDataListQuery(year, {
     enabled: collection === 'Weekly',
-    select: toWeeklySceneDataList,
+    select: (dataset) => toWeeklySceneDataList(dataset, collection),
   });
 
   const monthlySceneDataList = useMonthlyDataListQuery(year, {
     enabled: collection === 'Monthly',
-    select: toMonthlySceneDataList,
+    select: (dataset) => toMonthlySceneDataList(dataset, collection),
   });
 
   const seasonalSceneDataList = useMonthlyDataListQueryBySeaon(year, season, {
     enabled: collection === 'Seasonally',
-    select: toMonthlySceneDataList,
+    select: (dataset) => toMonthlySceneDataList(dataset, collection),
   });
 
   const yearlySceneDataList = useYearlyDataListQuery({
     enabled: collection === 'Yearly',
-    select: toYearlySceneDataList,
+    select: (dataset) => toYearlySceneDataList(dataset, collection),
   });
 
   const dataset = (function () {

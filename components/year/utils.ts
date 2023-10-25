@@ -10,10 +10,10 @@ export function toYearName(
   return date.toLocaleString(locale, { year: format });
 }
 
-export function toYearSelectLabel(yearKey: YearKey) {
+export function translateYear(yearKey: YearKey) {
   switch (yearKey) {
     case 'All':
-      return '전체 연도';
+      return '매년';
     default:
       return toYearName(getYearValue(yearKey), 'numeric', 'ko-KR');
   }

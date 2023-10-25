@@ -8,7 +8,7 @@ import { MonthSelect } from '@/components/month';
 import { SeasonSelect } from '@/components/season';
 import { YearSelect } from '@/components/year';
 
-import LocationSelect from './LocationSelect';
+// import LocationSelect from './LocationSelect';
 
 export interface MainNavProps {
   routes?: NavItem[];
@@ -23,7 +23,7 @@ export default function MainNav({ routes }: MainNavProps) {
       </Link>
       <div className="flex gap-2">
         <DisplaySelect />
-        <LocationSelect />
+        {/* <LocationSelect /> */}
         <CollectionSelect />
         <YearSelect />
         <SeasonSelect />

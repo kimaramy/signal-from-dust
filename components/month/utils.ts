@@ -1,4 +1,4 @@
-import { getMonthValue, type MonthKey } from './schema';
+import { getMonthValue, Month, MonthKey } from './schema';
 
 export function toMonthName(
   value: number,
@@ -10,10 +10,10 @@ export function toMonthName(
   return date.toLocaleString(locale, { month: format });
 }
 
-export function toMonthSelectLabel(monthKey: MonthKey) {
+export function translateMonth(monthKey: MonthKey) {
   switch (monthKey) {
     case 'All':
-      return '전체 월';
+      return '매월';
     default:
       return toMonthName(getMonthValue(monthKey), 'long', 'ko-KR');
   }

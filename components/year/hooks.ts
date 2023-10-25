@@ -5,32 +5,38 @@ import { useEnumQueryParam, useSetQueryParam } from '@/hooks';
 import { QueryParamEnum } from '@/lib/utils';
 
 import {
+  defaultYearKey,
+  defaultYearValue,
   getYearKey,
   getYearValue,
   Year,
   YearKey,
-  yearKeyMap,
-  yearKeySet,
+  yearKeys,
+  yearKeySchema,
 } from './schema';
 
 export function useYearValue() {
-  const [year] = useEnumQueryParam(
+  const [yearKey] = useEnumQueryParam(
     QueryParamEnum.Year,
-    [...yearKeySet],
-    yearKeyMap.Default
+    yearKeys.slice(),
+    defaultYearKey
   );
-  return getYearValue(year);
+  return getYearValue(yearKey);
 }
 
 export function useSetYearValue() {
   const setYearKey = useSetQueryParam<YearKey>(QueryParamEnum.Year);
-  return (value: Year) => setYearKey(getYearKey(value));
+  return function (yearValue: Year) {
+    const maybeYearKey = getYearKey(yearValue);
+    yearKeySchema.parse(maybeYearKey);
+    setYearKey(maybeYearKey as YearKey);
+  };
 }
 
 export function useResetYearValue() {
   const setYearKey = useSetQueryParam<YearKey>(QueryParamEnum.Year);
-  return () => {
-    const defaultValue = Year[yearKeyMap.Default];
-    setYearKey(getYearKey(defaultValue));
+  return function () {
+    const yearKey = getYearKey(defaultYearValue);
+    setYearKey(yearKey as YearKey);
   };
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useUpdateEffect } from '@/hooks';
 
 import {
   Select,
@@ -12,8 +12,8 @@ import {
 import { useCollectionValue } from '@/components/collection';
 
 import { useResetYearValue, useSetYearValue, useYearValue } from './hooks';
-import { getYearValue, yearKeyMap, yearKeySet } from './schema';
-import { toYearSelectLabel } from './utils';
+import { defaultYearKey, getYearValue, yearKeys } from './schema';
+import { translateYear } from './utils';
 
 export interface YearSelectProps {}
 
@@ -26,38 +26,39 @@ export default function YearSelect() {
 
   const resetYear = useResetYearValue();
 
-  const isEnabled =
+  const isVisible =
     collection === 'Weekly' ||
     collection === 'Monthly' ||
     collection === 'Seasonally';
 
-  const yearKeys = yearKeySet.slice();
+  const _yearKeys = yearKeys.slice();
 
-  const defaultYearKey = yearKeys.splice(
-    yearKeySet.indexOf(yearKeyMap.Default),
+  const _defaultYearKey = _yearKeys.splice(
+    _yearKeys.indexOf(defaultYearKey),
     1
   )[0];
 
-  useEffect(() => {
-    if (collection === 'Yearly') resetYear();
+  useUpdateEffect(() => {
+    resetYear();
   }, [collection]);
+
+  if (!isVisible) return null;
 
   return (
     <Select
       value={String(year)}
-      disabled={!isEnabled}
       onValueChange={(value) => setYear(Number(value))}
     >
       <SelectTrigger className="w-36">
         <SelectValue placeholder="Select a year" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value={String(getYearValue(defaultYearKey))}>
-          {toYearSelectLabel(defaultYearKey)}
+        <SelectItem value={String(getYearValue(_defaultYearKey))}>
+          {translateYear(_defaultYearKey)}
         </SelectItem>
-        {yearKeys.reverse().map((yearKey) => (
+        {_yearKeys.reverse().map((yearKey) => (
           <SelectItem key={yearKey} value={String(getYearValue(yearKey))}>
-            {toYearSelectLabel(yearKey)}
+            {translateYear(yearKey)}
           </SelectItem>
         ))}
       </SelectContent>

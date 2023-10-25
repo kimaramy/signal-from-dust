@@ -4,24 +4,26 @@ import { z } from 'zod';
 
 import { stringUnionToArray } from '@/lib/ts-utils';
 
-export const collectionSchema = z.enum([
-  ...stringUnionToArray<PascalCase<TableKeys>>()(
-    'Yearly',
-    'Monthly',
-    'Weekly',
-    'Weekdaily',
-    'Daily'
-  ),
-  'Seasonally',
-]);
+import { toOrderedBy } from './utils';
 
-export const collectionMap = Object.freeze({
-  default: collectionSchema.Enum.Yearly,
-  ...collectionSchema.Enum,
-});
+export type Collection = PascalCase<TableKeys> | 'Seasonally';
 
-export const collectionSet = Object.freeze([
-  ...new Set(Object.values(collectionMap)),
-]);
+export const collections = Object.freeze(
+  toOrderedBy(
+    stringUnionToArray<Collection>()(
+      'Yearly',
+      'Seasonally',
+      'Monthly',
+      'Weekly',
+      'Weekdaily',
+      'Daily'
+    ),
+    ['Yearly', 'Seasonally', 'Monthly', 'Weekly', 'Weekdaily', 'Daily']
+  )
+);
 
-export type Collection = z.infer<typeof collectionSchema>;
+export const collectionSchema = z
+  .enum([collections[0], ...collections.slice(1)])
+  .default('Yearly');
+
+export const defaultCollection = collectionSchema._def.defaultValue();

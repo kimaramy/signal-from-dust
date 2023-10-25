@@ -4,7 +4,8 @@ import { Github } from 'lucide-react';
 import { siteConfig } from '@/config/site';
 import { buttonVariants } from '@/components/ui/button';
 import MainNav from '@/components/MainNav';
-import ThemeToggleButton from '@/components/ThemeToggleButton';
+
+// import ThemeToggleButton from '@/components/ThemeToggleButton';
 
 export default function Gnb() {
   return (
@@ -28,7 +29,7 @@ export default function Gnb() {
                 <span className="sr-only">GitHub</span>
               </div>
             </Link>
-            <ThemeToggleButton />
+            {/* <ThemeToggleButton /> */}
           </nav>
         </div>
       </div>

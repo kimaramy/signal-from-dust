@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { getEnumKeyByValue, stringUnionToArray } from '@/lib/ts-utils';
+import * as tsUtils from '@/lib/ts-utils';
 
 export enum Month {
   'All' = 0,
@@ -18,36 +18,37 @@ export enum Month {
   'December',
 }
 
-export type MonthKey = keyof typeof Month;
+export const monthKeys = Object.freeze(tsUtils.getAllEnumKeys(Month));
 
-export const monthKeySchema = z.enum(
-  stringUnionToArray<MonthKey>()(
-    'All',
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
+export const monthValues = Object.freeze(tsUtils.getAllEnumValues(Month));
+
+export type MonthKey = (typeof monthKeys)[number];
+
+export const monthKeySchema = z
+  .enum(
+    tsUtils.stringUnionToArray<MonthKey>()(
+      'All',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    )
   )
-);
+  .default('All');
 
-export const monthKeyMap = Object.freeze({
-  Default: monthKeySchema.Enum.All,
-  ...monthKeySchema.Enum,
-});
+export const defaultMonthKey = monthKeySchema._def.defaultValue();
 
-export const monthKeySet = Object.freeze([
-  ...new Set(Object.values(monthKeyMap)),
-]);
+export const defaultMonthValue = Month[defaultMonthKey];
 
 export const getMonthValue = (monthKey: MonthKey) => Month[monthKey];
 
 export const getMonthKey = (value: Month) =>
-  getEnumKeyByValue<typeof Month, Month, MonthKey>(Month, value);
+  tsUtils.getEnumKeyByValue(Month, value);

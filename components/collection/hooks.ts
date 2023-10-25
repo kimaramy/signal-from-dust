@@ -4,17 +4,26 @@ import { useEnumQueryParam, useSetQueryParam } from '@/hooks';
 
 import { QueryParamEnum } from '@/lib/utils';
 
-import { Collection, collectionMap, collectionSet } from './schema';
+import {
+  Collection,
+  collections,
+  collectionSchema,
+  defaultCollection,
+} from './schema';
 
 export function useCollectionValue() {
   const [collection] = useEnumQueryParam(
     QueryParamEnum.Collection,
-    [...collectionSet],
-    collectionMap.default
+    collections.slice(),
+    defaultCollection
   );
   return collection;
 }
 
 export function useSetCollectionValue() {
-  return useSetQueryParam<Collection>(QueryParamEnum.Collection);
+  const setCollection = useSetQueryParam<Collection>(QueryParamEnum.Collection);
+  return function (collection: Collection) {
+    collectionSchema.parse(collection);
+    setCollection(collection);
+  };
 }

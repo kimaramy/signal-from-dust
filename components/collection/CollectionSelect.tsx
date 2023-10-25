@@ -9,8 +9,8 @@ import {
 } from '@/components/ui/select';
 
 import { useCollectionValue, useSetCollectionValue } from './hooks';
-import { Collection, collectionSet } from './schema';
-import { toKoreanCollectionName } from './utils';
+import { Collection, collections } from './schema';
+import { translateCollection } from './utils';
 
 export interface CollectionSelectProps {}
 
@@ -28,9 +28,9 @@ export default function CollectionSelect() {
         <SelectValue placeholder="Select a collection" />
       </SelectTrigger>
       <SelectContent>
-        {collectionSet.slice().map((collection) => (
+        {collections.map((collection) => (
           <SelectItem key={collection} value={collection}>
-            {toKoreanCollectionName(collection)}
+            {translateCollection(collection)}
           </SelectItem>
         ))}
       </SelectContent>

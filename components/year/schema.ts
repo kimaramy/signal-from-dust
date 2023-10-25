@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { getEnumKeyByValue, stringUnionToArray } from '@/lib/ts-utils';
+import * as tsUtils from '@/lib/ts-utils';
 
 export enum Year {
   'All' = 0,
@@ -14,32 +14,33 @@ export enum Year {
   'TwentyTwentyTwo',
 }
 
-export type YearKey = keyof typeof Year;
+export const yearKeys = Object.freeze(tsUtils.getAllEnumKeys(Year));
 
-export const yearKeySchema = z.enum(
-  stringUnionToArray<YearKey>()(
-    'All',
-    'TwentyFifteen',
-    'TwentySixteen',
-    'TwentySeventeen',
-    'TwentyEighteen',
-    'TwentyNineteen',
-    'TwentyTwenty',
-    'TwentyTwentyOne',
-    'TwentyTwentyTwo'
+export const yearValues = Object.freeze(tsUtils.getAllEnumValues(Year));
+
+export type YearKey = (typeof yearKeys)[number];
+
+export const yearKeySchema = z
+  .enum(
+    tsUtils.stringUnionToArray<YearKey>()(
+      'All',
+      'TwentyFifteen',
+      'TwentySixteen',
+      'TwentySeventeen',
+      'TwentyEighteen',
+      'TwentyNineteen',
+      'TwentyTwenty',
+      'TwentyTwentyOne',
+      'TwentyTwentyTwo'
+    )
   )
-);
+  .default('All');
 
-export const yearKeyMap = Object.freeze({
-  Default: yearKeySchema.enum.All,
-  ...yearKeySchema.enum,
-});
+export const defaultYearKey = yearKeySchema._def.defaultValue();
 
-export const yearKeySet = Object.freeze([
-  ...new Set(Object.values(yearKeyMap)),
-]);
+export const defaultYearValue = Year[defaultYearKey];
 
 export const getYearValue = (yearKey: YearKey) => Year[yearKey];
 
 export const getYearKey = (value: Year) =>
-  getEnumKeyByValue<typeof Year, Year, YearKey>(Year, value);
+  tsUtils.getEnumKeyByValue(Year, value);

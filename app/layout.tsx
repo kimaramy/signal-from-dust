@@ -41,11 +41,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <head>{/* <script defer src="grained.js"></script> */}</head>
         <body
           className={cn(
-            'scrollbar-hide min-h-screen bg-body font-sans antialiased',
+            'min-h-screen bg-body font-sans antialiased scrollbar-hide',
             fontSans.variable
           )}
         >
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider attribute="class" defaultTheme="light">
             <QueryClientProvider>
               <div className="relative flex min-h-screen flex-col">
                 <Gnb />

@@ -19,21 +19,30 @@ export function getDataCount(collection: Collection) {
   }
 }
 
-export function toKoreanCollectionName(collection: Collection) {
+export function translateCollection(collection: Collection) {
   switch (collection) {
     case 'Yearly':
-      return '연도별 차트';
+      return '연도별';
     case 'Seasonally':
-      return '계절별 차트';
+      return '계절별';
     case 'Monthly':
-      return '월별 차트';
+      return '월별';
     case 'Weekly':
-      return '주별 차트';
+      return '주별';
     case 'Weekdaily':
-      return '요일별 차트';
+      return '요일별';
     case 'Daily':
-      return '일별 차트';
+      return '일별';
     default:
       throw new TypeError(`${collection} is not a Collection type`);
   }
+}
+
+export function toOrderedBy<T extends string>(arr: T[], order: T[]) {
+  const orderForIndexVals = order.slice(0).reverse();
+  return arr.sort((a, b) => {
+    const aIndex = -orderForIndexVals.indexOf(a);
+    const bIndex = -orderForIndexVals.indexOf(b);
+    return aIndex - bIndex;
+  });
 }

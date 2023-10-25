@@ -1,3 +1,5 @@
+import * as enumFor from 'enum-for';
+
 export type ValueOf<T> = T[keyof T];
 
 export type KeyOf<T> = keyof T;
@@ -13,15 +15,18 @@ export function stringUnionToArray<T>() {
     elements;
 }
 
-export function getEnumKeys<T extends object>(enumObj: T): KeyOf<T>[] {
-  return Object.values(enumObj).filter((value) => isNaN(Number(value)));
-}
+export const getAllEnumEntries = enumFor.getAllEnumEntries;
 
-export function getEnumKeyByValue<
-  TEnum extends object,
-  TValue = TEnum,
-  TKey extends string = string,
->(obj: TEnum, value: TValue) {
-  const valueIndex = Object.values(obj).indexOf(value);
-  return Object.keys(obj)[valueIndex] as TKey;
+export const getAllEnumKeys = enumFor.getAllEnumKeys;
+
+export const getAllEnumValues = enumFor.getAllEnumValues;
+
+export function getEnumKeyByValue<T, K extends T[keyof T]>(
+  enumType: T,
+  value: K
+) {
+  const enumMap = new Map(enumFor.getAllEnumEntries(enumType));
+  for (let [enumKey, enumValue] of enumMap.entries()) {
+    if (enumValue === value) return enumKey;
+  }
 }

@@ -37,7 +37,7 @@ function MiniMap() {
   return (
     <canvas
       ref={canvasRef}
-      className="h-minimap fixed right-0 top-[var(--nav-height)] z-50"
+      className="fixed right-0 top-[var(--nav-height)] z-50 h-minimap"
       key={collection}
     ></canvas>
   );

@@ -5,32 +5,38 @@ import { useEnumQueryParam, useSetQueryParam } from '@/hooks';
 import { QueryParamEnum } from '@/lib/utils';
 
 import {
+  defaultMonthKey,
+  defaultMonthValue,
   getMonthKey,
   getMonthValue,
   Month,
   MonthKey,
-  monthKeyMap,
-  monthKeySet,
+  monthKeys,
+  monthKeySchema,
 } from './schema';
 
 export function useMonthValue() {
-  const [month] = useEnumQueryParam(
+  const [monthKey] = useEnumQueryParam(
     QueryParamEnum.Month,
-    [...monthKeySet],
-    monthKeyMap.Default
+    monthKeys.slice(),
+    defaultMonthKey
   );
-  return getMonthValue(month);
+  return getMonthValue(monthKey);
 }
 
 export function useSetMonthValue() {
   const setMonthKey = useSetQueryParam<MonthKey>(QueryParamEnum.Month);
-  return (value: Month) => setMonthKey(getMonthKey(value));
+  return function (monthValue: Month) {
+    const maybeMonthKey = getMonthKey(monthValue);
+    monthKeySchema.parse(maybeMonthKey);
+    setMonthKey(maybeMonthKey as MonthKey);
+  };
 }
 
 export function useResetMonthValue() {
   const setMonthKey = useSetQueryParam<MonthKey>(QueryParamEnum.Month);
-  return () => {
-    const defaultValue = Month[monthKeyMap.Default];
-    setMonthKey(getMonthKey(defaultValue));
+  return function () {
+    const monthKey = getMonthKey(defaultMonthValue);
+    setMonthKey(monthKey as MonthKey);
   };
 }

@@ -1,7 +1,6 @@
-/* eslint-disable tailwindcss/classnames-order */
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type {
   DailyData,
   MonthlyData,
@@ -9,19 +8,38 @@ import type {
   WeeklyData,
   YearlyData,
 } from '@/domains/types';
-import { useUpdateEffect } from '@/hooks';
+import { useArrayState } from '@/hooks';
 
-import { cn, toOrdinalNumberName } from '@/lib/utils';
-import { Collection, getDataCount } from '@/components/collection';
-import type { Display } from '@/components/display';
+import { cn } from '@/lib/utils';
 import {
-  getMonthKey,
-  toMonthName,
-  toMonthSelectLabel,
-} from '@/components/month';
+  Collection,
+  getDataCount,
+  translateCollection,
+} from '@/components/collection';
+import type { Display } from '@/components/display';
+import { getMonthKey, MonthKey, translateMonth } from '@/components/month';
+import { translateWeekday } from '@/components/weekday';
+import { getYearKey, translateYear, YearKey } from '@/components/year';
 
 import Scene, { getSceneLength, SceneData } from './Scene';
-import { getYearKey, toYearName, toYearSelectLabel } from './year';
+
+export interface SequenceData {
+  id: string;
+  index: number;
+  data: SceneData;
+  isPlaying: boolean;
+  isPlayed: boolean;
+}
+
+function initSequence(sequenceId: string, sceneDataList: SceneData[]) {
+  return sceneDataList.map<SequenceData>((sceneData, sceneIndex) => ({
+    id: [sequenceId, sceneIndex].join('-'),
+    index: sceneIndex,
+    data: sceneData,
+    isPlaying: false,
+    isPlayed: false,
+  }));
+}
 
 export interface SequenceProps {
   id: string;
@@ -38,27 +56,38 @@ export default function Sequence({
   dataset,
   disabled = false,
 }: SequenceProps) {
-  const sequenceId = id;
-
   const safeDataset = dataset ?? getFallbackSceneDataList(collection);
 
   const decimals = safeDataset.map((data) => data.value ?? 0);
 
-  const [sceneData, setSceneData] = useState<SceneData | undefined>(
-    dataset?.[0]
+  const sequenceRef = useRef<HTMLDivElement>(null);
+
+  const [sequence, sequenceControls] = useArrayState<SequenceData>(
+    initSequence(id, safeDataset)
   );
 
-  useUpdateEffect(() => {
-    if (dataset && dataset.length > 0) {
-      setSceneData(dataset[0]);
+  const [currentScene, setCurrentScene] = useState<SequenceData>(sequence[0]);
+
+  useEffect(() => {
+    // 데이터셋이 초기화 혹은 교체될 때
+    if (dataset) {
+      const sequence = initSequence(id, dataset);
+      sequenceControls.setArray(sequence);
+      setCurrentScene(sequence[0]);
+      sequenceRef.current?.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
     }
-  }, [dataset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, dataset]);
 
   return (
     <section
       id={id}
+      ref={sequenceRef}
       className={cn(
-        'scrollbar-hide w-full overflow-x-hidden overflow-y-scroll p-4 lg:px-6',
+        'w-full overflow-x-hidden overflow-y-scroll p-4 scrollbar-hide lg:px-6',
         display === '2d' ? 'h-minimap' : 'h-full'
       )}
     >
@@ -67,37 +96,94 @@ export default function Sequence({
         style={{
           gridTemplateRows:
             display === '2d'
-              ? `repeat(${decimals.length}, minmax(2rem, 1fr))`
+              ? `repeat(${decimals.length}, minmax(2rem, 3rem))`
               : undefined,
         }}
       >
-        {safeDataset.map((data, index) => {
-          const sceneId = [sequenceId, index].join('-');
+        {sequence.map((scene) => {
           return (
             <Scene
-              key={sceneId}
-              id={sceneId}
-              data={data}
-              dataIndex={index}
-              display={display}
-              length={
+              key={scene.id}
+              sceneId={scene.id}
+              sceneData={scene.data}
+              sceneIndex={scene.index}
+              sceneLength={
                 display === '2d'
                   ? getSceneLength(Math.max(...decimals))
-                  : getSceneLength(data.value ?? 0)
+                  : getSceneLength(scene.data.value ?? 0)
               }
-              active={index === 0}
-              onSceneChange={() => setSceneData(data)}
+              display={display}
+              // active={index === 0}
+              onSceneChange={(sceneData, sceneIndex) => {
+                const prevSceneIndex = currentScene?.index ?? 0;
+                // const sceneGap = sceneIndex - prevSceneIndex;
+                if (prevSceneIndex < sceneIndex) {
+                  //  바로 다음 씬으로 이동시, 바로 직전 씬 재생된 것으로 간주
+                  sequenceControls.updateItemAtIndex(sceneIndex - 1, {
+                    ...sequence[sceneIndex - 1],
+                    isPlayed: true,
+                  });
+                  //
+                } else {
+                  // 바로 이전 씬으로 이동시, 현재 씬 재생되지 않은 것으로 간주
+                  sequenceControls.updateItemAtIndex(sceneIndex, {
+                    ...sequence[sceneIndex],
+                    isPlayed: false,
+                  });
+                }
+                setCurrentScene({ ...sequence[sceneIndex], data: sceneData });
+              }}
             />
           );
         })}
       </ul>
-      {sceneData && (
-        <footer className="h-player fixed bottom-0 left-0 z-20 flex w-screen items-center border-t bg-body px-4 md:px-6 lg:px-8">
-          <h4 className="text-xl">
-            {[sceneData.location, sceneData.date, sceneData.valueType].join(
-              ', '
-            )}
-          </h4>
+      <ul
+        className="fixed bottom-[var(--player-height)] left-0 z-20 grid h-[3px] w-screen bg-black/20"
+        style={{
+          gridTemplateColumns: `repeat(${sequence.length}, 1fr)`,
+        }}
+      >
+        {sequence.map((scene) => (
+          <li
+            key={scene.id}
+            className={cn('h-full', scene.isPlayed && 'bg-red-500')}
+          ></li>
+        ))}
+      </ul>
+      {currentScene && (
+        <footer className="fixed bottom-0 left-0 z-20 flex h-player w-screen items-center border-t border-t-[#dfd7cb] bg-[#dfd7cb]/80 px-4 md:px-6 lg:px-8">
+          <div className="flex items-center gap-3">
+            <div className="inline-flex h-11 w-11 items-center justify-center rounded bg-black/20">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="h-6 w-6 text-black/50"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M19.952 1.651a.75.75 0 01.298.599V16.303a3 3 0 01-2.176 2.884l-1.32.377a2.553 2.553 0 11-1.403-4.909l2.311-.66a1.5 1.5 0 001.088-1.442V6.994l-9 2.572v9.737a3 3 0 01-2.176 2.884l-1.32.377a2.553 2.553 0 11-1.402-4.909l2.31-.66a1.5 1.5 0 001.088-1.442V9.017 5.25a.75.75 0 01.544-.721l10.5-3a.75.75 0 01.658.122z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <div className="flex flex-col justify-center">
+              <h3 className="text-lg font-bold">
+                {[
+                  currentScene.data.dates.join(' ') + '의',
+                  currentScene.data.name,
+                ].join(' ')}
+              </h3>
+              <h4 className="pl-px text-xs text-gray-900">
+                데이터 :{' '}
+                {[
+                  `${currentScene.data.collection} (초)미세먼지 평균`,
+                  `2015~2022년`,
+                  currentScene.data.location,
+                ].join(', ')}
+              </h4>
+            </div>
+          </div>
         </footer>
       )}
     </section>
@@ -107,77 +193,92 @@ export default function Sequence({
 function getFallbackSceneDataList(collection: Collection): SceneData[] {
   return new Array(getDataCount(collection)).fill(null).map((value, i) => ({
     id: i + 1,
-    location: 'Loading...',
-    date: 'Loading...',
+    collection: translateCollection(collection),
+    name: '초미세먼지',
+    dates: ['...'],
     value,
-    valueType: '평균 초미세먼지',
+    location: '서울시',
     rank: null,
   }));
 }
 
-export function toDailySceneDataList(dataset: DailyData[]): SceneData[] {
+export function toDailySceneDataList(
+  dataset: DailyData[],
+  collection: Collection
+): SceneData[] {
   return dataset.map(({ id, month, day, pm_small }) => ({
     id,
-    location: '서울시',
-    date: [
-      toMonthSelectLabel(getMonthKey(month)),
-      toOrdinalNumberName(day),
-    ].join(' '),
+    collection: translateCollection(collection),
+    name: '초미세먼지',
+    dates: [translateMonth(getMonthKey(month) as MonthKey), `${day}일`],
     value: pm_small,
-    valueType: '평균 초미세먼지',
+    location: '서울시',
     rank: null,
   }));
 }
 
 export function toWeekDailySceneDataList(
-  dataset: WeekDailyData[]
+  dataset: WeekDailyData[],
+  collection: Collection
 ): SceneData[] {
   return dataset.map(({ id, month, weekday, pm_small }) => ({
     id,
-    location: '서울시',
-    date: [toMonthSelectLabel(getMonthKey(month)), weekday.slice(0, 3)].join(
-      ' '
-    ),
+    collection: translateCollection(collection),
+    name: '초미세먼지',
+    dates: [
+      translateMonth(getMonthKey(month) as MonthKey),
+      translateWeekday(weekday),
+    ],
     value: pm_small,
-    valueType: '평균 초미세먼지',
+    location: '서울시',
     rank: null,
   }));
 }
 
-export function toWeeklySceneDataList(dataset: WeeklyData[]): SceneData[] {
-  return dataset.map(({ id, year, week, pm_small }) => ({
+export function toWeeklySceneDataList(
+  dataset: WeeklyData[],
+  collection: Collection
+): SceneData[] {
+  return dataset.map(({ id, year, week, pm_small, pm_large }) => ({
     id,
+    collection: translateCollection(collection),
+    name: '초미세먼지',
+    dates: [translateYear(getYearKey(year) as YearKey), `${week}주차`],
+    value: pm_large,
     location: '서울시',
-    date: [toYearSelectLabel(getYearKey(year)), toOrdinalNumberName(week)].join(
-      ' '
-    ),
-    value: pm_small,
-    valueType: '평균 초미세먼지',
     rank: null,
   }));
 }
 
-export function toMonthlySceneDataList(dataset: MonthlyData[]): SceneData[] {
+export function toMonthlySceneDataList(
+  dataset: MonthlyData[],
+  collection: Collection
+): SceneData[] {
   return dataset.map(({ id, year, month, pm_small }) => ({
     id,
-    location: '서울시',
-    date: [
-      toYearSelectLabel(getYearKey(year)),
-      toMonthSelectLabel(getMonthKey(month)),
-    ].join(' '),
+    collection: translateCollection(collection),
+    name: '초미세먼지',
+    dates: [
+      translateYear(getYearKey(year) as YearKey),
+      translateMonth(getMonthKey(month) as MonthKey),
+    ],
     value: pm_small,
-    valueType: '평균 초미세먼지',
+    location: '서울시',
     rank: null,
   }));
 }
 
-export function toYearlySceneDataList(dataset: YearlyData[]): SceneData[] {
+export function toYearlySceneDataList(
+  dataset: YearlyData[],
+  collection: Collection
+): SceneData[] {
   return dataset.map(({ id, year, pm_small }) => ({
     id,
-    location: '서울시',
-    date: [toYearSelectLabel(getYearKey(year))].join(' '),
+    collection: translateCollection(collection),
+    name: '초미세먼지',
+    dates: [translateYear(getYearKey(year) as YearKey)],
     value: pm_small,
-    valueType: '평균 초미세먼지',
+    location: '서울시',
     rank: null,
   }));
 }

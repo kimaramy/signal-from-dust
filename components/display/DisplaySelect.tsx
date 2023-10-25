@@ -10,6 +10,7 @@ import {
 
 import { useDisplayValue, useSetDisplayValue } from './hooks';
 import { Display, displaySet } from './schema';
+import { toDisplayName } from './utils';
 
 export interface DisplaySelectProps {}
 
@@ -24,12 +25,12 @@ export default function DisplaySelect() {
       onValueChange={(value) => setDisplay(value as Display)}
     >
       <SelectTrigger className="w-36">
-        <SelectValue placeholder="보기 방식 선택" />
+        <SelectValue placeholder="Select a view" />
       </SelectTrigger>
       <SelectContent>
         {displaySet.slice().map((value) => (
           <SelectItem key={value} value={value}>
-            {value}
+            {toDisplayName(value)}
           </SelectItem>
         ))}
       </SelectContent>

@@ -12,44 +12,45 @@ import { Skeleton } from './ui/skeleton';
 
 export interface SceneData {
   id: number;
-  location: string;
-  date: string;
+  name: string;
+  collection: string;
+  dates: string[];
   value: number | null;
-  valueType: string;
+  location: string;
   rank: number | null;
 }
 
 export interface SceneProps {
-  id: string;
-  data: SceneData;
-  dataIndex: number;
+  sceneId: string;
+  sceneData: SceneData;
+  sceneIndex: number;
+  sceneLength?: number;
   display: Display;
-  length?: number;
   active?: boolean;
   className?: string;
-  onSceneChange: (data: SceneData) => void;
+  onSceneChange: (sceneData: SceneData, sceneIndex: number) => void;
 }
 
 export default function Scene({
-  id,
-  data,
-  dataIndex,
+  sceneId,
+  sceneData,
+  sceneIndex,
+  sceneLength = 8,
   display,
-  length = 8,
   active = false,
   onSceneChange,
 }: SceneProps) {
-  const sceneId = id;
-
-  const binaries = data.value?.toString(2).split('') as Binary[] | undefined;
+  const binaries = sceneData.value?.toString(2).split('') as
+    | Binary[]
+    | undefined;
 
   const { ref } = useInView({
     threshold: 0.8,
-    initialInView: dataIndex === 0,
+    initialInView: sceneIndex === 0,
     skip: display === '2d',
     onChange(inView) {
       if (inView) {
-        onSceneChange(data);
+        onSceneChange(sceneData, sceneIndex);
       }
     },
   });
@@ -59,25 +60,26 @@ export default function Scene({
   const [isMouseOver, setMouseOver] = useState(false);
 
   const handleMouseOver = useCallback<React.MouseEventHandler>(() => {
+    if (display === '2d') {
+      onSceneChange(sceneData, sceneIndex);
+    }
     setMouseOver(true);
-  }, []);
+  }, [display, sceneData]);
 
   const handleMouseOut = useCallback<React.MouseEventHandler>(() => {
     setMouseOver(false);
   }, []);
 
-  useEffect(() => {
-    if (display === '2d') {
-      onSceneChange(data);
-    }
-  }, [data, display]);
+  const handleOverlayClick = useCallback<React.MouseEventHandler>(() => {
+    setPlaying((isPlaying) => !isPlaying);
+  }, []);
 
   return (
     <li
-      id={id}
+      id={sceneId}
       ref={ref}
       className={cn(
-        'flex h-full gap-6 overflow-x-hidden',
+        'flex h-full gap-4 overflow-x-hidden',
         display === '3d' && 'justify-center pb-[var(--player-height)]'
       )}
       // style={{
@@ -85,8 +87,10 @@ export default function Scene({
       // }}
     >
       {display === '2d' && (
-        <div className="flex w-32 flex-none items-center justify-start pl-3">
-          <h4 className="w-full text-xs">{data.date}</h4>
+        <div className="flex w-24 flex-none items-center justify-start pl-4">
+          <h4 className="w-full text-xs">
+            {sceneData.dates[sceneData.dates.length - 1]}
+          </h4>
         </div>
       )}
       <ul
@@ -100,7 +104,7 @@ export default function Scene({
               ? binaries
                   ?.map((binary) => (binary === '0' ? '1fr' : '1.5fr'))
                   .join(' ')
-              : `repeat(${length}, 1fr)`,
+              : `repeat(${sceneLength}, 1fr)`,
           transform:
             display === '3d'
               ? `rotateX(70deg) rotateZ(40deg) translateZ(0em) scaleX(1.15) scaleY(1.35)`
@@ -111,7 +115,7 @@ export default function Scene({
         onMouseOut={handleMouseOut}
       >
         {binaries ? (
-          binaries.map((binary, index, arr) => {
+          binaries.map((binary, index) => {
             const bitId = [sceneId, index].join('-');
             return (
               <Bit
@@ -127,9 +131,7 @@ export default function Scene({
         ) : (
           <Skeleton className="h-full" />
         )}
-        {isMouseOver ? (
-          <Overlay onClick={() => setPlaying(!isPlaying)} />
-        ) : null}
+        {isMouseOver ? <Overlay onClick={handleOverlayClick} /> : null}
       </ul>
     </li>
   );
