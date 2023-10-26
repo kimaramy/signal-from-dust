@@ -87,6 +87,34 @@
       'rlig' 1,
       'calt' 1;
   }
+  progress::-webkit-progress-bar {
+    background: transparent;
+  }
+  progress::-webkit-progress-value {
+    transition: width 0.5s ease;
+    background: linear-gradient(
+      to left,
+      #db38b5,
+      #01b3e3,
+      #25ce7b,
+      #fdc741,
+      #ff6b01,
+      #fc4236
+    );
+    background-attachment: fixed;
+  }
+  progress::-moz-progress-value {
+    background: linear-gradient(
+      to left,
+      #db38b5,
+      #01b3e3,
+      #25ce7b,
+      #fdc741,
+      #ff6b01,
+      #fc4236
+    );
+    background-attachment: fixed;
+  }
 }
 
 @layer utilities {

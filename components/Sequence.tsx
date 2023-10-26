@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import type {
   DailyData,
   MonthlyData,
@@ -17,11 +17,11 @@ import {
   translateCollection,
 } from '@/components/collection';
 import type { Display } from '@/components/display';
+import { DustSize, translateDustSize } from '@/components/dustSize';
 import { getMonthKey, MonthKey, translateMonth } from '@/components/month';
+import Scene, { getSceneLength, SceneData } from '@/components/Scene';
 import { translateWeekday } from '@/components/weekday';
 import { getYearKey, translateYear, YearKey } from '@/components/year';
-
-import Scene, { getSceneLength, SceneData } from './Scene';
 
 export interface SequenceData {
   id: string;
@@ -60,7 +60,9 @@ export default function Sequence({
 
   const decimals = safeDataset.map((data) => data.value ?? 0);
 
-  const sequenceRef = useRef<HTMLDivElement>(null);
+  const sequenceEl = useRef<HTMLUListElement>(null);
+
+  const [progress, setProgress] = useState(0);
 
   const [sequence, sequenceControls] = useArrayState<SequenceData>(
     initSequence(id, safeDataset)
@@ -68,13 +70,25 @@ export default function Sequence({
 
   const [currentScene, setCurrentScene] = useState<SequenceData>(sequence[0]);
 
+  const handleScroll = useCallback((e: React.UIEvent) => {
+    // TODO: requestAnimationFrame으로 최적화
+    const el = e.currentTarget;
+    if (el) {
+      const scrollTop = el.scrollTop; // 컨테이너의 스크롤 위치를 가져옵니다.
+      const scrollHeight = el.scrollHeight - el.clientHeight; // 컨테이너의 전체 스크롤 가능한 높이를 가져옵니다.
+      const scrollPercentage = (scrollTop / scrollHeight) * 100;
+      const progress = 100 - scrollPercentage < 10 ? 100 : scrollPercentage;
+      setProgress(progress);
+    }
+  }, []);
+
   useEffect(() => {
     // 데이터셋이 초기화 혹은 교체될 때
     if (dataset) {
       const sequence = initSequence(id, dataset);
       sequenceControls.setArray(sequence);
       setCurrentScene(sequence[0]);
-      sequenceRef.current?.scrollTo({
+      sequenceEl.current?.scrollTo({
         top: 0,
         behavior: 'smooth',
       });
@@ -85,11 +99,12 @@ export default function Sequence({
   return (
     <section
       id={id}
-      ref={sequenceRef}
+      ref={sequenceEl}
       className={cn(
-        'w-full overflow-x-hidden overflow-y-scroll p-4 scrollbar-hide lg:px-6',
+        'relative w-full overflow-x-hidden overflow-y-scroll p-4 scrollbar-hide lg:px-6',
         display === '2d' ? 'h-minimap' : 'h-full'
       )}
+      onScroll={handleScroll}
     >
       <ul
         className={cn('h-full', display === '2d' && 'grid gap-1 lg:gap-2')}
@@ -104,6 +119,7 @@ export default function Sequence({
           return (
             <Scene
               key={scene.id}
+              className=""
               sceneId={scene.id}
               sceneData={scene.data}
               sceneIndex={scene.index}
@@ -137,23 +153,16 @@ export default function Sequence({
           );
         })}
       </ul>
-      <ul
-        className="fixed bottom-[var(--player-height)] left-0 z-20 grid h-[3px] w-screen bg-black/20"
-        style={{
-          gridTemplateColumns: `repeat(${sequence.length}, 1fr)`,
-        }}
-      >
-        {sequence.map((scene) => (
-          <li
-            key={scene.id}
-            className={cn('h-full', scene.isPlayed && 'bg-red-500')}
-          ></li>
-        ))}
-      </ul>
+      <progress
+        id={`${id}-progress`}
+        className="fixed bottom-[var(--player-height)] left-0 z-20 h-[5px] w-screen appearance-none border-none bg-black/20 transition-all ease-in-out"
+        max="100"
+        value={progress}
+      ></progress>
       {currentScene && (
-        <footer className="fixed bottom-0 left-0 z-20 flex h-player w-screen items-center border-t border-t-[#dfd7cb] bg-[#dfd7cb]/80 px-4 md:px-6 lg:px-8">
+        <footer className="fixed bottom-0 left-0 z-20 flex h-player w-screen items-center border-t border-t-[#dfd7cb] bg-[#dfd7cb]/80 px-4 dark:border-input dark:bg-body md:px-6 lg:px-8">
           <div className="flex items-center gap-3">
-            <div className="inline-flex h-11 w-11 items-center justify-center rounded bg-black/20">
+            <div className="inline-flex h-11 w-11 items-center justify-center rounded bg-black/20 dark:bg-white/20">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -168,13 +177,13 @@ export default function Sequence({
               </svg>
             </div>
             <div className="flex flex-col justify-center">
-              <h3 className="text-lg font-bold">
+              <h3 className="text-lg font-bold text-foreground">
                 {[
                   currentScene.data.dates.join(' ') + '의',
                   currentScene.data.name,
                 ].join(' ')}
               </h3>
-              <h4 className="pl-px text-xs text-gray-900">
+              <h4 className="pl-px text-xs text-muted-foreground">
                 데이터 :{' '}
                 {[
                   `${currentScene.data.collection} (초)미세먼지 평균`,
@@ -194,24 +203,25 @@ function getFallbackSceneDataList(collection: Collection): SceneData[] {
   return new Array(getDataCount(collection)).fill(null).map((value, i) => ({
     id: i + 1,
     collection: translateCollection(collection),
-    name: '초미세먼지',
+    name: 'TBD',
     dates: ['...'],
-    value,
-    location: '서울시',
+    value: 0,
+    location: 'TBD',
     rank: null,
   }));
 }
 
 export function toDailySceneDataList(
   dataset: DailyData[],
-  collection: Collection
+  collection: Collection,
+  dustSize: DustSize
 ): SceneData[] {
-  return dataset.map(({ id, month, day, pm_small }) => ({
+  return dataset.map(({ id, month, day, pm_large, pm_small }) => ({
     id,
     collection: translateCollection(collection),
-    name: '초미세먼지',
+    name: translateDustSize(dustSize),
     dates: [translateMonth(getMonthKey(month) as MonthKey), `${day}일`],
-    value: pm_small,
+    value: dustSize === 'lg' ? pm_large : pm_small,
     location: '서울시',
     rank: null,
   }));
@@ -219,17 +229,18 @@ export function toDailySceneDataList(
 
 export function toWeekDailySceneDataList(
   dataset: WeekDailyData[],
-  collection: Collection
+  collection: Collection,
+  dustSize: DustSize
 ): SceneData[] {
-  return dataset.map(({ id, month, weekday, pm_small }) => ({
+  return dataset.map(({ id, month, weekday, pm_large, pm_small }) => ({
     id,
     collection: translateCollection(collection),
-    name: '초미세먼지',
+    name: translateDustSize(dustSize),
     dates: [
       translateMonth(getMonthKey(month) as MonthKey),
       translateWeekday(weekday),
     ],
-    value: pm_small,
+    value: dustSize === 'lg' ? pm_large : pm_small,
     location: '서울시',
     rank: null,
   }));
@@ -237,14 +248,15 @@ export function toWeekDailySceneDataList(
 
 export function toWeeklySceneDataList(
   dataset: WeeklyData[],
-  collection: Collection
+  collection: Collection,
+  dustSize: DustSize
 ): SceneData[] {
-  return dataset.map(({ id, year, week, pm_small, pm_large }) => ({
+  return dataset.map(({ id, year, week, pm_large, pm_small }) => ({
     id,
     collection: translateCollection(collection),
-    name: '초미세먼지',
+    name: translateDustSize(dustSize),
     dates: [translateYear(getYearKey(year) as YearKey), `${week}주차`],
-    value: pm_large,
+    value: dustSize === 'lg' ? pm_large : pm_small,
     location: '서울시',
     rank: null,
   }));
@@ -252,17 +264,18 @@ export function toWeeklySceneDataList(
 
 export function toMonthlySceneDataList(
   dataset: MonthlyData[],
-  collection: Collection
+  collection: Collection,
+  dustSize: DustSize
 ): SceneData[] {
-  return dataset.map(({ id, year, month, pm_small }) => ({
+  return dataset.map(({ id, year, month, pm_large, pm_small }) => ({
     id,
     collection: translateCollection(collection),
-    name: '초미세먼지',
+    name: translateDustSize(dustSize),
     dates: [
       translateYear(getYearKey(year) as YearKey),
       translateMonth(getMonthKey(month) as MonthKey),
     ],
-    value: pm_small,
+    value: dustSize === 'lg' ? pm_large : pm_small,
     location: '서울시',
     rank: null,
   }));
@@ -270,14 +283,15 @@ export function toMonthlySceneDataList(
 
 export function toYearlySceneDataList(
   dataset: YearlyData[],
-  collection: Collection
+  collection: Collection,
+  dustSize: DustSize
 ): SceneData[] {
-  return dataset.map(({ id, year, pm_small }) => ({
+  return dataset.map(({ id, year, pm_large, pm_small }) => ({
     id,
     collection: translateCollection(collection),
-    name: '초미세먼지',
+    name: translateDustSize(dustSize),
     dates: [translateYear(getYearKey(year) as YearKey)],
-    value: pm_small,
+    value: dustSize === 'lg' ? pm_large : pm_small,
     location: '서울시',
     rank: null,
   }));

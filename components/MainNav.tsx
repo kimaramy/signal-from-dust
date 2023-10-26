@@ -1,14 +1,15 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { NavItem } from '@/types/nav';
 import { siteConfig } from '@/config/site';
 import { CollectionSelect } from '@/components/collection';
 import { DisplaySelect } from '@/components/display';
+import { DustSizeSelect } from '@/components/dustSize';
+import Logo from '@/components/Logo';
 import { MonthSelect } from '@/components/month';
 import { SeasonSelect } from '@/components/season';
 import { YearSelect } from '@/components/year';
-
-// import LocationSelect from './LocationSelect';
 
 export interface MainNavProps {
   routes?: NavItem[];
@@ -18,11 +19,12 @@ export default function MainNav({ routes }: MainNavProps) {
   return (
     <div className="flex gap-6 md:gap-10">
       <Link href="/" className="flex items-center space-x-2">
-        {/* <div className="h-6 w-6"></div> */}
+        <Logo />
         <span className="inline-block font-bold">{siteConfig.name}</span>
       </Link>
       <div className="flex gap-2">
         <DisplaySelect />
+        <DustSizeSelect />
         {/* <LocationSelect /> */}
         <CollectionSelect />
         <YearSelect />

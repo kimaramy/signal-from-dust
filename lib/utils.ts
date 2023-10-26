@@ -12,6 +12,7 @@ export enum QueryParamEnum {
   Month = 'month',
   Location = 'location',
   Display = 'display',
+  DustSize = 'dust',
 }
 
 export function toOrdinalNumberName(num: number) {

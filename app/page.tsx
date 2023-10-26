@@ -1,6 +1,5 @@
 'use client';
 
-import { useRef } from 'react';
 import {
   useDailyDataListQuery,
   useMonthlyDataListQuery,
@@ -12,6 +11,7 @@ import {
 
 import { useCollectionValue } from '@/components/collection';
 import { useDisplayValue } from '@/components/display';
+import { useDustSizeValue } from '@/components/dustSize';
 import Minimap from '@/components/MiniMap';
 import { useMonthValue } from '@/components/month';
 import { useSeasonValue } from '@/components/season';
@@ -25,8 +25,6 @@ import Sequence, {
 import { useYearValue } from '@/components/year';
 
 export default function IndexPage() {
-  // const mainRef = useRef(null);
-
   const display = useDisplayValue();
 
   const collection = useCollectionValue();
@@ -37,34 +35,37 @@ export default function IndexPage() {
 
   const month = useMonthValue();
 
+  const dustSize = useDustSizeValue();
+
   const dailySceneDataList = useDailyDataListQuery(month, {
     enabled: collection === 'Daily',
-    select: (dataset) => toDailySceneDataList(dataset, collection),
+    select: (dataset) => toDailySceneDataList(dataset, collection, dustSize),
   });
 
   const weekDailySceneDataList = useWeekDailyDataListQuery(month, {
     enabled: collection === 'Weekdaily',
-    select: (dataset) => toWeekDailySceneDataList(dataset, collection),
+    select: (dataset) =>
+      toWeekDailySceneDataList(dataset, collection, dustSize),
   });
 
   const weeklySceneDataList = useWeeklyDataListQuery(year, {
     enabled: collection === 'Weekly',
-    select: (dataset) => toWeeklySceneDataList(dataset, collection),
+    select: (dataset) => toWeeklySceneDataList(dataset, collection, dustSize),
   });
 
   const monthlySceneDataList = useMonthlyDataListQuery(year, {
     enabled: collection === 'Monthly',
-    select: (dataset) => toMonthlySceneDataList(dataset, collection),
+    select: (dataset) => toMonthlySceneDataList(dataset, collection, dustSize),
   });
 
   const seasonalSceneDataList = useMonthlyDataListQueryBySeaon(year, season, {
     enabled: collection === 'Seasonally',
-    select: (dataset) => toMonthlySceneDataList(dataset, collection),
+    select: (dataset) => toMonthlySceneDataList(dataset, collection, dustSize),
   });
 
   const yearlySceneDataList = useYearlyDataListQuery({
     enabled: collection === 'Yearly',
-    select: (dataset) => toYearlySceneDataList(dataset, collection),
+    select: (dataset) => toYearlySceneDataList(dataset, collection, dustSize),
   });
 
   const dataset = (function () {

@@ -177,7 +177,7 @@ export default function Bit({
           >
             <div
               className={cn(
-                'grainy-to-left-darken dark:grainy-to-left-darken--dark w-2/5 flex-initial bg-blend-soft-light dark:bg-blend-hue',
+                'grainy-to-left-darken dark:grainy-to-left-darken--dark w-2/5 flex-initial bg-blend-soft-light',
                 display !== '3d' && 'hidden'
               )}
             ></div>
@@ -185,20 +185,18 @@ export default function Bit({
               className={cn(
                 'w-4 flex-none',
                 'grainy-to-left dark:grainy-to-left--dark',
-                display === '3d' &&
-                  'rounded-full bg-blend-difference dark:hidden'
+                display === '3d' && 'rounded-full bg-blend-difference'
               )}
             ></div>
             <div
               className={cn(
                 'w-full flex-1',
                 'grainy-to-right dark:grainy-to-right--dark',
-                display === '3d' &&
-                  'bg-blend-difference dark:bg-blend-saturation'
+                display === '3d' && 'bg-blend-difference'
               )}
             ></div>
           </div>
-          <div className="absolute left-0 top-0 z-10 h-full w-full bg-body mix-blend-multiply dark:mix-blend-lighten"></div>
+          <div className="absolute left-0 top-0 z-10 h-full w-full bg-body mix-blend-multiply dark:mix-blend-screen"></div>
         </>
       ) : null}
     </li>
