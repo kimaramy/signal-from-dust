@@ -88,8 +88,8 @@ export default function IndexPage() {
 
   return (
     <>
+      <main className="relative h-main 3xl:container 3xl:!px-0">
       <Minimap />
-      <main className="relative h-main">
         <Sequence
           id="container"
           collection={collection}

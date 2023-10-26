@@ -101,8 +101,8 @@ export default function Sequence({
       id={id}
       ref={sequenceEl}
       className={cn(
-        'relative w-full overflow-x-hidden overflow-y-scroll p-4 scrollbar-hide lg:px-6',
-        display === '2d' ? 'h-minimap' : 'h-full'
+        'scrollbar-hide relative w-full overflow-x-hidden overflow-y-scroll py-4',
+        display === '2d' ? 'h-minimap px-4 lg:px-6' : 'h-full'
       )}
       onScroll={handleScroll}
     >
@@ -153,15 +153,17 @@ export default function Sequence({
           );
         })}
       </ul>
-      <progress
-        id={`${id}-progress`}
-        className="fixed bottom-[var(--player-height)] left-0 z-20 h-[5px] w-screen appearance-none border-none bg-black/20 transition-all ease-in-out"
-        max="100"
-        value={progress}
-      ></progress>
+      <div className='fixed bottom-[var(--player-height)] left-0 z-20 w-full'>
+        <progress
+          id={`${id}-progress`}
+          className="3xl:container 3xl:!p-0 flex h-[5px] w-full appearance-none border-none bg-black/20 transition-all ease-in-out"
+          max="100"
+          value={progress}
+        ></progress>
+      </div>
       {currentScene && (
-        <footer className="fixed bottom-0 left-0 z-20 flex h-player w-screen items-center border-t border-t-[#dfd7cb] bg-[#dfd7cb]/80 px-4 dark:border-input dark:bg-body md:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
+        <footer className="fixed bottom-0 left-0 z-20 w-full">
+          <div className="flex items-center gap-3 3xl:container h-player border-t border-t-[#dfd7cb] bg-[#dfd7cb]/80 dark:border-input dark:bg-body px-4 md:px-6 lg:px-8">
             <div className="inline-flex h-11 w-11 items-center justify-center rounded bg-black/20 dark:bg-white/20">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
