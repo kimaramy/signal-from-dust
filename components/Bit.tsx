@@ -4,11 +4,34 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useUpdateEffect } from '@/hooks';
 import { Power0, TimelineLite } from 'gsap';
 import { random } from 'lodash-es';
+import * as Tone from 'tone';
 
 import { cn } from '@/lib/utils';
 import type { Display } from '@/components/display';
 
 import Overlay from './Overlay';
+
+const pentatonic = ['B#3', 'D4', 'F4', 'G4', 'A4', 'B#4'];
+
+const playSynth = (note: string, duration: string, onSlience: () => void) => {
+  const filter = new Tone.Filter({
+    frequency: 1100,
+    rolloff: -12,
+  }).toDestination();
+  const synth = new Tone.Synth({
+    oscillator: {
+      type: 'sine',
+    },
+    envelope: {
+      attack: 0.005,
+      decay: 0.1,
+      sustain: 0.3,
+      release: 1,
+    },
+    onsilence: onSlience,
+  }).connect(filter);
+  synth.triggerAttackRelease(note, duration);
+};
 
 export type Binary = '0' | '1';
 
@@ -134,6 +157,11 @@ export default function Bit({
 
   const handleContainerClick = () => {
     if (isActive) return;
+    playSynth(
+      pentatonic[binaryIndex % pentatonic.length],
+      binary === '0' ? '8n' : '2n',
+      () => {}
+    );
     handlePlay();
   };
 
