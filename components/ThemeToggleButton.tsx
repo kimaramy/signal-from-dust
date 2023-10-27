@@ -6,13 +6,20 @@ import { useTheme } from 'next-themes';
 
 import { Button } from '@/components/ui/button';
 
-export default function ThemeToggleButton() {
+export interface ThemeToggleButtonProps {
+  className?: string;
+}
+
+export default function ThemeToggleButton({
+  className,
+}: ThemeToggleButtonProps) {
   const { setTheme, theme } = useTheme();
 
   return (
     <Button
       variant="ghost"
       size="icon"
+      className={className}
       onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
     >
       <Sun className="h-[1.375rem] w-[1.1rem] dark:hidden" />

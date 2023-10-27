@@ -8,24 +8,25 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { useDustSizeValue, useSetDustSizeValue } from './hooks';
 import { DustSize, dustSizeSet } from './schema';
 import { translateDustSize } from './utils';
 
-export interface DustSizeSelectProps {}
+interface DustSizeSelectProps {
+  value: DustSize;
+  onValueChange: (value: DustSize) => void;
+  hidden?: boolean;
+  disabled?: boolean;
+}
 
-export default function DustSizeSelect() {
-  const dustSize = useDustSizeValue();
+function DustSizeSelect(props: DustSizeSelectProps) {
+  const { value, onValueChange, hidden = false, disabled = false } = props;
 
-  const setDustSize = useSetDustSizeValue();
+  if (hidden) return null;
 
   return (
-    <Select
-      value={dustSize}
-      onValueChange={(value) => setDustSize(value as DustSize)}
-    >
-      <SelectTrigger className="w-36">
-        <SelectValue placeholder="Select a dust" />
+    <Select value={value} disabled={disabled} onValueChange={onValueChange}>
+      <SelectTrigger className="w-40">
+        <SelectValue placeholder="조회 데이터 선택" />
       </SelectTrigger>
       <SelectContent>
         {dustSizeSet.slice().map((value) => (
@@ -37,3 +38,5 @@ export default function DustSizeSelect() {
     </Select>
   );
 }
+
+export default DustSizeSelect;

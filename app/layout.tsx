@@ -5,11 +5,11 @@ import { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
-import Gnb from '@/components/Gnb';
+// import Gnb from '@/components/Gnb';
 import QueryClientProvider from '@/components/QueryClientProvider';
 import SoundFilterX from '@/components/SoundFilterX';
 import SoundFilterY from '@/components/SoundFilterY';
-import TailwindIndicator from '@/components/TailwindIndicator';
+// import TailwindIndicator from '@/components/TailwindIndicator';
 import ThemeProvider from '@/components/ThemeProvider';
 import ToastProvider from '@/components/ToastProvider';
 
@@ -38,7 +38,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <>
       <html lang="ko" suppressHydrationWarning>
-        <head>{/* <script defer src="grained.js"></script> */}</head>
+        <head></head>
         <body
           className={cn(
             'min-h-screen bg-body font-sans antialiased scrollbar-hide',
@@ -48,7 +48,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <QueryClientProvider>
               <div className="relative flex min-h-screen flex-col">
-                <Gnb />
+                {/* <Gnb /> */}
                 <SoundFilterX />
                 <SoundFilterY />
                 <div className="flex-1">{children}</div>

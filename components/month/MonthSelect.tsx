@@ -1,7 +1,5 @@
 'use client';
 
-import { useUpdateEffect } from '@/hooks';
-
 import {
   Select,
   SelectContent,
@@ -9,24 +7,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useCollectionValue } from '@/components/collection';
 
-import { useMonthValue, useResetMonthValue, useSetMonthValue } from './hooks';
-import { defaultMonthKey, getMonthValue, monthKeys } from './schema';
+import { defaultMonthKey, getMonthValue, Month, monthKeys } from './schema';
 import { translateMonth } from './utils';
 
-export interface MonthSelectProps {}
+interface MonthSelectProps {
+  value: Month;
+  onValueChange: (value: Month) => void;
+  hidden?: boolean;
+  disabled?: boolean;
+}
 
-export default function MonthSelect() {
-  const collection = useCollectionValue();
-
-  const month = useMonthValue();
-
-  const setMonth = useSetMonthValue();
-
-  const resetMonth = useResetMonthValue();
-
-  const isVisible = collection === 'Daily' || collection === 'Weekdaily';
+function MonthSelect(props: MonthSelectProps) {
+  const { value, onValueChange, hidden = false, disabled = false } = props;
 
   const _monthKeys = monthKeys.slice();
 
@@ -35,19 +28,16 @@ export default function MonthSelect() {
     1
   )[0];
 
-  useUpdateEffect(() => {
-    if (collection === 'Monthly') resetMonth();
-  }, [collection]);
-
-  if (!isVisible) return null;
+  if (hidden) return null;
 
   return (
     <Select
-      value={String(month)}
-      onValueChange={(value) => setMonth(Number(value))}
+      value={String(value)}
+      disabled={disabled}
+      onValueChange={(value) => onValueChange(Number(value))}
     >
-      <SelectTrigger className="w-36">
-        <SelectValue placeholder="Select a month" />
+      <SelectTrigger className="w-40">
+        <SelectValue placeholder="조회 월 선택" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value={String(getMonthValue(_defaultMonthKey))}>
@@ -62,3 +52,5 @@ export default function MonthSelect() {
     </Select>
   );
 }
+
+export default MonthSelect;

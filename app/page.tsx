@@ -12,6 +12,7 @@ import {
 import { useCollectionValue } from '@/components/collection';
 import { useDisplayValue } from '@/components/display';
 import { useDustSizeValue } from '@/components/dustSize';
+import FloatingButtons from '@/components/FloatingButtons';
 import Minimap from '@/components/MiniMap';
 import { useMonthValue } from '@/components/month';
 import { useSeasonValue } from '@/components/season';
@@ -87,16 +88,15 @@ export default function IndexPage() {
   })();
 
   return (
-    <>
-      <main className="relative h-main 3xl:container 3xl:!px-0">
+    <main className="relative h-screen 3xl:container 3xl:!px-0">
       <Minimap />
-        <Sequence
-          id="container"
-          collection={collection}
-          display={display}
-          dataset={dataset}
-        />
-      </main>
-    </>
+      <Sequence
+        id="container"
+        collection={collection}
+        display={display}
+        dataset={dataset}
+      />
+      <FloatingButtons />
+    </main>
   );
 }

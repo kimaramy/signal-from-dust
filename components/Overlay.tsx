@@ -13,7 +13,7 @@ export default function Overlay({ className, onClick }: OverlayProps) {
   return (
     <div
       className={cn(
-        'absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-accent/50 ring-1',
+        'absolute left-0 top-0 z-0 h-full w-full cursor-pointer rounded-md bg-accent/50 ring-1',
         className
       )}
       onClick={onClick}

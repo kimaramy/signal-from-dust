@@ -8,6 +8,8 @@ import { random } from 'lodash-es';
 import { cn } from '@/lib/utils';
 import type { Display } from '@/components/display';
 
+import Overlay from './Overlay';
+
 export type Binary = '0' | '1';
 
 export interface BitProps {
@@ -37,6 +39,8 @@ export default function Bit({
 
   const timelineOne = useRef<TimelineLite | null>(null);
   const timelineTwo = useRef<TimelineLite | null>(null);
+
+  const [isHovering, setHovering] = useState(false);
 
   const size = useMemo(() => {
     const width =
@@ -137,27 +141,18 @@ export default function Bit({
     handlePlay();
   }, [isActive]);
 
-  // useEffect(() => {
-  //   if (isPlaying) {
-  //     // @ts-ignore
-  //     grained?.(`#${id}`, {
-  //       animate: true,
-  //       patternWidth: 200,
-  //       patternHeight: 200,
-  //       grainOpacity: 0.1,
-  //       grainDensity: 1,
-  //       grainWidth: 1,
-  //       grainHeight: 1,
-  //     });
-  //   }
-  // }, [isPlaying]);
-
   return (
     <li
       id={id}
       ref={$container}
-      className={cn('relative isolate flex h-full', className)}
+      className={cn('z-5 relative isolate flex h-full rounded-md', className)}
       onClick={handleContainerClick}
+      onMouseOver={() => {
+        setHovering(true);
+      }}
+      onMouseOut={() => {
+        setHovering(false);
+      }}
     >
       {isEntered ? (
         <>
@@ -199,6 +194,12 @@ export default function Bit({
           <div className="absolute left-0 top-0 z-10 h-full w-full bg-body mix-blend-multiply dark:mix-blend-screen"></div>
         </>
       ) : null}
+      {isHovering && (
+        <Overlay
+          className="z-10"
+          onClick={() => setHovering((isHovering) => !isHovering)}
+        />
+      )}
     </li>
   );
 }

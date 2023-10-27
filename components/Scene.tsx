@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useRef, useState } from 'react';
+import { PauseCircleIcon, PlayCircleIcon } from '@heroicons/react/20/solid';
 import { useInView } from 'react-intersection-observer';
 
 import { cn } from '@/lib/utils';
@@ -12,8 +13,13 @@ import {
 import type { Display } from '@/components/display';
 
 import Bit, { Binary } from './Bit';
-import Overlay from './Overlay';
+// import Overlay from './Overlay';
+import { Button } from './ui/button';
 import { Skeleton } from './ui/skeleton';
+
+export function getSceneLength(decimal: number) {
+  return decimal.toString(2).length;
+}
 
 export interface SceneData {
   id: number;
@@ -36,7 +42,7 @@ export interface SceneProps {
   onSceneChange: (sceneData: SceneData, sceneIndex: number) => void;
 }
 
-export default function Scene({
+function Scene({
   sceneId,
   sceneData,
   sceneIndex,
@@ -87,8 +93,8 @@ export default function Scene({
       id={sceneId}
       ref={ref}
       className={cn(
-        'flex h-full gap-4 overflow-x-hidden',
-        display === '3d' && 'justify-center pb-[var(--player-height)]',
+        'flex h-full items-center gap-6',
+        display === '3d' && 'justify-center overflow-x-hidden',
         className
       )}
       // style={{
@@ -97,18 +103,16 @@ export default function Scene({
     >
       {/* {display === '2d' && (
         <div className="flex w-24 flex-none items-center justify-start pl-4">
-          <h4 className="w-full text-xs">
-            {sceneData.dates[sceneData.dates.length - 1]}
-          </h4>
+          <h4 className="w-full text-xs">{sceneData.dates.join(' ')}</h4>
         </div>
       )} */}
-      <HoverCard defaultOpen={display === '3d'} openDelay={0} closeDelay={0}>
+      <HoverCard openDelay={0} closeDelay={0}>
         <HoverCardTrigger asChild>
           <ul
             ref={sceneRef}
             className={cn(
-              'relative grid h-full w-full flex-1 cursor-pointer bg-fixed p-1',
-              display === '3d' ? 'gap-0' : 'gap-1 lg:gap-2'
+              'relative grid h-full w-full flex-1 cursor-pointer gap-1 rounded-md bg-fixed p-1',
+              display === '2d' && 'hover:ring-1 data-[state=open]:ring-1'
             )}
             style={{
               gridTemplateColumns:
@@ -143,44 +147,46 @@ export default function Scene({
             ) : (
               <Skeleton className="h-full" />
             )}
-            {isMouseOver ? <Overlay onClick={handleOverlayClick} /> : null}
+            {/* {isMouseOver ? (
+              <Overlay className="z-0" onClick={handleOverlayClick} />
+            ) : null} */}
           </ul>
         </HoverCardTrigger>
-        <HoverCardContent
-          align="start"
-          side="top"
-          alignOffset={
-            sceneRef.current ? 0 + sceneRef.current.offsetHeight / 2 : 0
-          }
-          sideOffset={
-            sceneRef.current ? 0 - sceneRef.current.offsetWidth / 3 : 0
-          }
-          className="w-80 bg-muted text-muted-foreground"
-        >
-          <div className="flex justify-between space-x-4">
-            <div className="space-y-1">
-              <h4 className="font-mono text-base font-semibold text-accent-foreground">
-                {binaries?.join('')}({sceneData.value}㎍/㎥)
-              </h4>
-              <p className="text-sm">
-                {[
-                  `${sceneData.dates.join(' ')}의 ${sceneData.name} 평균`,
-                  sceneData.location,
-                ].join(', ')}
-              </p>
-              <div className="flex items-center pt-2">
-                <span className="text-xs text-muted-foreground">
-                  {sceneData.name} 수치를 2진 신호로 출력한 결과입니다.
-                </span>
+        {display === '2d' && (
+          <HoverCardContent
+            align="start"
+            className="w-auto bg-muted text-muted-foreground"
+          >
+            <div className="flex items-center space-x-4">
+              <Button variant="ghost" size="icon" className="h-12 w-12">
+                {isPlaying ? (
+                  <PauseCircleIcon className="h-9 w-9" />
+                ) : (
+                  <PlayCircleIcon className="h-9 w-9" />
+                )}
+              </Button>
+              <div className="pr-4">
+                <h4 className="font-mono text-lg font-semibold text-accent-foreground">
+                  {binaries?.join('')}({sceneData.value}㎍/㎥)
+                </h4>
+                <p className="text-sm">
+                  {[
+                    `${sceneData.dates.join(' ')}의 ${sceneData.name} 평균`,
+                    sceneData.location,
+                  ].join(', ')}
+                </p>
+                {/* <div className="flex items-center pt-2">
+                  <span className="text-xs text-muted-foreground">
+                    {sceneData.name} 수치를 2진 신호로 출력한 결과입니다.
+                  </span>
+                </div> */}
               </div>
             </div>
-          </div>
-        </HoverCardContent>
+          </HoverCardContent>
+        )}
       </HoverCard>
     </li>
   );
 }
 
-export function getSceneLength(decimal: number) {
-  return decimal.toString(2).length;
-}
+export default Scene;

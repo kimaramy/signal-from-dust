@@ -9,7 +9,7 @@ import ThemeToggleButton from '@/components/ThemeToggleButton';
 export default function Gnb() {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-body">
-      <div className="flex h-nav 3xl:container items-center space-x-4 px-4 sm:justify-between sm:space-x-0 md:px-6 lg:px-8">
+      <div className="flex h-nav items-center space-x-4 px-4 3xl:container sm:justify-between sm:space-x-0 md:px-6 lg:px-8">
         <MainNav routes={siteConfig.routes} />
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-1">

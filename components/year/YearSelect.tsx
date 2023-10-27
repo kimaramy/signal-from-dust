@@ -1,7 +1,5 @@
 'use client';
 
-import { useUpdateEffect } from '@/hooks';
-
 import {
   Select,
   SelectContent,
@@ -9,27 +7,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useCollectionValue } from '@/components/collection';
 
-import { useResetYearValue, useSetYearValue, useYearValue } from './hooks';
-import { defaultYearKey, getYearValue, yearKeys } from './schema';
+import { defaultYearKey, getYearValue, Year, yearKeys } from './schema';
 import { translateYear } from './utils';
 
-export interface YearSelectProps {}
+interface YearSelectProps {
+  value: Year;
+  onValueChange: (value: Year) => void;
+  hidden?: boolean;
+  disabled?: boolean;
+}
 
-export default function YearSelect() {
-  const collection = useCollectionValue();
-
-  const year = useYearValue();
-
-  const setYear = useSetYearValue();
-
-  const resetYear = useResetYearValue();
-
-  const isVisible =
-    collection === 'Weekly' ||
-    collection === 'Monthly' ||
-    collection === 'Seasonally';
+function YearSelect(props: YearSelectProps) {
+  const { value, onValueChange, hidden = false, disabled = false } = props;
 
   const _yearKeys = yearKeys.slice();
 
@@ -38,19 +28,16 @@ export default function YearSelect() {
     1
   )[0];
 
-  useUpdateEffect(() => {
-    resetYear();
-  }, [collection]);
-
-  if (!isVisible) return null;
+  if (hidden) return null;
 
   return (
     <Select
-      value={String(year)}
-      onValueChange={(value) => setYear(Number(value))}
+      value={String(value)}
+      disabled={disabled}
+      onValueChange={(value) => onValueChange(Number(value))}
     >
-      <SelectTrigger className="w-36">
-        <SelectValue placeholder="Select a year" />
+      <SelectTrigger className="w-40">
+        <SelectValue placeholder="조회 연도 선택" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value={String(getYearValue(_defaultYearKey))}>
@@ -65,3 +52,5 @@ export default function YearSelect() {
     </Select>
   );
 }
+
+export default YearSelect;

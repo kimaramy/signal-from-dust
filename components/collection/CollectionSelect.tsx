@@ -8,24 +8,25 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { useCollectionValue, useSetCollectionValue } from './hooks';
 import { Collection, collections } from './schema';
 import { translateCollection } from './utils';
 
-export interface CollectionSelectProps {}
+interface CollectionSelectProps {
+  value: Collection;
+  onValueChange: (value: Collection) => void;
+  hidden?: boolean;
+  disabled?: boolean;
+}
 
-export default function CollectionSelect() {
-  const collection = useCollectionValue();
+function CollectionSelect(props: CollectionSelectProps) {
+  const { value, onValueChange, hidden = false, disabled = false } = props;
 
-  const setCollection = useSetCollectionValue();
+  if (hidden) return null;
 
   return (
-    <Select
-      value={collection}
-      onValueChange={(value) => setCollection(value as Collection)}
-    >
-      <SelectTrigger className="w-36">
-        <SelectValue placeholder="Select a collection" />
+    <Select value={value} disabled={disabled} onValueChange={onValueChange}>
+      <SelectTrigger className="w-40">
+        <SelectValue placeholder="조회 기간 선택" />
       </SelectTrigger>
       <SelectContent>
         {collections.map((collection) => (
@@ -37,3 +38,5 @@ export default function CollectionSelect() {
     </Select>
   );
 }
+
+export default CollectionSelect;

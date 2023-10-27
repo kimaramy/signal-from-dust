@@ -7,22 +7,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useCollectionValue } from '@/components/collection';
 
-import { useSeasonValue, useSetSeasonValue } from './hooks';
 import { Season, seasonMap, seasonSet } from './schema';
-import { toKoreanSeasonName } from './utils';
+import { translateSeason } from './utils';
 
-export interface SeasonSelectProps {}
+interface SeasonSelectProps {
+  value: Season;
+  onValueChange: (value: Season) => void;
+  hidden?: boolean;
+  disabled?: boolean;
+}
 
-export default function SeasonSelect() {
-  const collection = useCollectionValue();
-
-  const season = useSeasonValue();
-
-  const setSeason = useSetSeasonValue();
-
-  const isVisible = collection === 'Seasonally';
+function SeasonSelect(props: SeasonSelectProps) {
+  const { value, onValueChange, hidden = false, disabled = false } = props;
 
   const seasons = seasonSet.slice();
 
@@ -31,26 +28,25 @@ export default function SeasonSelect() {
     1
   )[0];
 
-  if (!isVisible) return null;
+  if (hidden) return null;
 
   return (
-    <Select
-      value={season}
-      onValueChange={(value) => setSeason(value as Season)}
-    >
-      <SelectTrigger className="w-36">
-        <SelectValue placeholder="Select a season" />
+    <Select value={value} disabled={disabled} onValueChange={onValueChange}>
+      <SelectTrigger className="w-40">
+        <SelectValue placeholder="조회 계절 선택" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value={defaultSeason}>
-          {toKoreanSeasonName(defaultSeason)}
+          {translateSeason(defaultSeason)}
         </SelectItem>
         {seasons.map((season) => (
           <SelectItem key={season} value={season}>
-            {toKoreanSeasonName(season)}
+            {translateSeason(season)}
           </SelectItem>
         ))}
       </SelectContent>
     </Select>
   );
 }
+
+export default SeasonSelect;

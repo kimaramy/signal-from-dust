@@ -28,6 +28,7 @@ const HoverCardContent = React.forwardRef<
       {...props}
     >
       {children}
+      {/* <HoverCardPrimitive.Arrow className="border-muted" /> */}
     </HoverCardPrimitive.Content>
   )
 );

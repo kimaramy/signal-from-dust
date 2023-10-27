@@ -19,6 +19,7 @@ import {
 import type { Display } from '@/components/display';
 import { DustSize, translateDustSize } from '@/components/dustSize';
 import { getMonthKey, MonthKey, translateMonth } from '@/components/month';
+import Progress from '@/components/Progress';
 import Scene, { getSceneLength, SceneData } from '@/components/Scene';
 import { translateWeekday } from '@/components/weekday';
 import { getYearKey, translateYear, YearKey } from '@/components/year';
@@ -41,7 +42,7 @@ function initSequence(sequenceId: string, sceneDataList: SceneData[]) {
   }));
 }
 
-export interface SequenceProps {
+interface SequenceProps {
   id: string;
   collection: Collection;
   display: Display;
@@ -49,7 +50,7 @@ export interface SequenceProps {
   disabled?: boolean;
 }
 
-export default function Sequence({
+function Sequence({
   id,
   collection,
   display,
@@ -101,8 +102,9 @@ export default function Sequence({
       id={id}
       ref={sequenceEl}
       className={cn(
-        'scrollbar-hide relative w-full overflow-x-hidden overflow-y-scroll py-4',
-        display === '2d' ? 'h-minimap px-4 lg:px-6' : 'h-full'
+        'relative w-full overflow-x-hidden overflow-y-scroll pt-4',
+        display === '2d' && 'h-auto px-4 pb-4 lg:px-6',
+        display === '3d' && 'h-full pb-[var(--player-height)] scrollbar-hide'
       )}
       onScroll={handleScroll}
     >
@@ -111,7 +113,7 @@ export default function Sequence({
         style={{
           gridTemplateRows:
             display === '2d'
-              ? `repeat(${decimals.length}, minmax(2rem, 3rem))`
+              ? `repeat(${decimals.length}, minmax(2.5rem, 1fr))`
               : undefined,
         }}
       >
@@ -153,17 +155,19 @@ export default function Sequence({
           );
         })}
       </ul>
-      <div className='fixed bottom-[var(--player-height)] left-0 z-20 w-full'>
-        <progress
-          id={`${id}-progress`}
-          className="3xl:container 3xl:!p-0 flex h-[5px] w-full appearance-none border-none bg-black/20 transition-all ease-in-out"
-          max="100"
-          value={progress}
-        ></progress>
-      </div>
+      <Progress
+        id={`${id}-progress`}
+        className={cn(display === '2d' && 'hidden')}
+        value={progress}
+      />
       {currentScene && (
-        <footer className="fixed bottom-0 left-0 z-20 w-full">
-          <div className="flex items-center gap-3 3xl:container h-player border-t border-t-[#dfd7cb] bg-[#dfd7cb]/80 dark:border-input dark:bg-body px-4 md:px-6 lg:px-8">
+        <footer
+          className={cn(
+            'fixed bottom-0 left-0 z-20 w-full',
+            display === '2d' && 'hidden'
+          )}
+        >
+          <div className="flex h-player items-center gap-3 border-t border-t-[#dfd7cb] bg-[#dfd7cb]/80 px-4 3xl:container dark:border-input dark:bg-body md:px-6 lg:px-8">
             <div className="inline-flex h-11 w-11 items-center justify-center rounded bg-black/20 dark:bg-white/20">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -298,3 +302,5 @@ export function toYearlySceneDataList(
     rank: null,
   }));
 }
+
+export default Sequence;

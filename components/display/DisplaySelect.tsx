@@ -8,24 +8,19 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { useDisplayValue, useSetDisplayValue } from './hooks';
 import { Display, displaySet } from './schema';
 import { toDisplayName } from './utils';
 
-export interface DisplaySelectProps {}
+interface DisplaySelectProps {
+  value: Display;
+  onValueChange: (value: Display) => void;
+}
 
-export default function DisplaySelect() {
-  const display = useDisplayValue();
-
-  const setDisplay = useSetDisplayValue();
-
+function DisplaySelect({ value, onValueChange }: DisplaySelectProps) {
   return (
-    <Select
-      value={display}
-      onValueChange={(value) => setDisplay(value as Display)}
-    >
-      <SelectTrigger className="w-36">
-        <SelectValue placeholder="Select a view" />
+    <Select value={value} onValueChange={onValueChange}>
+      <SelectTrigger className="w-40">
+        <SelectValue placeholder="보기 방식 선택" />
       </SelectTrigger>
       <SelectContent>
         {displaySet.slice().map((value) => (
@@ -37,3 +32,5 @@ export default function DisplaySelect() {
     </Select>
   );
 }
+
+export default DisplaySelect;

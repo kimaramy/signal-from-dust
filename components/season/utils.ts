@@ -17,7 +17,7 @@ export function getMonthRangeBySeason(season: Season) {
   }
 }
 
-export function toKoreanSeasonName(season: Season) {
+export function translateSeason(season: Season) {
   switch (season) {
     case 'All':
       return '사계절';
