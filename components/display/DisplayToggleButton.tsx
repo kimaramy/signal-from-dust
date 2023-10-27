@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useCallback } from 'react';
 import { Layers2, Rows } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -8,16 +9,23 @@ import { Button } from '@/components/ui/button';
 import { useDisplayValue, useSetDisplayValue } from './hooks';
 import { Display } from './schema';
 
-export interface DisplayToggleButtonProps {
+interface DisplayToggleButtonProps {
   className?: string;
 }
 
-export default function DisplayToggleButton({
-  className,
-}: DisplayToggleButtonProps) {
+function DisplayToggleButton({ className }: DisplayToggleButtonProps) {
   const display = useDisplayValue();
 
   const setDisplay = useSetDisplayValue();
+
+  const handleToggle = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      const toggledValue: Display =
+        e.currentTarget.value === '3d' ? '2d' : '3d';
+      setDisplay(toggledValue);
+    },
+    [setDisplay]
+  );
 
   return (
     <Button
@@ -25,11 +33,7 @@ export default function DisplayToggleButton({
       size="icon"
       value={display}
       className={cn(className)}
-      onClick={(e) => {
-        const toggledValue: Display =
-          e.currentTarget.value === '3d' ? '2d' : '3d';
-        setDisplay(toggledValue);
-      }}
+      onClick={handleToggle}
     >
       {display === '2d' ? (
         <Layers2 className="h-4 w-4" />
@@ -39,3 +43,5 @@ export default function DisplayToggleButton({
     </Button>
   );
 }
+
+export default DisplayToggleButton;

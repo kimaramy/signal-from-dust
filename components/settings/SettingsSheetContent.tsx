@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   SheetClose,
   SheetContent,
@@ -13,8 +11,6 @@ import SettingsFormContainer from './SettingsFormContainer';
 import SettingsFormSubmitButton from './SettingsFormSubmitButton';
 
 function SettingsSheetContent() {
-  const [type, setType] = useState<'preset' | 'custom'>('preset');
-
   return (
     <SheetContent>
       <SheetHeader>
