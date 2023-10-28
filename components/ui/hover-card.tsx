@@ -28,7 +28,7 @@ const HoverCardContent = React.forwardRef<
       {...props}
     >
       {children}
-      {/* <HoverCardPrimitive.Arrow className="border-muted" /> */}
+      <HoverCardPrimitive.Arrow className="fill-muted" />
     </HoverCardPrimitive.Content>
   )
 );

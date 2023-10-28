@@ -13,6 +13,45 @@ import Overlay from './Overlay';
 
 const pentatonic = ['B#3', 'D4', 'F4', 'G4', 'A4', 'B#4'];
 
+class Sound {
+  public note: Tone.Unit.Frequency;
+  public duration: Tone.Unit.Time;
+  public synth: Tone.Synth;
+
+  constructor(
+    note: Tone.Unit.Frequency,
+    duration: Tone.Unit.Time,
+    onRelease?: () => void
+  ) {
+    this.note = note;
+    this.duration = duration;
+    this.synth = new Tone.Synth({
+      oscillator: {
+        type: 'sine',
+      },
+      envelope: {
+        attack: 0.005,
+        decay: 0.1,
+        sustain: 0.3,
+        release: 1,
+      },
+      onsilence: onRelease,
+    });
+  }
+
+  public attackRelease(time?: Tone.Unit.Time) {
+    this.synth.triggerAttackRelease(this.note, this.duration, time);
+  }
+
+  public attack(time?: Tone.Unit.Time) {
+    this.synth.triggerAttack(this.note, time);
+  }
+
+  public release(time?: Tone.Unit.Time) {
+    this.synth.triggerRelease(time);
+  }
+}
+
 const playSynth = (note: string, duration: string, onSlience: () => void) => {
   const filter = new Tone.Filter({
     frequency: 1100,
@@ -54,6 +93,14 @@ export default function Bit({
 }: BitProps) {
   // const activated = useRef(active);
 
+  const sound = useMemo(() => {
+    return new Sound(
+      pentatonic[binaryIndex % pentatonic.length],
+      binary === '0' ? '8n' : '2n',
+      () => setPlaying(false)
+    );
+  }, [binary, binaryIndex]);
+
   const $container = useRef<HTMLLIElement>(null);
   const $turbulence = useRef<SVGFETurbulenceElement | null>(null);
 
@@ -78,14 +125,14 @@ export default function Bit({
     return [width, height];
   }, [binary, display]);
 
-  const [isEntered, setEntered] = useState(false);
+  const [isEntering, setEntering] = useState(false);
 
   const [isPlaying, setPlaying] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(
       () => {
-        setEntered(true);
+        setEntering(true);
       },
       (binaryIndex + 1) * 200
     );
@@ -96,7 +143,7 @@ export default function Bit({
   }, [binaryIndex]);
 
   useEffect(() => {
-    if (isEntered) {
+    if (isEntering) {
       const filterId = display === '2d' ? '#sound-filter-y' : '#sound-filter-y';
       $turbulence.current = document.querySelectorAll(
         `${filterId} feTurbulence`
@@ -130,10 +177,26 @@ export default function Bit({
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEntered, display]);
+  }, [isEntering, display]);
 
-  function handlePlay() {
+  const handleContainerClick = () => {
+    if (isActive) return;
+    if (!isPlaying) {
+      sound.attackRelease();
+    }
+    setPlaying(true);
+  };
+
+  useUpdateEffect(() => {
+    setPlaying(true);
+  }, [isActive]);
+
+  useEffect(() => {
     if (isPlaying) {
+      timelineOne.current?.play();
+      const filterId = '#sound-filter-y';
+      ($container.current as HTMLElement).style.filter = `url(${filterId})`;
+    } else {
       timelineOne.current?.pause();
       timelineTwo.current = new TimelineLite({
         onUpdate: function () {
@@ -146,28 +209,8 @@ export default function Bit({
       timelineTwo.current.to(turbulenceValue, 0.1, { val: 0.000001 });
       timelineTwo.current.to(turbulenceValueX, 0.1, { val: 0.000001 }, 0);
       ($container.current as HTMLElement).style.filter = 'none';
-      setPlaying(false);
-    } else {
-      timelineOne.current?.play();
-      const filterId = display === '2d' ? '#sound-filter-y' : '#sound-filter-y';
-      ($container.current as HTMLElement).style.filter = `url(${filterId})`;
-      setPlaying(true);
     }
-  }
-
-  const handleContainerClick = () => {
-    if (isActive) return;
-    playSynth(
-      pentatonic[binaryIndex % pentatonic.length],
-      binary === '0' ? '8n' : '2n',
-      () => {}
-    );
-    handlePlay();
-  };
-
-  useUpdateEffect(() => {
-    handlePlay();
-  }, [isActive]);
+  }, [isPlaying]);
 
   return (
     <li
@@ -176,13 +219,15 @@ export default function Bit({
       className={cn('z-5 relative isolate flex h-full rounded-md', className)}
       onClick={handleContainerClick}
       onMouseOver={() => {
+        // sound.attackRelease();
         setHovering(true);
       }}
       onMouseOut={() => {
+        // sound.release();
         setHovering(false);
       }}
     >
-      {isEntered ? (
+      {isEntering ? (
         <>
           <div
             className={cn(

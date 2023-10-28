@@ -88,7 +88,7 @@ export default function IndexPage() {
   })();
 
   return (
-    <main className="relative h-screen 3xl:container 3xl:!px-0">
+    <main className="relative flex h-screen w-full items-center 3xl:container 3xl:!px-0">
       <Minimap />
       <Sequence
         id="container"

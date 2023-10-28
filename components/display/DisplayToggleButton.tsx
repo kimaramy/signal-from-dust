@@ -5,6 +5,12 @@ import { Layers2, Rows } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 import { useDisplayValue, useSetDisplayValue } from './hooks';
 import { Display } from './schema';
@@ -28,19 +34,29 @@ function DisplayToggleButton({ className }: DisplayToggleButtonProps) {
   );
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      value={display}
-      className={cn(className)}
-      onClick={handleToggle}
-    >
-      {display === '2d' ? (
-        <Layers2 className="h-4 w-4" />
-      ) : (
-        <Rows className="h-4 w-4" />
-      )}
-    </Button>
+    <TooltipProvider delayDuration={0}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            value={display}
+            className={cn(className)}
+            onClick={handleToggle}
+          >
+            {display === '2d' ? (
+              <Rows className="h-4 w-4" />
+            ) : (
+              <Layers2 className="h-4 w-4" />
+            )}
+            <span className="sr-only">Toggle displaying</span>
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="top">
+          <p>보기 변경</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 

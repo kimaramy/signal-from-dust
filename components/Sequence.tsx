@@ -19,7 +19,7 @@ import {
 import type { Display } from '@/components/display';
 import { DustSize, translateDustSize } from '@/components/dustSize';
 import { getMonthKey, MonthKey, translateMonth } from '@/components/month';
-import Progress from '@/components/Progress';
+import ProgressBar from '@/components/ProgressBar';
 import Scene, { getSceneLength, SceneData } from '@/components/Scene';
 import { translateWeekday } from '@/components/weekday';
 import { getYearKey, translateYear, YearKey } from '@/components/year';
@@ -98,110 +98,111 @@ function Sequence({
   }, [id, dataset]);
 
   return (
-    <section
-      id={id}
-      ref={sequenceEl}
-      className={cn(
-        'relative w-full overflow-x-hidden overflow-y-scroll pt-4',
-        display === '2d' && 'h-auto px-4 pb-4 lg:px-6',
-        display === '3d' && 'h-full pb-[var(--player-height)] scrollbar-hide'
-      )}
-      onScroll={handleScroll}
-    >
-      <ul
-        className={cn('h-full', display === '2d' && 'grid gap-1 lg:gap-2')}
-        style={{
-          gridTemplateRows:
-            display === '2d'
-              ? `repeat(${decimals.length}, minmax(2.5rem, 1fr))`
-              : undefined,
-        }}
-      >
-        {sequence.map((scene) => {
-          return (
-            <Scene
-              key={scene.id}
-              className=""
-              sceneId={scene.id}
-              sceneData={scene.data}
-              sceneIndex={scene.index}
-              sceneLength={
-                display === '2d'
-                  ? getSceneLength(Math.max(...decimals))
-                  : getSceneLength(scene.data.value ?? 0)
-              }
-              display={display}
-              // active={index === 0}
-              onSceneChange={(sceneData, sceneIndex) => {
-                const prevSceneIndex = currentScene?.index ?? 0;
-                // const sceneGap = sceneIndex - prevSceneIndex;
-                if (prevSceneIndex < sceneIndex) {
-                  //  바로 다음 씬으로 이동시, 바로 직전 씬 재생된 것으로 간주
-                  sequenceControls.updateItemAtIndex(sceneIndex - 1, {
-                    ...sequence[sceneIndex - 1],
-                    isPlayed: true,
-                  });
-                  //
-                } else {
-                  // 바로 이전 씬으로 이동시, 현재 씬 재생되지 않은 것으로 간주
-                  sequenceControls.updateItemAtIndex(sceneIndex, {
-                    ...sequence[sceneIndex],
-                    isPlayed: false,
-                  });
-                }
-                setCurrentScene({ ...sequence[sceneIndex], data: sceneData });
-              }}
-            />
-          );
-        })}
-      </ul>
-      <Progress
-        id={`${id}-progress`}
-        className={cn(display === '2d' && 'hidden')}
+    <>
+      <ProgressBar
         value={progress}
+        className={cn(display === '2d' && 'hidden')}
       />
-      {currentScene && (
-        <footer
-          className={cn(
-            'fixed bottom-0 left-0 z-20 w-full',
-            display === '2d' && 'hidden'
-          )}
+      <section
+        id={id}
+        ref={sequenceEl}
+        className={cn(
+          'relative w-full overflow-x-hidden overflow-y-scroll pt-4',
+          display === '2d' && 'h-auto px-4 pb-4 lg:px-6',
+          display === '3d' && 'h-full pb-[var(--player-height)] scrollbar-hide'
+        )}
+        onScroll={handleScroll}
+      >
+        <ul
+          className={cn('h-full', display === '2d' && 'grid gap-1 lg:gap-2')}
+          style={{
+            gridTemplateRows:
+              display === '2d'
+                ? `repeat(${decimals.length}, minmax(2.5rem, 1fr))`
+                : undefined,
+          }}
         >
-          <div className="flex h-player items-center gap-3 border-t border-t-[#dfd7cb] bg-[#dfd7cb]/80 px-4 3xl:container dark:border-input dark:bg-body md:px-6 lg:px-8">
-            <div className="inline-flex h-11 w-11 items-center justify-center rounded bg-black/20 dark:bg-white/20">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="h-6 w-6 text-black/50"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M19.952 1.651a.75.75 0 01.298.599V16.303a3 3 0 01-2.176 2.884l-1.32.377a2.553 2.553 0 11-1.403-4.909l2.311-.66a1.5 1.5 0 001.088-1.442V6.994l-9 2.572v9.737a3 3 0 01-2.176 2.884l-1.32.377a2.553 2.553 0 11-1.402-4.909l2.31-.66a1.5 1.5 0 001.088-1.442V9.017 5.25a.75.75 0 01.544-.721l10.5-3a.75.75 0 01.658.122z"
-                  clipRule="evenodd"
-                />
-              </svg>
+          {sequence.map((scene) => {
+            return (
+              <Scene
+                key={scene.id}
+                className=""
+                sceneId={scene.id}
+                sceneData={scene.data}
+                sceneIndex={scene.index}
+                sceneLength={
+                  display === '2d'
+                    ? getSceneLength(Math.max(...decimals))
+                    : getSceneLength(scene.data.value ?? 0)
+                }
+                display={display}
+                // active={index === 0}
+                onSceneChange={(sceneData, sceneIndex) => {
+                  const prevSceneIndex = currentScene?.index ?? 0;
+                  // const sceneGap = sceneIndex - prevSceneIndex;
+                  if (prevSceneIndex < sceneIndex) {
+                    //  바로 다음 씬으로 이동시, 바로 직전 씬 재생된 것으로 간주
+                    sequenceControls.updateItemAtIndex(sceneIndex - 1, {
+                      ...sequence[sceneIndex - 1],
+                      isPlayed: true,
+                    });
+                    //
+                  } else {
+                    // 바로 이전 씬으로 이동시, 현재 씬 재생되지 않은 것으로 간주
+                    sequenceControls.updateItemAtIndex(sceneIndex, {
+                      ...sequence[sceneIndex],
+                      isPlayed: false,
+                    });
+                  }
+                  setCurrentScene({ ...sequence[sceneIndex], data: sceneData });
+                }}
+              />
+            );
+          })}
+        </ul>
+        {currentScene && (
+          <footer
+            className={cn(
+              'fixed bottom-0 left-0 z-20 w-full',
+              display === '2d' && 'hidden'
+            )}
+          >
+            <div className="flex h-player items-center gap-3 border-t border-t-[#dfd7cb] bg-[#dfd7cb]/80 px-4 3xl:container dark:border-input dark:bg-body md:px-6 lg:px-8">
+              <div className="inline-flex h-11 w-11 items-center justify-center rounded bg-black/20 dark:bg-white/20">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="h-6 w-6 text-black/50"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M19.952 1.651a.75.75 0 01.298.599V16.303a3 3 0 01-2.176 2.884l-1.32.377a2.553 2.553 0 11-1.403-4.909l2.311-.66a1.5 1.5 0 001.088-1.442V6.994l-9 2.572v9.737a3 3 0 01-2.176 2.884l-1.32.377a2.553 2.553 0 11-1.402-4.909l2.31-.66a1.5 1.5 0 001.088-1.442V9.017 5.25a.75.75 0 01.544-.721l10.5-3a.75.75 0 01.658.122z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div className="flex flex-col justify-center">
+                <h3 className="text-lg font-bold text-foreground">
+                  {[
+                    currentScene.data.dates.join(' ') + '의',
+                    currentScene.data.name,
+                  ].join(' ')}
+                </h3>
+                <h4 className="pl-px text-xs text-muted-foreground">
+                  데이터 :{' '}
+                  {[
+                    `${currentScene.data.collection} (초)미세먼지 평균`,
+                    `2015~2022년`,
+                    currentScene.data.location,
+                  ].join(', ')}
+                </h4>
+              </div>
             </div>
-            <div className="flex flex-col justify-center">
-              <h3 className="text-lg font-bold text-foreground">
-                {[
-                  currentScene.data.dates.join(' ') + '의',
-                  currentScene.data.name,
-                ].join(' ')}
-              </h3>
-              <h4 className="pl-px text-xs text-muted-foreground">
-                데이터 :{' '}
-                {[
-                  `${currentScene.data.collection} (초)미세먼지 평균`,
-                  `2015~2022년`,
-                  currentScene.data.location,
-                ].join(', ')}
-              </h4>
-            </div>
-          </div>
-        </footer>
-      )}
-    </section>
+          </footer>
+        )}
+      </section>
+    </>
   );
 }
 
