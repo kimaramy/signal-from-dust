@@ -15,4 +15,6 @@ export const seasonMap = Object.freeze({
 
 export const seasonSet = Object.freeze([...new Set(Object.values(seasonMap))]);
 
+export const defaultSeason = seasonMap.Default;
+
 export type Season = z.infer<typeof seasonSchema>;

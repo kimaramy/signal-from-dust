@@ -23,6 +23,7 @@ import Sequence, {
   toWeeklySceneDataList,
   toYearlySceneDataList,
 } from '@/components/Sequence';
+import { SettingsDialog } from '@/components/settings';
 import { useYearValue } from '@/components/year';
 
 export default function IndexPage() {
@@ -36,37 +37,37 @@ export default function IndexPage() {
 
   const month = useMonthValue();
 
-  const dustSize = useDustSizeValue();
+  const dataName = useDustSizeValue();
 
   const dailySceneDataList = useDailyDataListQuery(month, {
     enabled: collection === 'Daily',
-    select: (dataset) => toDailySceneDataList(dataset, collection, dustSize),
+    select: (dataset) => toDailySceneDataList(dataset, collection, dataName),
   });
 
   const weekDailySceneDataList = useWeekDailyDataListQuery(month, {
     enabled: collection === 'Weekdaily',
     select: (dataset) =>
-      toWeekDailySceneDataList(dataset, collection, dustSize),
+      toWeekDailySceneDataList(dataset, collection, dataName),
   });
 
   const weeklySceneDataList = useWeeklyDataListQuery(year, {
     enabled: collection === 'Weekly',
-    select: (dataset) => toWeeklySceneDataList(dataset, collection, dustSize),
+    select: (dataset) => toWeeklySceneDataList(dataset, collection, dataName),
   });
 
   const monthlySceneDataList = useMonthlyDataListQuery(year, {
     enabled: collection === 'Monthly',
-    select: (dataset) => toMonthlySceneDataList(dataset, collection, dustSize),
+    select: (dataset) => toMonthlySceneDataList(dataset, collection, dataName),
   });
 
   const seasonalSceneDataList = useMonthlyDataListQueryBySeaon(year, season, {
     enabled: collection === 'Seasonally',
-    select: (dataset) => toMonthlySceneDataList(dataset, collection, dustSize),
+    select: (dataset) => toMonthlySceneDataList(dataset, collection, dataName),
   });
 
   const yearlySceneDataList = useYearlyDataListQuery({
     enabled: collection === 'Yearly',
-    select: (dataset) => toYearlySceneDataList(dataset, collection, dustSize),
+    select: (dataset) => toYearlySceneDataList(dataset, collection, dataName),
   });
 
   const dataset = (function () {
@@ -88,15 +89,18 @@ export default function IndexPage() {
   })();
 
   return (
-    <main className="relative flex h-screen w-full items-center 3xl:container 3xl:!px-0">
-      <Minimap />
-      <Sequence
-        id="container"
-        collection={collection}
-        display={display}
-        dataset={dataset}
-      />
+    <>
+      <main className="relative flex flex-1 items-center overflow-y-auto scrollbar-hide 3xl:container 3xl:!px-0">
+        <Minimap />
+        <Sequence
+          id="container"
+          collection={collection}
+          display={display}
+          dataset={dataset}
+        />
+      </main>
       <FloatingButtons />
-    </main>
+      <SettingsDialog />
+    </>
   );
 }

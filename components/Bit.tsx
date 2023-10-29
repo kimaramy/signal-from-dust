@@ -4,7 +4,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useUpdateEffect } from '@/hooks';
 import { Power0, TimelineLite } from 'gsap';
 import { random } from 'lodash-es';
-import * as Tone from 'tone';
+
+// import * as Tone from 'tone';
 
 import { cn } from '@/lib/utils';
 import type { Display } from '@/components/display';
@@ -13,64 +14,64 @@ import Overlay from './Overlay';
 
 const pentatonic = ['B#3', 'D4', 'F4', 'G4', 'A4', 'B#4'];
 
-class Sound {
-  public note: Tone.Unit.Frequency;
-  public duration: Tone.Unit.Time;
-  public synth: Tone.Synth;
+// class Sound {
+//   public note: Tone.Unit.Frequency;
+//   public duration: Tone.Unit.Time;
+//   public synth: Tone.Synth;
 
-  constructor(
-    note: Tone.Unit.Frequency,
-    duration: Tone.Unit.Time,
-    onRelease?: () => void
-  ) {
-    this.note = note;
-    this.duration = duration;
-    this.synth = new Tone.Synth({
-      oscillator: {
-        type: 'sine',
-      },
-      envelope: {
-        attack: 0.005,
-        decay: 0.1,
-        sustain: 0.3,
-        release: 1,
-      },
-      onsilence: onRelease,
-    });
-  }
+//   constructor(
+//     note: Tone.Unit.Frequency,
+//     duration: Tone.Unit.Time,
+//     onRelease?: () => void
+//   ) {
+//     this.note = note;
+//     this.duration = duration;
+//     this.synth = new Tone.Synth({
+//       oscillator: {
+//         type: 'sine',
+//       },
+//       envelope: {
+//         attack: 0.005,
+//         decay: 0.1,
+//         sustain: 0.3,
+//         release: 1,
+//       },
+//       onsilence: onRelease,
+//     });
+//   }
 
-  public attackRelease(time?: Tone.Unit.Time) {
-    this.synth.triggerAttackRelease(this.note, this.duration, time);
-  }
+//   public attackRelease(time?: Tone.Unit.Time) {
+//     this.synth.triggerAttackRelease(this.note, this.duration, time);
+//   }
 
-  public attack(time?: Tone.Unit.Time) {
-    this.synth.triggerAttack(this.note, time);
-  }
+//   public attack(time?: Tone.Unit.Time) {
+//     this.synth.triggerAttack(this.note, time);
+//   }
 
-  public release(time?: Tone.Unit.Time) {
-    this.synth.triggerRelease(time);
-  }
-}
+//   public release(time?: Tone.Unit.Time) {
+//     this.synth.triggerRelease(time);
+//   }
+// }
 
-const playSynth = (note: string, duration: string, onSlience: () => void) => {
-  const filter = new Tone.Filter({
-    frequency: 1100,
-    rolloff: -12,
-  }).toDestination();
-  const synth = new Tone.Synth({
-    oscillator: {
-      type: 'sine',
-    },
-    envelope: {
-      attack: 0.005,
-      decay: 0.1,
-      sustain: 0.3,
-      release: 1,
-    },
-    onsilence: onSlience,
-  }).connect(filter);
-  synth.triggerAttackRelease(note, duration);
-};
+// const playSynth = (note: string, duration: string, onSlience: () => void) => {
+//   const filter = new Tone.Filter({
+//     frequency: 1100,
+//     rolloff: -12,
+//   }).toDestination();
+//   const synth = new Tone.Synth({
+//     oscillator: {
+//       type: 'sine',
+//     },
+//     envelope: {
+//       attack: 0.005,
+//       decay: 0.1,
+//       sustain: 0.3,
+//       release: 1,
+//     },
+//     onsilence: onSlience,
+//   }).connect(filter);
+//   synth.triggerAttackRelease(note, duration);
+// };
 
 export type Binary = '0' | '1';
 
@@ -93,13 +94,13 @@ export default function Bit({
 }: BitProps) {
   // const activated = useRef(active);
 
-  const sound = useMemo(() => {
-    return new Sound(
-      pentatonic[binaryIndex % pentatonic.length],
-      binary === '0' ? '8n' : '2n',
-      () => setPlaying(false)
-    );
-  }, [binary, binaryIndex]);
+  // const sound = useMemo(() => {
+  //   return new Sound(
+  //     pentatonic[binaryIndex % pentatonic.length],
+  //     binary === '0' ? '8n' : '2n',
+  //     () => setPlaying(false)
+  //   );
+  // }, [binary, binaryIndex]);
 
   const $container = useRef<HTMLLIElement>(null);
   const $turbulence = useRef<SVGFETurbulenceElement | null>(null);
@@ -182,7 +183,7 @@ export default function Bit({
   const handleContainerClick = () => {
     if (isActive) return;
     if (!isPlaying) {
-      sound.attackRelease();
+      // sound.attackRelease();
     }
     setPlaying(true);
   };
@@ -216,14 +217,16 @@ export default function Bit({
     <li
       id={id}
       ref={$container}
-      className={cn('z-5 relative isolate flex h-full rounded-md', className)}
+      className={cn(
+        'z-5 relative isolate flex h-full rounded-md',
+        display === '2d' && isPlaying ? 'origin-left scale-125' : null,
+        className
+      )}
       onClick={handleContainerClick}
       onMouseOver={() => {
-        // sound.attackRelease();
         setHovering(true);
       }}
       onMouseOut={() => {
-        // sound.release();
         setHovering(false);
       }}
     >
@@ -246,21 +249,24 @@ export default function Bit({
             <div
               className={cn(
                 'grainy-to-left-darken dark:grainy-to-left-darken--dark w-2/5 flex-initial bg-blend-soft-light',
-                display !== '3d' && 'hidden'
+                display !== '3d' && 'hidden',
+                isPlaying && 'grainy-to-left-darken--active'
               )}
             ></div>
             <div
               className={cn(
                 'w-4 flex-none',
                 'grainy-to-left dark:grainy-to-left--dark',
-                display === '3d' && 'rounded-full bg-blend-difference'
+                display === '3d' && 'rounded-full bg-blend-difference',
+                isPlaying && 'grainy-to-left--active hidden'
               )}
             ></div>
             <div
               className={cn(
                 'w-full flex-1',
                 'grainy-to-right dark:grainy-to-right--dark',
-                display === '3d' && 'bg-blend-difference'
+                display === '3d' && 'bg-blend-difference',
+                isPlaying && 'grainy-to-right--active'
               )}
             ></div>
           </div>

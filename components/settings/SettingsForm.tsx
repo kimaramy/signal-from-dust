@@ -10,7 +10,7 @@ import { Year } from '@/components/year';
 
 import CustomSettingsFields from './CustomSettingsFields';
 import ModeField from './ModeField';
-import PresetSettingsFields from './PresetSettingsFields';
+import PresetFields from './PresetFields';
 
 const SETTINGS_FORM_ID = 'settings-form';
 
@@ -27,11 +27,14 @@ type SettingsFormSubmitHandler = SubmitHandler<SettingsFormData>;
 
 interface SettingsFormProps {
   values: SettingsFormData;
+  defaultValues: SettingsFormData;
   onSubmit: SettingsFormSubmitHandler;
 }
 
-function SettingsForm({ values, onSubmit }: SettingsFormProps) {
-  const form = useForm<SettingsFormData>({
+function SettingsForm(props: SettingsFormProps) {
+  const { defaultValues, values, onSubmit } = props;
+
+  const settingsForm = useForm<SettingsFormData>({
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
     shouldUseNativeValidation: false,
@@ -40,21 +43,21 @@ function SettingsForm({ values, onSubmit }: SettingsFormProps) {
 
   return (
     <>
-      <Form {...form}>
+      <Form {...settingsForm}>
         <form
           id={SETTINGS_FORM_ID}
-          className="space-y-4 py-4"
+          className="space-y-6 py-4"
           noValidate
           autoComplete="off"
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={settingsForm.handleSubmit(onSubmit)}
         >
           <ModeField />
-          <PresetSettingsFields />
+          <PresetFields defaultValues={defaultValues} />
           <CustomSettingsFields />
         </form>
       </Form>
 
-      <DevTool control={form.control} />
+      {/* <DevTool control={settingsForm.control} /> */}
     </>
   );
 }

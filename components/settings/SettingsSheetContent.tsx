@@ -25,7 +25,7 @@ function SettingsSheetContent() {
       </section>
       <SheetFooter className="absolute bottom-0 left-0 w-full p-6">
         <SheetClose className="w-full">
-          <SettingsFormSubmitButton />
+          <SettingsFormSubmitButton label="적용" />
         </SheetClose>
       </SheetFooter>
     </SheetContent>

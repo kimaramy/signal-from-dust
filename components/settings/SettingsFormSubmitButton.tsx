@@ -2,7 +2,11 @@ import { Button } from '@/components/ui/button';
 
 import { SETTINGS_FORM_ID } from './SettingsForm';
 
-function SettingsFormSubmitButton() {
+interface SettingsFormSubmitButtonProps {
+  label: string;
+}
+
+function SettingsFormSubmitButton({ label }: SettingsFormSubmitButtonProps) {
   return (
     <Button
       type="submit"
@@ -11,7 +15,7 @@ function SettingsFormSubmitButton() {
       size="lg"
       className="w-full"
     >
-      적용
+      {label}
     </Button>
   );
 }

@@ -24,6 +24,8 @@ import Scene, { getSceneLength, SceneData } from '@/components/Scene';
 import { translateWeekday } from '@/components/weekday';
 import { getYearKey, translateYear, YearKey } from '@/components/year';
 
+import { Skeleton } from './ui/skeleton';
+
 export interface SequenceData {
   id: string;
   index: number;
@@ -57,17 +59,17 @@ function Sequence({
   dataset,
   disabled = false,
 }: SequenceProps) {
-  const safeDataset = dataset ?? getFallbackSceneDataList(collection);
+  // const placeholdingDataset = getFallbackSceneDataList(collection);
 
-  const decimals = safeDataset.map((data) => data.value ?? 0);
+  const decimals: number[] =
+    dataset?.map((data) => data.value ?? 0) ??
+    new Array(getDataCount(collection)).fill(0);
 
   const sequenceEl = useRef<HTMLUListElement>(null);
 
   const [progress, setProgress] = useState(0);
 
-  const [sequence, sequenceControls] = useArrayState<SequenceData>(
-    initSequence(id, safeDataset)
-  );
+  const [sequence, sequenceControls] = useArrayState<SequenceData>([]);
 
   const [currentScene, setCurrentScene] = useState<SequenceData>(sequence[0]);
 
@@ -84,16 +86,15 @@ function Sequence({
   }, []);
 
   useEffect(() => {
+    if (!dataset) return;
     // 데이터셋이 초기화 혹은 교체될 때
-    if (dataset) {
-      const sequence = initSequence(id, dataset);
-      sequenceControls.setArray(sequence);
-      setCurrentScene(sequence[0]);
-      sequenceEl.current?.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    }
+    const sequence = initSequence(id, dataset);
+    sequenceControls.setArray(sequence);
+    setCurrentScene(sequence[0]);
+    sequenceEl.current?.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, dataset]);
 
@@ -107,58 +108,69 @@ function Sequence({
         id={id}
         ref={sequenceEl}
         className={cn(
-          'relative w-full overflow-x-hidden overflow-y-scroll pt-4',
-          display === '2d' && 'h-auto px-4 pb-4 lg:px-6',
-          display === '3d' && 'h-full pb-[var(--player-height)] scrollbar-hide'
+          'relative w-full overflow-x-hidden overflow-y-scroll pt-4 scrollbar-hide',
+          display === '2d' &&
+            'flex h-auto min-h-screen items-center px-4 pb-4 lg:px-6',
+          display === '3d' && 'h-screen pb-[var(--player-height)]'
         )}
         onScroll={handleScroll}
       >
         <ul
-          className={cn('h-full', display === '2d' && 'grid gap-1 lg:gap-2')}
+          className={cn(
+            'h-full w-full',
+            display === '2d' && 'grid gap-1 lg:gap-2'
+          )}
           style={{
             gridTemplateRows:
               display === '2d'
-                ? `repeat(${decimals.length}, minmax(2.5rem, 1fr))`
+                ? `repeat(${decimals.length}, minmax(2.25rem, 1fr))`
                 : undefined,
           }}
         >
-          {sequence.map((scene) => {
-            return (
-              <Scene
-                key={scene.id}
-                className=""
-                sceneId={scene.id}
-                sceneData={scene.data}
-                sceneIndex={scene.index}
-                sceneLength={
-                  display === '2d'
-                    ? getSceneLength(Math.max(...decimals))
-                    : getSceneLength(scene.data.value ?? 0)
-                }
-                display={display}
-                // active={index === 0}
-                onSceneChange={(sceneData, sceneIndex) => {
-                  const prevSceneIndex = currentScene?.index ?? 0;
-                  // const sceneGap = sceneIndex - prevSceneIndex;
-                  if (prevSceneIndex < sceneIndex) {
-                    //  바로 다음 씬으로 이동시, 바로 직전 씬 재생된 것으로 간주
-                    sequenceControls.updateItemAtIndex(sceneIndex - 1, {
-                      ...sequence[sceneIndex - 1],
-                      isPlayed: true,
-                    });
-                    //
-                  } else {
-                    // 바로 이전 씬으로 이동시, 현재 씬 재생되지 않은 것으로 간주
-                    sequenceControls.updateItemAtIndex(sceneIndex, {
-                      ...sequence[sceneIndex],
-                      isPlayed: false,
-                    });
-                  }
-                  setCurrentScene({ ...sequence[sceneIndex], data: sceneData });
-                }}
-              />
-            );
-          })}
+          {sequence.length > 0
+            ? sequence.map((scene) => {
+                return (
+                  <Scene
+                    key={`${collection}-${display}-${scene.id}`}
+                    className=""
+                    sceneId={scene.id}
+                    sceneData={scene.data}
+                    sceneIndex={scene.index}
+                    sceneLength={
+                      display === '2d'
+                        ? getSceneLength(Math.max(...decimals))
+                        : getSceneLength(scene.data.value ?? 0)
+                    }
+                    display={display}
+                    // active={index === 0}
+                    onSceneChange={(sceneData, sceneIndex) => {
+                      const prevSceneIndex = currentScene?.index ?? 0;
+                      // const sceneGap = sceneIndex - prevSceneIndex;
+                      if (prevSceneIndex < sceneIndex) {
+                        //  바로 다음 씬으로 이동시, 바로 직전 씬 재생된 것으로 간주
+                        sequenceControls.updateItemAtIndex(sceneIndex - 1, {
+                          ...sequence[sceneIndex - 1],
+                          isPlayed: true,
+                        });
+                        //
+                      } else {
+                        // 바로 이전 씬으로 이동시, 현재 씬 재생되지 않은 것으로 간주
+                        sequenceControls.updateItemAtIndex(sceneIndex, {
+                          ...sequence[sceneIndex],
+                          isPlayed: false,
+                        });
+                      }
+                      setCurrentScene({
+                        ...sequence[sceneIndex],
+                        data: sceneData,
+                      });
+                    }}
+                  />
+                );
+              })
+            : decimals.map((_, i) => (
+                <Skeleton key={i} className="h-full w-full" />
+              ))}
         </ul>
         {currentScene && (
           <footer
@@ -186,7 +198,7 @@ function Sequence({
                 <h3 className="text-lg font-bold text-foreground">
                   {[
                     currentScene.data.dates.join(' ') + '의',
-                    currentScene.data.name,
+                    currentScene.data.displayName,
                   ].join(' ')}
                 </h3>
                 <h4 className="pl-px text-xs text-muted-foreground">
@@ -206,29 +218,30 @@ function Sequence({
   );
 }
 
-function getFallbackSceneDataList(collection: Collection): SceneData[] {
-  return new Array(getDataCount(collection)).fill(null).map((value, i) => ({
-    id: i + 1,
-    collection: translateCollection(collection),
-    name: 'TBD',
-    dates: ['...'],
-    value: 0,
-    location: 'TBD',
-    rank: null,
-  }));
-}
+// function getFallbackSceneDataList(collection: Collection): SceneData[] {
+//   return new Array(getDataCount(collection)).fill(null).map((value, i) => ({
+//     id: i + 1,
+//     collection: translateCollection(collection),
+//     name: 'TBD',
+//     dates: ['...'],
+//     value: 0,
+//     location: 'TBD',
+//     rank: null,
+//   }));
+// }
 
 export function toDailySceneDataList(
   dataset: DailyData[],
   collection: Collection,
-  dustSize: DustSize
+  dataName: DustSize
 ): SceneData[] {
   return dataset.map(({ id, month, day, pm_large, pm_small }) => ({
     id,
+    name: dataName,
+    displayName: translateDustSize(dataName),
+    value: dataName === 'lg' ? pm_large : pm_small,
     collection: translateCollection(collection),
-    name: translateDustSize(dustSize),
     dates: [translateMonth(getMonthKey(month) as MonthKey), `${day}일`],
-    value: dustSize === 'lg' ? pm_large : pm_small,
     location: '서울시',
     rank: null,
   }));
@@ -237,17 +250,18 @@ export function toDailySceneDataList(
 export function toWeekDailySceneDataList(
   dataset: WeekDailyData[],
   collection: Collection,
-  dustSize: DustSize
+  dataName: DustSize
 ): SceneData[] {
   return dataset.map(({ id, month, weekday, pm_large, pm_small }) => ({
     id,
+    name: dataName,
+    displayName: translateDustSize(dataName),
+    value: dataName === 'lg' ? pm_large : pm_small,
     collection: translateCollection(collection),
-    name: translateDustSize(dustSize),
     dates: [
       translateMonth(getMonthKey(month) as MonthKey),
       translateWeekday(weekday),
     ],
-    value: dustSize === 'lg' ? pm_large : pm_small,
     location: '서울시',
     rank: null,
   }));
@@ -256,14 +270,15 @@ export function toWeekDailySceneDataList(
 export function toWeeklySceneDataList(
   dataset: WeeklyData[],
   collection: Collection,
-  dustSize: DustSize
+  dataName: DustSize
 ): SceneData[] {
   return dataset.map(({ id, year, week, pm_large, pm_small }) => ({
     id,
+    name: dataName,
+    displayName: translateDustSize(dataName),
+    value: dataName === 'lg' ? pm_large : pm_small,
     collection: translateCollection(collection),
-    name: translateDustSize(dustSize),
-    dates: [translateYear(getYearKey(year) as YearKey), `${week}주차`],
-    value: dustSize === 'lg' ? pm_large : pm_small,
+    dates: [translateYear(getYearKey(year) as YearKey), `${week}번째 주`],
     location: '서울시',
     rank: null,
   }));
@@ -272,17 +287,18 @@ export function toWeeklySceneDataList(
 export function toMonthlySceneDataList(
   dataset: MonthlyData[],
   collection: Collection,
-  dustSize: DustSize
+  dataName: DustSize
 ): SceneData[] {
   return dataset.map(({ id, year, month, pm_large, pm_small }) => ({
     id,
+    name: dataName,
+    displayName: translateDustSize(dataName),
+    value: dataName === 'lg' ? pm_large : pm_small,
     collection: translateCollection(collection),
-    name: translateDustSize(dustSize),
     dates: [
       translateYear(getYearKey(year) as YearKey),
       translateMonth(getMonthKey(month) as MonthKey),
     ],
-    value: dustSize === 'lg' ? pm_large : pm_small,
     location: '서울시',
     rank: null,
   }));
@@ -291,14 +307,15 @@ export function toMonthlySceneDataList(
 export function toYearlySceneDataList(
   dataset: YearlyData[],
   collection: Collection,
-  dustSize: DustSize
+  dataName: DustSize
 ): SceneData[] {
   return dataset.map(({ id, year, pm_large, pm_small }) => ({
     id,
+    name: dataName,
+    displayName: translateDustSize(dataName),
+    value: dataName === 'lg' ? pm_large : pm_small,
     collection: translateCollection(collection),
-    name: translateDustSize(dustSize),
     dates: [translateYear(getYearKey(year) as YearKey)],
-    value: dustSize === 'lg' ? pm_large : pm_small,
     location: '서울시',
     rank: null,
   }));

@@ -5,17 +5,21 @@ import { PauseCircleIcon, PlayCircleIcon } from '@heroicons/react/20/solid';
 import { useInView } from 'react-intersection-observer';
 
 import { cn } from '@/lib/utils';
+// import Overlay from './Overlay';
+import { Button } from '@/components/ui/button';
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import type { Display } from '@/components/display';
+import {
+  DustSize,
+  getDustGrade,
+  getDustGradeColor,
+} from '@/components/dustSize';
 
 import Bit, { Binary } from './Bit';
-// import Overlay from './Overlay';
-import { Button } from './ui/button';
-import { Skeleton } from './ui/skeleton';
 
 export function getSceneLength(decimal: number) {
   return decimal.toString(2).length;
@@ -24,9 +28,10 @@ export function getSceneLength(decimal: number) {
 export interface SceneData {
   id: number;
   name: string;
+  displayName: string;
+  value: number | null;
   collection: string;
   dates: string[];
-  value: number | null;
   location: string;
   rank: number | null;
 }
@@ -69,6 +74,11 @@ function Scene({
     },
   });
 
+  const dustGrade = getDustGrade(
+    sceneData.value ?? 0,
+    sceneData.name as DustSize
+  );
+
   const [isPlaying, setPlaying] = useState(false);
 
   const [isMouseOver, setMouseOver] = useState(false);
@@ -101,11 +111,11 @@ function Scene({
       //   perspective: display === '3d' ? `1500px` : undefined,
       // }}
     >
-      {/* {display === '2d' && (
-        <div className="flex w-24 flex-none items-center justify-start pl-4">
+      {display === '2d' && (
+        <div className="flex w-28 flex-none items-center justify-start pl-4">
           <h4 className="w-full text-xs">{sceneData.dates.join(' ')}</h4>
         </div>
-      )} */}
+      )}
       <HoverCard openDelay={0} closeDelay={0}>
         <HoverCardTrigger asChild>
           <ul
@@ -130,23 +140,19 @@ function Scene({
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
           >
-            {binaries ? (
-              binaries.map((binary, index) => {
-                const bitId = [sceneId, index].join('-');
-                return (
-                  <Bit
-                    key={bitId}
-                    id={bitId}
-                    binary={binary}
-                    binaryIndex={index}
-                    display={display}
-                    isActive={isPlaying}
-                  />
-                );
-              })
-            ) : (
-              <Skeleton className="h-full" />
-            )}
+            {binaries?.map((binary, index) => {
+              const bitId = [sceneId, index].join('-');
+              return (
+                <Bit
+                  key={`${display}-${bitId}`}
+                  id={bitId}
+                  binary={binary}
+                  binaryIndex={index}
+                  display={display}
+                  isActive={isPlaying}
+                />
+              );
+            })}
             {/* {isMouseOver ? (
               <Overlay className="z-0" onClick={handleOverlayClick} />
             ) : null} */}
@@ -166,15 +172,44 @@ function Scene({
                 )}
               </Button>
               <div className="pr-4">
-                <h4 className="font-mono text-lg font-semibold text-accent-foreground">
-                  {binaries?.join('')}({sceneData.value}㎍/㎥)
+                <h4 className="inline-block divide-x divide-ring border border-ring font-mono text-base font-semibold tracking-wider text-accent-foreground">
+                  {binaries?.map((binary, i) => (
+                    <span
+                      key={`${binary}-${i}`}
+                      className="inline-flex items-center justify-center px-1 py-0.5"
+                    >
+                      {binary}
+                    </span>
+                  ))}
                 </h4>
+                <ul className="mt-2.5 space-y-1 text-[0.8em] tracking-tight">
+                  <li className="bullet flex">
+                    {[
+                      `${sceneData.dates.join(' ')}의 ${
+                        sceneData.displayName
+                      } 평균`,
+                      sceneData.location,
+                    ].join(', ')}
+                  </li>
+                  <li className="bullet flex items-baseline">
+                    {/* <span>측정 값&nbsp;:&nbsp;</span> */}
+                    <span className="">{sceneData.value}(㎍/㎥)</span>
+                    <span
+                      className="ml-1.5 inline-block rounded px-1 py-px text-[0.9em] text-black"
+                      style={{ backgroundColor: getDustGradeColor(dustGrade) }}
+                    >
+                      {dustGrade}
+                    </span>
+                  </li>
+                </ul>
+
+                {/* <h5 className="text-sm">{sceneData.value}(㎍/㎥)</h5>
                 <p className="text-sm">
                   {[
                     `${sceneData.dates.join(' ')}의 ${sceneData.name} 평균`,
                     sceneData.location,
                   ].join(', ')}
-                </p>
+                </p> */}
                 {/* <div className="flex items-center pt-2">
                   <span className="text-xs text-muted-foreground">
                     {sceneData.name} 수치를 2진 신호로 출력한 결과입니다.

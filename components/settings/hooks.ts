@@ -1,19 +1,20 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { QueryParamEnum } from '@/lib/utils';
-import { useCollectionValue } from '@/components/collection';
-import { useDustSizeValue } from '@/components/dustSize';
-import { getMonthKey, useMonthValue } from '@/components/month';
-import { useSeasonValue } from '@/components/season';
-import { getYearKey, useYearValue } from '@/components/year';
+import { defaultCollection, useCollectionValue } from '@/components/collection';
+import { defaultDustSize, useDustSizeValue } from '@/components/dustSize';
+import {
+  defaultMonthValue,
+  getMonthKey,
+  useMonthValue,
+} from '@/components/month';
+import { defaultSeason, useSeasonValue } from '@/components/season';
+import { defaultYearValue, getYearKey, useYearValue } from '@/components/year';
 
 import { SettingsFormData } from './SettingsForm';
 
-export function useSettingsState(): [
-  SettingsFormData,
-  (formData: SettingsFormData) => void,
-] {
+export function useSettingsState() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -23,7 +24,19 @@ export function useSettingsState(): [
   const month = useMonthValue();
   const season = useSeasonValue();
 
-  const settingsState: SettingsFormData = {
+  const defaultSettingsData: SettingsFormData = useMemo(
+    () => ({
+      mode: 'preset',
+      dataName: defaultDustSize,
+      dataCollection: defaultCollection,
+      year: defaultYearValue,
+      season: defaultSeason,
+      month: defaultMonthValue,
+    }),
+    []
+  );
+
+  const settingsData: SettingsFormData = {
     mode: 'preset',
     dataName,
     dataCollection,
@@ -32,7 +45,7 @@ export function useSettingsState(): [
     season,
   };
 
-  const setSettingsState = useCallback(
+  const setSettingsData = useCallback(
     (values: SettingsFormData) => {
       console.log('here!', values);
       const mutableSearchParams = new URLSearchParams(
@@ -54,5 +67,9 @@ export function useSettingsState(): [
     [router, searchParams]
   );
 
-  return [settingsState, setSettingsState];
+  return {
+    defaultSettingsData,
+    settingsData,
+    setSettingsData,
+  };
 }

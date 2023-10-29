@@ -22,7 +22,7 @@ function ModeField() {
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="preset" id="r1" />
-              <Label htmlFor="r1">미리 설정</Label>
+              <Label htmlFor="r1">추천 설정</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="custom" id="r2" />

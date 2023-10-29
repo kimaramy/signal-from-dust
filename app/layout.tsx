@@ -53,8 +53,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <SoundFilterY />
                 <div className="flex-1">{children}</div>
               </div>
+              <ToastProvider />
             </QueryClientProvider>
-            <ToastProvider />
             {/* <TailwindIndicator /> */}
           </ThemeProvider>
         </body>
