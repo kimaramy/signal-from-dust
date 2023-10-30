@@ -5,73 +5,8 @@ import { useUpdateEffect } from '@/hooks';
 import { Power0, TimelineLite } from 'gsap';
 import { random } from 'lodash-es';
 
-// import * as Tone from 'tone';
-
 import { cn } from '@/lib/utils';
 import type { Display } from '@/components/display';
-
-// import Overlay from './Overlay';
-
-// const pentatonic = ['B#3', 'D4', 'F4', 'G4', 'A4', 'B#4'];
-
-// class Sound {
-//   public note: Tone.Unit.Frequency;
-//   public duration: Tone.Unit.Time;
-//   public synth: Tone.Synth;
-
-//   constructor(
-//     note: Tone.Unit.Frequency,
-//     duration: Tone.Unit.Time,
-//     onRelease?: () => void
-//   ) {
-//     this.note = note;
-//     this.duration = duration;
-//     this.synth = new Tone.Synth({
-//       oscillator: {
-//         type: 'sine',
-//       },
-//       envelope: {
-//         attack: 0.005,
-//         decay: 0.1,
-//         sustain: 0.3,
-//         release: 1,
-//       },
-//       onsilence: onRelease,
-//     });
-//   }
-
-//   public attackRelease(time?: Tone.Unit.Time) {
-//     this.synth.triggerAttackRelease(this.note, this.duration, time);
-//   }
-
-//   public attack(time?: Tone.Unit.Time) {
-//     this.synth.triggerAttack(this.note, time);
-//   }
-
-//   public release(time?: Tone.Unit.Time) {
-//     this.synth.triggerRelease(time);
-//   }
-// }
-
-// const playSynth = (note: string, duration: string, onSlience: () => void) => {
-//   const filter = new Tone.Filter({
-//     frequency: 1100,
-//     rolloff: -12,
-//   }).toDestination();
-//   const synth = new Tone.Synth({
-//     oscillator: {
-//       type: 'sine',
-//     },
-//     envelope: {
-//       attack: 0.005,
-//       decay: 0.1,
-//       sustain: 0.3,
-//       release: 1,
-//     },
-//     onsilence: onSlience,
-//   }).connect(filter);
-//   synth.triggerAttackRelease(note, duration);
-// };
 
 export type Binary = '0' | '1';
 
@@ -170,13 +105,10 @@ export default function Bit({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEntering, display]);
 
-  const handleContainerClick = () => {
-    if (isActive) return;
-    if (!isPlaying) {
-      // sound.attackRelease();
-    }
-    setPlaying(true);
-  };
+  // const handleContainerClick = () => {
+  //   if (isActive) return;
+  //   setPlaying(true);
+  // };
 
   useUpdateEffect(() => {
     setPlaying(isActive);
@@ -209,11 +141,11 @@ export default function Bit({
       ref={$container}
       className={cn(
         'z-5 relative isolate flex h-full origin-left rounded-md',
-        display === '2d' && isPlaying && 'scale-125',
+        // display === '2d' && isPlaying && 'scale-125',
         isPlaying && 'pointer-events-none',
         className
       )}
-      onClick={handleContainerClick}
+      // onClick={handleContainerClick}
       // onMouseOver={() => {
       //   setHovering(true);
       // }}

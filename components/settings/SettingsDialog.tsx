@@ -15,7 +15,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
-// import Logo from '../Logo';
 import SettingsFormContainer from './SettingsFormContainer';
 import SettingsFormSubmitButton from './SettingsFormSubmitButton';
 
@@ -24,8 +23,8 @@ function SettingsDialog() {
 
   return (
     <Dialog defaultOpen={isOpen} onOpenChange={() => setOpen(!isOpen)}>
-      <DialogContent className="flex aspect-video w-[50vw] max-w-[768px] overflow-hidden p-0 md:w-full">
-        <section className="relative isolate w-1/2">
+      <DialogContent className="flex aspect-auto min-w-[768px] gap-0 overflow-hidden p-0 md:w-full">
+        <section className="relative isolate w-1/2 flex-none">
           <Image
             src="/thumb-lg.webp"
             alt="thumbnail"
@@ -36,12 +35,11 @@ function SettingsDialog() {
           <div className="absolute left-0 top-0 h-full w-full bg-primary mix-blend-multiply dark:bg-background dark:mix-blend-screen"></div>
           <div className="z-5 absolute left-0 top-0 flex h-full w-full items-center justify-center">
             <Link href="/" className="flex items-center space-x-2 text-white">
-              {/* <Logo /> */}
               <span className="inline-block font-bold">{siteConfig.name}</span>
             </Link>
           </div>
         </section>
-        <section className="w-1/2 px-4 py-6">
+        <section className="flex w-1/2 flex-col p-6">
           <DialogHeader>
             <DialogTitle>데이터 선택</DialogTitle>
             {/* <DialogDescription>
@@ -53,7 +51,7 @@ function SettingsDialog() {
             <SettingsFormContainer />
           </section>
           <DialogFooter>
-            <DialogClose>
+            <DialogClose className="w-full">
               <SettingsFormSubmitButton label="시작" />
             </DialogClose>
           </DialogFooter>

@@ -38,7 +38,36 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <>
       <html lang="ko" suppressHydrationWarning>
-        <head></head>
+        <head>
+          <meta
+            name="viewport"
+            content="initial-scale=1.0, width=device-width"
+          />
+          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="format-detection" content="telephone=no" />
+          <meta
+            name="keywords"
+            content="미세먼지, 초미세먼지, 데이터시각화, 인터랙티브"
+          />
+          <meta name="author" content="Fed" />
+          {/* 페이지별 오픈그래프 공통 */}
+          <meta name="og:type" content="website" />
+          <meta name="og:site_name" content="Sound Of Dust" />
+          <meta name="og:locale" content="ko_KR" />
+          <meta name="og:image" content="" />
+          <meta name="og:image:alt" content="미세먼지 패턴" />
+          <meta name="og:image:width" content="1200" />
+          <meta name="og:image:height" content="628" />
+          {/* 페이지별 트위터 공통 */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content="@시각화" />
+          <meta name="twitter:creator" content="@Fed" />
+          <link
+            rel="stylesheet"
+            crossOrigin="anonymous"
+            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable-dynamic-subset.css"
+          />
+        </head>
         <body
           className={cn(
             'min-h-screen bg-body font-sans antialiased scrollbar-hide',

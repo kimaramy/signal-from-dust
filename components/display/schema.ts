@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const displaySchema = z.enum(['3d', '2d']);
 
 export const displayMap = Object.freeze({
-  default: displaySchema.Enum['3d'],
+  default: displaySchema.Enum['2d'],
   ...displaySchema.Enum,
 });
 

@@ -1,7 +1,8 @@
-import { DevTool } from '@hookform/devtools';
+// import { DevTool } from '@hookform/devtools';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { Form } from '@/components/ui/form';
+import { Separator } from '@/components/ui/separator';
 import { Collection } from '@/components/collection';
 import { DustSize } from '@/components/dustSize';
 import { Month } from '@/components/month';
@@ -52,6 +53,7 @@ function SettingsForm(props: SettingsFormProps) {
           onSubmit={settingsForm.handleSubmit(onSubmit)}
         >
           <ModeField />
+          <Separator className="my-2" />
           <PresetFields defaultValues={defaultValues} />
           <CustomSettingsFields />
         </form>

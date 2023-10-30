@@ -24,7 +24,6 @@ import Scene, { getSceneLength, SceneData } from '@/components/Scene';
 import { translateWeekday } from '@/components/weekday';
 import { getYearKey, translateYear, YearKey } from '@/components/year';
 
-import { initAudio, stopSoundPlay, toggleSoundPlay } from './sound';
 import { Skeleton } from './ui/skeleton';
 
 export interface SequenceData {
@@ -60,8 +59,6 @@ function Sequence({
   dataset,
   disabled = false,
 }: SequenceProps) {
-  // const placeholdingDataset = getFallbackSceneDataList(collection);
-
   const decimals: number[] =
     dataset?.map((data) => data.value ?? 0) ??
     new Array(getDataCount(collection)).fill(0);
@@ -145,7 +142,6 @@ function Sequence({
                     display={display}
                     // active={index === 0}
                     onSceneChange={(sceneData, sceneIndex) => {
-                      stopSoundPlay();
                       // const prevSceneIndex = currentScene?.index ?? 0;
                       // // const sceneGap = sceneIndex - prevSceneIndex;
                       // if (prevSceneIndex < sceneIndex) {
@@ -162,10 +158,10 @@ function Sequence({
                       //     isPlayed: false,
                       //   });
                       // }
-                      // setCurrentScene({
-                      //   ...sequence[sceneIndex],
-                      //   data: sceneData,
-                      // });
+                      setCurrentScene({
+                        ...sequence[sceneIndex],
+                        data: sceneData,
+                      });
                     }}
                   />
                 );

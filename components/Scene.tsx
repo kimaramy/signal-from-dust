@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { PauseCircleIcon, PlayCircleIcon } from '@heroicons/react/20/solid';
 import { useInView } from 'react-intersection-observer';
-import * as Tone from 'tone';
 
 import { cn } from '@/lib/utils';
 // import Overlay from './Overlay';
@@ -13,15 +12,15 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
-import type { Display } from '@/components/display';
+import { Display } from '@/components/display';
 import {
   DustSize,
   getDustGrade,
   getDustGradeColor,
 } from '@/components/dustSize';
+import { stopSoundPlay, toggleSoundPlay } from '@/components/sound';
 
 import Bit, { Binary } from './Bit';
-import { initAudio, toggleSoundPlay } from './sound';
 
 export function getSceneLength(decimal: number) {
   return decimal.toString(2).length;
@@ -72,6 +71,8 @@ function Scene({
     onChange(inView) {
       if (inView) {
         onSceneChange(sceneData, sceneIndex);
+      } else {
+        stopSoundPlay(() => setPlaying(false));
       }
     },
   });
@@ -85,9 +86,9 @@ function Scene({
 
   const [isMouseOver, setMouseOver] = useState(false);
 
-  const handlePlaySound = () => {
+  const handlePlaySound = useCallback(() => {
     if (binaries) {
-      toggleSoundPlay(binaries.map(Number), sceneIndex, {
+      toggleSoundPlay(binaries.map(Number), {
         onStart() {
           setPlaying(true);
         },
@@ -96,7 +97,7 @@ function Scene({
         },
       });
     }
-  };
+  }, [binaries]);
 
   const handleMouseOver = useCallback<React.MouseEventHandler>(() => {
     if (display === '2d') {
@@ -161,6 +162,7 @@ function Scene({
                   : undefined,
               transformStyle: display === '3d' ? 'preserve-3d' : undefined,
             }}
+            onClick={handlePlaySound}
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
           >
@@ -185,10 +187,15 @@ function Scene({
         {display === '2d' && (
           <HoverCardContent
             align="start"
-            className="w-auto bg-muted text-muted-foreground"
+            className="min-w-80 w-auto bg-muted text-muted-foreground"
           >
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="icon" className="h-12 w-12">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-12 w-12"
+                onClick={handlePlaySound}
+              >
                 {isPlaying ? (
                   <PauseCircleIcon className="h-9 w-9" />
                 ) : (
@@ -200,7 +207,7 @@ function Scene({
                   {binaries?.map((binary, i) => (
                     <span
                       key={`${binary}-${i}`}
-                      className="inline-flex items-center justify-center px-1 py-0.5"
+                      className="inline-flex items-center justify-center px-2 py-1"
                     >
                       {binary}
                     </span>
