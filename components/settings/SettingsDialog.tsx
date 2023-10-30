@@ -24,8 +24,8 @@ function SettingsDialog() {
 
   return (
     <Dialog defaultOpen={isOpen} onOpenChange={() => setOpen(!isOpen)}>
-      <DialogContent className="flex aspect-video w-[50vw] min-w-[768px] overflow-hidden p-0 md:w-full">
-        <section className="relative isolate w-1/2 flex-none">
+      <DialogContent className="flex aspect-video w-[50vw] max-w-[768px] overflow-hidden p-0 md:w-full">
+        <section className="relative isolate w-1/2">
           <Image
             src="/thumb-lg.webp"
             alt="thumbnail"
@@ -41,9 +41,9 @@ function SettingsDialog() {
             </Link>
           </div>
         </section>
-        <section className="w-1/2 flex-none px-4 py-6">
+        <section className="w-1/2 px-4 py-6">
           <DialogHeader>
-            <DialogTitle>조회할 데이터를 선택하세요</DialogTitle>
+            <DialogTitle>데이터 선택</DialogTitle>
             {/* <DialogDescription>
           This action cannot be undone. This will permanently delete your
           account and remove your data from our servers.

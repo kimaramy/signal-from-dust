@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { PauseCircleIcon, PlayCircleIcon } from '@heroicons/react/20/solid';
 import { useInView } from 'react-intersection-observer';
+import * as Tone from 'tone';
 
 import { cn } from '@/lib/utils';
 // import Overlay from './Overlay';
@@ -20,6 +21,7 @@ import {
 } from '@/components/dustSize';
 
 import Bit, { Binary } from './Bit';
+import { initAudio, toggleSoundPlay } from './sound';
 
 export function getSceneLength(decimal: number) {
   return decimal.toString(2).length;
@@ -83,6 +85,19 @@ function Scene({
 
   const [isMouseOver, setMouseOver] = useState(false);
 
+  const handlePlaySound = () => {
+    if (binaries) {
+      toggleSoundPlay(binaries.map(Number), sceneIndex, {
+        onStart() {
+          setPlaying(true);
+        },
+        onStop() {
+          setPlaying(false);
+        },
+      });
+    }
+  };
+
   const handleMouseOver = useCallback<React.MouseEventHandler>(() => {
     if (display === '2d') {
       onSceneChange(sceneData, sceneIndex);
@@ -103,7 +118,7 @@ function Scene({
       id={sceneId}
       ref={ref}
       className={cn(
-        'flex h-full items-center gap-6',
+        'relative flex h-full items-center gap-6',
         display === '3d' && 'justify-center overflow-x-hidden',
         className
       )}
@@ -115,6 +130,15 @@ function Scene({
         <div className="flex w-28 flex-none items-center justify-start pl-4">
           <h4 className="w-full text-xs">{sceneData.dates.join(' ')}</h4>
         </div>
+      )}
+      {display === '3d' && (
+        <Button
+          variant="default"
+          className="absolute bottom-0 left-0 flex h-12 w-12"
+          onClick={handlePlaySound}
+        >
+          <PlayCircleIcon className="h-8 w-8" />
+        </Button>
       )}
       <HoverCard openDelay={0} closeDelay={0}>
         <HoverCardTrigger asChild>

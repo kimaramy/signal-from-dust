@@ -24,6 +24,7 @@ import Scene, { getSceneLength, SceneData } from '@/components/Scene';
 import { translateWeekday } from '@/components/weekday';
 import { getYearKey, translateYear, YearKey } from '@/components/year';
 
+import { initAudio, stopSoundPlay, toggleSoundPlay } from './sound';
 import { Skeleton } from './ui/skeleton';
 
 export interface SequenceData {
@@ -144,26 +145,27 @@ function Sequence({
                     display={display}
                     // active={index === 0}
                     onSceneChange={(sceneData, sceneIndex) => {
-                      const prevSceneIndex = currentScene?.index ?? 0;
-                      // const sceneGap = sceneIndex - prevSceneIndex;
-                      if (prevSceneIndex < sceneIndex) {
-                        //  바로 다음 씬으로 이동시, 바로 직전 씬 재생된 것으로 간주
-                        sequenceControls.updateItemAtIndex(sceneIndex - 1, {
-                          ...sequence[sceneIndex - 1],
-                          isPlayed: true,
-                        });
-                        //
-                      } else {
-                        // 바로 이전 씬으로 이동시, 현재 씬 재생되지 않은 것으로 간주
-                        sequenceControls.updateItemAtIndex(sceneIndex, {
-                          ...sequence[sceneIndex],
-                          isPlayed: false,
-                        });
-                      }
-                      setCurrentScene({
-                        ...sequence[sceneIndex],
-                        data: sceneData,
-                      });
+                      stopSoundPlay();
+                      // const prevSceneIndex = currentScene?.index ?? 0;
+                      // // const sceneGap = sceneIndex - prevSceneIndex;
+                      // if (prevSceneIndex < sceneIndex) {
+                      //   //  바로 다음 씬으로 이동시, 바로 직전 씬 재생된 것으로 간주
+                      //   sequenceControls.updateItemAtIndex(sceneIndex - 1, {
+                      //     ...sequence[sceneIndex - 1],
+                      //     isPlayed: true,
+                      //   });
+                      //   //
+                      // } else {
+                      //   // 바로 이전 씬으로 이동시, 현재 씬 재생되지 않은 것으로 간주
+                      //   sequenceControls.updateItemAtIndex(sceneIndex, {
+                      //     ...sequence[sceneIndex],
+                      //     isPlayed: false,
+                      //   });
+                      // }
+                      // setCurrentScene({
+                      //   ...sequence[sceneIndex],
+                      //   data: sceneData,
+                      // });
                     }}
                   />
                 );

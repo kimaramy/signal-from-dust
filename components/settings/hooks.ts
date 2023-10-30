@@ -47,7 +47,6 @@ export function useSettingsState() {
 
   const setSettingsData = useCallback(
     (values: SettingsFormData) => {
-      console.log('here!', values);
       const mutableSearchParams = new URLSearchParams(
         Array.from(searchParams.entries())
       );

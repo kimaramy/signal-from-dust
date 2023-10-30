@@ -2,7 +2,8 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: 'Sound Of Dust',
-  description: 'Enjoy graphics and sound generated from dust statistics data',
+  description:
+    'You can enjoy graphics and sounds generated from dust statistics data',
   routes: [
     {
       title: 'Home',

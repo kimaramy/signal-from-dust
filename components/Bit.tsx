@@ -10,9 +10,9 @@ import { random } from 'lodash-es';
 import { cn } from '@/lib/utils';
 import type { Display } from '@/components/display';
 
-import Overlay from './Overlay';
+// import Overlay from './Overlay';
 
-const pentatonic = ['B#3', 'D4', 'F4', 'G4', 'A4', 'B#4'];
+// const pentatonic = ['B#3', 'D4', 'F4', 'G4', 'A4', 'B#4'];
 
 // class Sound {
 //   public note: Tone.Unit.Frequency;
@@ -92,16 +92,6 @@ export default function Bit({
   isActive = false,
   className,
 }: BitProps) {
-  // const activated = useRef(active);
-
-  // const sound = useMemo(() => {
-  //   return new Sound(
-  //     pentatonic[binaryIndex % pentatonic.length],
-  //     binary === '0' ? '8n' : '2n',
-  //     () => setPlaying(false)
-  //   );
-  // }, [binary, binaryIndex]);
-
   const $container = useRef<HTMLLIElement>(null);
   const $turbulence = useRef<SVGFETurbulenceElement | null>(null);
 
@@ -111,7 +101,7 @@ export default function Bit({
   const timelineOne = useRef<TimelineLite | null>(null);
   const timelineTwo = useRef<TimelineLite | null>(null);
 
-  const [isHovering, setHovering] = useState(false);
+  // const [isHovering, setHovering] = useState(false);
 
   const size = useMemo(() => {
     const width =
@@ -189,7 +179,7 @@ export default function Bit({
   };
 
   useUpdateEffect(() => {
-    setPlaying(true);
+    setPlaying(isActive);
   }, [isActive]);
 
   useEffect(() => {
@@ -218,17 +208,18 @@ export default function Bit({
       id={id}
       ref={$container}
       className={cn(
-        'z-5 relative isolate flex h-full rounded-md',
-        display === '2d' && isPlaying ? 'origin-left scale-125' : null,
+        'z-5 relative isolate flex h-full origin-left rounded-md',
+        display === '2d' && isPlaying && 'scale-125',
+        isPlaying && 'pointer-events-none',
         className
       )}
       onClick={handleContainerClick}
-      onMouseOver={() => {
-        setHovering(true);
-      }}
-      onMouseOut={() => {
-        setHovering(false);
-      }}
+      // onMouseOver={() => {
+      //   setHovering(true);
+      // }}
+      // onMouseOut={() => {
+      //   setHovering(false);
+      // }}
     >
       {isEntering ? (
         <>
@@ -250,7 +241,7 @@ export default function Bit({
               className={cn(
                 'grainy-to-left-darken dark:grainy-to-left-darken--dark w-2/5 flex-initial bg-blend-soft-light',
                 display !== '3d' && 'hidden',
-                isPlaying && 'grainy-to-left-darken--active'
+                display === '2d' && isPlaying && 'grainy-to-left-darken--active'
               )}
             ></div>
             <div
@@ -258,7 +249,7 @@ export default function Bit({
                 'w-4 flex-none',
                 'grainy-to-left dark:grainy-to-left--dark',
                 display === '3d' && 'rounded-full bg-blend-difference',
-                isPlaying && 'grainy-to-left--active hidden'
+                display === '2d' && isPlaying && 'grainy-to-left--active hidden'
               )}
             ></div>
             <div
@@ -266,19 +257,19 @@ export default function Bit({
                 'w-full flex-1',
                 'grainy-to-right dark:grainy-to-right--dark',
                 display === '3d' && 'bg-blend-difference',
-                isPlaying && 'grainy-to-right--active'
+                display === '2d' && isPlaying && 'grainy-to-right--active'
               )}
             ></div>
           </div>
           <div className="absolute left-0 top-0 z-10 h-full w-full bg-body mix-blend-multiply dark:mix-blend-screen"></div>
         </>
       ) : null}
-      {isHovering && (
+      {/* {isHovering && (
         <Overlay
           className="z-10"
           onClick={() => setHovering((isHovering) => !isHovering)}
         />
-      )}
+      )} */}
     </li>
   );
 }
