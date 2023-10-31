@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import { useInView } from 'react-intersection-observer';
 
 import { cn } from '@/lib/utils';
 // import Overlay from './Overlay';
-import { Button } from '@/components/ui/button';
 import {
   HoverCard,
   HoverCardContent,
@@ -60,7 +59,7 @@ function Scene({
 
   const sceneRef = useRef<HTMLUListElement>(null);
 
-  const { ref } = useInView({
+  const { ref, inView } = useInView({
     threshold: 0.8,
     initialInView: sceneIndex === 0,
     skip: display === '2d',
@@ -68,7 +67,7 @@ function Scene({
       if (inView) {
         onSceneChange(sceneData, sceneIndex);
       } else {
-        stopSoundPlay(() => setPlaying(false));
+        handleStopSound();
       }
     },
   });
@@ -92,9 +91,14 @@ function Scene({
     }
   }, [binaries]);
 
+  const handleStopSound = useCallback(() => {
+    stopSoundPlay(() => setPlaying(false));
+  }, []);
+
   const handleMouseOver = useCallback<React.MouseEventHandler>(() => {
     if (display === '2d') {
       onSceneChange(sceneData, sceneIndex);
+      // handleStopSound();
     }
     setMouseOver(true);
   }, [display, sceneData]);
@@ -106,6 +110,24 @@ function Scene({
   const handleOverlayClick = useCallback<React.MouseEventHandler>(() => {
     setPlaying((isPlaying) => !isPlaying);
   }, []);
+
+  // useEffect(() => {
+  //   let timeout: NodeJS.Timeout;
+
+  //   if (inView) {
+  //     console.log('inView', sceneId);
+  //     timeout = setTimeout(() => {
+  //       handlePlaySound();
+  //     }, 300);
+  //   } else {
+  //     console.log('outView', sceneId);
+  //     handleStopSound();
+  //   }
+
+  //   () => {
+  //     timeout && clearTimeout(timeout);
+  //   };
+  // }, [inView]);
 
   return (
     <li

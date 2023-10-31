@@ -355,25 +355,31 @@ const getPiano = () => {
       'F#4': 'Fs4.mp3',
       A4: 'A4.mp3',
     },
-    release: 1,
     baseUrl: 'https://tonejs.github.io/audio/salamander/',
   }).toDestination();
 
   return piano;
 };
 
-const initMelodyPart = (binaries: number[], now: number = 0) => {
+const initMelodyPart = (
+  sampler: Tone.Sampler,
+  binaries: number[],
+  now: number = 0
+) => {
   // const mainSynth = getMainSynth();
-  const synth = new Tone.PolySynth(Tone.Synth, {
-    volume: 0,
-    oscillator: {
-      // count: 6,
-      // spread: 40,
-      type: 'fatsawtooth',
-    },
-  }).toDestination();
+  // const synth = new Tone.PolySynth(Tone.Synth, {
+  //   volume: 5,
+  //   oscillator: {
+  //     count: 6,
+  //     // spread: 40,
+  //     type: 'fatsawtooth',
+  //   },
+  // }).toDestination();
+  // const pianoSynth = getPiano();
 
-  const 필립글래스음계 = ['G', 'C', 'D', 'D#', 'F'];
+  // const pentatonic = ['B#2', 'D3', 'F3', 'G3', 'A3', 'B#3', 'D4'];
+
+  const 필립글래스음계 = ['G', 'C', 'D', 'D#', 'F', 'G', 'C', 'D', 'D#', 'F'];
 
   const scale = addOctaveNumbers(필립글래스음계, 3);
 
@@ -386,7 +392,7 @@ const initMelodyPart = (binaries: number[], now: number = 0) => {
         now
       );
       return {
-        note: scale[i % 필립글래스음계.length],
+        note: scale[i % scale.length],
         time,
         duration,
       };
@@ -395,7 +401,7 @@ const initMelodyPart = (binaries: number[], now: number = 0) => {
   console.log(binaries, melodys);
 
   return new Tone.Part(function (time, note) {
-    synth.triggerAttackRelease(note.note, note.duration, time);
+    sampler.triggerAttackRelease(note.note, note.duration, time);
   }, melodys).start(now);
 };
 
@@ -414,14 +420,22 @@ export const toggleSoundPlay = async (
       const transport = Tone.Transport;
       transport.bpm.value = 150;
       // const now = Tone.now();Í
-
       if (Tone.Transport.state !== 'started') {
-        initKickPart();
-        initMelodyPart(binaries);
-        initSnarePart();
-        // initBassPart();
-        transport.start();
-        options?.onStart?.();
+        const sampler = new Tone.Sampler({
+          urls: {
+            A1: 'A1.mp3',
+            A2: 'A2.mp3',
+          },
+          baseUrl: 'https://tonejs.github.io/audio/casio/',
+          onload: () => {
+            // sampler.triggerAttackRelease(["C1", "E1", "G1", "B1"], 0.5);
+            initMelodyPart(sampler, binaries);
+            initSnarePart();
+            initKickPart();
+            transport.start();
+            options?.onStart?.();
+          },
+        }).toDestination();
       } else {
         transport.stop();
         options?.onStop?.();
