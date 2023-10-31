@@ -361,27 +361,28 @@ const getPiano = () => {
   return piano;
 };
 
+const scale1 = ['G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4']; // ['G', 'C', 'D', 'D#', 'F', 'G', 'C', 'D', 'D#', 'F'];
+const scale2 = ['G#3', 'A#3', 'C#4', 'D#4', 'F#4'];
+
+const 필립글래스음계 = [
+  'G2',
+  'C3',
+  'D3',
+  'D#3',
+  'F3',
+  'G3',
+  'C4',
+  'D4',
+  'D#4',
+  'F4',
+];
+
 const initMelodyPart = (
   sampler: Tone.Sampler,
   binaries: number[],
   now: number = 0
 ) => {
-  // const mainSynth = getMainSynth();
-  // const synth = new Tone.PolySynth(Tone.Synth, {
-  //   volume: 5,
-  //   oscillator: {
-  //     count: 6,
-  //     // spread: 40,
-  //     type: 'fatsawtooth',
-  //   },
-  // }).toDestination();
-  // const pianoSynth = getPiano();
-
-  // const pentatonic = ['B#2', 'D3', 'F3', 'G3', 'A3', 'B#3', 'D4'];
-
-  const 필립글래스음계 = ['G', 'C', 'D', 'D#', 'F', 'G', 'C', 'D', 'D#', 'F'];
-
-  const scale = addOctaveNumbers(필립글래스음계, 3);
+  // const scale = addOctaveNumbers(필립글래스음계, 3);
 
   const melodys = binaries
     .map((binary) => (binary === 1 ? '2n.' : '4n'))
@@ -392,7 +393,7 @@ const initMelodyPart = (
         now
       );
       return {
-        note: scale[i % scale.length],
+        note: 필립글래스음계[i % 필립글래스음계.length],
         time,
         duration,
       };
@@ -406,6 +407,39 @@ const initMelodyPart = (
 };
 
 export const initAudio = async () => await Tone.start();
+
+export const triggerSingleNote = (
+  binary: number,
+  binaryIndex: number,
+  onEnd?: () => void
+) => {
+  // const scale = addOctaveNumbers(필립글래스음계, 3);
+
+  const timeout = binary === 0 ? 1 : 2;
+
+  const note = 필립글래스음계[binaryIndex % 필립글래스음계.length];
+
+  const sampler = new Tone.Sampler({
+    // urls: {
+    //   A1: 'A1.mp3',
+    //   A2: 'A2.mp3',
+    // },
+    // baseUrl: 'https://tonejs.github.io/audio/casio/',
+    urls: {
+      C4: 'C4.mp3',
+      'D#4': 'Ds4.mp3',
+      'F#4': 'Fs4.mp3',
+      A4: 'A4.mp3',
+    },
+    baseUrl: 'https://tonejs.github.io/audio/salamander/',
+    onload: () => {
+      sampler.triggerAttackRelease(note, timeout);
+      setTimeout(() => {
+        onEnd?.();
+      }, timeout * 1000);
+    },
+  }).toDestination();
+};
 
 export const toggleSoundPlay = async (
   binaries: number[],
@@ -422,13 +456,19 @@ export const toggleSoundPlay = async (
       // const now = Tone.now();Í
       if (Tone.Transport.state !== 'started') {
         const sampler = new Tone.Sampler({
+          // urls: {
+          //   A1: 'A1.mp3',
+          //   A2: 'A2.mp3',
+          // },
+          // baseUrl: 'https://tonejs.github.io/audio/casio/',
           urls: {
-            A1: 'A1.mp3',
-            A2: 'A2.mp3',
+            C4: 'C4.mp3',
+            'D#4': 'Ds4.mp3',
+            'F#4': 'Fs4.mp3',
+            A4: 'A4.mp3',
           },
-          baseUrl: 'https://tonejs.github.io/audio/casio/',
+          baseUrl: 'https://tonejs.github.io/audio/salamander/',
           onload: () => {
-            // sampler.triggerAttackRelease(["C1", "E1", "G1", "B1"], 0.5);
             initMelodyPart(sampler, binaries);
             initSnarePart();
             initKickPart();

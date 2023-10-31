@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  ArrowRightIcon,
-  PauseCircleIcon,
-  PlayCircleIcon,
-} from '@heroicons/react/20/solid';
+import { ArrowRightIcon, PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -56,9 +52,9 @@ function SceneData3DView(props: SceneData3DViewProps) {
           onClick={onPlayButtonClick}
         >
           {isPlaying ? (
-            <PauseCircleIcon className="h-9 w-9 " />
+            <PauseIcon className="h-6 w-6" />
           ) : (
-            <PlayCircleIcon className="h-9 w-9 " />
+            <PlayIcon className="h-6 w-6" />
           )}
         </Button>
         <div className="flex flex-col justify-center">

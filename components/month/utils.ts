@@ -13,7 +13,7 @@ export function toMonthName(
 export function translateMonth(monthKey: MonthKey = defaultMonthKey) {
   switch (monthKey) {
     case 'All':
-      return '매월';
+      return '매달';
     case 'January':
       return '1월';
     case 'February':

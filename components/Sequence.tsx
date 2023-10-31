@@ -69,7 +69,7 @@ function Sequence({
 
   const [sequence, sequenceControls] = useArrayState<SequenceData>([]);
 
-  const [currentScene, setCurrentScene] = useState<SequenceData>(sequence[0]);
+  // const [currentScene, setCurrentScene] = useState<SequenceData>(sequence[0]);
 
   const handleScroll = useCallback((e: React.UIEvent) => {
     // TODO: requestAnimationFrame으로 최적화
@@ -88,7 +88,7 @@ function Sequence({
     // 데이터셋이 초기화 혹은 교체될 때
     const sequence = initSequence(id, dataset);
     sequenceControls.setArray(sequence);
-    setCurrentScene(sequence[0]);
+    // setCurrentScene(sequence[0]);
     sequenceEl.current?.scrollTo({
       top: 0,
       behavior: 'smooth',
@@ -140,7 +140,6 @@ function Sequence({
                         : getSceneLength(scene.data.value ?? 0)
                     }
                     display={display}
-                    // active={index === 0}
                     onSceneChange={(sceneData, sceneIndex) => {
                       // const prevSceneIndex = currentScene?.index ?? 0;
                       // // const sceneGap = sceneIndex - prevSceneIndex;
@@ -158,10 +157,10 @@ function Sequence({
                       //     isPlayed: false,
                       //   });
                       // }
-                      setCurrentScene({
-                        ...sequence[sceneIndex],
-                        data: sceneData,
-                      });
+                      // setCurrentScene({
+                      //   ...sequence[sceneIndex],
+                      //   data: sceneData,
+                      // });
                     }}
                   />
                 );
@@ -170,63 +169,10 @@ function Sequence({
                 <Skeleton key={i} className="h-full w-full" />
               ))}
         </ul>
-        {/* {currentScene && (
-          <footer
-            className={cn(
-              'fixed bottom-0 left-0 z-20 w-full',
-              display === '2d' && 'hidden'
-            )}
-          >
-            <div className="flex h-player items-center gap-3 border-t border-t-[#dfd7cb] bg-[#dfd7cb]/80 px-4 3xl:container dark:border-input dark:bg-body md:px-6 lg:px-8">
-              <div className="inline-flex h-11 w-11 items-center justify-center rounded bg-black/20 dark:bg-white/20">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="h-6 w-6 text-black/50"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M19.952 1.651a.75.75 0 01.298.599V16.303a3 3 0 01-2.176 2.884l-1.32.377a2.553 2.553 0 11-1.403-4.909l2.311-.66a1.5 1.5 0 001.088-1.442V6.994l-9 2.572v9.737a3 3 0 01-2.176 2.884l-1.32.377a2.553 2.553 0 11-1.402-4.909l2.31-.66a1.5 1.5 0 001.088-1.442V9.017 5.25a.75.75 0 01.544-.721l10.5-3a.75.75 0 01.658.122z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <div className="flex flex-col justify-center">
-                <h3 className="text-lg font-bold text-foreground">
-                  {[
-                    currentScene.data.dates.join(' ') + '의',
-                    currentScene.data.displayName,
-                  ].join(' ')}
-                </h3>
-                <h4 className="pl-px text-xs text-muted-foreground">
-                  데이터 :{' '}
-                  {[
-                    `${currentScene.data.collection} (초)미세먼지 평균`,
-                    `2015~2022년`,
-                    currentScene.data.location,
-                  ].join(', ')}
-                </h4>
-              </div>
-            </div>
-          </footer>
-        )} */}
       </section>
     </>
   );
 }
-
-// function getFallbackSceneDataList(collection: Collection): SceneData[] {
-//   return new Array(getDataCount(collection)).fill(null).map((value, i) => ({
-//     id: i + 1,
-//     collection: translateCollection(collection),
-//     name: 'TBD',
-//     dates: ['...'],
-//     value: 0,
-//     location: 'TBD',
-//     rank: null,
-//   }));
-// }
 
 export function toDailySceneDataList(
   dataset: DailyData[],

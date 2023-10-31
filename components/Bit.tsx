@@ -3,10 +3,13 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useUpdateEffect } from '@/hooks';
 import { Power0, TimelineLite } from 'gsap';
-import { random } from 'lodash-es';
+import { debounce, random, throttle } from 'lodash-es';
 
 import { cn } from '@/lib/utils';
 import type { Display } from '@/components/display';
+
+import Overlay from './Overlay';
+import { triggerSingleNote } from './sound';
 
 export type Binary = '0' | '1';
 
@@ -36,7 +39,7 @@ export default function Bit({
   const timelineOne = useRef<TimelineLite | null>(null);
   const timelineTwo = useRef<TimelineLite | null>(null);
 
-  // const [isHovering, setHovering] = useState(false);
+  const [isHovering, setHovering] = useState(false);
 
   const size = useMemo(() => {
     const width =
@@ -105,10 +108,13 @@ export default function Bit({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEntering, display]);
 
-  // const handleContainerClick = () => {
-  //   if (isActive) return;
-  //   setPlaying(true);
-  // };
+  const handleSoundPlay = () => {
+    if (isActive) return;
+    if (!isPlaying) {
+      triggerSingleNote(Number(binary), binaryIndex, () => setPlaying(false));
+    }
+    setPlaying(true);
+  };
 
   useUpdateEffect(() => {
     setPlaying(isActive);
@@ -135,6 +141,12 @@ export default function Bit({
     }
   }, [isPlaying]);
 
+  // useEffect(() => {
+  //   if (isHovering) {
+  //     handleSoundPlay();
+  //   }
+  // }, [isHovering]);
+
   return (
     <li
       id={id}
@@ -145,13 +157,13 @@ export default function Bit({
         isPlaying && 'pointer-events-none',
         className
       )}
-      // onClick={handleContainerClick}
-      // onMouseOver={() => {
-      //   setHovering(true);
-      // }}
-      // onMouseOut={() => {
-      //   setHovering(false);
-      // }}
+      onClick={handleSoundPlay}
+      onMouseOver={() => {
+        setHovering(true);
+      }}
+      onMouseOut={() => {
+        setHovering(false);
+      }}
     >
       {isEntering ? (
         <>
@@ -196,12 +208,12 @@ export default function Bit({
           <div className="absolute left-0 top-0 z-10 h-full w-full bg-body mix-blend-multiply dark:mix-blend-screen"></div>
         </>
       ) : null}
-      {/* {isHovering && (
+      {isHovering && (
         <Overlay
           className="z-10"
           onClick={() => setHovering((isHovering) => !isHovering)}
         />
-      )} */}
+      )}
     </li>
   );
 }

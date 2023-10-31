@@ -48,7 +48,7 @@ function PresetFields({ defaultValues }: PresetFieldsProps) {
                     : collection === 'Seasonally'
                     ? '사계절마다'
                     : collection === 'Monthly'
-                    ? '매월'
+                    ? '매달'
                     : collection === 'Weekly'
                     ? '매주'
                     : collection === 'Weekdaily'

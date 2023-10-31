@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronRightIcon } from '@heroicons/react/20/solid';
+import { PauseIcon, PlayIcon, PlayPauseIcon } from '@heroicons/react/20/solid';
 import { useInView } from 'react-intersection-observer';
 
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 // import Overlay from './Overlay';
 import {
   HoverCard,
@@ -59,7 +60,7 @@ function Scene({
 
   const sceneRef = useRef<HTMLUListElement>(null);
 
-  const { ref, inView } = useInView({
+  const { ref } = useInView({
     threshold: 0.8,
     initialInView: sceneIndex === 0,
     skip: display === '2d',
@@ -159,23 +160,41 @@ function Scene({
       )}
       {display === '2d' && (
         <HoverCard
-          open={isMouseOver}
           openDelay={0}
           closeDelay={0}
-          onOpenChange={() => setMouseOver((isMouseOver) => !isMouseOver)}
+          // onOpenChange={() => setMouseOver((isMouseOver) => !isMouseOver)}
         >
           <HoverCardTrigger asChild>
             <div
               className={cn(
-                'flex h-full w-40 flex-none cursor-pointer items-center justify-start pl-4 hover:bg-accent'
+                'peer flex h-full w-40 flex-none cursor-pointer items-center justify-start pl-2 hover:bg-accent'
               )}
               // onMouseOver={handleMouseOver}
               // onMouseOut={handleMouseOut}
             >
-              <h4 className="flex items-center text-sm">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-2 text-sm"
+                onClick={() => {
+                  if (isPlaying) {
+                    handlePlaySound();
+                    stopSoundPlay();
+                  } else {
+                    handlePlaySound();
+                  }
+                }}
+              >
+                <PlayIcon
+                  aria-hidden
+                  className={cn('h-3.5 w-3.5', isPlaying && 'hidden')}
+                />
+                <PauseIcon
+                  aria-hidden
+                  className={cn('h-3.5 w-3.5', !isPlaying && 'hidden')}
+                />
                 <span>{sceneData.dates.join(' ')}</span>
-                <ChevronRightIcon aria-hidden className="h-5 w-5 pl-1" />
-              </h4>
+              </Button>
             </div>
           </HoverCardTrigger>
           <HoverCardContent
@@ -185,12 +204,6 @@ function Scene({
               display !== '2d' && 'hidden'
             )}
           >
-            {/* <SceneDataView
-              sceneData={sceneData}
-              binaries={binaries}
-              isPlaying={isPlaying}
-              onPlayButtonClick={handlePlaySound}
-            /> */}
             <SceneData3DView
               sceneData={sceneData}
               binaries={binaries}
@@ -205,8 +218,8 @@ function Scene({
       <ul
         ref={sceneRef}
         className={cn(
-          'relative grid h-full w-full flex-1 cursor-pointer gap-1 rounded-md bg-fixed p-1',
-          display === '2d' && 'hover:ring-1 data-[state=open]:ring-1'
+          'relative grid h-full w-full flex-1 cursor-pointer gap-1 rounded-md bg-fixed p-1 peer-hover:ring-1',
+          display === '2d' && 'data-[state=open]:ring-1'
         )}
         style={{
           gridTemplateColumns:
@@ -221,9 +234,9 @@ function Scene({
               : undefined,
           transformStyle: display === '3d' ? 'preserve-3d' : undefined,
         }}
-        onClick={handlePlaySound}
-        onMouseOver={handleMouseOver}
-        onMouseOut={handleMouseOut}
+        // onClick={handlePlaySound}
+        // onMouseOver={handleMouseOver}
+        // onMouseOut={handleMouseOut}
       >
         {binaries?.map((binary, index) => {
           const bitId = [sceneId, index].join('-');
