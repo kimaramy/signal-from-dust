@@ -170,7 +170,7 @@ function Sequence({
                 <Skeleton key={i} className="h-full w-full" />
               ))}
         </ul>
-        {currentScene && (
+        {/* {currentScene && (
           <footer
             className={cn(
               'fixed bottom-0 left-0 z-20 w-full',
@@ -210,7 +210,7 @@ function Sequence({
               </div>
             </div>
           </footer>
-        )}
+        )} */}
       </section>
     </>
   );

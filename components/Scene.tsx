@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useRef, useState } from 'react';
-import { PauseCircleIcon, PlayCircleIcon } from '@heroicons/react/20/solid';
+import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import { useInView } from 'react-intersection-observer';
 
 import { cn } from '@/lib/utils';
@@ -13,14 +13,10 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
 import { Display } from '@/components/display';
-import {
-  DustSize,
-  getDustGrade,
-  getDustGradeColor,
-} from '@/components/dustSize';
 import { stopSoundPlay, toggleSoundPlay } from '@/components/sound';
 
 import Bit, { Binary } from './Bit';
+import SceneData3DView from './SceneData3DView';
 
 export function getSceneLength(decimal: number) {
   return decimal.toString(2).length;
@@ -77,11 +73,6 @@ function Scene({
     },
   });
 
-  const dustGrade = getDustGrade(
-    sceneData.value ?? 0,
-    sceneData.name as DustSize
-  );
-
   const [isPlaying, setPlaying] = useState(false);
 
   const [isMouseOver, setMouseOver] = useState(false);
@@ -91,9 +82,11 @@ function Scene({
       toggleSoundPlay(binaries.map(Number), {
         onStart() {
           setPlaying(true);
+          setMouseOver(true);
         },
         onStop() {
           setPlaying(false);
+          setMouseOver(false);
         },
       });
     }
@@ -127,130 +120,106 @@ function Scene({
       //   perspective: display === '3d' ? `1500px` : undefined,
       // }}
     >
-      {display === '2d' && (
-        <div className="flex w-28 flex-none items-center justify-start pl-4">
-          <h4 className="w-full text-xs">{sceneData.dates.join(' ')}</h4>
+      {display === '3d' && (
+        <div
+          className={cn(
+            'min-w-80 absolute bottom-[8%] left-[4%] z-20 w-auto bg-muted text-muted-foreground'
+          )}
+        >
+          <SceneData3DView
+            sceneData={sceneData}
+            binaries={binaries}
+            display={display}
+            isPlaying={isPlaying}
+            onPlayButtonClick={handlePlaySound}
+          />
         </div>
       )}
-      {display === '3d' && (
-        <Button
-          variant="default"
-          className="absolute bottom-0 left-0 flex h-12 w-12"
-          onClick={handlePlaySound}
+      {display === '2d' && (
+        <HoverCard
+          open={isMouseOver}
+          openDelay={0}
+          closeDelay={0}
+          onOpenChange={() => setMouseOver((isMouseOver) => !isMouseOver)}
         >
-          <PlayCircleIcon className="h-8 w-8" />
-        </Button>
-      )}
-      <HoverCard openDelay={0} closeDelay={0}>
-        <HoverCardTrigger asChild>
-          <ul
-            ref={sceneRef}
-            className={cn(
-              'relative grid h-full w-full flex-1 cursor-pointer gap-1 rounded-md bg-fixed p-1',
-              display === '2d' && 'hover:ring-1 data-[state=open]:ring-1'
-            )}
-            style={{
-              gridTemplateColumns:
-                display === '3d'
-                  ? binaries
-                      ?.map((binary) => (binary === '0' ? '1fr' : '1.5fr'))
-                      .join(' ')
-                  : `repeat(${sceneLength}, 1fr)`,
-              transform:
-                display === '3d'
-                  ? `rotateX(70deg) rotateZ(40deg) translateZ(0em) scaleX(1.15) scaleY(1.35)`
-                  : undefined,
-              transformStyle: display === '3d' ? 'preserve-3d' : undefined,
-            }}
-            onClick={handlePlaySound}
-            onMouseOver={handleMouseOver}
-            onMouseOut={handleMouseOut}
-          >
-            {binaries?.map((binary, index) => {
-              const bitId = [sceneId, index].join('-');
-              return (
-                <Bit
-                  key={`${display}-${bitId}`}
-                  id={bitId}
-                  binary={binary}
-                  binaryIndex={index}
-                  display={display}
-                  isActive={isPlaying}
-                />
-              );
-            })}
-            {/* {isMouseOver ? (
-              <Overlay className="z-0" onClick={handleOverlayClick} />
-            ) : null} */}
-          </ul>
-        </HoverCardTrigger>
-        {display === '2d' && (
+          <HoverCardTrigger asChild>
+            <div
+              className={cn(
+                'flex h-full w-40 flex-none cursor-pointer items-center justify-start pl-4 hover:bg-accent'
+              )}
+              // onMouseOver={handleMouseOver}
+              // onMouseOut={handleMouseOut}
+            >
+              <h4 className="flex items-center text-sm">
+                <span>{sceneData.dates.join(' ')}</span>
+                <ChevronRightIcon aria-hidden className="h-5 w-5 pl-1" />
+              </h4>
+            </div>
+          </HoverCardTrigger>
           <HoverCardContent
             align="start"
-            className="min-w-80 w-auto bg-muted text-muted-foreground"
+            className={cn(
+              'min-w-80 w-auto bg-muted p-1 text-muted-foreground',
+              display !== '2d' && 'hidden'
+            )}
           >
-            <div className="flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-12 w-12"
-                onClick={handlePlaySound}
-              >
-                {isPlaying ? (
-                  <PauseCircleIcon className="h-9 w-9" />
-                ) : (
-                  <PlayCircleIcon className="h-9 w-9" />
-                )}
-              </Button>
-              <div className="pr-4">
-                <h4 className="inline-block divide-x divide-ring border border-ring font-mono text-base font-semibold tracking-wider text-accent-foreground">
-                  {binaries?.map((binary, i) => (
-                    <span
-                      key={`${binary}-${i}`}
-                      className="inline-flex items-center justify-center px-2 py-1"
-                    >
-                      {binary}
-                    </span>
-                  ))}
-                </h4>
-                <ul className="mt-2.5 space-y-1 text-[0.8em] tracking-tight">
-                  <li className="bullet flex">
-                    {[
-                      `${sceneData.dates.join(' ')}의 ${
-                        sceneData.displayName
-                      } 평균`,
-                      sceneData.location,
-                    ].join(', ')}
-                  </li>
-                  <li className="bullet flex items-baseline">
-                    {/* <span>측정 값&nbsp;:&nbsp;</span> */}
-                    <span className="">{sceneData.value}(㎍/㎥)</span>
-                    <span
-                      className="ml-1.5 inline-block rounded px-1 py-px text-[0.9em] text-black"
-                      style={{ backgroundColor: getDustGradeColor(dustGrade) }}
-                    >
-                      {dustGrade}
-                    </span>
-                  </li>
-                </ul>
-
-                {/* <h5 className="text-sm">{sceneData.value}(㎍/㎥)</h5>
-                <p className="text-sm">
-                  {[
-                    `${sceneData.dates.join(' ')}의 ${sceneData.name} 평균`,
-                    sceneData.location,
-                  ].join(', ')}
-                </p> */}
-                {/* <div className="flex items-center pt-2">
-                  <span className="text-xs text-muted-foreground">
-                    {sceneData.name} 수치를 2진 신호로 출력한 결과입니다.
-                  </span>
-                </div> */}
-              </div>
-            </div>
+            {/* <SceneDataView
+              sceneData={sceneData}
+              binaries={binaries}
+              isPlaying={isPlaying}
+              onPlayButtonClick={handlePlaySound}
+            /> */}
+            <SceneData3DView
+              sceneData={sceneData}
+              binaries={binaries}
+              display={display}
+              isPlaying={isPlaying}
+              onPlayButtonClick={handlePlaySound}
+            />
           </HoverCardContent>
+        </HoverCard>
+      )}
+
+      <ul
+        ref={sceneRef}
+        className={cn(
+          'relative grid h-full w-full flex-1 cursor-pointer gap-1 rounded-md bg-fixed p-1',
+          display === '2d' && 'hover:ring-1 data-[state=open]:ring-1'
         )}
-      </HoverCard>
+        style={{
+          gridTemplateColumns:
+            display === '3d'
+              ? binaries
+                  ?.map((binary) => (binary === '0' ? '1fr' : '1.5fr'))
+                  .join(' ')
+              : `repeat(${sceneLength}, 1fr)`,
+          transform:
+            display === '3d'
+              ? `rotateX(70deg) rotateZ(40deg) translateZ(0em) scaleX(1.15) scaleY(1.35)`
+              : undefined,
+          transformStyle: display === '3d' ? 'preserve-3d' : undefined,
+        }}
+        onClick={handlePlaySound}
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}
+      >
+        {binaries?.map((binary, index) => {
+          const bitId = [sceneId, index].join('-');
+          return (
+            <Bit
+              key={`${display}-${bitId}`}
+              id={bitId}
+              binary={binary}
+              binaryIndex={index}
+              display={display}
+              isActive={isPlaying}
+            />
+          );
+        })}
+        {/* {isMouseOver ? (
+              <Overlay className="z-0" onClick={handleOverlayClick} />
+            ) : null} */}
+      </ul>
     </li>
   );
 }

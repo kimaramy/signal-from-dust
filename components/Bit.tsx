@@ -172,24 +172,24 @@ export default function Bit({
             <div
               className={cn(
                 'grainy-to-left-darken dark:grainy-to-left-darken--dark w-2/5 flex-initial bg-blend-soft-light',
-                display !== '3d' && 'hidden',
-                display === '2d' && isPlaying && 'grainy-to-left-darken--active'
+                display !== '3d' && 'hidden'
+                // display === '2d' && isPlaying && 'grainy-to-left-darken--active'
               )}
             ></div>
             <div
               className={cn(
                 'w-4 flex-none',
                 'grainy-to-left dark:grainy-to-left--dark',
-                display === '3d' && 'rounded-full bg-blend-difference',
-                display === '2d' && isPlaying && 'grainy-to-left--active hidden'
+                display === '3d' && 'rounded-full bg-blend-difference'
+                // display === '2d' && isPlaying && 'grainy-to-left--active hidden'
               )}
             ></div>
             <div
               className={cn(
                 'w-full flex-1',
                 'grainy-to-right dark:grainy-to-right--dark',
-                display === '3d' && 'bg-blend-difference',
-                display === '2d' && isPlaying && 'grainy-to-right--active'
+                display === '3d' && 'bg-blend-difference'
+                // display === '2d' && isPlaying && 'grainy-to-right--active'
               )}
             ></div>
           </div>
