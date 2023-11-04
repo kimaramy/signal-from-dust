@@ -5,7 +5,7 @@ import { toLower, toUpper } from 'lodash-es';
 
 import { QueryParamEnum } from '@/lib/utils';
 
-import { displaySchema, type DisplayKey, type DisplayValue } from './schema';
+import { displaySchema, type DisplayKey } from './schema';
 
 export function useDisplayKey(): DisplayKey {
   const lowerCasedKeys = displaySchema
@@ -24,11 +24,6 @@ export function useDisplayKey(): DisplayKey {
 
   return toUpper(lowerCasedKey) as DisplayKey;
 }
-
-// export function useDisplayKey(): DisplayKey {
-//   const displayValue = useDisplayValue();
-//   return displaySchema.getKeyByValue(displayValue);
-// }
 
 export function useSetDisplayKey() {
   const setDisplayKey = useSetQueryParam<Lowercase<DisplayKey>>(

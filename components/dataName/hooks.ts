@@ -25,11 +25,6 @@ export function useDataNameKey(): DataNameKey {
   return toUpper(lowerCasedKey) as DataNameKey;
 }
 
-// export function useDataNameKey(): DataNameKey {
-//   const dataNameValue = useDataNameValue();
-//   return dataNameSchema.getKeyByValue(dataNameValue);
-// }
-
 export function useSetDataNameKey() {
   const setDataNameKey = useSetQueryParam<Lowercase<DataNameKey>>(
     QueryParamEnum.DataName
@@ -39,11 +34,3 @@ export function useSetDataNameKey() {
     setDataNameKey(lowerCasedKey);
   };
 }
-
-// export function useSetDataNameKey() {
-//   const setDataNameValue = useSetDataNameValue();
-//   return function (dataNameKey: DataNameKey) {
-//     const dataNameValue = dataNameSchema.getValue(dataNameKey);
-//     setDataNameValue(dataNameValue);
-//   };
-// }
