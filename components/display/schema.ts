@@ -1,14 +1,82 @@
+import { toLower, toUpper } from 'lodash-es';
 import { z } from 'zod';
 
-export const displaySchema = z.enum(['3d', '2d']);
+import { type QuerySchema } from '@/lib/utils';
 
-export const displayMap = Object.freeze({
-  default: displaySchema.Enum['2d'],
-  ...displaySchema.Enum,
-});
+const displayKeySchema = z.enum(['FULL', 'AUTO']);
 
-export const displaySet = Object.freeze([
-  ...new Set(Object.values(displayMap)),
-]);
+type DisplayKeySchema = typeof displayKeySchema;
 
-export type Display = z.infer<typeof displaySchema>;
+type DisplayKey = z.infer<typeof displayKeySchema>;
+
+type DisplayValue = Lowercase<DisplayKey>;
+
+type DisplayDict = {
+  name: DisplayKey;
+  displayName: string;
+  value: DisplayValue;
+};
+
+class DisplaySchema
+  implements QuerySchema<DisplayKey, DisplayValue, DisplayDict>
+{
+  private readonly keySchema: DisplayKeySchema;
+  readonly keys: DisplayKeySchema['Values'];
+
+  constructor() {
+    this.keySchema = displayKeySchema;
+    this.keys = displayKeySchema.Values;
+  }
+  getDefaultKey() {
+    return this.keySchema.Values.AUTO;
+  }
+  getDefaultValue() {
+    return this.getValue(this.getDefaultKey());
+  }
+  getAllKeys() {
+    return Object.values(this.keySchema.Values);
+  }
+  getAllValues() {
+    return this.getAllKeys().map((key) => this.getValue(key));
+  }
+  getKeyByValue(displayValue: DisplayValue) {
+    return toUpper(displayValue) as DisplayKey;
+  }
+  getValue(seasonKey: DisplayKey) {
+    return toLower(seasonKey) as DisplayValue;
+  }
+  parseKey(maybeDisplayKey: unknown) {
+    this.keySchema.parse(maybeDisplayKey);
+  }
+  safeParseKey(maybeDisplayKey: unknown) {
+    return this.keySchema.safeParse(maybeDisplayKey).success;
+  }
+  getKeyDict(locale?: string) {
+    return this.getAllKeys().reduce(
+      (keyDict, key) => {
+        keyDict[key] = {
+          name: key,
+          displayName: this.display(key, locale),
+          value: this.getValue(key),
+        };
+        return keyDict;
+      },
+      {} as Record<DisplayKey, DisplayDict>
+    );
+  }
+  display(displayKey: DisplayKey, locale = 'ko-KR') {
+    const isKorean = locale === 'ko-KR';
+    switch (displayKey) {
+      case 'AUTO':
+        return isKorean ? '전체보기' : 'List View';
+      case 'FULL':
+        return isKorean ? '개별보기' : 'Item View';
+      default:
+        return this.parseKey(displayKey) as never;
+    }
+  }
+}
+
+const displaySchema = new DisplaySchema();
+
+export { displaySchema, type DisplayKey, type DisplayValue };

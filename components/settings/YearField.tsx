@@ -9,25 +9,25 @@ import {
 } from '@/components/ui/form';
 import { defaultYearValue, YearSelect } from '@/components/year';
 
-import type { SettingsFormData } from './SettingsForm';
+import { type SettingsFormValues } from './SettingsForm';
 
 function YearField() {
-  const { control, watch, setValue } = useFormContext<SettingsFormData>();
+  const { control, watch, setValue } = useFormContext<SettingsFormValues>();
 
   const mode = watch('mode');
 
-  const dataCollection = watch('dataCollection');
+  const dataCollectionKey = watch('dataCollectionKey');
 
   const isDisabled = mode === 'preset';
 
   const isVisible =
-    dataCollection === 'Weekly' ||
-    dataCollection === 'Monthly' ||
-    dataCollection === 'Seasonally';
+    dataCollectionKey === 'WEEKLY' ||
+    dataCollectionKey === 'MONTHLY' ||
+    dataCollectionKey === 'SEASONALLY';
 
   useUpdateEffect(() => {
     setValue('year', defaultYearValue);
-  }, [dataCollection]);
+  }, [dataCollectionKey]);
 
   return (
     <FormField

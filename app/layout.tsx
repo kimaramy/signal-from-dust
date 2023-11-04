@@ -47,7 +47,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <meta name="format-detection" content="telephone=no" />
           <meta
             name="keywords"
-            content="미세먼지, 초미세먼지, 데이터시각화, 인터랙티브"
+            content="data art, interative, visualization, sonification, graphic, sound, pattern, dust"
           />
           <meta name="author" content="Fed" />
           {/* 페이지별 오픈그래프 공통 */}
@@ -55,12 +55,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <meta name="og:site_name" content="Sound Of Dust" />
           <meta name="og:locale" content="ko_KR" />
           <meta name="og:image" content="" />
-          <meta name="og:image:alt" content="미세먼지 패턴" />
+          <meta name="og:image:alt" content="Sound Of Dust" />
           <meta name="og:image:width" content="1200" />
           <meta name="og:image:height" content="628" />
           {/* 페이지별 트위터 공통 */}
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:site" content="@시각화" />
+          <meta name="twitter:site" content="@DataArt" />
           <meta name="twitter:creator" content="@Fed" />
           <link
             rel="stylesheet"

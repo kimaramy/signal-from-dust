@@ -1,69 +1,72 @@
 import { useCallback, useMemo } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSetQueryParams } from '@/hooks';
+import { toLower } from 'lodash-es';
 
 import { QueryParamEnum } from '@/lib/utils';
-import { defaultCollection, useCollectionValue } from '@/components/collection';
-import { defaultDustSize, useDustSizeValue } from '@/components/dustSize';
+import {
+  dataCollectionSchema,
+  useDataCollectionKey,
+} from '@/components/dataCollection';
+import { dataNameSchema, useDataNameKey } from '@/components/dataName';
 import {
   defaultMonthValue,
   getMonthKey,
   useMonthValue,
 } from '@/components/month';
-import { defaultSeason, useSeasonValue } from '@/components/season';
+import { seasonSchema, useSeasonKey } from '@/components/season';
 import { defaultYearValue, getYearKey, useYearValue } from '@/components/year';
 
-import { SettingsFormData } from './SettingsForm';
+import { type SettingsFormValues } from './SettingsForm';
 
 export function useSettingsState() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const setQueryParams = useSetQueryParams();
 
-  const dataName = useDustSizeValue();
-  const dataCollection = useCollectionValue();
-  const year = useYearValue();
-  const month = useMonthValue();
-  const season = useSeasonValue();
+  const dataNameKey = useDataNameKey();
+  const dataCollectionKey = useDataCollectionKey();
+  const seasonKey = useSeasonKey();
+  const yearValue = useYearValue();
+  const monthValue = useMonthValue();
 
-  const defaultSettingsData: SettingsFormData = useMemo(
+  const defaultSettingsData: SettingsFormValues = useMemo(
     () => ({
       mode: 'preset',
-      dataName: defaultDustSize,
-      dataCollection: defaultCollection,
-      year: defaultYearValue,
-      season: defaultSeason,
+      dataNameKey: dataNameSchema.getDefaultKey(),
+      dataCollectionKey: dataCollectionSchema.getDefaultKey(),
+      seasonKey: seasonSchema.getDefaultKey(),
       month: defaultMonthValue,
+      year: defaultYearValue,
     }),
     []
   );
 
-  const settingsData: SettingsFormData = {
+  const settingsData: SettingsFormValues = {
     mode: 'preset',
-    dataName,
-    dataCollection,
-    year,
-    month,
-    season,
+    dataNameKey,
+    dataCollectionKey,
+    seasonKey,
+    year: yearValue,
+    month: monthValue,
   };
 
   const setSettingsData = useCallback(
-    (values: SettingsFormData) => {
-      const mutableSearchParams = new URLSearchParams(
-        Array.from(searchParams.entries())
-      );
-      mutableSearchParams.set(QueryParamEnum.DustSize, values.dataName);
-      mutableSearchParams.set(QueryParamEnum.Collection, values.dataCollection);
-      mutableSearchParams.set(
-        QueryParamEnum.Year,
-        getYearKey(values.year) as string
-      );
-      mutableSearchParams.set(
-        QueryParamEnum.Month,
-        getMonthKey(values.month) as string
-      );
-      mutableSearchParams.set(QueryParamEnum.Season, values.season);
-      router.push(`?${mutableSearchParams.toString()}`);
+    (values: SettingsFormValues) => {
+      const map = new Map<QueryParamEnum, string | number>();
+      map
+        .set(QueryParamEnum.DataName, values.dataNameKey)
+        .set(QueryParamEnum.DataCollection, values.dataCollectionKey)
+        .set(QueryParamEnum.Season, values.seasonKey);
+
+      map.forEach((value, key) => {
+        map.set(key, toLower(value.toString()));
+      });
+
+      map
+        .set(QueryParamEnum.Year, getYearKey(values.year) as string)
+        .set(QueryParamEnum.Month, getMonthKey(values.month) as string);
+
+      setQueryParams(map);
     },
-    [router, searchParams]
+    [setQueryParams]
   );
 
   return {

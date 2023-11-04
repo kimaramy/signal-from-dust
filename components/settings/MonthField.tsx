@@ -9,23 +9,23 @@ import {
 } from '@/components/ui/form';
 import { defaultMonthValue, MonthSelect } from '@/components/month';
 
-import type { SettingsFormData } from './SettingsForm';
+import { type SettingsFormValues } from './SettingsForm';
 
 function MonthField() {
-  const { control, watch, setValue } = useFormContext<SettingsFormData>();
+  const { control, watch, setValue } = useFormContext<SettingsFormValues>();
 
   const mode = watch('mode');
 
-  const dataCollection = watch('dataCollection');
+  const dataCollectionKey = watch('dataCollectionKey');
 
   const isDisabled = mode === 'preset';
 
   const isVisible =
-    dataCollection === 'Daily' || dataCollection === 'Weekdaily';
+    dataCollectionKey === 'DAILY' || dataCollectionKey === 'WEEKDAILY';
 
   useUpdateEffect(() => {
     setValue('month', defaultMonthValue);
-  }, [dataCollection]);
+  }, [dataCollectionKey]);
 
   return (
     <FormField

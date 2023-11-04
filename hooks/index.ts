@@ -6,6 +6,7 @@ export { default as useRaf } from './useRaf';
 
 export { default as useQueryParam } from './useQueryParam';
 export { default as useSetQueryParam } from './useSetQueryParam';
+export { default as useSetQueryParams } from './useSetQueryParams';
 export { default as useSafeQueryParam } from './useSafeQueryParam';
 export { default as useNumberQueryParam } from './useNumberQueryParam';
 export { default as useBooleanQueryParam } from './useBooleanQueryParam';

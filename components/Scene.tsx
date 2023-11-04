@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { PauseIcon, PlayIcon, PlayPauseIcon } from '@heroicons/react/20/solid';
+import React, { useCallback, useRef, useState } from 'react';
+import { PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
 import { useInView } from 'react-intersection-observer';
 
 import { cn } from '@/lib/utils';
@@ -12,11 +12,12 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
-import { Display } from '@/components/display';
+import { type DisplayKey } from '@/components/display';
 import { stopSoundPlay, toggleSoundPlay } from '@/components/sound';
 
 import Bit, { Binary } from './Bit';
 import SceneData3DView from './SceneData3DView';
+import SceneRoot from './SceneRoot';
 
 export function getSceneLength(decimal: number) {
   return decimal.toString(2).length;
@@ -34,26 +35,28 @@ export interface SceneData {
 }
 
 export interface SceneProps {
+  displayKey: DisplayKey;
   sceneId: string;
   sceneData: SceneData;
   sceneIndex: number;
   sceneLength?: number;
-  display: Display;
   active?: boolean;
   className?: string;
   onSceneChange: (sceneData: SceneData, sceneIndex: number) => void;
 }
 
 function Scene({
+  displayKey,
   sceneId,
   sceneData,
   sceneIndex,
   sceneLength = 8,
-  display,
   active = false,
   className,
   onSceneChange,
 }: SceneProps) {
+  const isFullPage = displayKey === 'FULL';
+
   const binaries = sceneData.value?.toString(2).split('') as
     | Binary[]
     | undefined;
@@ -63,7 +66,7 @@ function Scene({
   const { ref } = useInView({
     threshold: 0.8,
     initialInView: sceneIndex === 0,
-    skip: display === '2d',
+    skip: !isFullPage,
     onChange(inView) {
       if (inView) {
         onSceneChange(sceneData, sceneIndex);
@@ -97,12 +100,12 @@ function Scene({
   }, []);
 
   const handleMouseOver = useCallback<React.MouseEventHandler>(() => {
-    if (display === '2d') {
+    if (!isFullPage) {
       onSceneChange(sceneData, sceneIndex);
       // handleStopSound();
     }
     setMouseOver(true);
-  }, [display, sceneData]);
+  }, [isFullPage, sceneData]);
 
   const handleMouseOut = useCallback<React.MouseEventHandler>(() => {
     setMouseOver(false);
@@ -131,19 +134,16 @@ function Scene({
   // }, [inView]);
 
   return (
-    <li
-      id={sceneId}
+    <SceneRoot
       ref={ref}
-      className={cn(
-        'relative flex h-full items-center gap-6',
-        display === '3d' && 'justify-center overflow-x-hidden',
-        className
-      )}
+      id={sceneId}
+      className={className}
+      justify={isFullPage ? 'center' : 'start'}
       // style={{
       //   perspective: display === '3d' ? `1500px` : undefined,
       // }}
     >
-      {display === '3d' && (
+      {/* {display === '3d' && (
         <div
           className={cn(
             'min-w-80 absolute bottom-[8%] left-[4%] z-20 w-auto bg-muted text-muted-foreground'
@@ -157,8 +157,8 @@ function Scene({
             onPlayButtonClick={handlePlaySound}
           />
         </div>
-      )}
-      {display === '2d' && (
+      )} */}
+      {!isFullPage && (
         <HoverCard
           openDelay={0}
           closeDelay={0}
@@ -200,14 +200,14 @@ function Scene({
           <HoverCardContent
             align="start"
             className={cn(
-              'min-w-80 w-auto bg-muted p-1 text-muted-foreground',
-              display !== '2d' && 'hidden'
+              'w-auto min-w-80 bg-muted p-1 text-muted-foreground',
+              isFullPage && 'hidden'
             )}
           >
             <SceneData3DView
               sceneData={sceneData}
               binaries={binaries}
-              display={display}
+              displayKey={displayKey}
               isPlaying={isPlaying}
               onPlayButtonClick={handlePlaySound}
             />
@@ -219,20 +219,18 @@ function Scene({
         ref={sceneRef}
         className={cn(
           'relative grid h-full w-full flex-1 cursor-pointer gap-1 rounded-md bg-fixed p-1 peer-hover:ring-1',
-          display === '2d' && 'data-[state=open]:ring-1'
+          !isFullPage && 'data-[state=open]:ring-1'
         )}
         style={{
-          gridTemplateColumns:
-            display === '3d'
-              ? binaries
-                  ?.map((binary) => (binary === '0' ? '1fr' : '1.5fr'))
-                  .join(' ')
-              : `repeat(${sceneLength}, 1fr)`,
-          transform:
-            display === '3d'
-              ? `rotateX(70deg) rotateZ(40deg) translateZ(0em) scaleX(1.15) scaleY(1.35)`
-              : undefined,
-          transformStyle: display === '3d' ? 'preserve-3d' : undefined,
+          gridTemplateColumns: isFullPage
+            ? binaries
+                ?.map((binary) => (binary === '0' ? '1fr' : '1.5fr'))
+                .join(' ')
+            : `repeat(${sceneLength}, 1fr)`,
+          transform: isFullPage
+            ? `rotateX(70deg) rotateZ(40deg) translateZ(0em) scaleX(1.15) scaleY(1.35)`
+            : undefined,
+          transformStyle: isFullPage ? 'preserve-3d' : undefined,
         }}
         // onClick={handlePlaySound}
         // onMouseOver={handleMouseOver}
@@ -242,11 +240,11 @@ function Scene({
           const bitId = [sceneId, index].join('-');
           return (
             <Bit
-              key={`${display}-${bitId}`}
+              key={`${displayKey}-${bitId}`}
               id={bitId}
+              displayKey={displayKey}
               binary={binary}
               binaryIndex={index}
-              display={display}
               isActive={isPlaying}
             />
           );
@@ -255,7 +253,7 @@ function Scene({
               <Overlay className="z-0" onClick={handleOverlayClick} />
             ) : null} */}
       </ul>
-    </li>
+    </SceneRoot>
   );
 }
 

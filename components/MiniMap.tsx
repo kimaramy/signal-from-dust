@@ -4,20 +4,19 @@ import React, { useEffect, useRef } from 'react';
 // @ts-ignore
 import pagemap from 'pagemap';
 
-import { useCollectionValue } from '@/components/collection';
-
-import { useDisplayValue } from './display';
+import { useDataCollectionKey } from '@/components/dataCollection';
+import { useDisplayKey } from '@/components/display';
 
 function MiniMap() {
-  const display = useDisplayValue();
+  const displayKey = useDisplayKey();
 
-  const collection = useCollectionValue();
+  const dataCollectionKey = useDataCollectionKey();
 
   const canvasRef = useRef(null);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (display === '3d') {
+      if (displayKey === 'FULL') {
         pagemap(canvasRef.current, {
           viewport: document.getElementById('container'),
           styles: {
@@ -35,15 +34,15 @@ function MiniMap() {
     return () => {
       clearTimeout(timeout);
     };
-  }, [display, collection]);
+  }, [displayKey, dataCollectionKey]);
 
-  if (display === '2d') return null;
+  if (displayKey === 'AUTO') return null;
 
   return (
     <canvas
+      key={dataCollectionKey}
       ref={canvasRef}
       className="absolute right-0 top-0 z-50 h-screen"
-      key={collection}
     ></canvas>
   );
 }

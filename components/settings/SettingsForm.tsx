@@ -3,11 +3,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { Form } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
-import { Collection } from '@/components/collection';
-import { DustSize } from '@/components/dustSize';
-import { Month } from '@/components/month';
-import { Season } from '@/components/season';
-import { Year } from '@/components/year';
+import { type DataCollectionKey } from '@/components/dataCollection';
+import { type DataNameKey } from '@/components/dataName';
+import { type Month } from '@/components/month';
+import { type SeasonKey } from '@/components/season';
+import { type Year } from '@/components/year';
 
 import CustomSettingsFields from './CustomSettingsFields';
 import ModeField from './ModeField';
@@ -15,27 +15,27 @@ import PresetFields from './PresetFields';
 
 const SETTINGS_FORM_ID = 'settings-form';
 
-interface SettingsFormData {
+interface SettingsFormValues {
   mode: 'preset' | 'custom';
-  dataName: DustSize;
-  dataCollection: Collection;
-  year: Year;
+  dataNameKey: DataNameKey;
+  dataCollectionKey: DataCollectionKey;
+  seasonKey: SeasonKey;
   month: Month;
-  season: Season;
+  year: Year;
 }
 
-type SettingsFormSubmitHandler = SubmitHandler<SettingsFormData>;
+type SettingsFormSubmitHandler = SubmitHandler<SettingsFormValues>;
 
 interface SettingsFormProps {
-  values: SettingsFormData;
-  defaultValues: SettingsFormData;
+  values: SettingsFormValues;
+  defaultValues: SettingsFormValues;
   onSubmit: SettingsFormSubmitHandler;
 }
 
 function SettingsForm(props: SettingsFormProps) {
   const { defaultValues, values, onSubmit } = props;
 
-  const settingsForm = useForm<SettingsFormData>({
+  const settingsForm = useForm<SettingsFormValues>({
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
     shouldUseNativeValidation: false,
@@ -66,6 +66,6 @@ function SettingsForm(props: SettingsFormProps) {
 
 export { SETTINGS_FORM_ID };
 
-export type { SettingsFormData, SettingsFormSubmitHandler };
+export type { SettingsFormValues, SettingsFormSubmitHandler };
 
 export default SettingsForm;

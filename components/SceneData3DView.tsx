@@ -4,33 +4,32 @@ import { ArrowRightIcon, PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import {
-  DustSize,
-  getDustGrade,
-  getDustGradeColor,
-} from '@/components/dustSize';
+import { DustGrade, type DataNameKey } from '@/components/dataName';
+import { type DisplayKey } from '@/components/display';
 
 import type { Binary } from './Bit';
-import { Display } from './display';
 import type { SceneData } from './Scene';
 
 interface SceneData3DViewProps {
+  displayKey: DisplayKey;
   sceneData: SceneData;
   binaries?: Binary[];
-  display: Display;
   isPlaying: boolean;
   onPlayButtonClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 function SceneData3DView(props: SceneData3DViewProps) {
-  const { sceneData, binaries, display, isPlaying, onPlayButtonClick } = props;
+  const { sceneData, binaries, displayKey, isPlaying, onPlayButtonClick } =
+    props;
 
-  const dustGrade = getDustGrade(
+  const isFullPage = displayKey === 'FULL';
+
+  const dustGrade = DustGrade.getGrade(
     sceneData.value ?? 0,
-    sceneData.name as DustSize
+    sceneData.name as DataNameKey
   );
 
-  const dustGradeColor = getDustGradeColor(dustGrade);
+  const dustGradeColor = DustGrade.getGradeColor(dustGrade);
 
   const title = [sceneData.dates.join(' ') + '의', sceneData.displayName].join(
     ' '
@@ -40,7 +39,7 @@ function SceneData3DView(props: SceneData3DViewProps) {
     <div
       className={cn(
         'flex h-auto items-center overflow-hidden',
-        display === '3d' &&
+        isFullPage &&
           'rounded-md border border-[#dfd7cb]/80 bg-[#dfd7cb]/80 shadow-sm dark:border-border dark:bg-body'
       )}
     >
@@ -69,13 +68,11 @@ function SceneData3DView(props: SceneData3DViewProps) {
           </h4>
         </div>
       </div>
-      {display === '2d' && (
-        <Separator orientation="vertical" className="mx-1" />
-      )}
+      {!isFullPage && <Separator orientation="vertical" className="mx-1" />}
       <div
         className={cn(
           'flex h-full flex-col justify-center p-4',
-          display === '3d' && 'rounded-l-lg bg-accent'
+          isFullPage && 'rounded-l-lg bg-accent'
         )}
       >
         <h4 className="pb-2 text-sm tracking-tight text-muted-foreground">

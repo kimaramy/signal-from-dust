@@ -8,22 +8,22 @@ import {
 } from '@/components/ui/form';
 import { SeasonSelect } from '@/components/season';
 
-import type { SettingsFormData } from './SettingsForm';
+import { type SettingsFormValues } from './SettingsForm';
 
 function SeasonField() {
-  const { control, watch } = useFormContext<SettingsFormData>();
+  const { control, watch } = useFormContext<SettingsFormValues>();
 
   const mode = watch('mode');
 
-  const dataCollection = watch('dataCollection');
+  const dataCollectionKey = watch('dataCollectionKey');
 
   const isDisabled = mode === 'preset';
 
-  const isVisible = dataCollection === 'Seasonally';
+  const isVisible = dataCollectionKey === 'SEASONALLY';
 
   return (
     <FormField
-      name="season"
+      name="seasonKey"
       control={control}
       render={({ field }) => {
         return (

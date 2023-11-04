@@ -3,10 +3,10 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useUpdateEffect } from '@/hooks';
 import { Power0, TimelineLite } from 'gsap';
-import { debounce, random, throttle } from 'lodash-es';
+import { random } from 'lodash-es';
 
 import { cn } from '@/lib/utils';
-import type { Display } from '@/components/display';
+import { type DisplayKey } from '@/components/display';
 
 import Overlay from './Overlay';
 import { triggerSingleNote } from './sound';
@@ -15,21 +15,23 @@ export type Binary = '0' | '1';
 
 export interface BitProps {
   id: string;
+  displayKey: DisplayKey;
   binary: Binary;
   binaryIndex: number;
-  display: Display;
   isActive?: boolean;
   className?: string;
 }
 
 export default function Bit({
   id,
+  displayKey,
   binary,
   binaryIndex,
-  display,
   isActive = false,
   className,
 }: BitProps) {
+  const isFullPage = displayKey === 'FULL';
+
   const $container = useRef<HTMLLIElement>(null);
   const $turbulence = useRef<SVGFETurbulenceElement | null>(null);
 
@@ -44,15 +46,15 @@ export default function Bit({
   const size = useMemo(() => {
     const width =
       binary === '0'
-        ? display === '3d'
+        ? isFullPage
           ? 70
           : random(30, 40)
-        : display === '3d'
+        : isFullPage
         ? 100
         : random(80, 100);
     const height = binary === '0' ? width * 0.8 : width;
     return [width, height];
-  }, [binary, display]);
+  }, [binary, isFullPage]);
 
   const [isEntering, setEntering] = useState(false);
 
@@ -73,7 +75,7 @@ export default function Bit({
 
   useEffect(() => {
     if (isEntering) {
-      const filterId = display === '2d' ? '#sound-filter-y' : '#sound-filter-y';
+      const filterId = !isFullPage ? '#sound-filter-y' : '#sound-filter-y';
       $turbulence.current = document.querySelectorAll(
         `${filterId} feTurbulence`
       )[0] as SVGFETurbulenceElement;
@@ -106,7 +108,7 @@ export default function Bit({
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEntering, display]);
+  }, [isEntering, isFullPage]);
 
   const handleSoundPlay = () => {
     if (isActive) return;
@@ -141,19 +143,12 @@ export default function Bit({
     }
   }, [isPlaying]);
 
-  // useEffect(() => {
-  //   if (isHovering) {
-  //     handleSoundPlay();
-  //   }
-  // }, [isHovering]);
-
   return (
     <li
       id={id}
       ref={$container}
       className={cn(
         'z-5 relative isolate flex h-full origin-left rounded-md',
-        // display === '2d' && isPlaying && 'scale-125',
         isPlaying && 'pointer-events-none',
         className
       )}
@@ -173,35 +168,32 @@ export default function Bit({
               binary === '0'
                 ? 'min-w-[60%] xl:min-w-[auto]'
                 : 'min-w-full xl:min-w-[auto]',
-              display === '3d' &&
+              isFullPage &&
                 'mask-circle !left-1/2 !top-1/2 !-translate-x-1/2 !-translate-y-1/2'
             )}
             style={{
               width: `${size[0]}%`,
-              height: display === '3d' ? `${size[1]}%` : undefined,
+              height: isFullPage ? `${size[1]}%` : undefined,
             }}
           >
             <div
               className={cn(
                 'grainy-to-left-darken dark:grainy-to-left-darken--dark w-2/5 flex-initial bg-blend-soft-light',
-                display !== '3d' && 'hidden'
-                // display === '2d' && isPlaying && 'grainy-to-left-darken--active'
+                !isFullPage && 'hidden'
               )}
             ></div>
             <div
               className={cn(
                 'w-4 flex-none',
                 'grainy-to-left dark:grainy-to-left--dark',
-                display === '3d' && 'rounded-full bg-blend-difference'
-                // display === '2d' && isPlaying && 'grainy-to-left--active hidden'
+                isFullPage && 'rounded-full bg-blend-difference'
               )}
             ></div>
             <div
               className={cn(
                 'w-full flex-1',
                 'grainy-to-right dark:grainy-to-right--dark',
-                display === '3d' && 'bg-blend-difference'
-                // display === '2d' && isPlaying && 'grainy-to-right--active'
+                isFullPage && 'bg-blend-difference'
               )}
             ></div>
           </div>

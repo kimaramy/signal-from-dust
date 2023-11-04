@@ -4,10 +4,10 @@ import { FormField } from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
-import type { SettingsFormData } from './SettingsForm';
+import { type SettingsFormValues } from './SettingsForm';
 
 function ModeField() {
-  const { control } = useFormContext<SettingsFormData>();
+  const { control } = useFormContext<SettingsFormValues>();
 
   return (
     <FormField

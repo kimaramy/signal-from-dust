@@ -7,17 +7,17 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { displaySchema, type DisplayKey } from './schema';
+import { dataNameSchema, type DataNameKey } from './schema';
 
-interface DisplaySelectProps {
-  value: DisplayKey;
-  onValueChange: (value: DisplayKey) => void;
+interface DataNameSelectProps {
+  value: DataNameKey;
+  onValueChange: (value: DataNameKey) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
 }
 
-function DisplaySelect(props: DisplaySelectProps) {
+function DataNameSelect(props: DataNameSelectProps) {
   const {
     value,
     onValueChange,
@@ -26,17 +26,17 @@ function DisplaySelect(props: DisplaySelectProps) {
     className,
   } = props;
 
-  const displayKeys = displaySchema.getAllKeys();
+  const dataNameKeys = dataNameSchema.getAllKeys();
 
   return (
     <Select value={value} disabled={disabled} onValueChange={onValueChange}>
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
-        <SelectValue placeholder="보기 방식 선택" />
+        <SelectValue placeholder="조회 데이터 선택" />
       </SelectTrigger>
       <SelectContent>
-        {displayKeys.map((displayKey) => (
-          <SelectItem key={displayKey} value={displayKey}>
-            {displaySchema.display(displayKey)}
+        {dataNameKeys.map((dataNameKey) => (
+          <SelectItem key={dataNameKey} value={dataNameKey}>
+            {dataNameSchema.display(dataNameKey)}
           </SelectItem>
         ))}
       </SelectContent>
@@ -44,4 +44,4 @@ function DisplaySelect(props: DisplaySelectProps) {
   );
 }
 
-export default DisplaySelect;
+export default DataNameSelect;

@@ -6,13 +6,40 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export enum QueryParamEnum {
-  Collection = 'collection',
+  DataCollection = 'collection',
+  DataName = 'name',
   Year = 'year',
   Season = 'season',
   Month = 'month',
   Location = 'location',
   Display = 'display',
-  DustSize = 'dust',
+}
+
+export interface QuerySchema<
+  TKey extends string,
+  TValue extends string | number,
+  TDict = unknown,
+> {
+  readonly keys: unknown;
+  getDefaultKey: () => TKey;
+  getDefaultValue: () => TValue;
+  getAllKeys: () => TKey[];
+  getAllValues: () => TValue[];
+  getKeyByValue: (value: TValue) => TKey;
+  getValue: (key: TKey) => TValue;
+  getKeyDict: (locale?: string) => { [key: string]: TDict };
+  parseKey: (key: unknown) => void;
+  safeParseKey: (key: unknown) => boolean;
+  display?: (key: TKey, locale?: string) => string;
+}
+
+export function toOrderedBy<T extends string>(arr: T[], order: T[]) {
+  const orderForIndexVals = order.slice(0).reverse();
+  return arr.sort((a, b) => {
+    const aIndex = -orderForIndexVals.indexOf(a);
+    const bIndex = -orderForIndexVals.indexOf(b);
+    return aIndex - bIndex;
+  });
 }
 
 export function toOrdinalNumberName(num: number) {

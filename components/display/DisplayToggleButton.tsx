@@ -12,25 +12,28 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-import { useDisplayValue, useSetDisplayValue } from './hooks';
-import { Display } from './schema';
+import { useDisplayKey, useSetDisplayKey } from './hooks';
+import { displaySchema, type DisplayKey } from './schema';
 
 interface DisplayToggleButtonProps {
   className?: string;
 }
 
 function DisplayToggleButton({ className }: DisplayToggleButtonProps) {
-  const display = useDisplayValue();
+  const displayKey = useDisplayKey();
 
-  const setDisplay = useSetDisplayValue();
+  const setDisplayKey = useSetDisplayKey();
 
-  const handleToggle = useCallback(
+  const handleToggleButton = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
-      const toggledValue: Display =
-        e.currentTarget.value === '3d' ? '2d' : '3d';
-      setDisplay(toggledValue);
+      const value = e.currentTarget.value;
+      if (displaySchema.safeParseKey(value)) {
+        const toggledValue: DisplayKey =
+          value === displaySchema.keys.FULL ? 'AUTO' : 'FULL';
+        setDisplayKey(toggledValue);
+      }
     },
-    [setDisplay]
+    [setDisplayKey]
   );
 
   return (
@@ -40,11 +43,11 @@ function DisplayToggleButton({ className }: DisplayToggleButtonProps) {
           <Button
             variant="ghost"
             size="icon"
-            value={display}
+            value={displayKey}
             className={cn(className)}
-            onClick={handleToggle}
+            onClick={handleToggleButton}
           >
-            {display === '2d' ? (
+            {displayKey === displaySchema.keys.AUTO ? (
               <Rows className="h-4 w-4" />
             ) : (
               <Layers2 className="h-4 w-4" />

@@ -1,4 +1,4 @@
-const { fontFamily } = require('tailwindcss/defaultTheme');
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -20,10 +20,13 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ['Pretendard Variable', ...fontFamily.sans],
+        sans: ['Pretendard Variable', ...defaultTheme.fontFamily.sans],
       },
       screens: {
         '3xl': '1920px',
+      },
+      spacing: {
+        4.5: '1.125rem', // 18px
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -71,6 +74,54 @@ module.exports = {
         player: 'var(--player-height)',
         main: 'calc(100vh - var(--nav-height))',
         minimap: 'calc(100vh - var(--nav-height) - var(--player-height))',
+      },
+      minWidth: {
+        ...defaultTheme.spacing,
+        '1/5': '20%',
+        '1/4': '25%',
+        '1/3': '33.333%',
+        '2/5': '40%',
+        '1/2': '50%',
+        '3/5': '60%',
+        '2/3': '66.667%',
+        '3/4': '75%',
+        '4/5': '80%',
+      },
+      maxWidth: {
+        ...defaultTheme.spacing,
+        '1/5': '20%',
+        '1/4': '25%',
+        '1/3': '33.333%',
+        '2/5': '40%',
+        '1/2': '50%',
+        '3/5': '60%',
+        '2/3': '66.667%',
+        '3/4': '75%',
+        '4/5': '80%',
+      },
+      minHeight: {
+        ...defaultTheme.spacing,
+        '1/5': '20%',
+        '1/4': '25%',
+        '1/3': '33.333%',
+        '2/5': '40%',
+        '1/2': '50%',
+        '3/5': '60%',
+        '2/3': '66.667%',
+        '3/4': '75%',
+        '4/5': '80%',
+      },
+      maxHeight: {
+        ...defaultTheme.spacing,
+        '1/5': '20%',
+        '1/4': '25%',
+        '1/3': '33.333%',
+        '2/5': '40%',
+        '1/2': '50%',
+        '3/5': '60%',
+        '2/3': '66.667%',
+        '3/4': '75%',
+        '4/5': '80%',
       },
       keyframes: {
         'accordion-down': {

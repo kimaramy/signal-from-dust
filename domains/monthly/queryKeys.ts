@@ -3,26 +3,27 @@ import {
   inferQueryKeys,
 } from '@lukemorales/query-key-factory';
 
-import type { Season } from '@/components/season';
+import { type SeasonValue } from '@/components/season';
 import type { Year } from '@/components/year';
 
 import * as services from './services';
 
-export const monthlyDataKeys = createQueryKeys('monthly', {
+export const monthlyQueryKeys = createQueryKeys('monthly', {
   detail: (dataId: number) => ({
     queryKey: [dataId],
     queryFn: () => services.fetchMonthlyData(dataId),
   }),
-  list: (year: Year) => ({
-    queryKey: [{ year }],
-    queryFn: () => services.fetchMonthlyDataList(year),
+  list: (yearValue: Year) => ({
+    queryKey: [{ year: yearValue }],
+    queryFn: () => services.fetchMonthlyDataset(yearValue),
     contextQueries: {
-      seasonal: (season: Season) => ({
-        queryKey: [{ season }],
-        queryFn: () => services.fetchMonthlyDataListBySeason(year, season),
+      seasonal: (seasonValue: SeasonValue) => ({
+        queryKey: [{ season: seasonValue }],
+        queryFn: () =>
+          services.fetchMonthlyDatasetBySeason(yearValue, seasonValue),
       }),
     },
   }),
 });
 
-export type MonthlyDataKeys = inferQueryKeys<typeof monthlyDataKeys>;
+export type MonthlyQueryKeys = inferQueryKeys<typeof monthlyQueryKeys>;

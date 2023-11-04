@@ -6,12 +6,12 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form';
-import { DustSizeSelect } from '@/components/dustSize';
+import { DataNameSelect } from '@/components/dataName';
 
-import type { SettingsFormData } from './SettingsForm';
+import { type SettingsFormValues } from './SettingsForm';
 
 function DataNameField() {
-  const { control, watch } = useFormContext<SettingsFormData>();
+  const { control, watch } = useFormContext<SettingsFormValues>();
 
   const mode = watch('mode');
 
@@ -19,14 +19,14 @@ function DataNameField() {
 
   return (
     <FormField
-      name="dataName"
+      name="dataNameKey"
       control={control}
       render={({ field }) => {
         return (
           <FormItem>
             <FormLabel>데이터</FormLabel>
             <FormControl>
-              <DustSizeSelect
+              <DataNameSelect
                 value={field.value}
                 disabled={isDisabled}
                 onValueChange={(value) => {

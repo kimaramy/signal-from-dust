@@ -1,5 +1,4 @@
-'use client';
-
+import { cn } from '@/lib/utils';
 import {
   Select,
   SelectContent,
@@ -8,40 +7,44 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { Season, seasonMap, seasonSet } from './schema';
-import { translateSeason } from './utils';
+import { seasonSchema, type SeasonKey } from './schema';
 
 interface SeasonSelectProps {
-  value: Season;
-  onValueChange: (value: Season) => void;
+  value: SeasonKey;
+  onValueChange: (value: SeasonKey) => void;
   hidden?: boolean;
   disabled?: boolean;
+  className?: string;
 }
 
 function SeasonSelect(props: SeasonSelectProps) {
-  const { value, onValueChange, hidden = false, disabled = false } = props;
+  const {
+    value,
+    onValueChange,
+    hidden = false,
+    disabled = false,
+    className,
+  } = props;
 
-  const seasons = seasonSet.slice();
+  const seasonKeys = seasonSchema.getAllKeys();
 
-  const defaultSeason = seasons.splice(
-    seasons.indexOf(seasonMap.Default),
+  const defaultSeasonKey = seasonKeys.splice(
+    seasonKeys.indexOf(seasonSchema.getDefaultKey()),
     1
   )[0];
 
-  if (hidden) return null;
-
   return (
     <Select value={value} disabled={disabled} onValueChange={onValueChange}>
-      <SelectTrigger className="w-40">
+      <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
         <SelectValue placeholder="조회 계절 선택" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value={defaultSeason}>
-          {translateSeason(defaultSeason)}
+        <SelectItem value={seasonSchema.getValue(defaultSeasonKey)}>
+          {seasonSchema.display(defaultSeasonKey)}
         </SelectItem>
-        {seasons.map((season) => (
-          <SelectItem key={season} value={season}>
-            {translateSeason(season)}
+        {seasonKeys.map((seasonKey) => (
+          <SelectItem key={seasonKey} value={seasonKey}>
+            {seasonSchema.display(seasonKey)}
           </SelectItem>
         ))}
       </SelectContent>

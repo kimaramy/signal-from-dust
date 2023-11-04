@@ -12,17 +12,16 @@ import { useArrayState } from '@/hooks';
 
 import { cn } from '@/lib/utils';
 import {
-  Collection,
-  getDataCount,
-  translateCollection,
-} from '@/components/collection';
-import type { Display } from '@/components/display';
-import { DustSize, translateDustSize } from '@/components/dustSize';
-import { getMonthKey, MonthKey, translateMonth } from '@/components/month';
+  dataCollectionSchema,
+  type DataCollectionKey,
+} from '@/components/dataCollection';
+import { dataNameSchema, type DataNameKey } from '@/components/dataName';
+import { type DisplayKey } from '@/components/display';
+import { getMonthKey, translateMonth, type MonthKey } from '@/components/month';
 import ProgressBar from '@/components/ProgressBar';
-import Scene, { getSceneLength, SceneData } from '@/components/Scene';
+import Scene, { getSceneLength, type SceneData } from '@/components/Scene';
 import { translateWeekday } from '@/components/weekday';
-import { getYearKey, translateYear, YearKey } from '@/components/year';
+import { getYearKey, translateYear, type YearKey } from '@/components/year';
 
 import { Skeleton } from './ui/skeleton';
 
@@ -46,22 +45,24 @@ function initSequence(sequenceId: string, sceneDataList: SceneData[]) {
 
 interface SequenceProps {
   id: string;
-  collection: Collection;
-  display: Display;
+  dataCollectionKey: DataCollectionKey;
+  displayKey: DisplayKey;
   dataset?: SceneData[];
   disabled?: boolean;
 }
 
 function Sequence({
   id,
-  collection,
-  display,
+  dataCollectionKey,
+  displayKey,
   dataset,
   disabled = false,
 }: SequenceProps) {
+  const isFullDisplay = displayKey === 'FULL';
+
   const decimals: number[] =
     dataset?.map((data) => data.value ?? 0) ??
-    new Array(getDataCount(collection)).fill(0);
+    new Array(dataCollectionSchema.getDataCount(dataCollectionKey)).fill(0);
 
   const sequenceEl = useRef<HTMLUListElement>(null);
 
@@ -100,46 +101,44 @@ function Sequence({
     <>
       <ProgressBar
         value={progress}
-        className={cn(display === '2d' && 'hidden')}
+        className={cn(!isFullDisplay && 'hidden')}
       />
       <section
         id={id}
         ref={sequenceEl}
         className={cn(
           'relative w-full overflow-x-hidden overflow-y-scroll pt-4 scrollbar-hide',
-          display === '2d' &&
+          !isFullDisplay &&
             'flex h-auto min-h-screen items-center px-4 pb-4 lg:px-6',
-          display === '3d' && 'h-screen pb-[var(--player-height)]'
+          isFullDisplay && 'h-screen pb-[var(--player-height)]'
         )}
         onScroll={handleScroll}
       >
         <ul
           className={cn(
             'h-full w-full',
-            display === '2d' && 'grid gap-1 lg:gap-2'
+            !isFullDisplay && 'grid gap-1 lg:gap-2'
           )}
           style={{
-            gridTemplateRows:
-              display === '2d'
-                ? `repeat(${decimals.length}, minmax(2.25rem, 1fr))`
-                : undefined,
+            gridTemplateRows: !isFullDisplay
+              ? `repeat(${decimals.length}, minmax(2.25rem, 1fr))`
+              : undefined,
           }}
         >
           {sequence.length > 0
             ? sequence.map((scene) => {
                 return (
                   <Scene
-                    key={`${collection}-${display}-${scene.id}`}
-                    className=""
+                    key={`${dataCollectionKey}-${displayKey}-${scene.id}`}
+                    displayKey={displayKey}
                     sceneId={scene.id}
                     sceneData={scene.data}
                     sceneIndex={scene.index}
                     sceneLength={
-                      display === '2d'
+                      !isFullDisplay
                         ? getSceneLength(Math.max(...decimals))
                         : getSceneLength(scene.data.value ?? 0)
                     }
-                    display={display}
                     onSceneChange={(sceneData, sceneIndex) => {
                       // const prevSceneIndex = currentScene?.index ?? 0;
                       // // const sceneGap = sceneIndex - prevSceneIndex;
@@ -174,34 +173,44 @@ function Sequence({
   );
 }
 
-export function toDailySceneDataList(
+export function toDailySceneDataset(
   dataset: DailyData[],
-  collection: Collection,
-  dataName: DustSize
+  dataNameKey: DataNameKey,
+  dataCollectionKey: DataCollectionKey
 ): SceneData[] {
   return dataset.map(({ id, month, day, pm_large, pm_small }) => ({
     id,
-    name: dataName,
-    displayName: translateDustSize(dataName),
-    value: dataName === 'lg' ? pm_large : pm_small,
-    collection: translateCollection(collection),
+    name: dataNameKey,
+    displayName: dataNameSchema.display(dataNameKey),
+    value:
+      dataNameKey === 'PM_LARGE'
+        ? pm_large
+        : dataNameKey === 'PM_SMALL'
+        ? pm_small
+        : null,
+    collection: dataCollectionSchema.display(dataCollectionKey),
     dates: [translateMonth(getMonthKey(month) as MonthKey), `${day}일`],
     location: '서울시',
     rank: null,
   }));
 }
 
-export function toWeekDailySceneDataList(
+export function toWeekDailySceneDataset(
   dataset: WeekDailyData[],
-  collection: Collection,
-  dataName: DustSize
+  dataNameKey: DataNameKey,
+  dataCollectionKey: DataCollectionKey
 ): SceneData[] {
   return dataset.map(({ id, month, weekday, pm_large, pm_small }) => ({
     id,
-    name: dataName,
-    displayName: translateDustSize(dataName),
-    value: dataName === 'lg' ? pm_large : pm_small,
-    collection: translateCollection(collection),
+    name: dataNameKey,
+    displayName: dataNameSchema.display(dataNameKey),
+    value:
+      dataNameKey === 'PM_LARGE'
+        ? pm_large
+        : dataNameKey === 'PM_SMALL'
+        ? pm_small
+        : null,
+    collection: dataCollectionSchema.display(dataCollectionKey),
     dates: [
       translateMonth(getMonthKey(month) as MonthKey),
       translateWeekday(weekday),
@@ -211,34 +220,44 @@ export function toWeekDailySceneDataList(
   }));
 }
 
-export function toWeeklySceneDataList(
+export function toWeeklySceneDataset(
   dataset: WeeklyData[],
-  collection: Collection,
-  dataName: DustSize
+  dataNameKey: DataNameKey,
+  dataCollectionKey: DataCollectionKey
 ): SceneData[] {
   return dataset.map(({ id, year, week, pm_large, pm_small }) => ({
     id,
-    name: dataName,
-    displayName: translateDustSize(dataName),
-    value: dataName === 'lg' ? pm_large : pm_small,
-    collection: translateCollection(collection),
+    name: dataNameKey,
+    displayName: dataNameSchema.display(dataNameKey),
+    value:
+      dataNameKey === 'PM_LARGE'
+        ? pm_large
+        : dataNameKey === 'PM_SMALL'
+        ? pm_small
+        : null,
+    collection: dataCollectionSchema.display(dataCollectionKey),
     dates: [translateYear(getYearKey(year) as YearKey), `${week}번째 주`],
     location: '서울시',
     rank: null,
   }));
 }
 
-export function toMonthlySceneDataList(
+export function toMonthlySceneDataset(
   dataset: MonthlyData[],
-  collection: Collection,
-  dataName: DustSize
+  dataNameKey: DataNameKey,
+  dataCollectionKey: DataCollectionKey
 ): SceneData[] {
   return dataset.map(({ id, year, month, pm_large, pm_small }) => ({
     id,
-    name: dataName,
-    displayName: translateDustSize(dataName),
-    value: dataName === 'lg' ? pm_large : pm_small,
-    collection: translateCollection(collection),
+    name: dataNameKey,
+    displayName: dataNameSchema.display(dataNameKey),
+    value:
+      dataNameKey === 'PM_LARGE'
+        ? pm_large
+        : dataNameKey === 'PM_SMALL'
+        ? pm_small
+        : null,
+    collection: dataCollectionSchema.display(dataCollectionKey),
     dates: [
       translateYear(getYearKey(year) as YearKey),
       translateMonth(getMonthKey(month) as MonthKey),
@@ -248,17 +267,22 @@ export function toMonthlySceneDataList(
   }));
 }
 
-export function toYearlySceneDataList(
+export function toYearlySceneDataset(
   dataset: YearlyData[],
-  collection: Collection,
-  dataName: DustSize
+  dataNameKey: DataNameKey,
+  dataCollectionKey: DataCollectionKey
 ): SceneData[] {
   return dataset.map(({ id, year, pm_large, pm_small }) => ({
     id,
-    name: dataName,
-    displayName: translateDustSize(dataName),
-    value: dataName === 'lg' ? pm_large : pm_small,
-    collection: translateCollection(collection),
+    name: dataNameKey,
+    displayName: dataNameSchema.display(dataNameKey),
+    value:
+      dataNameKey === 'PM_LARGE'
+        ? pm_large
+        : dataNameKey === 'PM_SMALL'
+        ? pm_small
+        : null,
+    collection: dataCollectionSchema.display(dataCollectionKey),
     dates: [translateYear(getYearKey(year) as YearKey)],
     location: '서울시',
     rank: null,

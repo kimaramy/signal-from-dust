@@ -1,22 +1,22 @@
 import { useWatch } from 'react-hook-form';
 
+import { cn } from '@/lib/utils';
+
 import DataCollectionField from './DataCollectionField';
 import DataNameField from './DataNameField';
 import LocationField from './LocationField';
 import MonthField from './MonthField';
 import SeasonField from './SeasonField';
-import type { SettingsFormData } from './SettingsForm';
+import { type SettingsFormValues } from './SettingsForm';
 import YearField from './YearField';
 
 function CustomSettingsFields() {
-  const { mode } = useWatch<SettingsFormData>();
+  const { mode } = useWatch<SettingsFormValues>();
 
-  const isVisible = mode === 'custom';
-
-  if (!isVisible) return null;
+  const isHidden = mode !== 'custom';
 
   return (
-    <section className="space-y-4">
+    <section className={cn('space-y-4', isHidden && 'hidden')}>
       <div className="flex justify-between gap-2">
         <LocationField />
         <DataNameField />

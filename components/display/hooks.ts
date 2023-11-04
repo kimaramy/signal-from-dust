@@ -1,20 +1,41 @@
 'use client';
 
 import { useEnumQueryParam, useSetQueryParam } from '@/hooks';
+import { toLower, toUpper } from 'lodash-es';
 
 import { QueryParamEnum } from '@/lib/utils';
 
-import { Display, displayMap, displaySet } from './schema';
+import { displaySchema, type DisplayKey, type DisplayValue } from './schema';
 
-export function useDisplayValue() {
-  const [display] = useEnumQueryParam(
+export function useDisplayKey(): DisplayKey {
+  const lowerCasedKeys = displaySchema
+    .getAllKeys()
+    .map((key) => toLower(key) as Lowercase<DisplayKey>);
+
+  const lowerCasedDefaultKey = toLower(
+    displaySchema.getDefaultKey()
+  ) as Lowercase<DisplayKey>;
+
+  const [lowerCasedKey] = useEnumQueryParam(
     QueryParamEnum.Display,
-    [...displaySet],
-    displayMap.default
+    lowerCasedKeys,
+    lowerCasedDefaultKey
   );
-  return display;
+
+  return toUpper(lowerCasedKey) as DisplayKey;
 }
 
-export function useSetDisplayValue() {
-  return useSetQueryParam<Display>(QueryParamEnum.Display);
+// export function useDisplayKey(): DisplayKey {
+//   const displayValue = useDisplayValue();
+//   return displaySchema.getKeyByValue(displayValue);
+// }
+
+export function useSetDisplayKey() {
+  const setDisplayKey = useSetQueryParam<Lowercase<DisplayKey>>(
+    QueryParamEnum.Display
+  );
+  return function (displayKey: DisplayKey) {
+    const lowerCasedKey = toLower(displayKey) as Lowercase<DisplayKey>;
+    setDisplayKey(lowerCasedKey);
+  };
 }

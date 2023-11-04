@@ -1,57 +1,57 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
-import { Season } from '@/components/season';
+import { SeasonValue } from '@/components/season';
 import { Year } from '@/components/year';
 
 import type { MonthlyData, SupabaseError } from '../types';
-import { MonthlyDataKeys, monthlyDataKeys } from './queryKeys';
+import { MonthlyQueryKeys, monthlyQueryKeys } from './queryKeys';
 
-export function useMonthlyDataListQuery<T = MonthlyData[]>(
-  year: Year = 0,
+export function useMonthlyListQuery<T = MonthlyData[]>(
+  yearValue: Year = 0,
   options?: UseQueryOptions<
     MonthlyData[],
     SupabaseError,
     T,
-    MonthlyDataKeys['list']['queryKey']
+    MonthlyQueryKeys['list']['queryKey']
   >
 ) {
   const { data } = useQuery({
-    ...monthlyDataKeys.list(year),
+    ...monthlyQueryKeys.list(yearValue),
     staleTime: Infinity,
     ...options,
   });
   return data;
 }
 
-export function useMonthlyDataListQueryBySeaon<T = MonthlyData[]>(
-  year: Year = 0,
-  season: Season,
+export function useMonthlyListQueryBySeaon<T = MonthlyData[]>(
+  yearValue: Year = 0,
+  seasonValue: SeasonValue,
   options?: UseQueryOptions<
     MonthlyData[],
     SupabaseError,
     T,
-    MonthlyDataKeys['list']['_ctx']['seasonal']['queryKey']
+    MonthlyQueryKeys['list']['_ctx']['seasonal']['queryKey']
   >
 ) {
   const { data } = useQuery({
-    ...monthlyDataKeys.list(year)._ctx.seasonal(season),
+    ...monthlyQueryKeys.list(yearValue)._ctx.seasonal(seasonValue),
     staleTime: Infinity,
     ...options,
   });
   return data;
 }
 
-export function useMonthlyDataQuery<T = MonthlyData>(
+export function useMonthlyQuery<T = MonthlyData>(
   dataId: number,
   options?: UseQueryOptions<
     MonthlyData,
     SupabaseError,
     T,
-    MonthlyDataKeys['detail']['queryKey']
+    MonthlyQueryKeys['detail']['queryKey']
   >
 ) {
   const { data } = useQuery({
-    ...monthlyDataKeys.detail(dataId),
+    ...monthlyQueryKeys.detail(dataId),
     staleTime: Infinity,
     ...options,
   });

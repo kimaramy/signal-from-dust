@@ -1,14 +1,14 @@
-import { getMonthRangeBySeason, type Season } from '@/components/season';
+import { seasonSchema, type SeasonValue } from '@/components/season';
 import { type Year } from '@/components/year';
 
 import { supabaseClient } from '../supabaseClient';
 import type { MonthlyData } from '../types';
 
-export const fetchMonthlyDataList = async (year: Year) => {
+export const fetchMonthlyDataset = async (yearValue: Year) => {
   const response = await supabaseClient
     .from('monthly')
     .select('*')
-    .eq('year', year)
+    .eq('year', yearValue)
     .returns<MonthlyData[]>();
 
   if (response.error) throw response;
@@ -16,22 +16,24 @@ export const fetchMonthlyDataList = async (year: Year) => {
   return response.data;
 };
 
-export const fetchMonthlyDataListBySeason = async (
-  year: Year,
-  season: Season
+export const fetchMonthlyDatasetBySeason = async (
+  yearValue: Year,
+  seasonValue: SeasonValue
 ) => {
-  const monthRange = getMonthRangeBySeason(season);
+  const monthRange = seasonSchema.getMonthRange(
+    seasonSchema.getKeyByValue(seasonValue)
+  );
 
   const response = await supabaseClient
     .from('monthly')
     .select('*')
-    .eq('year', year)
+    .eq('year', yearValue)
     .in('month', monthRange)
     .returns<MonthlyData[]>();
 
   if (response.error) throw response;
 
-  if (season === 'Winter') {
+  if (seasonValue === 'winter') {
     const decemberData = response.data.pop()!;
     response.data.unshift(decemberData);
     return response.data;

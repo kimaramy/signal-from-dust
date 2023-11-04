@@ -2,11 +2,7 @@ import React from 'react';
 import { PauseCircleIcon, PlayCircleIcon } from '@heroicons/react/20/solid';
 
 import { Button } from '@/components/ui/button';
-import {
-  DustSize,
-  getDustGrade,
-  getDustGradeColor,
-} from '@/components/dustSize';
+import { DustGrade, type DataNameKey } from '@/components/dataName';
 
 import type { Binary } from './Bit';
 import type { SceneData } from './Scene';
@@ -21,10 +17,12 @@ interface SceneDataViewProps {
 function SceneDataView(props: SceneDataViewProps) {
   const { sceneData, binaries, isPlaying, onPlayButtonClick } = props;
 
-  const dustGrade = getDustGrade(
+  const dustGrade = DustGrade.getGrade(
     sceneData.value ?? 0,
-    sceneData.name as DustSize
+    sceneData.name as DataNameKey
   );
+
+  const dustGradeColor = DustGrade.getGradeColor(dustGrade);
 
   return (
     <div className="flex items-center space-x-4 p-1">
@@ -66,7 +64,7 @@ function SceneDataView(props: SceneDataViewProps) {
             <span className="">{sceneData.value}(㎍/㎥)</span>
             <span
               className="ml-1.5 inline-block rounded px-1 py-px text-[0.9em] text-black"
-              style={{ backgroundColor: getDustGradeColor(dustGrade) }}
+              style={{ backgroundColor: dustGradeColor }}
             >
               {dustGrade}
             </span>

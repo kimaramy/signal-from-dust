@@ -1,5 +1,4 @@
-'use client';
-
+import { cn } from '@/lib/utils';
 import {
   Select,
   SelectContent,
@@ -16,10 +15,17 @@ interface YearSelectProps {
   onValueChange: (value: Year) => void;
   hidden?: boolean;
   disabled?: boolean;
+  className?: string;
 }
 
 function YearSelect(props: YearSelectProps) {
-  const { value, onValueChange, hidden = false, disabled = false } = props;
+  const {
+    value,
+    onValueChange,
+    hidden = false,
+    disabled = false,
+    className,
+  } = props;
 
   const _yearKeys = yearKeys.slice();
 
@@ -28,15 +34,13 @@ function YearSelect(props: YearSelectProps) {
     1
   )[0];
 
-  if (hidden) return null;
-
   return (
     <Select
       value={String(value)}
       disabled={disabled}
       onValueChange={(value) => onValueChange(Number(value))}
     >
-      <SelectTrigger className="w-40">
+      <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
         <SelectValue placeholder="조회 연도 선택" />
       </SelectTrigger>
       <SelectContent>
