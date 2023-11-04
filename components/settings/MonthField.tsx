@@ -7,12 +7,12 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form';
-import { defaultMonthValue, MonthSelect } from '@/components/month';
+import { MonthSelect } from '@/components/month';
 
 import { type SettingsFormValues } from './SettingsForm';
 
 function MonthField() {
-  const { control, watch, setValue } = useFormContext<SettingsFormValues>();
+  const { control, watch, resetField } = useFormContext<SettingsFormValues>();
 
   const mode = watch('mode');
 
@@ -24,12 +24,12 @@ function MonthField() {
     dataCollectionKey === 'DAILY' || dataCollectionKey === 'WEEKDAILY';
 
   useUpdateEffect(() => {
-    setValue('month', defaultMonthValue);
+    resetField('monthKey');
   }, [dataCollectionKey]);
 
   return (
     <FormField
-      name="month"
+      name="monthKey"
       control={control}
       render={({ field }) => {
         return (

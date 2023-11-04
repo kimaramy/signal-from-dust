@@ -5,9 +5,9 @@ import { Form } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
 import { type DataCollectionKey } from '@/components/dataCollection';
 import { type DataNameKey } from '@/components/dataName';
-import { type Month } from '@/components/month';
+import { type MonthKey } from '@/components/month';
 import { type SeasonKey } from '@/components/season';
-import { type Year } from '@/components/year';
+import { type YearKey } from '@/components/year';
 
 import CustomSettingsFields from './CustomSettingsFields';
 import ModeField from './ModeField';
@@ -19,27 +19,24 @@ interface SettingsFormValues {
   mode: 'preset' | 'custom';
   dataNameKey: DataNameKey;
   dataCollectionKey: DataCollectionKey;
+  yearKey: YearKey;
   seasonKey: SeasonKey;
-  month: Month;
-  year: Year;
+  monthKey: MonthKey;
 }
 
 type SettingsFormSubmitHandler = SubmitHandler<SettingsFormValues>;
 
 interface SettingsFormProps {
-  values: SettingsFormValues;
   defaultValues: SettingsFormValues;
   onSubmit: SettingsFormSubmitHandler;
 }
 
-function SettingsForm(props: SettingsFormProps) {
-  const { defaultValues, values, onSubmit } = props;
-
+function SettingsForm({ defaultValues, onSubmit }: SettingsFormProps) {
   const settingsForm = useForm<SettingsFormValues>({
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
     shouldUseNativeValidation: false,
-    values,
+    defaultValues,
   });
 
   return (

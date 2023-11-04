@@ -39,7 +39,7 @@ function SeasonSelect(props: SeasonSelectProps) {
         <SelectValue placeholder="조회 계절 선택" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value={seasonSchema.getValue(defaultSeasonKey)}>
+        <SelectItem value={defaultSeasonKey}>
           {seasonSchema.display(defaultSeasonKey)}
         </SelectItem>
         {seasonKeys.map((seasonKey) => (

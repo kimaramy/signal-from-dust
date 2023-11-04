@@ -1,42 +1,38 @@
 'use client';
 
 import { useEnumQueryParam, useSetQueryParam } from '@/hooks';
+import { toLower, toUpper } from 'lodash-es';
 
 import { QueryParamEnum } from '@/lib/utils';
 
-import {
-  defaultYearKey,
-  defaultYearValue,
-  getYearKey,
-  getYearValue,
-  Year,
-  YearKey,
-  yearKeys,
-  yearKeySchema,
-} from './schema';
+import { yearSchema, type YearKey } from './schema';
+
+export function useYearKey(): YearKey {
+  const lowerCasedKeys = yearSchema
+    .getAllKeys()
+    .map((key) => toLower(key) as Lowercase<YearKey>);
+
+  const lowerCasedDefaultKey = toLower(
+    yearSchema.getDefaultKey()
+  ) as Lowercase<YearKey>;
+
+  const [lowerCasedKey] = useEnumQueryParam(
+    QueryParamEnum.Year,
+    lowerCasedKeys,
+    lowerCasedDefaultKey
+  );
+  return toUpper(lowerCasedKey) as YearKey;
+}
 
 export function useYearValue() {
-  const [yearKey] = useEnumQueryParam(
-    QueryParamEnum.Year,
-    yearKeys.slice(),
-    defaultYearKey
-  );
-  return getYearValue(yearKey);
+  const yearKey = useYearKey();
+  return yearSchema.getValue(yearKey);
 }
 
-export function useSetYearValue() {
-  const setYearKey = useSetQueryParam<YearKey>(QueryParamEnum.Year);
-  return function (yearValue: Year) {
-    const maybeYearKey = getYearKey(yearValue);
-    yearKeySchema.parse(maybeYearKey);
-    setYearKey(maybeYearKey as YearKey);
-  };
-}
-
-export function useResetYearValue() {
-  const setYearKey = useSetQueryParam<YearKey>(QueryParamEnum.Year);
-  return function () {
-    const yearKey = getYearKey(defaultYearValue);
-    setYearKey(yearKey as YearKey);
+export function useSetYearKey() {
+  const setYearKey = useSetQueryParam<Lowercase<YearKey>>(QueryParamEnum.Year);
+  return function (yearKey: YearKey) {
+    const lowerCasedKey = toLower(yearKey) as Lowercase<YearKey>;
+    setYearKey(lowerCasedKey);
   };
 }

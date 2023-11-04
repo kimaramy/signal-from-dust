@@ -1,42 +1,41 @@
 'use client';
 
 import { useEnumQueryParam, useSetQueryParam } from '@/hooks';
+import { toLower, toUpper } from 'lodash-es';
 
 import { QueryParamEnum } from '@/lib/utils';
 
-import {
-  defaultMonthKey,
-  defaultMonthValue,
-  getMonthKey,
-  getMonthValue,
-  Month,
-  MonthKey,
-  monthKeys,
-  monthKeySchema,
-} from './schema';
+import { monthSchema, type MonthKey } from './schema';
+
+export function useMonthKey(): MonthKey {
+  const lowerCasedKeys = monthSchema
+    .getAllKeys()
+    .map((key) => toLower(key) as Lowercase<MonthKey>);
+
+  const lowerCasedDefaultKey = toLower(
+    monthSchema.getDefaultKey()
+  ) as Lowercase<MonthKey>;
+
+  const [lowerCasedKey] = useEnumQueryParam(
+    QueryParamEnum.Month,
+    lowerCasedKeys,
+    lowerCasedDefaultKey
+  );
+
+  return toUpper(lowerCasedKey) as MonthKey;
+}
 
 export function useMonthValue() {
-  const [monthKey] = useEnumQueryParam(
-    QueryParamEnum.Month,
-    monthKeys.slice(),
-    defaultMonthKey
+  const monthKey = useMonthKey();
+  return monthSchema.getValue(monthKey);
+}
+
+export function useSetMonthKey() {
+  const setMonthKey = useSetQueryParam<Lowercase<MonthKey>>(
+    QueryParamEnum.Month
   );
-  return getMonthValue(monthKey);
-}
-
-export function useSetMonthValue() {
-  const setMonthKey = useSetQueryParam<MonthKey>(QueryParamEnum.Month);
-  return function (monthValue: Month) {
-    const maybeMonthKey = getMonthKey(monthValue);
-    monthKeySchema.parse(maybeMonthKey);
-    setMonthKey(maybeMonthKey as MonthKey);
-  };
-}
-
-export function useResetMonthValue() {
-  const setMonthKey = useSetQueryParam<MonthKey>(QueryParamEnum.Month);
-  return function () {
-    const monthKey = getMonthKey(defaultMonthValue);
-    setMonthKey(monthKey as MonthKey);
+  return function (monthKey: MonthKey) {
+    const lowerCasedKey = toLower(monthKey) as Lowercase<MonthKey>;
+    setMonthKey(lowerCasedKey);
   };
 }

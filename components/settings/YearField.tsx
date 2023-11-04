@@ -7,12 +7,12 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form';
-import { defaultYearValue, YearSelect } from '@/components/year';
+import { YearSelect } from '@/components/year';
 
 import { type SettingsFormValues } from './SettingsForm';
 
 function YearField() {
-  const { control, watch, setValue } = useFormContext<SettingsFormValues>();
+  const { control, watch, resetField } = useFormContext<SettingsFormValues>();
 
   const mode = watch('mode');
 
@@ -26,12 +26,12 @@ function YearField() {
     dataCollectionKey === 'SEASONALLY';
 
   useUpdateEffect(() => {
-    setValue('year', defaultYearValue);
+    resetField('yearKey');
   }, [dataCollectionKey]);
 
   return (
     <FormField
-      name="year"
+      name="yearKey"
       control={control}
       render={({ field }) => {
         return (

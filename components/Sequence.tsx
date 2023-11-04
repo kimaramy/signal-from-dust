@@ -17,11 +17,11 @@ import {
 } from '@/components/dataCollection';
 import { dataNameSchema, type DataNameKey } from '@/components/dataName';
 import { type DisplayKey } from '@/components/display';
-import { getMonthKey, translateMonth, type MonthKey } from '@/components/month';
+import { monthSchema } from '@/components/month';
 import ProgressBar from '@/components/ProgressBar';
 import Scene, { getSceneLength, type SceneData } from '@/components/Scene';
 import { translateWeekday } from '@/components/weekday';
-import { getYearKey, translateYear, type YearKey } from '@/components/year';
+import { yearSchema } from '@/components/year';
 
 import { Skeleton } from './ui/skeleton';
 
@@ -189,7 +189,7 @@ export function toDailySceneDataset(
         ? pm_small
         : null,
     collection: dataCollectionSchema.display(dataCollectionKey),
-    dates: [translateMonth(getMonthKey(month) as MonthKey), `${day}일`],
+    dates: [monthSchema.display(monthSchema.getKeyByValue(month)), `${day}일`],
     location: '서울시',
     rank: null,
   }));
@@ -212,7 +212,7 @@ export function toWeekDailySceneDataset(
         : null,
     collection: dataCollectionSchema.display(dataCollectionKey),
     dates: [
-      translateMonth(getMonthKey(month) as MonthKey),
+      monthSchema.display(monthSchema.getKeyByValue(month)),
       translateWeekday(weekday),
     ],
     location: '서울시',
@@ -236,7 +236,10 @@ export function toWeeklySceneDataset(
         ? pm_small
         : null,
     collection: dataCollectionSchema.display(dataCollectionKey),
-    dates: [translateYear(getYearKey(year) as YearKey), `${week}번째 주`],
+    dates: [
+      yearSchema.display(yearSchema.getKeyByValue(year)),
+      `${week}번째 주`,
+    ],
     location: '서울시',
     rank: null,
   }));
@@ -259,8 +262,8 @@ export function toMonthlySceneDataset(
         : null,
     collection: dataCollectionSchema.display(dataCollectionKey),
     dates: [
-      translateYear(getYearKey(year) as YearKey),
-      translateMonth(getMonthKey(month) as MonthKey),
+      yearSchema.display(yearSchema.getKeyByValue(year)),
+      monthSchema.display(monthSchema.getKeyByValue(month)),
     ],
     location: '서울시',
     rank: null,
@@ -283,7 +286,7 @@ export function toYearlySceneDataset(
         ? pm_small
         : null,
     collection: dataCollectionSchema.display(dataCollectionKey),
-    dates: [translateYear(getYearKey(year) as YearKey)],
+    dates: [yearSchema.display(yearSchema.getKeyByValue(year))],
     location: '서울시',
     rank: null,
   }));

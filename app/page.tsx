@@ -14,8 +14,8 @@ import { useDataNameKey } from '@/components/dataName';
 import { useDisplayKey } from '@/components/display';
 import FloatingButtons from '@/components/FloatingButtons';
 import Minimap from '@/components/MiniMap';
-import { useMonthValue } from '@/components/month';
-import { useSeasonValue } from '@/components/season';
+import { useMonthKey } from '@/components/month';
+import { useSeasonKey } from '@/components/season';
 import Sequence, {
   toDailySceneDataset,
   toMonthlySceneDataset,
@@ -24,7 +24,7 @@ import Sequence, {
   toYearlySceneDataset,
 } from '@/components/Sequence';
 import { SettingsDialog } from '@/components/settings';
-import { useYearValue } from '@/components/year';
+import { useYearKey } from '@/components/year';
 
 export default function IndexPage() {
   const displayKey = useDisplayKey();
@@ -33,45 +33,41 @@ export default function IndexPage() {
 
   const dataCollectionKey = useDataCollectionKey();
 
-  const yearValue = useYearValue();
+  const yearKey = useYearKey();
 
-  const seasonValue = useSeasonValue();
+  const seasonKey = useSeasonKey();
 
-  const monthValue = useMonthValue();
+  const monthKey = useMonthKey();
 
-  const dailySceneDataset = useDailyDataListQuery(monthValue, {
+  const dailySceneDataset = useDailyDataListQuery(monthKey, {
     enabled: dataCollectionKey === 'DAILY',
     select: (dataset) =>
       toDailySceneDataset(dataset, dataNameKey, dataCollectionKey),
   });
 
-  const weekDailySceneDataset = useWeekDailyDataListQuery(monthValue, {
+  const weekDailySceneDataset = useWeekDailyDataListQuery(monthKey, {
     enabled: dataCollectionKey === 'WEEKDAILY',
     select: (dataset) =>
       toWeekDailySceneDataset(dataset, dataNameKey, dataCollectionKey),
   });
 
-  const weeklySceneDataset = useWeeklyDataListQuery(yearValue, {
+  const weeklySceneDataset = useWeeklyDataListQuery(yearKey, {
     enabled: dataCollectionKey === 'WEEKLY',
     select: (dataset) =>
       toWeeklySceneDataset(dataset, dataNameKey, dataCollectionKey),
   });
 
-  const monthlySceneDataset = useMonthlyListQuery(yearValue, {
+  const monthlySceneDataset = useMonthlyListQuery(yearKey, {
     enabled: dataCollectionKey === 'MONTHLY',
     select: (dataset) =>
       toMonthlySceneDataset(dataset, dataNameKey, dataCollectionKey),
   });
 
-  const seasonalSceneDataset = useMonthlyListQueryBySeaon(
-    yearValue,
-    seasonValue,
-    {
-      enabled: dataCollectionKey === 'SEASONALLY',
-      select: (dataset) =>
-        toMonthlySceneDataset(dataset, dataNameKey, dataCollectionKey),
-    }
-  );
+  const seasonalSceneDataset = useMonthlyListQueryBySeaon(yearKey, seasonKey, {
+    enabled: dataCollectionKey === 'SEASONALLY',
+    select: (dataset) =>
+      toMonthlySceneDataset(dataset, dataNameKey, dataCollectionKey),
+  });
 
   const yearlySceneDataset = useYearlyDataListQuery({
     enabled: dataCollectionKey === 'YEARLY',

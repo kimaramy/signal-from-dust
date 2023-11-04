@@ -7,12 +7,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { defaultYearKey, getYearValue, Year, yearKeys } from './schema';
-import { translateYear } from './utils';
+import { yearSchema, type YearKey } from './schema';
 
 interface YearSelectProps {
-  value: Year;
-  onValueChange: (value: Year) => void;
+  value: YearKey;
+  onValueChange: (value: YearKey) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
@@ -27,29 +26,25 @@ function YearSelect(props: YearSelectProps) {
     className,
   } = props;
 
-  const _yearKeys = yearKeys.slice();
+  const yearKeys = yearSchema.getAllKeys();
 
-  const _defaultYearKey = _yearKeys.splice(
-    _yearKeys.indexOf(defaultYearKey),
+  const defaultYearKey = yearKeys.splice(
+    yearKeys.indexOf(yearSchema.getDefaultKey()),
     1
   )[0];
 
   return (
-    <Select
-      value={String(value)}
-      disabled={disabled}
-      onValueChange={(value) => onValueChange(Number(value))}
-    >
+    <Select value={value} disabled={disabled} onValueChange={onValueChange}>
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
         <SelectValue placeholder="조회 연도 선택" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value={String(getYearValue(_defaultYearKey))}>
-          {translateYear(_defaultYearKey)}
+        <SelectItem value={defaultYearKey}>
+          {yearSchema.display(defaultYearKey)}
         </SelectItem>
-        {_yearKeys.reverse().map((yearKey) => (
-          <SelectItem key={yearKey} value={String(getYearValue(yearKey))}>
-            {translateYear(yearKey)}
+        {yearKeys.reverse().map((yearKey) => (
+          <SelectItem key={yearKey} value={yearKey}>
+            {yearSchema.display(yearKey)}
           </SelectItem>
         ))}
       </SelectContent>

@@ -2,7 +2,7 @@ import { toLower, toUpper } from 'lodash-es';
 import { z } from 'zod';
 
 import { type QuerySchema } from '@/lib/utils';
-import { type Month } from '@/components/month';
+import { type MonthValue } from '@/components/month';
 
 const seasonKeySchema = z.enum(['ALL', 'SPRING', 'SUMMER', 'FALL', 'WINTER']);
 
@@ -16,7 +16,7 @@ type SeasonDict = {
   name: SeasonKey;
   displayName: string;
   value: SeasonValue;
-  monthRange: Month[];
+  monthRange: MonthValue[];
 };
 
 class SeasonSchema implements QuerySchema<SeasonKey, SeasonValue, SeasonDict> {

@@ -6,8 +6,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export enum QueryParamEnum {
+  DataName = 'data',
   DataCollection = 'collection',
-  DataName = 'name',
   Year = 'year',
   Season = 'season',
   Month = 'month',

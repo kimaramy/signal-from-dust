@@ -7,12 +7,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { defaultMonthKey, getMonthValue, Month, monthKeys } from './schema';
-import { translateMonth } from './utils';
+import { monthSchema, type MonthKey } from './schema';
 
 interface MonthSelectProps {
-  value: Month;
-  onValueChange: (value: Month) => void;
+  value: MonthKey;
+  onValueChange: (value: MonthKey) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
@@ -27,29 +26,25 @@ function MonthSelect(props: MonthSelectProps) {
     className,
   } = props;
 
-  const _monthKeys = monthKeys.slice();
+  const monthKeys = monthSchema.getAllKeys();
 
-  const _defaultMonthKey = _monthKeys.splice(
-    _monthKeys.indexOf(defaultMonthKey),
+  const defaultMonthKey = monthKeys.splice(
+    monthKeys.indexOf(monthSchema.getDefaultKey()),
     1
   )[0];
 
   return (
-    <Select
-      value={String(value)}
-      disabled={disabled}
-      onValueChange={(value) => onValueChange(Number(value))}
-    >
+    <Select value={value} disabled={disabled} onValueChange={onValueChange}>
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
         <SelectValue placeholder="조회 월 선택" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value={String(getMonthValue(_defaultMonthKey))}>
-          {translateMonth(_defaultMonthKey)}
+        <SelectItem value={defaultMonthKey}>
+          {monthSchema.display(defaultMonthKey)}
         </SelectItem>
-        {_monthKeys.map((monthKey) => (
-          <SelectItem key={monthKey} value={String(getMonthValue(monthKey))}>
-            {translateMonth(monthKey)}
+        {monthKeys.map((monthKey) => (
+          <SelectItem key={monthKey} value={monthKey}>
+            {monthSchema.display(monthKey)}
           </SelectItem>
         ))}
       </SelectContent>

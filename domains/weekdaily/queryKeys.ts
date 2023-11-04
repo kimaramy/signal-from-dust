@@ -3,6 +3,8 @@ import {
   inferQueryKeys,
 } from '@lukemorales/query-key-factory';
 
+import { type MonthKey } from '@/components/month';
+
 import * as services from './services';
 
 export const weekDailyDataKeys = createQueryKeys('weekdaily', {
@@ -10,9 +12,9 @@ export const weekDailyDataKeys = createQueryKeys('weekdaily', {
     queryKey: [dataId],
     queryFn: () => services.fetchWeekDailyData(dataId),
   }),
-  list: (month: number) => ({
-    queryKey: [month],
-    queryFn: () => services.fetchWeekDailyDataList(month),
+  list: (monthKey: MonthKey) => ({
+    queryKey: [{ monthKey }],
+    queryFn: () => services.fetchWeekDailyDataList(monthKey),
   }),
 });
 

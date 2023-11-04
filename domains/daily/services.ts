@@ -1,11 +1,13 @@
+import { monthSchema, type MonthKey } from '@/components/month';
+
 import { supabaseClient } from '../supabaseClient';
 import type { DailyData } from '../types';
 
-export const fetchDailyDataList = async (month: number) => {
+export const fetchDailyDataList = async (monthKey: MonthKey) => {
   const response = await supabaseClient
     .from('daily')
     .select('*')
-    .eq('month', month)
+    .eq('month', monthSchema.getValue(monthKey))
     .returns<DailyData[]>();
 
   if (response.error) throw response;
