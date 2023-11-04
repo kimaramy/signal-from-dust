@@ -104,7 +104,7 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
     const isKorean = locale === 'ko-KR';
     switch (monthKey) {
       case 'ALL':
-        return isKorean ? '매달' : 'All Months';
+        return isKorean ? '매달' : 'Every Month';
       default:
         return this.getMonthName(this.getValue(monthKey), 'long', 'ko-KR');
     }

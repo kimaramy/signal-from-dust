@@ -69,7 +69,7 @@ class SeasonSchema implements QuerySchema<SeasonKey, SeasonValue, SeasonDict> {
     const isKorean = locale === 'ko-KR';
     switch (seasonKey) {
       case 'ALL':
-        return isKorean ? '사계절' : 'All Seasons';
+        return isKorean ? '사계절' : 'Every Season';
       case 'SPRING':
         return isKorean ? '봄' : 'Spring';
       case 'SUMMER':

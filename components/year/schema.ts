@@ -108,7 +108,7 @@ class YearSchema implements QuerySchema<YearKey, YearValue, YearDict> {
     const isKorean = locale === 'ko-KR';
     switch (yearKey) {
       case 'ALL':
-        return isKorean ? '매년' : 'All Years';
+        return isKorean ? '매년' : 'Every Year';
       default:
         return this.getYearName(this.getValue(yearKey), 'numeric', 'ko-KR');
     }
