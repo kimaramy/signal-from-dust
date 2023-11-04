@@ -13,7 +13,7 @@ export default function ToastProvider() {
       // containerStyle={{}}
       toastOptions={{
         // Define default options
-        duration: 3000,
+        duration: 5000,
         className: 'bg-white text-gray-700',
         // Default options for specific status
         success: {

@@ -23,7 +23,7 @@ export default function QueryClientProvider({
       defaultOptions: {
         queries: {
           suspense: false,
-          useErrorBoundary: true,
+          useErrorBoundary: false,
           retry: false,
           refetchOnWindowFocus: false,
         },
@@ -79,7 +79,7 @@ export default function QueryClientProvider({
   return (
     <ReactQueryClientProvider client={queryClient}>
       {children}
-      {/* <ReactQueryDevtools initialIsOpen={false} position="bottom-right" /> */}
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </ReactQueryClientProvider>
   );
 }
