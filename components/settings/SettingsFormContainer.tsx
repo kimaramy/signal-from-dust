@@ -1,13 +1,16 @@
 import { useCallback } from 'react';
 import { useSetQueryParams } from '@/hooks';
-import { toLower } from 'lodash-es';
 
-import { QueryParamEnum } from '@/lib/utils';
+import { QueryParamEnum, toLowerCase } from '@/lib/utils';
 
 import { useSettingsFormDefaultValues } from './hooks';
 import SettingsForm, { type SettingsFormValues } from './SettingsForm';
 
-function SettingsFormContainer() {
+interface SettingsFormContainerProps {
+  devTool: boolean;
+}
+
+function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
   const setQueryParams = useSetQueryParams();
 
   const defaultValues = useSettingsFormDefaultValues();
@@ -23,7 +26,7 @@ function SettingsFormContainer() {
         .set(QueryParamEnum.Month, values.monthKey);
 
       map.forEach((value, key) => {
-        map.set(key, toLower(value.toString()));
+        map.set(key, toLowerCase(value.toString()));
       });
 
       setQueryParams(map);
@@ -31,7 +34,13 @@ function SettingsFormContainer() {
     [setQueryParams]
   );
 
-  return <SettingsForm defaultValues={defaultValues} onSubmit={handleSubmit} />;
+  return (
+    <SettingsForm
+      defaultValues={defaultValues}
+      onSubmit={handleSubmit}
+      devTool={devTool}
+    />
+  );
 }
 
 export default SettingsFormContainer;

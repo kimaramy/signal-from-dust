@@ -9,7 +9,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -42,13 +41,9 @@ function SettingsDialog() {
         <section className="flex w-1/2 flex-col p-6">
           <DialogHeader>
             <DialogTitle>데이터 선택</DialogTitle>
-            {/* <DialogDescription>
-          This action cannot be undone. This will permanently delete your
-          account and remove your data from our servers.
-        </DialogDescription> */}
           </DialogHeader>
           <section className="py-4">
-            <SettingsFormContainer />
+            <SettingsFormContainer devTool={false} />
           </section>
           <DialogFooter>
             <DialogClose className="w-full">

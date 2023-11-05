@@ -1,4 +1,4 @@
-// import { DevTool } from '@hookform/devtools';
+import { DevTool } from '@hookform/devtools';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { Form } from '@/components/ui/form';
@@ -29,9 +29,14 @@ type SettingsFormSubmitHandler = SubmitHandler<SettingsFormValues>;
 interface SettingsFormProps {
   defaultValues: SettingsFormValues;
   onSubmit: SettingsFormSubmitHandler;
+  devTool?: boolean;
 }
 
-function SettingsForm({ defaultValues, onSubmit }: SettingsFormProps) {
+function SettingsForm({
+  devTool = false,
+  defaultValues,
+  onSubmit,
+}: SettingsFormProps) {
   const settingsForm = useForm<SettingsFormValues>({
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
@@ -56,7 +61,7 @@ function SettingsForm({ defaultValues, onSubmit }: SettingsFormProps) {
         </form>
       </Form>
 
-      {/* <DevTool control={settingsForm.control} /> */}
+      {devTool && <DevTool control={settingsForm.control} />}
     </>
   );
 }
