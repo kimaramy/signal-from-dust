@@ -104,7 +104,7 @@ class WeekdaySchema
         return this.getWeekdayName(
           this.getValue(weekdayKey) - 1,
           'long',
-          'ko-KR'
+          locale
         );
     }
   }
@@ -113,7 +113,9 @@ class WeekdaySchema
     format: Intl.DateTimeFormatOptions['weekday'] = 'long',
     locale: Intl.LocalesArgument = 'ko-KR'
   ) {
-    if (value > 6) throw new Error(`value must be in 0 to 6`);
+    if (value < 0 || value > 6) {
+      throw new Error(`weekday value must be in 0 to 6`);
+    }
     const today = new Date();
     const todayValue = today.getDay();
     today.setDate(today.getDate() + Math.abs(value - todayValue));

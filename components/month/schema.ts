@@ -109,7 +109,7 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
       case 'ALL':
         return isKorean ? '매달' : 'Every Month';
       default:
-        return this.getMonthName(this.getValue(monthKey), 'long', 'ko-KR');
+        return this.getMonthName(this.getValue(monthKey) - 1, 'long', locale);
     }
   }
   protected getMonthName(
@@ -117,10 +117,12 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
     format: Intl.DateTimeFormatOptions['month'] = 'long',
     locale: Intl.LocalesArgument = 'ko-KR'
   ) {
-    if (value < 1) throw new Error(`value must be at least 1`);
-    const date = new Date();
-    date.setMonth(value - 1);
-    return date.toLocaleString(locale, { month: format });
+    if (value < 0 || value > 11) {
+      throw new Error(`month value must be in 0 to 11`);
+    }
+    const today = new Date();
+    today.setMonth(value);
+    return today.toLocaleString(locale, { month: format });
   }
 }
 

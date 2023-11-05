@@ -14,18 +14,6 @@ const yearKeySchema = z.enum([
   '2022',
 ]);
 
-// const yearEnum = {
-//   [yearKeySchema.enum['ALL']]: 0,
-//   [yearKeySchema.enum[2015]]: 2015,
-//   [yearKeySchema.enum[2016]]: 2016,
-//   [yearKeySchema.enum[2017]]: 2017,
-//   [yearKeySchema.enum[2018]]: 2018,
-//   [yearKeySchema.enum[2019]]: 2019,
-//   [yearKeySchema.enum[2020]]: 2020,
-//   [yearKeySchema.enum[2021]]: 2021,
-//   [yearKeySchema.enum[2022]]: 2022,
-// }
-
 type YearKeySchema = typeof yearKeySchema;
 
 type YearKey = z.infer<typeof yearKeySchema>;
@@ -113,17 +101,20 @@ class YearSchema implements QuerySchema<YearKey, YearValue, YearDict> {
       case 'ALL':
         return isKorean ? '매년' : 'Every Year';
       default:
-        return this.getYearName(this.getValue(yearKey), 'numeric', 'ko-KR');
+        return this.getYearName(this.getValue(yearKey), 'numeric', locale);
     }
   }
   protected getYearName(
-    year: number,
+    value: number,
     format: Intl.DateTimeFormatOptions['year'] = 'numeric',
     locale: Intl.LocalesArgument = 'ko-KR'
   ) {
-    const date = new Date();
-    date.setFullYear(year);
-    return date.toLocaleString(locale, { year: format });
+    if (value < 2015) {
+      throw new Error(`year value must be 2015 or over 2015`);
+    }
+    const today = new Date();
+    today.setFullYear(value);
+    return today.toLocaleString(locale, { year: format });
   }
 }
 
