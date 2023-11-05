@@ -1,7 +1,6 @@
-import { toLower, toUpper } from 'lodash-es';
 import { z } from 'zod';
 
-import { type QuerySchema } from '@/lib/utils';
+import { toLowerCase, toUpperCase, type QuerySchema } from '@/lib/utils';
 import { type MonthValue } from '@/components/month';
 
 const seasonKeySchema = z.enum(['ALL', 'SPRING', 'SUMMER', 'FALL', 'WINTER']);
@@ -40,16 +39,21 @@ class SeasonSchema implements QuerySchema<SeasonKey, SeasonValue, SeasonDict> {
     return this.getAllKeys().map((key) => this.getValue(key));
   }
   getKeyByValue(seasonValue: SeasonValue) {
-    return toUpper(seasonValue) as SeasonKey;
+    return toUpperCase(seasonValue);
   }
   getValue(seasonKey: SeasonKey) {
-    return toLower(seasonKey) as SeasonValue;
+    return toLowerCase(seasonKey);
   }
   parseKey(maybeSeasonKey: unknown) {
     this.keySchema.parse(maybeSeasonKey);
   }
   safeParseKey(maybeSeasonKey: unknown) {
     return this.keySchema.safeParse(maybeSeasonKey).success;
+  }
+  refineKey(seasonKeyLike: string) {
+    const upperCasedKey = toUpperCase(seasonKeyLike);
+    this.parseKey(upperCasedKey);
+    return upperCasedKey as SeasonKey;
   }
   getKeyDict(locale?: string) {
     return this.getAllKeys().reduce(

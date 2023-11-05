@@ -1,28 +1,20 @@
 'use client';
 
 import { useEnumQueryParam, useSetQueryParam } from '@/hooks';
-import { toLower, toUpper } from 'lodash-es';
 
-import { QueryParamEnum } from '@/lib/utils';
+import { QueryParamEnum, toLowerCase, toUpperCase } from '@/lib/utils';
 
 import { seasonSchema, type SeasonKey, type SeasonValue } from './schema';
 
 export function useSeasonKey(): SeasonKey {
-  const lowerCasedKeys = seasonSchema
-    .getAllKeys()
-    .map((key) => toLower(key) as Lowercase<SeasonKey>);
-
-  const lowerCasedDefaultKey = toLower(
-    seasonSchema.getDefaultKey()
-  ) as Lowercase<SeasonKey>;
-
+  const lowerCasedKeys = seasonSchema.getAllKeys().map(toLowerCase);
+  const lowerCasedDefaultKey = toLowerCase(seasonSchema.getDefaultKey());
   const [lowerCasedKey] = useEnumQueryParam(
     QueryParamEnum.Season,
     lowerCasedKeys,
     lowerCasedDefaultKey
   );
-
-  return toUpper(lowerCasedKey) as SeasonKey;
+  return toUpperCase(lowerCasedKey);
 }
 
 export function useSeasonValue(): SeasonValue {
@@ -31,11 +23,9 @@ export function useSeasonValue(): SeasonValue {
 }
 
 export function useSetSeasonKey() {
-  const setSeasonKey = useSetQueryParam<Lowercase<SeasonKey>>(
-    QueryParamEnum.Season
-  );
+  const setSeasonKey = useSetQueryParam(QueryParamEnum.Season);
   return function (seasonKey: SeasonKey) {
-    const lowerCasedKey = toLower(seasonKey) as Lowercase<SeasonKey>;
+    const lowerCasedKey = toLowerCase(seasonKey);
     setSeasonKey(lowerCasedKey);
   };
 }

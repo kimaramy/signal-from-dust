@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { type QuerySchema } from '@/lib/utils';
+import { toUpperCase, type QuerySchema } from '@/lib/utils';
 
 const monthKeySchema = z.enum([
   'ALL',
@@ -66,12 +66,14 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
     return this.getAllKeys().map((key) => this.getValue(key));
   }
   getKeyByValue(monthValue: MonthValue) {
+    let monthKey = '';
     for (let [key, value] of MonthSchema.keyValueMap.entries()) {
       if (monthValue === value) {
-        return key;
+        monthKey = key;
+        break;
       }
     }
-    return this.getDefaultKey();
+    return this.parseKey(monthKey) as never;
   }
   getValue(monthKey: MonthKey) {
     const monthValue = MonthSchema.keyValueMap.get(monthKey);
@@ -86,6 +88,11 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
   }
   safeParseKey(maybeMonthKey: unknown) {
     return this.keySchema.safeParse(maybeMonthKey).success;
+  }
+  refineKey(monthKeyLike: string) {
+    const upperCasedKey = toUpperCase(monthKeyLike);
+    this.parseKey(upperCasedKey);
+    return upperCasedKey as MonthKey;
   }
   getKeyDict(locale?: string) {
     return this.getAllKeys().reduce(

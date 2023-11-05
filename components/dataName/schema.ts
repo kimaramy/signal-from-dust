@@ -1,7 +1,6 @@
-import { toLower, toUpper } from 'lodash-es';
 import { z } from 'zod';
 
-import { type QuerySchema } from '@/lib/utils';
+import { toLowerCase, toUpperCase, type QuerySchema } from '@/lib/utils';
 
 const dataNameKeySchema = z.enum(['PM_LARGE', 'PM_SMALL']);
 
@@ -21,35 +20,40 @@ class DataNameSchema
   implements QuerySchema<DataNameKey, DataNameValue, DataNameDict>
 {
   private readonly keySchema: DataNameKeySchema;
-  readonly keys: DataNameKeySchema['Values'];
+  readonly keys: DataNameKeySchema['enum'];
 
   constructor() {
     this.keySchema = dataNameKeySchema;
-    this.keys = dataNameKeySchema.Values;
+    this.keys = dataNameKeySchema.enum;
   }
   getDefaultKey() {
-    return this.keySchema.Values.PM_LARGE;
+    return this.keySchema.enum.PM_LARGE;
   }
   getDefaultValue() {
     return this.getValue(this.getDefaultKey());
   }
   getAllKeys() {
-    return Object.values(this.keySchema.Values);
+    return Object.values(this.keySchema.enum);
   }
   getAllValues() {
     return this.getAllKeys().map((key) => this.getValue(key));
   }
   getKeyByValue(dataNameValue: DataNameValue) {
-    return toUpper(dataNameValue) as DataNameKey;
+    return toUpperCase(dataNameValue);
   }
   getValue(seasonKey: DataNameKey) {
-    return toLower(seasonKey) as DataNameValue;
+    return toLowerCase(seasonKey);
   }
   parseKey(maybeDataNameKey: unknown) {
     this.keySchema.parse(maybeDataNameKey);
   }
   safeParseKey(maybeDataNameKey: unknown) {
     return this.keySchema.safeParse(maybeDataNameKey).success;
+  }
+  refineKey(dataNameKeyLike: string) {
+    const upperCasedKey = toUpperCase(dataNameKeyLike);
+    this.parseKey(upperCasedKey);
+    return upperCasedKey as DataNameKey;
   }
   getKeyDict(locale?: string) {
     return this.getAllKeys().reduce(

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { type QuerySchema } from '@/lib/utils';
+import { toUpperCase, type QuerySchema } from '@/lib/utils';
 
 const yearKeySchema = z.enum([
   'ALL',
@@ -70,12 +70,14 @@ class YearSchema implements QuerySchema<YearKey, YearValue, YearDict> {
     return this.getAllKeys().map((key) => this.getValue(key));
   }
   getKeyByValue(yearValue: YearValue) {
+    let yearKey = '';
     for (let [key, value] of YearSchema.keyValueMap.entries()) {
       if (yearValue === value) {
-        return key;
+        yearKey = key;
+        break;
       }
     }
-    return this.getDefaultKey();
+    return this.parseKey(yearKey) as never;
   }
   getValue(yearKey: YearKey) {
     const yearValue = YearSchema.keyValueMap.get(yearKey);
@@ -90,6 +92,11 @@ class YearSchema implements QuerySchema<YearKey, YearValue, YearDict> {
   }
   safeParseKey(maybeYearKey: unknown) {
     return this.keySchema.safeParse(maybeYearKey).success;
+  }
+  refineKey(yearKeyLike: string) {
+    const upperCasedKey = toUpperCase(yearKeyLike);
+    this.parseKey(upperCasedKey);
+    return upperCasedKey as YearKey;
   }
   getKeyDict(locale?: string) {
     return this.getAllKeys().reduce(

@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
+import { toLower, toUpper } from 'lodash-es';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -30,6 +31,7 @@ export interface QuerySchema<
   getKeyDict: (locale?: string) => { [key: string]: TDict };
   parseKey: (key: unknown) => void;
   safeParseKey: (key: unknown) => boolean;
+  refineKey: (keyLike: string) => TKey;
   display?: (key: TKey, locale?: string) => string;
 }
 
@@ -41,6 +43,14 @@ export function toOrderedBy<T extends string>(arr: T[], order: T[]) {
     return aIndex - bIndex;
   });
 }
+
+export const toLowerCase = <T extends string = string>(
+  nonLowerCasedString: T
+) => toLower(nonLowerCasedString) as Lowercase<T>;
+
+export const toUpperCase = <T extends string = string>(
+  nonUpperCasedString: T
+) => toUpper(nonUpperCasedString) as Uppercase<Lowercase<T>>;
 
 export function toOrdinalNumberName(num: number) {
   switch (num) {

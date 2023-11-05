@@ -1,9 +1,14 @@
 import type { TableKeys } from '@/domains';
-import { toLower, toUpper, upperFirst } from 'lodash-es';
+import { upperFirst } from 'lodash-es';
 import { z } from 'zod';
 
 import { stringUnionToArray } from '@/lib/ts-utils';
-import { toOrderedBy, type QuerySchema } from '@/lib/utils';
+import {
+  toLowerCase,
+  toOrderedBy,
+  toUpperCase,
+  type QuerySchema,
+} from '@/lib/utils';
 
 type DataCollectionKey = Uppercase<TableKeys> | 'SEASONALLY';
 
@@ -60,16 +65,21 @@ class DataCollectionSchema
     return this.getAllKeys().map((key) => this.getValue(key));
   }
   getKeyByValue(dataCollectionValue: DataCollectionValue) {
-    return toUpper(dataCollectionValue) as DataCollectionKey;
+    return toUpperCase(dataCollectionValue);
   }
   getValue(dataCollectionKey: DataCollectionKey) {
-    return toLower(dataCollectionKey) as DataCollectionValue;
+    return toLowerCase(dataCollectionKey);
   }
   parseKey(maybeDataCollectionKey: unknown) {
     this.keySchema.parse(maybeDataCollectionKey);
   }
   safeParseKey(maybeDataCollectionKey: unknown) {
     return this.keySchema.safeParse(maybeDataCollectionKey).success;
+  }
+  refineKey(dataCollectionKeyLike: string) {
+    const upperCasedKey = toUpperCase(dataCollectionKeyLike);
+    this.parseKey(upperCasedKey);
+    return upperCasedKey as DataCollectionKey;
   }
   getKeyDict(locale?: string) {
     return this.getAllKeys().reduce(

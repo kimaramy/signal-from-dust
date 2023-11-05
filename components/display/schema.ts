@@ -1,7 +1,6 @@
-import { toLower, toUpper } from 'lodash-es';
 import { z } from 'zod';
 
-import { type QuerySchema } from '@/lib/utils';
+import { toLowerCase, toUpperCase, type QuerySchema } from '@/lib/utils';
 
 const displayKeySchema = z.enum(['FULL', 'AUTO']);
 
@@ -40,16 +39,21 @@ class DisplaySchema
     return this.getAllKeys().map((key) => this.getValue(key));
   }
   getKeyByValue(displayValue: DisplayValue) {
-    return toUpper(displayValue) as DisplayKey;
+    return toUpperCase(displayValue);
   }
   getValue(seasonKey: DisplayKey) {
-    return toLower(seasonKey) as DisplayValue;
+    return toLowerCase(seasonKey);
   }
   parseKey(maybeDisplayKey: unknown) {
     this.keySchema.parse(maybeDisplayKey);
   }
   safeParseKey(maybeDisplayKey: unknown) {
     return this.keySchema.safeParse(maybeDisplayKey).success;
+  }
+  refineKey(displayKeyLike: string) {
+    const upperCasedKey = toUpperCase(displayKeyLike);
+    this.parseKey(upperCasedKey);
+    return upperCasedKey as DisplayKey;
   }
   getKeyDict(locale?: string) {
     return this.getAllKeys().reduce(
