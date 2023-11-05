@@ -23,7 +23,7 @@ export function useMonthlyListQuery<T = MonthlyData[]>(
   return data;
 }
 
-export function useMonthlyListQueryBySeaon<T = MonthlyData[]>(
+export function useMonthlyListQueryBySeason<T = MonthlyData[]>(
   yearKey: YearKey,
   seasonKey: SeasonKey,
   options?: UseQueryOptions<

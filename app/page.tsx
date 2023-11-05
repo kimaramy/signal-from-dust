@@ -3,7 +3,7 @@
 import {
   useDailyListQuery,
   useMonthlyListQuery,
-  useMonthlyListQueryBySeaon,
+  useMonthlyListQueryBySeason,
   useWeekDailyListQuery,
   useWeeklyListQuery,
   useYearlyListQuery,
@@ -63,7 +63,7 @@ export default function IndexPage() {
       toMonthlySceneDataset(dataset, dataNameKey, dataCollectionKey),
   });
 
-  const seasonalSceneDataset = useMonthlyListQueryBySeaon(yearKey, seasonKey, {
+  const seasonalSceneDataset = useMonthlyListQueryBySeason(yearKey, seasonKey, {
     enabled: dataCollectionKey === 'SEASONALLY',
     select: (dataset) =>
       toMonthlySceneDataset(dataset, dataNameKey, dataCollectionKey),
