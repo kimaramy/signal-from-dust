@@ -1,7 +1,7 @@
 import { supabaseClient } from '../supabaseClient';
 import type { YearlyData } from '../types';
 
-export const fetchYearlyDataList = async (filters?: unknown) => {
+export const fetchYearlyDataset = async (filters?: unknown) => {
   const response = await supabaseClient
     .from('yearly')
     .select('*')

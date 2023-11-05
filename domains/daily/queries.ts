@@ -3,36 +3,36 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { type MonthKey } from '@/components/month';
 
 import type { DailyData, SupabaseError } from '../types';
-import { DailyDataKeys, dailyDataKeys } from './queryKeys';
+import { dailyQueryKeys, type DailyQueryKeys } from './queryKeys';
 
-export function useDailyDataListQuery<T = DailyData[]>(
+export function useDailyListQuery<T = DailyData[]>(
   monthKey: MonthKey,
   options?: UseQueryOptions<
     DailyData[],
     SupabaseError,
     T,
-    DailyDataKeys['list']['queryKey']
+    DailyQueryKeys['list']['queryKey']
   >
 ) {
   const { data } = useQuery({
-    ...dailyDataKeys.list(monthKey),
+    ...dailyQueryKeys.list(monthKey),
     staleTime: Infinity,
     ...options,
   });
   return data;
 }
 
-export function useDailyDataQuery<T = DailyData>(
+export function useDailyQuery<T = DailyData>(
   dataId: number,
   options?: UseQueryOptions<
     DailyData,
     SupabaseError,
     T,
-    DailyDataKeys['detail']['queryKey']
+    DailyQueryKeys['detail']['queryKey']
   >
 ) {
   const { data } = useQuery({
-    ...dailyDataKeys.detail(dataId),
+    ...dailyQueryKeys.detail(dataId),
     staleTime: Infinity,
     ...options,
   });

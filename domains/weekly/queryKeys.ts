@@ -3,19 +3,24 @@ import {
   inferQueryKeys,
 } from '@lukemorales/query-key-factory';
 
-import { type YearKey } from '@/components/year';
+import { yearSchema, type YearKey } from '@/components/year';
 
 import * as services from './services';
 
-export const weeklyDataKeys = createQueryKeys('weekly', {
-  detail: (dataId: number) => ({
-    queryKey: [dataId],
-    queryFn: () => services.fetchWeeklyData(dataId),
-  }),
-  list: (yearKey: YearKey) => ({
-    queryKey: [{ yearKey }],
-    queryFn: () => services.fetchWeeklyDataList(yearKey),
-  }),
+export const weeklyQueryKeys = createQueryKeys('weekly', {
+  detail(dataId: number) {
+    return {
+      queryKey: [dataId],
+      queryFn: () => services.fetchWeeklyData(dataId),
+    };
+  },
+  list(yearKey: YearKey) {
+    const year = yearSchema.getValue(yearKey);
+    return {
+      queryKey: [{ year }],
+      queryFn: () => services.fetchWeeklyDataset(year),
+    };
+  },
 });
 
-export type WeeklyDataKeys = inferQueryKeys<typeof weeklyDataKeys>;
+export type WeeklyQueryKeys = inferQueryKeys<typeof weeklyQueryKeys>;

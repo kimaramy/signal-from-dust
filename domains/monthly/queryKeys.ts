@@ -3,26 +3,34 @@ import {
   inferQueryKeys,
 } from '@lukemorales/query-key-factory';
 
-import { type SeasonKey } from '@/components/season';
-import { type YearKey } from '@/components/year';
+import { seasonSchema, type SeasonKey } from '@/components/season';
+import { yearSchema, type YearKey } from '@/components/year';
 
 import * as services from './services';
 
 export const monthlyQueryKeys = createQueryKeys('monthly', {
-  detail: (dataId: number) => ({
-    queryKey: [dataId],
-    queryFn: () => services.fetchMonthlyData(dataId),
-  }),
-  list: (yearKey: YearKey) => ({
-    queryKey: [{ yearKey }],
-    queryFn: () => services.fetchMonthlyDataset(yearKey),
-    contextQueries: {
-      seasonal: (seasonKey: SeasonKey) => ({
-        queryKey: [{ seasonKey }],
-        queryFn: () => services.fetchMonthlyDatasetBySeason(yearKey, seasonKey),
-      }),
-    },
-  }),
+  detail(dataId: number) {
+    return {
+      queryKey: [dataId],
+      queryFn: () => services.fetchMonthlyData(dataId),
+    };
+  },
+  list(yearKey: YearKey) {
+    const year = yearSchema.getValue(yearKey);
+    return {
+      queryKey: [{ year }],
+      queryFn: () => services.fetchMonthlyDataset(year),
+      contextQueries: {
+        seasonal(seasonKey: SeasonKey) {
+          const months = seasonSchema.getMonthRange(seasonKey);
+          return {
+            queryKey: [{ months }],
+            queryFn: () => services.fetchMonthlyDatasetBySeason(year, months),
+          };
+        },
+      },
+    };
+  },
 });
 
 export type MonthlyQueryKeys = inferQueryKeys<typeof monthlyQueryKeys>;

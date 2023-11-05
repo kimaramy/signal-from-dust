@@ -1,13 +1,11 @@
-import { yearSchema, type YearKey } from '@/components/year';
-
 import { supabaseClient } from '../supabaseClient';
 import type { WeeklyData } from '../types';
 
-export const fetchWeeklyDataList = async (yearKey: YearKey) => {
+export const fetchWeeklyDataset = async (year: number) => {
   const response = await supabaseClient
     .from('weekly')
     .select('*')
-    .eq('year', yearSchema.getValue(yearKey))
+    .eq('year', year)
     .returns<WeeklyData[]>();
 
   if (response.error) throw response;

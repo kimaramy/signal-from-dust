@@ -1,12 +1,12 @@
 'use client';
 
 import {
-  useDailyDataListQuery,
+  useDailyListQuery,
   useMonthlyListQuery,
   useMonthlyListQueryBySeaon,
-  useWeekDailyDataListQuery,
-  useWeeklyDataListQuery,
-  useYearlyDataListQuery,
+  useWeekDailyListQuery,
+  useWeeklyListQuery,
+  useYearlyListQuery,
 } from '@/domains';
 
 import { useDataCollectionKey } from '@/components/dataCollection';
@@ -39,19 +39,19 @@ export default function IndexPage() {
 
   const monthKey = useMonthKey();
 
-  const dailySceneDataset = useDailyDataListQuery(monthKey, {
+  const dailySceneDataset = useDailyListQuery(monthKey, {
     enabled: dataCollectionKey === 'DAILY',
     select: (dataset) =>
       toDailySceneDataset(dataset, dataNameKey, dataCollectionKey),
   });
 
-  const weekDailySceneDataset = useWeekDailyDataListQuery(monthKey, {
+  const weekDailySceneDataset = useWeekDailyListQuery(monthKey, {
     enabled: dataCollectionKey === 'WEEKDAILY',
     select: (dataset) =>
       toWeekDailySceneDataset(dataset, dataNameKey, dataCollectionKey),
   });
 
-  const weeklySceneDataset = useWeeklyDataListQuery(yearKey, {
+  const weeklySceneDataset = useWeeklyListQuery(yearKey, {
     enabled: dataCollectionKey === 'WEEKLY',
     select: (dataset) =>
       toWeeklySceneDataset(dataset, dataNameKey, dataCollectionKey),
@@ -69,7 +69,7 @@ export default function IndexPage() {
       toMonthlySceneDataset(dataset, dataNameKey, dataCollectionKey),
   });
 
-  const yearlySceneDataset = useYearlyDataListQuery({
+  const yearlySceneDataset = useYearlyListQuery({
     enabled: dataCollectionKey === 'YEARLY',
     select: (dataset) =>
       toYearlySceneDataset(dataset, dataNameKey, dataCollectionKey),

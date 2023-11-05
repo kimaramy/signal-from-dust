@@ -3,19 +3,24 @@ import {
   inferQueryKeys,
 } from '@lukemorales/query-key-factory';
 
-import { type MonthKey } from '@/components/month';
+import { monthSchema, type MonthKey } from '@/components/month';
 
 import * as services from './services';
 
-export const dailyDataKeys = createQueryKeys('daily', {
-  detail: (dataId: number) => ({
-    queryKey: [dataId],
-    queryFn: () => services.fetchDailyData(dataId),
-  }),
-  list: (monthKey: MonthKey) => ({
-    queryKey: [{ monthKey }],
-    queryFn: () => services.fetchDailyDataList(monthKey),
-  }),
+export const dailyQueryKeys = createQueryKeys('daily', {
+  detail(dataId: number) {
+    return {
+      queryKey: [dataId],
+      queryFn: () => services.fetchDailyData(dataId),
+    };
+  },
+  list(monthKey: MonthKey) {
+    const month = monthSchema.getValue(monthKey);
+    return {
+      queryKey: [{ month }],
+      queryFn: () => services.fetchDailyDataset(month),
+    };
+  },
 });
 
-export type DailyDataKeys = inferQueryKeys<typeof dailyDataKeys>;
+export type DailyQueryKeys = inferQueryKeys<typeof dailyQueryKeys>;

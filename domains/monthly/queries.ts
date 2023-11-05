@@ -4,7 +4,7 @@ import { type SeasonKey } from '@/components/season';
 import { type YearKey } from '@/components/year';
 
 import type { MonthlyData, SupabaseError } from '../types';
-import { MonthlyQueryKeys, monthlyQueryKeys } from './queryKeys';
+import { monthlyQueryKeys, type MonthlyQueryKeys } from './queryKeys';
 
 export function useMonthlyListQuery<T = MonthlyData[]>(
   yearKey: YearKey,
