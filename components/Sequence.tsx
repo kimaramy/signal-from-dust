@@ -20,7 +20,7 @@ import { type DisplayKey } from '@/components/display';
 import { monthSchema } from '@/components/month';
 import ProgressBar from '@/components/ProgressBar';
 import Scene, { getSceneLength, type SceneData } from '@/components/Scene';
-import { translateWeekday } from '@/components/weekday';
+import { weekdaySchema } from '@/components/weekday';
 import { yearSchema } from '@/components/year';
 
 import { Skeleton } from './ui/skeleton';
@@ -213,7 +213,7 @@ export function toWeekDailySceneDataset(
     collection: dataCollectionSchema.display(dataCollectionKey),
     dates: [
       monthSchema.display(monthSchema.getKeyByValue(month)),
-      translateWeekday(weekday),
+      weekdaySchema.display(weekdaySchema.refineKey(weekday)),
     ],
     location: '서울시',
     rank: null,
