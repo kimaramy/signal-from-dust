@@ -143,21 +143,21 @@ function Scene({
       //   perspective: display === '3d' ? `1500px` : undefined,
       // }}
     >
-      {/* {display === '3d' && (
+      {isFullPage && (
         <div
           className={cn(
-            'min-w-80 absolute bottom-[8%] left-[4%] z-20 w-auto bg-muted text-muted-foreground'
+            'absolute bottom-[8%] left-[4%] z-20 w-auto min-w-80 bg-muted text-muted-foreground'
           )}
         >
           <SceneData3DView
+            displayKey={displayKey}
             sceneData={sceneData}
             binaries={binaries}
-            display={display}
             isPlaying={isPlaying}
             onPlayButtonClick={handlePlaySound}
           />
         </div>
-      )} */}
+      )}
       {!isFullPage && (
         <HoverCard
           openDelay={0}
