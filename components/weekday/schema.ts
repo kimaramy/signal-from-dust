@@ -58,14 +58,10 @@ class WeekdaySchema
     return this.getAllKeys().map((key) => this.getValue(key));
   }
   getKeyByValue(weekdayValue: WeekdayValue) {
-    let weekdayKey = '';
     for (let [key, value] of WeekdaySchema.keyValueMap.entries()) {
-      if (weekdayValue === value) {
-        weekdayKey = key;
-        break;
-      }
+      if (weekdayValue === value) return key;
     }
-    return this.parseKey(weekdayKey) as never;
+    return this.getDefaultKey();
   }
   getValue(weekdayKey: WeekdayKey) {
     const weekdayValue = WeekdaySchema.keyValueMap.get(weekdayKey);
@@ -117,7 +113,7 @@ class WeekdaySchema
     format: Intl.DateTimeFormatOptions['weekday'] = 'long',
     locale: Intl.LocalesArgument = 'ko-KR'
   ) {
-    if (value > 6) throw new Error(`value must be 0 to 6`);
+    if (value > 6) throw new Error(`value must be in 0 to 6`);
     const today = new Date();
     const todayValue = today.getDay();
     today.setDate(today.getDate() + Math.abs(value - todayValue));

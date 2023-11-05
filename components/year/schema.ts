@@ -70,14 +70,10 @@ class YearSchema implements QuerySchema<YearKey, YearValue, YearDict> {
     return this.getAllKeys().map((key) => this.getValue(key));
   }
   getKeyByValue(yearValue: YearValue) {
-    let yearKey = '';
     for (let [key, value] of YearSchema.keyValueMap.entries()) {
-      if (yearValue === value) {
-        yearKey = key;
-        break;
-      }
+      if (yearValue === value) return key;
     }
-    return this.parseKey(yearKey) as never;
+    return this.getDefaultKey();
   }
   getValue(yearKey: YearKey) {
     const yearValue = YearSchema.keyValueMap.get(yearKey);

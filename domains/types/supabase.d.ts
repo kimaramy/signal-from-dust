@@ -95,7 +95,8 @@ export interface Database {
           month: number;
           pm_large: number | null;
           pm_small: number | null;
-          weekday: string;
+          weekday: number;
+          weekday_name: string | null;
         };
         Insert: {
           id?: number;
@@ -103,7 +104,8 @@ export interface Database {
           month: number;
           pm_large?: number | null;
           pm_small?: number | null;
-          weekday: string;
+          weekday: number;
+          weekday_name?: string | null;
         };
         Update: {
           id?: number;
@@ -111,7 +113,8 @@ export interface Database {
           month?: number;
           pm_large?: number | null;
           pm_small?: number | null;
-          weekday?: string;
+          weekday?: number;
+          weekday_name?: string | null;
         };
         Relationships: [];
       };
@@ -286,6 +289,7 @@ export interface Database {
           {
             foreignKeyName: 'objects_bucketId_fkey';
             columns: ['bucket_id'];
+            isOneToOne: false;
             referencedRelation: 'buckets';
             referencedColumns: ['id'];
           },

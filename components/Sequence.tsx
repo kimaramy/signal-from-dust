@@ -213,7 +213,7 @@ export function toWeekDailySceneDataset(
     collection: dataCollectionSchema.display(dataCollectionKey),
     dates: [
       monthSchema.display(monthSchema.getKeyByValue(month)),
-      weekdaySchema.display(weekdaySchema.refineKey(weekday)),
+      weekdaySchema.display(weekdaySchema.getKeyByValue(weekday)),
     ],
     location: '서울시',
     rank: null,

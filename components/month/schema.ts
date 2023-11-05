@@ -66,14 +66,10 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
     return this.getAllKeys().map((key) => this.getValue(key));
   }
   getKeyByValue(monthValue: MonthValue) {
-    let monthKey = '';
     for (let [key, value] of MonthSchema.keyValueMap.entries()) {
-      if (monthValue === value) {
-        monthKey = key;
-        break;
-      }
+      if (monthValue === value) return key;
     }
-    return this.parseKey(monthKey) as never;
+    return this.getDefaultKey();
   }
   getValue(monthKey: MonthKey) {
     const monthValue = MonthSchema.keyValueMap.get(monthKey);
