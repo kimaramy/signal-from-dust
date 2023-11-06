@@ -9,6 +9,7 @@ import {
   toUpperCase,
   type QuerySchema,
 } from '@/lib/utils';
+import { LocaleSchema, type AvailableLocale } from '@/components/locale';
 
 type DataCollectionKey = Uppercase<TableKeys> | 'SEASONALLY';
 
@@ -28,8 +29,9 @@ const dataCollectionKeys = Object.freeze(
   )
 );
 
+// z.enum 타입이 [string, ...string[]] 형식, 즉 무조건 하나의 요소는 보장되어야하는 NonEmptyArray 타입이므로 불가피하게 이렇게 할당함
 const dataCollectionKeySchema = z.enum([
-  dataCollectionKeys[0], // z.enum 타이핑이 [string, ...string[]] 형식으로 되어있는 이슈로 인해 불가피하게 이렇게 할당함
+  dataCollectionKeys[0],
   ...dataCollectionKeys.slice(1),
 ]);
 
@@ -53,7 +55,7 @@ class DataCollectionSchema
     this.keys = dataCollectionKeySchema.enum;
   }
   getDefaultKey() {
-    return this.keySchema.Values.YEARLY;
+    return this.keySchema.enum.YEARLY;
   }
   getDefaultValue() {
     return this.getValue(this.getDefaultKey());
@@ -81,12 +83,12 @@ class DataCollectionSchema
     this.parseKey(upperCasedKey);
     return upperCasedKey as DataCollectionKey;
   }
-  getKeyDict(_format?: unknown, locale?: 'ko' | 'en') {
+  getKeyDict(locale?: AvailableLocale) {
     return this.getAllKeys().reduce(
       (keyDict, key) => {
         keyDict[key] = {
           name: key,
-          displayName: this.display(key, null, locale),
+          displayName: this.display(key, locale),
           value: this.getValue(key),
         };
         return keyDict;
@@ -96,10 +98,9 @@ class DataCollectionSchema
   }
   display(
     dataCollectionKey: DataCollectionKey,
-    _format: unknown = null,
-    locale: 'ko' | 'en' = 'ko'
+    locale = LocaleSchema.defaultLocale
   ) {
-    const isKorean = locale.startsWith('ko');
+    const isKorean = LocaleSchema.isKorean(locale);
     switch (dataCollectionKey) {
       case 'YEARLY':
         return isKorean ? '연도별' : upperFirst(dataCollectionKey);

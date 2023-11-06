@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { QuerySchema, toUpperCase } from '@/lib/utils';
+import { LocaleSchema, type AvailableLocale } from '@/components/locale';
 
 const weekdayKeySchema = z.enum([
   'ALL',
@@ -103,7 +104,7 @@ class WeekdaySchema
     this.parseKey(upperCasedKey);
     return upperCasedKey as WeekdayKey;
   }
-  getKeyDict(format: 'short' | 'long' = 'short', locale?: 'ko' | 'en') {
+  getKeyDict(format: 'short' | 'long' = 'short', locale?: AvailableLocale) {
     return this.getAllKeys().reduce(
       (keyDict, key) => {
         keyDict[key] = {
@@ -119,11 +120,11 @@ class WeekdaySchema
   display(
     weekdayKey: WeekdayKey,
     format: 'short' | 'long' = 'short',
-    locale: 'ko' | 'en' = 'ko'
+    locale = LocaleSchema.defaultLocale
   ) {
     switch (weekdayKey) {
       case 'ALL':
-        return locale.startsWith('ko') ? '요일마다' : 'Every Weekday';
+        return LocaleSchema.isKorean(locale) ? '요일마다' : 'Every Weekday';
       default:
         return this.getWeekdayName(this.getValue(weekdayKey), format, locale);
     }
@@ -131,7 +132,7 @@ class WeekdaySchema
   protected getWeekdayName(
     weekdayValue: number,
     format: Intl.DateTimeFormatOptions['weekday'] = 'short',
-    locale: 'ko' | 'en' = 'ko'
+    locale = LocaleSchema.defaultLocale
   ) {
     const [firstWeekdayValue, lastWeekdayValue] = this.getValueRange();
     if (weekdayValue < firstWeekdayValue || weekdayValue > lastWeekdayValue) {

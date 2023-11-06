@@ -20,6 +20,7 @@ import {
 import { dataNameSchema, type DataNameKey } from '@/components/dataName';
 import { daySchema } from '@/components/day';
 import { type DisplayKey } from '@/components/display';
+import { LocaleSchema } from '@/components/locale';
 import { monthSchema } from '@/components/month';
 import ProgressBar from '@/components/ProgressBar';
 import Scene, { getSceneLength, type SceneData } from '@/components/Scene';
@@ -183,7 +184,7 @@ export function toDailySceneDataset(
   dataset: DailyData[],
   dataNameKey: DataNameKey,
   dataCollectionKey: DataCollectionKey,
-  locale: 'ko' | 'en' = 'ko'
+  locale = LocaleSchema.defaultLocale
 ): SceneData[] {
   return dataset.map(({ id, month, day, pm_large, pm_small }) => ({
     id,
@@ -198,9 +199,9 @@ export function toDailySceneDataset(
     collection: dataCollectionSchema.display(dataCollectionKey),
     dates: [
       monthSchema.display(monthSchema.getKeyByValue(month), 'short', locale),
-      daySchema.display(daySchema.getKeyByValue(day), null, locale),
+      daySchema.display(daySchema.getKeyByValue(day), locale),
     ],
-    location: locale.startsWith('ko') ? '서울시' : 'Seoul',
+    location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
     rank: null,
   }));
 }
@@ -209,7 +210,7 @@ export function toWeekDailySceneDataset(
   dataset: WeekDailyData[],
   dataNameKey: DataNameKey,
   dataCollectionKey: DataCollectionKey,
-  locale: 'ko' | 'en' = 'ko'
+  locale = LocaleSchema.defaultLocale
 ): SceneData[] {
   return dataset.map(({ id, month, weekday, pm_large, pm_small }) => ({
     id,
@@ -230,7 +231,7 @@ export function toWeekDailySceneDataset(
         locale
       ),
     ],
-    location: locale.startsWith('ko') ? '서울시' : 'Seoul',
+    location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
     rank: null,
   }));
 }
@@ -239,7 +240,7 @@ export function toWeeklySceneDataset(
   dataset: WeeklyData[],
   dataNameKey: DataNameKey,
   dataCollectionKey: DataCollectionKey,
-  locale: 'ko' | 'en' = 'ko'
+  locale = LocaleSchema.defaultLocale
 ): SceneData[] {
   return dataset.map(({ id, year, week, pm_large, pm_small }) => ({
     id,
@@ -254,9 +255,9 @@ export function toWeeklySceneDataset(
     collection: dataCollectionSchema.display(dataCollectionKey),
     dates: [
       yearSchema.display(yearSchema.getKeyByValue(year), 'short', locale),
-      weekSchema.display(weekSchema.getKeyByValue(week), null, locale),
+      weekSchema.display(weekSchema.getKeyByValue(week), locale),
     ],
-    location: locale.startsWith('ko') ? '서울시' : 'Seoul',
+    location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
     rank: null,
   }));
 }
@@ -265,7 +266,7 @@ export function toMonthlySceneDataset(
   dataset: MonthlyData[],
   dataNameKey: DataNameKey,
   dataCollectionKey: DataCollectionKey,
-  locale: 'ko' | 'en' = 'ko'
+  locale = LocaleSchema.defaultLocale
 ): SceneData[] {
   return dataset.map(({ id, year, month, pm_large, pm_small }) => ({
     id,
@@ -282,7 +283,7 @@ export function toMonthlySceneDataset(
       yearSchema.display(yearSchema.getKeyByValue(year), 'short', locale),
       monthSchema.display(monthSchema.getKeyByValue(month), 'short', locale),
     ],
-    location: locale?.startsWith('ko') ? '서울시' : 'Seoul',
+    location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
     rank: null,
   }));
 }
@@ -291,7 +292,7 @@ export function toYearlySceneDataset(
   dataset: YearlyData[],
   dataNameKey: DataNameKey,
   dataCollectionKey: DataCollectionKey,
-  locale: 'ko' | 'en' = 'ko'
+  locale = LocaleSchema.defaultLocale
 ): SceneData[] {
   return dataset.map(({ id, year, pm_large, pm_small }) => ({
     id,
@@ -307,7 +308,7 @@ export function toYearlySceneDataset(
     dates: [
       yearSchema.display(yearSchema.getKeyByValue(year), 'short', locale),
     ],
-    location: locale?.startsWith('ko') ? '서울시' : 'Seoul',
+    location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
     rank: null,
   }));
 }

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { QuerySchema } from '@/lib/utils';
+import { LocaleSchema } from '@/components/locale';
 
 const weekNumbers = new Array(53).fill(0).map((_, i) => `${i + 1}`);
 
@@ -44,12 +45,8 @@ class WeekSchema implements QuerySchema<WeekKey, WeekValue> {
   safeParseKey(maybeWeekKey: unknown) {
     return this.keySchema.safeParse(maybeWeekKey).success;
   }
-  display(
-    weekKey: WeekKey,
-    _format: unknown = null,
-    locale: 'ko' | 'en' = 'ko'
-  ) {
-    const isKorean = locale.startsWith('ko');
+  display(weekKey: WeekKey, locale = LocaleSchema.defaultLocale) {
+    const isKorean = LocaleSchema.isKorean(locale);
     const weekValue = this.getValue(weekKey);
     switch (weekValue) {
       case 0:

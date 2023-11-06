@@ -28,18 +28,11 @@ export interface QuerySchema<
   getAllValues: () => TValue[];
   getKeyByValue: (value: TValue) => TKey;
   getValue: (key: TKey) => TValue;
-  getKeyDict?: (
-    format?: 'short' | 'long',
-    locale?: 'ko' | 'en'
-  ) => { [key: string]: TDict };
+  getKeyDict?: () => { [key: string]: TDict };
   parseKey: (key: unknown) => void;
   safeParseKey: (key: unknown) => boolean;
   refineKey?: (keyLike: string) => TKey;
-  display?: (
-    key: TKey,
-    format?: 'long' | 'short',
-    locale?: 'ko' | 'en'
-  ) => string;
+  display?: (key: TKey) => string;
 }
 
 export function toOrderedBy<T extends string>(arr: T[], order: T[]) {
@@ -58,19 +51,6 @@ export const toLowerCase = <T extends string = string>(
 export const toUpperCase = <T extends string = string>(
   nonUpperCasedString: T
 ) => toUpper(nonUpperCasedString) as Uppercase<Lowercase<T>>;
-
-export function toOrdinalNumberName(num: number) {
-  switch (num) {
-    case 1:
-      return `${num}st`;
-    case 2:
-      return `${num}nd`;
-    case 3:
-      return `${num}rd`;
-    default:
-      return `${num}th`;
-  }
-}
 
 export const isServer = typeof window === 'undefined';
 

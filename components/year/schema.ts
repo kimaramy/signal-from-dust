@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { toUpperCase, type QuerySchema } from '@/lib/utils';
+import { LocaleSchema, type AvailableLocale } from '@/components/locale';
 
 const yearKeySchema = z.enum([
   'ALL',
@@ -75,8 +76,8 @@ class YearSchema implements QuerySchema<YearKey, YearValue, YearDict> {
     const values = this.getAllValues();
     const valueSet = new Set(values);
     const defaultValue = this.getDefaultValue();
-    // 중복 제거한 배열의 길이와 원본 배열의 길이가 같다면, 기본(default) 값을 위해서 다른 값들과 구별된 값을 설정했을 것이다. 그러므로 기본(default) 값을 원본 배열에서 제할 필요가 있다.
-    // 반대로 중복 제거한 배열의 길이와 원본 배열의 길이가 다르다면, 기본(default) 값은 원본 배열 중 하나의 값 중에서 고른 것이다. 그러므로 default 값을 원본에서 제할 필요 없다.
+    // 중복 제거한 배열의 길이와 원본 배열의 길이가 같다면, 기본(default) 값을 위해서 다른 값들과 구별된 값을 설정했을 것이다. 그러므로 기본(default) 값을 원본 배열에서 제외해주어야한다.
+    // 반대로 중복 제거한 배열의 길이와 원본 배열의 길이가 다르다면, 기본(default) 값은 원본 배열 중 하나의 값 중에서 고른 것이다. 그러므로 default 값을 원본에서 제외할 필요없다.
     if (valueSet.size === values.length) {
       values.splice(values.indexOf(defaultValue), 1);
     }
@@ -105,7 +106,7 @@ class YearSchema implements QuerySchema<YearKey, YearValue, YearDict> {
     this.parseKey(upperCasedKey);
     return upperCasedKey as YearKey;
   }
-  getKeyDict(format?: 'short' | 'long', locale?: 'ko' | 'en') {
+  getKeyDict(format?: 'short' | 'long', locale?: AvailableLocale) {
     return this.getAllKeys().reduce(
       (keyDict, key) => {
         keyDict[key] = {
@@ -121,10 +122,10 @@ class YearSchema implements QuerySchema<YearKey, YearValue, YearDict> {
   display(
     yearKey: YearKey,
     format: 'short' | 'long' = 'short',
-    locale: 'ko' | 'en' = 'ko'
+    locale = LocaleSchema.defaultLocale
   ) {
     if (yearKey === 'ALL') {
-      const text = locale.startsWith('ko') ? '매년' : 'Every Year';
+      const text = LocaleSchema.isKorean(locale) ? '매년' : 'Every Year';
       const rangeText = this.getValueRange().join('-');
       return format === 'long' ? text.concat(`(${rangeText})`) : text;
     }
@@ -133,7 +134,7 @@ class YearSchema implements QuerySchema<YearKey, YearValue, YearDict> {
   protected getYearName(
     yearValue: number,
     format: Intl.DateTimeFormatOptions['year'] = 'numeric',
-    locale: 'ko' | 'en' = 'ko'
+    locale = LocaleSchema.defaultLocale
   ) {
     const [firstYearValue, lastYearValue] = this.getValueRange();
     if (yearValue < firstYearValue || yearValue > lastYearValue) {

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { toLowerCase, toUpperCase, type QuerySchema } from '@/lib/utils';
+import { LocaleSchema, type AvailableLocale } from '@/components/locale';
 
 const dataNameKeySchema = z.enum(['PM_LARGE', 'PM_SMALL']);
 
@@ -55,12 +56,12 @@ class DataNameSchema
     this.parseKey(upperCasedKey);
     return upperCasedKey as DataNameKey;
   }
-  getKeyDict(_format?: unknown, locale?: 'ko' | 'en') {
+  getKeyDict(locale?: AvailableLocale) {
     return this.getAllKeys().reduce(
       (keyDict, key) => {
         keyDict[key] = {
           name: key,
-          displayName: this.display(key, null, locale),
+          displayName: this.display(key, locale),
           value: this.getValue(key),
         };
         return keyDict;
@@ -68,12 +69,8 @@ class DataNameSchema
       {} as Record<DataNameKey, DataNameDict>
     );
   }
-  display(
-    dataNameKey: DataNameKey,
-    _format: unknown = null,
-    locale: 'ko' | 'en' = 'ko'
-  ) {
-    const isKorean = locale.startsWith('ko');
+  display(dataNameKey: DataNameKey, locale = LocaleSchema.defaultLocale) {
+    const isKorean = LocaleSchema.isKorean(locale);
     switch (dataNameKey) {
       case 'PM_LARGE':
         return isKorean ? '미세먼지' : 'PM10';

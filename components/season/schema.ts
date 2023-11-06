@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { toLowerCase, toUpperCase, type QuerySchema } from '@/lib/utils';
+import { LocaleSchema, type AvailableLocale } from '@/components/locale';
 import { type MonthValue } from '@/components/month';
 
 const seasonKeySchema = z.enum(['ALL', 'SPRING', 'SUMMER', 'FALL', 'WINTER']);
@@ -20,20 +21,20 @@ type SeasonDict = {
 
 class SeasonSchema implements QuerySchema<SeasonKey, SeasonValue, SeasonDict> {
   private readonly keySchema: SeasonKeySchema;
-  readonly keys: SeasonKeySchema['Values'];
+  readonly keys: SeasonKeySchema['enum'];
 
   constructor() {
     this.keySchema = seasonKeySchema;
-    this.keys = seasonKeySchema.Values;
+    this.keys = seasonKeySchema.enum;
   }
   getDefaultKey() {
-    return this.keySchema.Values.ALL;
+    return this.keySchema.enum.ALL;
   }
   getDefaultValue() {
     return this.getValue(this.getDefaultKey());
   }
   getAllKeys() {
-    return Object.values(this.keySchema.Values);
+    return Object.values(this.keySchema.enum);
   }
   getAllValues() {
     return this.getAllKeys().map((key) => this.getValue(key));
@@ -55,12 +56,12 @@ class SeasonSchema implements QuerySchema<SeasonKey, SeasonValue, SeasonDict> {
     this.parseKey(upperCasedKey);
     return upperCasedKey as SeasonKey;
   }
-  getKeyDict(format?: unknown, locale?: 'ko' | 'en') {
+  getKeyDict(locale?: AvailableLocale) {
     return this.getAllKeys().reduce(
       (keyDict, key) => {
         keyDict[key] = {
           name: key,
-          displayName: this.display(key, format, locale),
+          displayName: this.display(key, locale),
           value: this.getValue(key),
           monthRange: this.getMonthRange(key),
         };
@@ -69,12 +70,8 @@ class SeasonSchema implements QuerySchema<SeasonKey, SeasonValue, SeasonDict> {
       {} as Record<SeasonKey, SeasonDict>
     );
   }
-  display(
-    seasonKey: SeasonKey,
-    _format: unknown = null,
-    locale: 'ko' | 'en' = 'ko'
-  ) {
-    const isKorean = locale.startsWith('ko');
+  display(seasonKey: SeasonKey, locale = LocaleSchema.defaultLocale) {
+    const isKorean = LocaleSchema.isKorean(locale);
     switch (seasonKey) {
       case 'ALL':
         return isKorean ? '사계절' : 'Every Season';

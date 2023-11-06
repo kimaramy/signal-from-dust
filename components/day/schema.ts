@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { type QuerySchema } from '@/lib/utils';
+import { LocaleSchema } from '@/components/locale';
 
 const dayNumbers = new Array(31).fill(0).map((_, i) => `${i + 1}`);
 
@@ -44,8 +45,8 @@ class DaySchema implements QuerySchema<DayKey, DayValue> {
   safeParseKey(maybeWeekKey: unknown) {
     return this.keySchema.safeParse(maybeWeekKey).success;
   }
-  display(dayKey: DayKey, _format: unknown = null, locale: 'ko' | 'en' = 'ko') {
-    const isKorean = locale.startsWith('ko');
+  display(dayKey: DayKey, locale = LocaleSchema.defaultLocale) {
+    const isKorean = LocaleSchema.isKorean(locale);
     const dayValue = this.getValue(dayKey);
     switch (dayValue) {
       case 0:

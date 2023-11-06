@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { toUpperCase, type QuerySchema } from '@/lib/utils';
+import { LocaleSchema, type AvailableLocale } from '@/components/locale';
 
 const monthKeySchema = z.enum([
   'ALL',
@@ -111,7 +112,7 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
     this.parseKey(upperCasedKey);
     return upperCasedKey as MonthKey;
   }
-  getKeyDict(format?: 'short' | 'long', locale?: 'ko' | 'en') {
+  getKeyDict(format?: 'short' | 'long', locale?: AvailableLocale) {
     return this.getAllKeys().reduce(
       (keyDict, key) => {
         keyDict[key] = {
@@ -127,10 +128,10 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
   display(
     monthKey: MonthKey,
     format: 'short' | 'long' = 'short',
-    locale: 'ko' | 'en' = 'ko'
+    locale = LocaleSchema.defaultLocale
   ) {
     if (monthKey === 'ALL') {
-      const text = locale.startsWith('ko') ? '매달' : 'Every Month';
+      const text = LocaleSchema.isKorean(locale) ? '매달' : 'Every Month';
       const rangeText = this.getValueRange().join('-');
       return format === 'long' ? text.concat(`(${rangeText})`) : text;
     }
@@ -139,7 +140,7 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
   protected getMonthName(
     monthValue: MonthValue,
     format: Intl.DateTimeFormatOptions['month'] = 'short',
-    locale: 'ko' | 'en' = 'ko'
+    locale = LocaleSchema.defaultLocale
   ) {
     const [firstMonthValue, lastMonthValue] = this.getValueRange();
     if (monthValue < firstMonthValue || monthValue > lastMonthValue) {

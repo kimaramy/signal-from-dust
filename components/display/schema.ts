@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { toLowerCase, toUpperCase, type QuerySchema } from '@/lib/utils';
+import { LocaleSchema, type AvailableLocale } from '@/components/locale';
 
 const displayKeySchema = z.enum(['FULL', 'AUTO']);
 
@@ -27,7 +28,7 @@ class DisplaySchema
     this.keys = displayKeySchema.enum;
   }
   getDefaultKey() {
-    return this.keySchema.Values.AUTO;
+    return this.keySchema.enum.AUTO;
   }
   getDefaultValue() {
     return this.getValue(this.getDefaultKey());
@@ -55,12 +56,12 @@ class DisplaySchema
     this.parseKey(upperCasedKey);
     return upperCasedKey as DisplayKey;
   }
-  getKeyDict(_format?: unknown, locale?: 'ko' | 'en') {
+  getKeyDict(locale?: AvailableLocale) {
     return this.getAllKeys().reduce(
       (keyDict, key) => {
         keyDict[key] = {
           name: key,
-          displayName: this.display(key, null, locale),
+          displayName: this.display(key, locale),
           value: this.getValue(key),
         };
         return keyDict;
@@ -68,12 +69,8 @@ class DisplaySchema
       {} as Record<DisplayKey, DisplayDict>
     );
   }
-  display(
-    displayKey: DisplayKey,
-    _format: unknown = null,
-    locale: 'ko' | 'en' = 'ko'
-  ) {
-    const isKorean = locale.startsWith('ko');
+  display(displayKey: DisplayKey, locale = LocaleSchema.defaultLocale) {
+    const isKorean = LocaleSchema.isKorean(locale);
     switch (displayKey) {
       case 'AUTO':
         return isKorean ? '전체보기' : 'List View';

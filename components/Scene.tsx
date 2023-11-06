@@ -16,7 +16,7 @@ import { type DisplayKey } from '@/components/display';
 import { stopSoundPlay, toggleSoundPlay } from '@/components/sound';
 
 import Bit, { Binary } from './Bit';
-import SceneData3DView from './SceneData3DView';
+import SceneDataView from './SceneDataView';
 import SceneRoot from './SceneRoot';
 
 export function getSceneLength(decimal: number) {
@@ -115,24 +115,6 @@ function Scene({
     setPlaying((isPlaying) => !isPlaying);
   }, []);
 
-  // useEffect(() => {
-  //   let timeout: NodeJS.Timeout;
-
-  //   if (inView) {
-  //     console.log('inView', sceneId);
-  //     timeout = setTimeout(() => {
-  //       handlePlaySound();
-  //     }, 300);
-  //   } else {
-  //     console.log('outView', sceneId);
-  //     handleStopSound();
-  //   }
-
-  //   () => {
-  //     timeout && clearTimeout(timeout);
-  //   };
-  // }, [inView]);
-
   return (
     <SceneRoot
       ref={ref}
@@ -149,7 +131,7 @@ function Scene({
             'absolute bottom-[8%] left-[4%] z-20 w-auto min-w-80 bg-muted text-muted-foreground'
           )}
         >
-          <SceneData3DView
+          <SceneDataView
             displayKey={displayKey}
             sceneData={sceneData}
             binaries={binaries}
@@ -204,7 +186,7 @@ function Scene({
               isFullPage && 'hidden'
             )}
           >
-            <SceneData3DView
+            <SceneDataView
               sceneData={sceneData}
               binaries={binaries}
               displayKey={displayKey}
