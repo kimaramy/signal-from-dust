@@ -34,7 +34,7 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
   private readonly keySchema: MonthKeySchema;
   readonly keys: MonthKeySchema['enum'];
 
-  static keyValueMap = new Map<MonthKey, number>()
+  static keyValueMap = new Map<MonthKey, MonthValue>()
     .set('ALL', 0)
     .set('JAN', 1)
     .set('FEB', 2)
@@ -144,7 +144,7 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
     const [firstMonthValue, lastMonthValue] = this.getValueRange();
     if (monthValue < firstMonthValue || monthValue > lastMonthValue) {
       throw new Error(
-        `month value must be in ${firstMonthValue} to ${lastMonthValue}`
+        `month value ranges from ${firstMonthValue} to ${lastMonthValue}.`
       );
     }
     const today = new Date();

@@ -138,7 +138,7 @@ class YearSchema implements QuerySchema<YearKey, YearValue, YearDict> {
     const [firstYearValue, lastYearValue] = this.getValueRange();
     if (yearValue < firstYearValue || yearValue > lastYearValue) {
       throw new Error(
-        `year value must be in ${firstYearValue} to ${lastYearValue}`
+        `year value ranges from ${firstYearValue} to ${lastYearValue}.`
       );
     }
     const today = new Date();

@@ -31,7 +31,7 @@ class WeekdaySchema
   private readonly keySchema: WeekdayKeySchema;
   readonly keys: WeekdayKeySchema['enum'];
 
-  static keyValueMap = new Map<WeekdayKey, number>()
+  static keyValueMap = new Map<WeekdayKey, WeekdayValue>()
     .set('ALL', 0)
     .set('SUNDAY', 1)
     .set('MONDAY', 2)
@@ -136,7 +136,7 @@ class WeekdaySchema
     const [firstWeekdayValue, lastWeekdayValue] = this.getValueRange();
     if (weekdayValue < firstWeekdayValue || weekdayValue > lastWeekdayValue) {
       throw new Error(
-        `weekday value must be in ${firstWeekdayValue} to ${lastWeekdayValue}`
+        `weekday value ranges from ${firstWeekdayValue} to ${lastWeekdayValue}.`
       );
     }
     const today = new Date();
