@@ -20,11 +20,11 @@ class DisplaySchema
   implements QuerySchema<DisplayKey, DisplayValue, DisplayDict>
 {
   private readonly keySchema: DisplayKeySchema;
-  readonly keys: DisplayKeySchema['Values'];
+  readonly keys: DisplayKeySchema['enum'];
 
   constructor() {
     this.keySchema = displayKeySchema;
-    this.keys = displayKeySchema.Values;
+    this.keys = displayKeySchema.enum;
   }
   getDefaultKey() {
     return this.keySchema.Values.AUTO;
@@ -33,7 +33,7 @@ class DisplaySchema
     return this.getValue(this.getDefaultKey());
   }
   getAllKeys() {
-    return Object.values(this.keySchema.Values);
+    return Object.values(this.keySchema.enum);
   }
   getAllValues() {
     return this.getAllKeys().map((key) => this.getValue(key));
@@ -55,12 +55,12 @@ class DisplaySchema
     this.parseKey(upperCasedKey);
     return upperCasedKey as DisplayKey;
   }
-  getKeyDict(locale?: string) {
+  getKeyDict(_format?: unknown, locale?: 'ko' | 'en') {
     return this.getAllKeys().reduce(
       (keyDict, key) => {
         keyDict[key] = {
           name: key,
-          displayName: this.display(key, locale),
+          displayName: this.display(key, null, locale),
           value: this.getValue(key),
         };
         return keyDict;
@@ -68,8 +68,12 @@ class DisplaySchema
       {} as Record<DisplayKey, DisplayDict>
     );
   }
-  display(displayKey: DisplayKey, locale = 'ko-KR') {
-    const isKorean = locale === 'ko-KR';
+  display(
+    displayKey: DisplayKey,
+    _format: unknown = null,
+    locale: 'ko' | 'en' = 'ko'
+  ) {
+    const isKorean = locale.startsWith('ko');
     switch (displayKey) {
       case 'AUTO':
         return isKorean ? '전체보기' : 'List View';

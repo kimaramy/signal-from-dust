@@ -55,12 +55,12 @@ class SeasonSchema implements QuerySchema<SeasonKey, SeasonValue, SeasonDict> {
     this.parseKey(upperCasedKey);
     return upperCasedKey as SeasonKey;
   }
-  getKeyDict(locale?: string) {
+  getKeyDict(format?: unknown, locale?: 'ko' | 'en') {
     return this.getAllKeys().reduce(
       (keyDict, key) => {
         keyDict[key] = {
           name: key,
-          displayName: this.display(key, locale),
+          displayName: this.display(key, format, locale),
           value: this.getValue(key),
           monthRange: this.getMonthRange(key),
         };
@@ -69,8 +69,12 @@ class SeasonSchema implements QuerySchema<SeasonKey, SeasonValue, SeasonDict> {
       {} as Record<SeasonKey, SeasonDict>
     );
   }
-  display(seasonKey: SeasonKey, locale = 'ko-KR') {
-    const isKorean = locale === 'ko-KR';
+  display(
+    seasonKey: SeasonKey,
+    _format: unknown = null,
+    locale: 'ko' | 'en' = 'ko'
+  ) {
+    const isKorean = locale.startsWith('ko');
     switch (seasonKey) {
       case 'ALL':
         return isKorean ? '사계절' : 'Every Season';

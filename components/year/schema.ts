@@ -71,6 +71,29 @@ class YearSchema implements QuerySchema<YearKey, YearValue, YearDict> {
       return this.parseKey(yearKey) as never;
     }
   }
+  getFirstValue() {
+    const values = this.getAllValues();
+    const valueSet = new Set(values);
+    const defaultValue = this.getDefaultValue();
+    // 중복 제거한 배열의 길이와 원본 배열의 길이가 같다면, 기본(default) 값을 위해서 다른 값들과 구별된 값을 설정했을 것이다. 그러므로 기본(default) 값을 원본 배열에서 제할 필요가 있다.
+    // 반대로 중복 제거한 배열의 길이와 원본 배열의 길이가 다르다면, 기본(default) 값은 원본 배열 중 하나의 값 중에서 고른 것이다. 그러므로 default 값을 원본에서 제할 필요 없다.
+    if (valueSet.size === values.length) {
+      values.splice(values.indexOf(defaultValue), 1);
+    }
+    return Math.min(...values);
+  }
+  getLastValue() {
+    const values = this.getAllValues();
+    const valueSet = new Set(values);
+    const defaultValue = this.getDefaultValue();
+    if (valueSet.size === values.length) {
+      values.splice(values.indexOf(defaultValue), 1);
+    }
+    return Math.max(...values);
+  }
+  getValueRange() {
+    return [this.getFirstValue(), this.getLastValue()];
+  }
   parseKey(maybeYearKey: unknown) {
     this.keySchema.parse(maybeYearKey);
   }
@@ -82,12 +105,12 @@ class YearSchema implements QuerySchema<YearKey, YearValue, YearDict> {
     this.parseKey(upperCasedKey);
     return upperCasedKey as YearKey;
   }
-  getKeyDict(locale?: string) {
+  getKeyDict(format?: 'short' | 'long', locale?: 'ko' | 'en') {
     return this.getAllKeys().reduce(
       (keyDict, key) => {
         keyDict[key] = {
           name: key,
-          displayName: this.display(key, locale),
+          displayName: this.display(key, format, locale),
           value: this.getValue(key),
         };
         return keyDict;
@@ -95,25 +118,31 @@ class YearSchema implements QuerySchema<YearKey, YearValue, YearDict> {
       {} as Record<YearKey, YearDict>
     );
   }
-  display(yearKey: YearKey, locale = 'ko-KR') {
-    const isKorean = locale === 'ko-KR';
-    switch (yearKey) {
-      case 'ALL':
-        return isKorean ? '매년' : 'Every Year';
-      default:
-        return this.getYearName(this.getValue(yearKey), 'numeric', locale);
+  display(
+    yearKey: YearKey,
+    format: 'short' | 'long' = 'short',
+    locale: 'ko' | 'en' = 'ko'
+  ) {
+    if (yearKey === 'ALL') {
+      const text = locale.startsWith('ko') ? '매년' : 'Every Year';
+      const rangeText = this.getValueRange().join('-');
+      return format === 'long' ? text.concat(`(${rangeText})`) : text;
     }
+    return this.getYearName(this.getValue(yearKey), 'numeric', locale);
   }
   protected getYearName(
-    value: number,
+    yearValue: number,
     format: Intl.DateTimeFormatOptions['year'] = 'numeric',
-    locale: Intl.LocalesArgument = 'ko-KR'
+    locale: 'ko' | 'en' = 'ko'
   ) {
-    if (value < 2015) {
-      throw new Error(`year value must be 2015 or over 2015`);
+    const [firstYearValue, lastYearValue] = this.getValueRange();
+    if (yearValue < firstYearValue || yearValue > lastYearValue) {
+      throw new Error(
+        `year value must be in ${firstYearValue} to ${lastYearValue}`
+      );
     }
     const today = new Date();
-    today.setFullYear(value);
+    today.setFullYear(yearValue);
     return today.toLocaleString(locale, { year: format });
   }
 }

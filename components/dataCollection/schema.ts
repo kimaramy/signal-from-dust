@@ -46,11 +46,11 @@ class DataCollectionSchema
     QuerySchema<DataCollectionKey, DataCollectionValue, DataCollectionDict>
 {
   private readonly keySchema: DataCollectionKeySchema;
-  readonly keys: DataCollectionKeySchema['Values'];
+  readonly keys: DataCollectionKeySchema['enum'];
 
   constructor() {
     this.keySchema = dataCollectionKeySchema;
-    this.keys = dataCollectionKeySchema.Values;
+    this.keys = dataCollectionKeySchema.enum;
   }
   getDefaultKey() {
     return this.keySchema.Values.YEARLY;
@@ -59,7 +59,7 @@ class DataCollectionSchema
     return this.getValue(this.getDefaultKey());
   }
   getAllKeys() {
-    return Object.values(this.keySchema.Values);
+    return Object.values(this.keySchema.enum);
   }
   getAllValues() {
     return this.getAllKeys().map((key) => this.getValue(key));
@@ -81,12 +81,12 @@ class DataCollectionSchema
     this.parseKey(upperCasedKey);
     return upperCasedKey as DataCollectionKey;
   }
-  getKeyDict(locale?: string) {
+  getKeyDict(_format?: unknown, locale?: 'ko' | 'en') {
     return this.getAllKeys().reduce(
       (keyDict, key) => {
         keyDict[key] = {
           name: key,
-          displayName: this.display(key, locale),
+          displayName: this.display(key, null, locale),
           value: this.getValue(key),
         };
         return keyDict;
@@ -94,8 +94,12 @@ class DataCollectionSchema
       {} as Record<DataCollectionKey, DataCollectionDict>
     );
   }
-  display(dataCollectionKey: DataCollectionKey, locale = 'ko-KR') {
-    const isKorean = locale === 'ko-KR';
+  display(
+    dataCollectionKey: DataCollectionKey,
+    _format: unknown = null,
+    locale: 'ko' | 'en' = 'ko'
+  ) {
+    const isKorean = locale.startsWith('ko');
     switch (dataCollectionKey) {
       case 'YEARLY':
         return isKorean ? '연도별' : upperFirst(dataCollectionKey);

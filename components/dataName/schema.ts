@@ -55,12 +55,12 @@ class DataNameSchema
     this.parseKey(upperCasedKey);
     return upperCasedKey as DataNameKey;
   }
-  getKeyDict(locale?: string) {
+  getKeyDict(_format?: unknown, locale?: 'ko' | 'en') {
     return this.getAllKeys().reduce(
       (keyDict, key) => {
         keyDict[key] = {
           name: key,
-          displayName: this.display(key, locale),
+          displayName: this.display(key, null, locale),
           value: this.getValue(key),
         };
         return keyDict;
@@ -68,8 +68,12 @@ class DataNameSchema
       {} as Record<DataNameKey, DataNameDict>
     );
   }
-  display(dataNameKey: DataNameKey, locale = 'ko-KR') {
-    const isKorean = locale === 'ko-KR';
+  display(
+    dataNameKey: DataNameKey,
+    _format: unknown = null,
+    locale: 'ko' | 'en' = 'ko'
+  ) {
+    const isKorean = locale.startsWith('ko');
     switch (dataNameKey) {
       case 'PM_LARGE':
         return isKorean ? '미세먼지' : 'PM10';

@@ -71,6 +71,27 @@ class WeekdaySchema
       return this.parseKey(weekdayKey) as never;
     }
   }
+  getFirstValue() {
+    const values = this.getAllValues();
+    const valueSet = new Set(values);
+    const defaultValue = this.getDefaultValue();
+    if (valueSet.size === values.length) {
+      values.splice(values.indexOf(defaultValue), 1);
+    }
+    return Math.min(...values);
+  }
+  getLastValue() {
+    const values = this.getAllValues();
+    const valueSet = new Set(values);
+    const defaultValue = this.getDefaultValue();
+    if (valueSet.size === values.length) {
+      values.splice(values.indexOf(defaultValue), 1);
+    }
+    return Math.max(...values);
+  }
+  getValueRange() {
+    return [this.getFirstValue(), this.getLastValue()];
+  }
   parseKey(maybeWeekdayKey: unknown) {
     this.keySchema.parse(maybeWeekdayKey);
   }
@@ -82,12 +103,12 @@ class WeekdaySchema
     this.parseKey(upperCasedKey);
     return upperCasedKey as WeekdayKey;
   }
-  getKeyDict(locale?: string) {
+  getKeyDict(format: 'short' | 'long' = 'short', locale?: 'ko' | 'en') {
     return this.getAllKeys().reduce(
       (keyDict, key) => {
         keyDict[key] = {
           name: key,
-          displayName: this.display(key, locale),
+          displayName: this.display(key, format, locale),
           value: this.getValue(key),
         };
         return keyDict;
@@ -95,30 +116,40 @@ class WeekdaySchema
       {} as Record<WeekdayKey, WeekdayDict>
     );
   }
-  display(weekdayKey: WeekdayKey, locale = 'ko-KR') {
-    const isKorean = locale === 'ko-KR';
+  display(
+    weekdayKey: WeekdayKey,
+    format: 'short' | 'long' = 'short',
+    locale: 'ko' | 'en' = 'ko'
+  ) {
     switch (weekdayKey) {
       case 'ALL':
-        return isKorean ? '요일마다' : 'Every Weekday';
+        return locale.startsWith('ko') ? '요일마다' : 'Every Weekday';
       default:
-        return this.getWeekdayName(
-          this.getValue(weekdayKey) - 1,
-          'long',
-          locale
-        );
+        return this.getWeekdayName(this.getValue(weekdayKey), format, locale);
     }
   }
   protected getWeekdayName(
-    value: number,
-    format: Intl.DateTimeFormatOptions['weekday'] = 'long',
-    locale: Intl.LocalesArgument = 'ko-KR'
+    weekdayValue: number,
+    format: Intl.DateTimeFormatOptions['weekday'] = 'short',
+    locale: 'ko' | 'en' = 'ko'
   ) {
-    if (value < 0 || value > 6) {
-      throw new Error(`weekday value must be in 0 to 6`);
+    const [firstWeekdayValue, lastWeekdayValue] = this.getValueRange();
+    if (weekdayValue < firstWeekdayValue || weekdayValue > lastWeekdayValue) {
+      throw new Error(
+        `weekday value must be in ${firstWeekdayValue} to ${lastWeekdayValue}`
+      );
     }
     const today = new Date();
     const todayValue = today.getDay();
-    today.setDate(today.getDate() + Math.abs(value - todayValue));
+    today.setDate(
+      today.getDate() +
+        Math.abs(
+          // JS 날짜 포맷에서 첫 번째 요일의 값이 0부터 시작하기에 현재 스키마에서 사용하는 첫 번째 요일 값을 제하여 보간한다.
+          firstWeekdayValue === 0
+            ? weekdayValue - todayValue
+            : weekdayValue - todayValue - firstWeekdayValue
+        )
+    );
     return today.toLocaleString(locale, { weekday: format });
   }
 }

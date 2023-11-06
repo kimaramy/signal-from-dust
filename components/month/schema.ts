@@ -79,6 +79,27 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
       return this.parseKey(monthKey) as never;
     }
   }
+  getFirstValue() {
+    const defaultValue = this.getDefaultValue();
+    const values = this.getAllValues();
+    const valueSet = new Set(values);
+    if (valueSet.size === values.length) {
+      values.splice(values.indexOf(defaultValue), 1);
+    }
+    return Math.min(...values);
+  }
+  getLastValue() {
+    const defaultValue = this.getDefaultValue();
+    const values = this.getAllValues();
+    const valueSet = new Set(values);
+    if (valueSet.size === values.length) {
+      values.splice(values.indexOf(defaultValue), 1);
+    }
+    return Math.max(...values);
+  }
+  getValueRange() {
+    return [this.getFirstValue(), this.getLastValue()];
+  }
   parseKey(maybeMonthKey: unknown) {
     this.keySchema.parse(maybeMonthKey);
   }
@@ -90,12 +111,12 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
     this.parseKey(upperCasedKey);
     return upperCasedKey as MonthKey;
   }
-  getKeyDict(locale?: string) {
+  getKeyDict(format?: 'short' | 'long', locale?: 'ko' | 'en') {
     return this.getAllKeys().reduce(
       (keyDict, key) => {
         keyDict[key] = {
           name: key,
-          displayName: this.display(key, locale),
+          displayName: this.display(key, format, locale),
           value: this.getValue(key),
         };
         return keyDict;
@@ -103,25 +124,34 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
       {} as Record<MonthKey, MonthDict>
     );
   }
-  display(monthKey: MonthKey, locale = 'ko-KR') {
-    const isKorean = locale === 'ko-KR';
-    switch (monthKey) {
-      case 'ALL':
-        return isKorean ? '매달' : 'Every Month';
-      default:
-        return this.getMonthName(this.getValue(monthKey) - 1, 'long', locale);
+  display(
+    monthKey: MonthKey,
+    format: 'short' | 'long' = 'short',
+    locale: 'ko' | 'en' = 'ko'
+  ) {
+    if (monthKey === 'ALL') {
+      const text = locale.startsWith('ko') ? '매달' : 'Every Month';
+      const rangeText = this.getValueRange().join('-');
+      return format === 'long' ? text.concat(`(${rangeText})`) : text;
     }
+    return this.getMonthName(this.getValue(monthKey), 'long', locale);
   }
   protected getMonthName(
-    value: number,
-    format: Intl.DateTimeFormatOptions['month'] = 'long',
-    locale: Intl.LocalesArgument = 'ko-KR'
+    monthValue: MonthValue,
+    format: Intl.DateTimeFormatOptions['month'] = 'short',
+    locale: 'ko' | 'en' = 'ko'
   ) {
-    if (value < 0 || value > 11) {
-      throw new Error(`month value must be in 0 to 11`);
+    const [firstMonthValue, lastMonthValue] = this.getValueRange();
+    if (monthValue < firstMonthValue || monthValue > lastMonthValue) {
+      throw new Error(
+        `month value must be in ${firstMonthValue} to ${lastMonthValue}`
+      );
     }
     const today = new Date();
-    today.setMonth(value);
+    today.setMonth(
+      // JS 날짜 포맷에서 첫 번째 월의 값이 0부터 시작하기에 현재 스키마에서 사용하는 첫 번째 월의 값을 제하여 보간한다.
+      firstMonthValue === 0 ? monthValue : monthValue - firstMonthValue
+    );
     return today.toLocaleString(locale, { month: format });
   }
 }

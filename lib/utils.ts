@@ -21,18 +21,25 @@ export interface QuerySchema<
   TValue extends string | number,
   TDict = unknown,
 > {
-  readonly keys: unknown;
+  readonly keys?: unknown;
   getDefaultKey: () => TKey;
   getDefaultValue: () => TValue;
   getAllKeys: () => TKey[];
   getAllValues: () => TValue[];
   getKeyByValue: (value: TValue) => TKey;
   getValue: (key: TKey) => TValue;
-  getKeyDict: (locale?: string) => { [key: string]: TDict };
+  getKeyDict?: (
+    format?: 'short' | 'long',
+    locale?: 'ko' | 'en'
+  ) => { [key: string]: TDict };
   parseKey: (key: unknown) => void;
   safeParseKey: (key: unknown) => boolean;
-  refineKey: (keyLike: string) => TKey;
-  display?: (key: TKey, locale?: string) => string;
+  refineKey?: (keyLike: string) => TKey;
+  display?: (
+    key: TKey,
+    format?: 'long' | 'short',
+    locale?: 'ko' | 'en'
+  ) => string;
 }
 
 export function toOrderedBy<T extends string>(arr: T[], order: T[]) {
