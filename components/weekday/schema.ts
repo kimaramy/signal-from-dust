@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { QuerySchema, toUpperCase } from '@/lib/utils';
+import { QuerySchema, toUpperCase, toYearMonthDayString } from '@/lib/utils';
 import { LocaleSchema, type AvailableLocale } from '@/components/locale';
 
 const weekdayKeySchema = z.enum([
@@ -143,13 +143,8 @@ class WeekdaySchema
     const today = new Date();
     const todayValue = today.getDay();
     today.setDate(
-      today.getDate() +
-        Math.abs(
-          // JS 날짜 포맷에서 첫 번째 요일의 값이 0부터 시작하기에 현재 스키마에서 사용하는 첫 번째 요일 값을 제하여 보간한다.
-          firstWeekdayValue === 0
-            ? weekdayValue - todayValue
-            : weekdayValue - todayValue - firstWeekdayValue
-        )
+      // JS 날짜 포맷에서 첫 번째 요일의 값이 0부터 시작하기에 현재 스키마에서 사용하는 첫 번째 요일 값을 제하여 보간한다.
+      today.getDate() + (weekdayValue - todayValue - firstWeekdayValue)
     );
     return today.toLocaleString(locale, { weekday: format });
   }
