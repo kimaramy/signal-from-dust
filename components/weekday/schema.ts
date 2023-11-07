@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { QuerySchema, toUpperCase, toYearMonthDayString } from '@/lib/utils';
+import { QuerySchema, toUpperCase } from '@/lib/utils';
 import { LocaleSchema, type AvailableLocale } from '@/components/locale';
 
 const weekdayKeySchema = z.enum([
