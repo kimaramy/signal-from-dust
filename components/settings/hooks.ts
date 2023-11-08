@@ -12,11 +12,11 @@ function useSettingsFormDefaultValues() {
   return useMemo<SettingsFormValues>(
     () => ({
       mode: 'preset',
-      dataNameKey: dataNameSchema.getDefaultKey(),
-      dataCollectionKey: dataCollectionSchema.getDefaultKey(),
-      yearKey: yearSchema.getDefaultKey(),
-      seasonKey: seasonSchema.getDefaultKey(),
-      monthKey: monthSchema.getDefaultKey(),
+      dataNameKey: dataNameSchema.defaultKey,
+      dataCollectionKey: dataCollectionSchema.defaultKey,
+      yearKey: yearSchema.defaultKey,
+      seasonKey: seasonSchema.defaultKey,
+      monthKey: monthSchema.defaultKey,
     }),
     []
   );

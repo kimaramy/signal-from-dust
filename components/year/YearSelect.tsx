@@ -29,7 +29,7 @@ function YearSelect(props: YearSelectProps) {
   const yearKeys = yearSchema.getAllKeys();
 
   const defaultYearKey = yearKeys.splice(
-    yearKeys.indexOf(yearSchema.getDefaultKey()),
+    yearKeys.indexOf(yearSchema.defaultKey),
     1
   )[0];
 

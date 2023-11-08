@@ -8,7 +8,7 @@ import { displaySchema, type DisplayKey } from './schema';
 
 export function useDisplayKey(): DisplayKey {
   const lowerCasedKeys = displaySchema.getAllKeys().map(toLowerCase);
-  const lowerCasedDefaultKey = toLowerCase(displaySchema.getDefaultKey());
+  const lowerCasedDefaultKey = toLowerCase(displaySchema.defaultKey);
   const [lowerCasedKey] = useEnumQueryParam(
     QueryParamEnum.Display,
     lowerCasedKeys,

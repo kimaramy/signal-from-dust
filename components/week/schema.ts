@@ -1,75 +1,60 @@
 import { z } from 'zod';
 
-import { QuerySchema } from '@/lib/utils';
+import { KeyValueSchema } from '@/lib/utils';
 import { LocaleSchema } from '@/components/locale';
 
-const weekNumbers = new Array(53).fill(0).map((_, i) => `${i + 1}`);
+const ALL = 'ALL';
 
-const weekKeySchema = z.enum(['ALL', ...weekNumbers]);
+const weekKeys = [
+  ALL,
+  ...new Array(53).fill(0).map((_, i) => `${i + 1}`),
+] as const;
 
-type WeekKeySchema = typeof weekKeySchema;
+const weekKeySchema = z.enum(weekKeys);
 
-type WeekKey = z.infer<WeekKeySchema>;
+type WeekKey = z.infer<typeof weekKeySchema>;
 
 type WeekValue = number;
 
-class WeekSchema implements QuerySchema<WeekKey, WeekValue> {
-  private readonly keySchema: WeekKeySchema;
+const weekKeyValueMap = new Map<WeekKey, WeekValue>(
+  weekKeys.map((weekKey) =>
+    weekKey === ALL ? [weekKey, 0] : [weekKey, Number(weekKey)]
+  )
+);
 
+class WeekSchema extends KeyValueSchema<WeekKey, WeekValue> {
   constructor() {
-    this.keySchema = weekKeySchema;
+    super(weekKeySchema, ALL, weekKeyValueMap);
   }
-  getDefaultKey() {
-    return this.keySchema.enum.ALL;
-  }
-  getDefaultValue() {
-    return this.getValue(this.getDefaultKey());
-  }
-  getAllKeys() {
-    return Object.values(this.keySchema.enum);
-  }
-  getAllValues() {
-    return this.getAllKeys().map((key) => this.getValue(key));
-  }
-  getKeyByValue(weekValue: WeekValue) {
-    if (weekValue === 0) return this.keySchema.enum.ALL;
-    return String(weekValue);
-  }
-  getValue(weekKey: WeekKey) {
-    if (weekKey === this.keySchema.enum.ALL) return 0;
-    return Number(weekKey);
-  }
-  parseKey(maybeWeekKey: unknown) {
-    this.keySchema.parse(maybeWeekKey);
-  }
-  safeParseKey(maybeWeekKey: unknown) {
-    return this.keySchema.safeParse(maybeWeekKey).success;
+  protected getOrdinalName(weekValue: WeekValue) {
+    const [firstWeekValue, lastWeekValue] = this.getValueRange();
+    if (weekValue < firstWeekValue || weekValue > lastWeekValue) {
+      throw new Error(
+        `day value ranges from ${firstWeekValue} to ${lastWeekValue}.`
+      );
+    }
+    switch (weekValue) {
+      case 1:
+        return '1st';
+      case 2:
+        return '2nd';
+      case 3:
+        return '3rd';
+      default:
+        return `${weekValue}th`;
+    }
   }
   display(weekKey: WeekKey, locale = LocaleSchema.defaultLocale) {
     const isKorean = LocaleSchema.isKorean(locale);
     const weekValue = this.getValue(weekKey);
+    const defaultWeekValue = this.getDefaultValue();
     switch (weekValue) {
-      case 0:
-        return isKorean ? '매주' : 'Every Week';
+      case defaultWeekValue:
+        return isKorean ? '매주' : 'Every week';
       default:
         return isKorean
           ? `${weekValue}번째 주`
-          : `${this.getOrdinalName(weekValue)} Week`;
-    }
-  }
-  protected getOrdinalName(weekValue: WeekValue) {
-    if (weekValue < 1) {
-      throw new Error(`week value must be over 0`);
-    }
-    switch (weekValue) {
-      case 1:
-        return `${weekValue}st`;
-      case 2:
-        return `${weekValue}nd`;
-      case 3:
-        return `${weekValue}rd`;
-      default:
-        return `${weekValue}th`;
+          : `${this.getOrdinalName(weekValue)} week`;
     }
   }
 }

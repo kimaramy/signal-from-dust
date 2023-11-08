@@ -1,10 +1,12 @@
 import { z } from 'zod';
 
-import { QuerySchema, toUpperCase } from '@/lib/utils';
-import { LocaleSchema, type AvailableLocale } from '@/components/locale';
+import { KeyValueSchema } from '@/lib/utils';
+import { LocaleSchema } from '@/components/locale';
 
-const weekdayKeySchema = z.enum([
-  'ALL',
+const ALL = 'ALL';
+
+const weekdayKeys = [
+  ALL,
   'SUNDAY',
   'MONDAY',
   'TUESDAY',
@@ -12,125 +14,30 @@ const weekdayKeySchema = z.enum([
   'THURSDAY',
   'FRIDAY',
   'SATURDAY',
-]);
+] as const;
 
-type WeekdayKeySchema = typeof weekdayKeySchema;
+const weekdayKeySchema = z.enum(weekdayKeys);
 
-type WeekdayKey = z.infer<WeekdayKeySchema>;
+type WeekdayKey = z.infer<typeof weekdayKeySchema>;
 
 type WeekdayValue = number;
 
-type WeekdayDict = {
-  name: WeekdayKey;
-  displayName: string;
-  value: WeekdayValue;
-};
+const weekdayKeyValueMap = new Map<WeekdayKey, WeekdayValue>()
+  .set('ALL', 0)
+  .set('SUNDAY', 1)
+  .set('MONDAY', 2)
+  .set('TUESDAY', 3)
+  .set('WEDNESDAY', 4)
+  .set('THURSDAY', 5)
+  .set('FRIDAY', 6)
+  .set('SATURDAY', 7);
 
-class WeekdaySchema
-  implements QuerySchema<WeekdayKey, WeekdayValue, WeekdayDict>
-{
-  private readonly keySchema: WeekdayKeySchema;
-  readonly keys: WeekdayKeySchema['enum'];
-
-  static keyValueMap = new Map<WeekdayKey, WeekdayValue>()
-    .set('ALL', 0)
-    .set('SUNDAY', 1)
-    .set('MONDAY', 2)
-    .set('TUESDAY', 3)
-    .set('WEDNESDAY', 4)
-    .set('THURSDAY', 5)
-    .set('FRIDAY', 6)
-    .set('SATURDAY', 7);
-
+class WeekdaySchema extends KeyValueSchema<WeekdayKey, WeekdayValue> {
   constructor() {
-    this.keySchema = weekdayKeySchema;
-    this.keys = weekdayKeySchema.enum;
-  }
-  getDefaultKey() {
-    return this.keySchema.enum.ALL;
-  }
-  getDefaultValue() {
-    return this.getValue(this.getDefaultKey());
-  }
-  getAllKeys() {
-    return Object.values(this.keySchema.enum);
-  }
-  getAllValues() {
-    return this.getAllKeys().map((key) => this.getValue(key));
-  }
-  getKeyByValue(weekdayValue: WeekdayValue) {
-    for (let [key, value] of WeekdaySchema.keyValueMap.entries()) {
-      if (weekdayValue === value) return key;
-    }
-    return this.getDefaultKey();
-  }
-  getValue(weekdayKey: WeekdayKey) {
-    const weekdayValue = WeekdaySchema.keyValueMap.get(weekdayKey);
-    if (typeof weekdayValue !== 'undefined') {
-      return weekdayValue;
-    } else {
-      return this.parseKey(weekdayKey) as never;
-    }
-  }
-  getFirstValue() {
-    const values = this.getAllValues();
-    const valueSet = new Set(values);
-    const defaultValue = this.getDefaultValue();
-    if (valueSet.size === values.length) {
-      values.splice(values.indexOf(defaultValue), 1);
-    }
-    return Math.min(...values);
-  }
-  getLastValue() {
-    const values = this.getAllValues();
-    const valueSet = new Set(values);
-    const defaultValue = this.getDefaultValue();
-    if (valueSet.size === values.length) {
-      values.splice(values.indexOf(defaultValue), 1);
-    }
-    return Math.max(...values);
-  }
-  getValueRange() {
-    return [this.getFirstValue(), this.getLastValue()];
-  }
-  parseKey(maybeWeekdayKey: unknown) {
-    this.keySchema.parse(maybeWeekdayKey);
-  }
-  safeParseKey(maybeWeekdayKey: unknown) {
-    return this.keySchema.safeParse(maybeWeekdayKey).success;
-  }
-  refineKey(weekdayKeyLike: string) {
-    const upperCasedKey = toUpperCase(weekdayKeyLike);
-    this.parseKey(upperCasedKey);
-    return upperCasedKey as WeekdayKey;
-  }
-  getKeyDict(format: 'short' | 'long' = 'short', locale?: AvailableLocale) {
-    return this.getAllKeys().reduce(
-      (keyDict, key) => {
-        keyDict[key] = {
-          name: key,
-          displayName: this.display(key, format, locale),
-          value: this.getValue(key),
-        };
-        return keyDict;
-      },
-      {} as Record<WeekdayKey, WeekdayDict>
-    );
-  }
-  display(
-    weekdayKey: WeekdayKey,
-    format: 'short' | 'long' = 'short',
-    locale = LocaleSchema.defaultLocale
-  ) {
-    switch (weekdayKey) {
-      case 'ALL':
-        return LocaleSchema.isKorean(locale) ? '요일마다' : 'Every Weekday';
-      default:
-        return this.getWeekdayName(this.getValue(weekdayKey), format, locale);
-    }
+    super(weekdayKeySchema, ALL, weekdayKeyValueMap);
   }
   protected getWeekdayName(
-    weekdayValue: number,
+    weekdayValue: WeekdayValue,
     format: Intl.DateTimeFormatOptions['weekday'] = 'short',
     locale = LocaleSchema.defaultLocale
   ) {
@@ -142,11 +49,23 @@ class WeekdaySchema
     }
     const today = new Date();
     const todayValue = today.getDay();
+    // JS 날짜 포맷에서 첫 번째 요일의 값이 0부터 시작하기에 현재 스키마에서 사용하는 첫 번째 요일 값을 제하여 보간한다.
     today.setDate(
-      // JS 날짜 포맷에서 첫 번째 요일의 값이 0부터 시작하기에 현재 스키마에서 사용하는 첫 번째 요일 값을 제하여 보간한다.
-      today.getDate() + (weekdayValue - todayValue - firstWeekdayValue)
+      today.getDate() + weekdayValue - todayValue - firstWeekdayValue
     );
     return today.toLocaleString(locale, { weekday: format });
+  }
+  display(
+    weekdayKey: WeekdayKey,
+    format: 'short' | 'long' = 'short',
+    locale = LocaleSchema.defaultLocale
+  ) {
+    switch (weekdayKey) {
+      case 'ALL':
+        return LocaleSchema.isKorean(locale) ? '요일마다' : 'Every weekday';
+      default:
+        return this.getWeekdayName(this.getValue(weekdayKey), format, locale);
+    }
   }
 }
 

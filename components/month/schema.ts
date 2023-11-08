@@ -1,10 +1,12 @@
 import { z } from 'zod';
 
-import { toUpperCase, type QuerySchema } from '@/lib/utils';
-import { LocaleSchema, type AvailableLocale } from '@/components/locale';
+import { KeyValueSchema } from '@/lib/utils';
+import { LocaleSchema } from '@/components/locale';
 
-const monthKeySchema = z.enum([
-  'ALL',
+const ALL = 'ALL';
+
+const monthKeys = [
+  ALL,
   'JAN',
   'FEB',
   'MAR',
@@ -17,125 +19,32 @@ const monthKeySchema = z.enum([
   'OCT',
   'NOV',
   'DEC',
-]);
+] as const;
 
-type MonthKeySchema = typeof monthKeySchema;
+const monthKeySchema = z.enum(monthKeys);
 
 type MonthKey = z.infer<typeof monthKeySchema>;
 
 type MonthValue = number;
 
-type MonthDict = {
-  name: MonthKey;
-  displayName: string;
-  value: MonthValue;
-};
+const monthKeyValueMap = new Map<MonthKey, MonthValue>()
+  .set('ALL', 0)
+  .set('JAN', 1)
+  .set('FEB', 2)
+  .set('MAR', 3)
+  .set('APR', 4)
+  .set('MAY', 5)
+  .set('JUN', 6)
+  .set('JUL', 7)
+  .set('AUG', 8)
+  .set('SEP', 9)
+  .set('OCT', 10)
+  .set('NOV', 11)
+  .set('DEC', 12);
 
-class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
-  private readonly keySchema: MonthKeySchema;
-  readonly keys: MonthKeySchema['enum'];
-
-  static keyValueMap = new Map<MonthKey, MonthValue>()
-    .set('ALL', 0)
-    .set('JAN', 1)
-    .set('FEB', 2)
-    .set('MAR', 3)
-    .set('APR', 4)
-    .set('MAY', 5)
-    .set('JUN', 6)
-    .set('JUL', 7)
-    .set('AUG', 8)
-    .set('SEP', 9)
-    .set('OCT', 10)
-    .set('NOV', 11)
-    .set('DEC', 12);
-
+class MonthSchema extends KeyValueSchema<MonthKey, MonthValue> {
   constructor() {
-    this.keySchema = monthKeySchema;
-    this.keys = monthKeySchema.enum;
-  }
-  getDefaultKey() {
-    return this.keySchema.enum.ALL;
-  }
-  getDefaultValue() {
-    return this.getValue(this.getDefaultKey());
-  }
-  getAllKeys() {
-    return Object.values(this.keySchema.enum);
-  }
-  getAllValues() {
-    return this.getAllKeys().map((key) => this.getValue(key));
-  }
-  getKeyByValue(monthValue: MonthValue) {
-    for (let [key, value] of MonthSchema.keyValueMap.entries()) {
-      if (monthValue === value) return key;
-    }
-    return this.getDefaultKey();
-  }
-  getValue(monthKey: MonthKey) {
-    const monthValue = MonthSchema.keyValueMap.get(monthKey);
-    if (typeof monthValue !== 'undefined') {
-      return monthValue;
-    } else {
-      return this.parseKey(monthKey) as never;
-    }
-  }
-  getFirstValue() {
-    const defaultValue = this.getDefaultValue();
-    const values = this.getAllValues();
-    const valueSet = new Set(values);
-    if (valueSet.size === values.length) {
-      values.splice(values.indexOf(defaultValue), 1);
-    }
-    return Math.min(...values);
-  }
-  getLastValue() {
-    const defaultValue = this.getDefaultValue();
-    const values = this.getAllValues();
-    const valueSet = new Set(values);
-    if (valueSet.size === values.length) {
-      values.splice(values.indexOf(defaultValue), 1);
-    }
-    return Math.max(...values);
-  }
-  getValueRange() {
-    return [this.getFirstValue(), this.getLastValue()];
-  }
-  parseKey(maybeMonthKey: unknown) {
-    this.keySchema.parse(maybeMonthKey);
-  }
-  safeParseKey(maybeMonthKey: unknown) {
-    return this.keySchema.safeParse(maybeMonthKey).success;
-  }
-  refineKey(monthKeyLike: string) {
-    const upperCasedKey = toUpperCase(monthKeyLike);
-    this.parseKey(upperCasedKey);
-    return upperCasedKey as MonthKey;
-  }
-  getKeyDict(format?: 'short' | 'long', locale?: AvailableLocale) {
-    return this.getAllKeys().reduce(
-      (keyDict, key) => {
-        keyDict[key] = {
-          name: key,
-          displayName: this.display(key, format, locale),
-          value: this.getValue(key),
-        };
-        return keyDict;
-      },
-      {} as Record<MonthKey, MonthDict>
-    );
-  }
-  display(
-    monthKey: MonthKey,
-    format: 'short' | 'long' = 'short',
-    locale = LocaleSchema.defaultLocale
-  ) {
-    if (monthKey === 'ALL') {
-      const text = LocaleSchema.isKorean(locale) ? '매달' : 'Every Month';
-      const rangeText = this.getValueRange().join('-');
-      return format === 'long' ? text.concat(`(${rangeText})`) : text;
-    }
-    return this.getMonthName(this.getValue(monthKey), 'long', locale);
+    super(monthKeySchema, ALL, monthKeyValueMap);
   }
   protected getMonthName(
     monthValue: MonthValue,
@@ -154,6 +63,18 @@ class MonthSchema implements QuerySchema<MonthKey, MonthValue, MonthDict> {
       firstMonthValue === 0 ? monthValue : monthValue - firstMonthValue
     );
     return today.toLocaleString(locale, { month: format });
+  }
+  display(
+    monthKey: MonthKey,
+    format: 'short' | 'long' = 'short',
+    locale = LocaleSchema.defaultLocale
+  ) {
+    if (monthKey === 'ALL') {
+      const text = LocaleSchema.isKorean(locale) ? '매달' : 'Every month';
+      const rangeText = this.getValueRange().join('-');
+      return format === 'long' ? text.concat(`(${rangeText})`) : text;
+    }
+    return this.getMonthName(this.getValue(monthKey), 'long', locale);
   }
 }
 

@@ -1,80 +1,32 @@
 import { z } from 'zod';
 
-import { toLowerCase, toUpperCase, type QuerySchema } from '@/lib/utils';
-import { LocaleSchema, type AvailableLocale } from '@/components/locale';
+import { KeyValueSchema, toLowerCase } from '@/lib/utils';
+import { LocaleSchema } from '@/components/locale';
 import { type MonthValue } from '@/components/month';
 
-const seasonKeySchema = z.enum(['ALL', 'SPRING', 'SUMMER', 'FALL', 'WINTER']);
+const ALL = 'ALL';
 
-type SeasonKeySchema = typeof seasonKeySchema;
+const seasonKeys = [ALL, 'SPRING', 'SUMMER', 'FALL', 'WINTER'] as const;
+
+const seasonKeySchema = z.enum(seasonKeys);
 
 type SeasonKey = z.infer<typeof seasonKeySchema>;
 
 type SeasonValue = Lowercase<SeasonKey>;
 
-type SeasonDict = {
-  name: SeasonKey;
-  displayName: string;
-  value: SeasonValue;
-  monthRange: MonthValue[];
-};
+const seasonKeyValueMap = new Map<SeasonKey, SeasonValue>(
+  seasonKeys.map((seasonKey) => [seasonKey, toLowerCase(seasonKey)])
+);
 
-class SeasonSchema implements QuerySchema<SeasonKey, SeasonValue, SeasonDict> {
-  private readonly keySchema: SeasonKeySchema;
-  readonly keys: SeasonKeySchema['enum'];
-
+class SeasonSchema extends KeyValueSchema<SeasonKey, SeasonValue> {
   constructor() {
-    this.keySchema = seasonKeySchema;
-    this.keys = seasonKeySchema.enum;
-  }
-  getDefaultKey() {
-    return this.keySchema.enum.ALL;
-  }
-  getDefaultValue() {
-    return this.getValue(this.getDefaultKey());
-  }
-  getAllKeys() {
-    return Object.values(this.keySchema.enum);
-  }
-  getAllValues() {
-    return this.getAllKeys().map((key) => this.getValue(key));
-  }
-  getKeyByValue(seasonValue: SeasonValue) {
-    return toUpperCase(seasonValue);
-  }
-  getValue(seasonKey: SeasonKey) {
-    return toLowerCase(seasonKey);
-  }
-  parseKey(maybeSeasonKey: unknown) {
-    this.keySchema.parse(maybeSeasonKey);
-  }
-  safeParseKey(maybeSeasonKey: unknown) {
-    return this.keySchema.safeParse(maybeSeasonKey).success;
-  }
-  refineKey(seasonKeyLike: string) {
-    const upperCasedKey = toUpperCase(seasonKeyLike);
-    this.parseKey(upperCasedKey);
-    return upperCasedKey as SeasonKey;
-  }
-  getKeyDict(locale?: AvailableLocale) {
-    return this.getAllKeys().reduce(
-      (keyDict, key) => {
-        keyDict[key] = {
-          name: key,
-          displayName: this.display(key, locale),
-          value: this.getValue(key),
-          monthRange: this.getMonthRange(key),
-        };
-        return keyDict;
-      },
-      {} as Record<SeasonKey, SeasonDict>
-    );
+    super(seasonKeySchema, ALL, seasonKeyValueMap);
   }
   display(seasonKey: SeasonKey, locale = LocaleSchema.defaultLocale) {
     const isKorean = LocaleSchema.isKorean(locale);
     switch (seasonKey) {
       case 'ALL':
-        return isKorean ? '사계절' : 'Every Season';
+        return isKorean ? '사계절' : 'Every season';
       case 'SPRING':
         return isKorean ? '봄' : 'Spring';
       case 'SUMMER':
@@ -87,7 +39,7 @@ class SeasonSchema implements QuerySchema<SeasonKey, SeasonValue, SeasonDict> {
         return this.parseKey(seasonKey) as never;
     }
   }
-  getMonthRange(seasonKey: SeasonKey) {
+  getMonthRange(seasonKey: SeasonKey): MonthValue[] {
     switch (seasonKey) {
       case 'ALL':
         return new Array(12).fill(0).map((_, i) => i + 1);

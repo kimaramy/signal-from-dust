@@ -8,7 +8,7 @@ import { seasonSchema, type SeasonKey, type SeasonValue } from './schema';
 
 export function useSeasonKey(): SeasonKey {
   const lowerCasedKeys = seasonSchema.getAllKeys().map(toLowerCase);
-  const lowerCasedDefaultKey = toLowerCase(seasonSchema.getDefaultKey());
+  const lowerCasedDefaultKey = toLowerCase(seasonSchema.defaultKey);
   const [lowerCasedKey] = useEnumQueryParam(
     QueryParamEnum.Season,
     lowerCasedKeys,

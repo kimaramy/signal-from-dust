@@ -1,14 +1,14 @@
 type AvailableLocale = 'en' | 'ko';
 
 class LocaleSchema {
-  static isKorean(locale: AvailableLocale) {
-    return locale.startsWith('ko');
-  }
   static defaultLocale: AvailableLocale = 'ko';
-  static locales: { [key: string]: AvailableLocale } = {
+  static locales: Record<AvailableLocale, AvailableLocale> = {
     en: 'en',
     ko: 'ko',
   };
+  static isKorean(locale: AvailableLocale) {
+    return locale.startsWith('ko');
+  }
 }
 
 export { LocaleSchema, type AvailableLocale };

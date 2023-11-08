@@ -3,13 +3,8 @@ import { upperFirst } from 'lodash-es';
 import { z } from 'zod';
 
 import { stringUnionToArray } from '@/lib/ts-utils';
-import {
-  toLowerCase,
-  toOrderedBy,
-  toUpperCase,
-  type QuerySchema,
-} from '@/lib/utils';
-import { LocaleSchema, type AvailableLocale } from '@/components/locale';
+import { KeyValueSchema, toLowerCase, toOrderedBy } from '@/lib/utils';
+import { LocaleSchema } from '@/components/locale';
 
 type DataCollectionKey = Uppercase<TableKeys> | 'SEASONALLY';
 
@@ -35,65 +30,25 @@ const dataCollectionKeySchema = z.enum([
   ...dataCollectionKeys.slice(1),
 ]);
 
-type DataCollectionKeySchema = typeof dataCollectionKeySchema;
+const dataCollectionKeyValueMap = new Map<
+  DataCollectionKey,
+  DataCollectionValue
+>(
+  dataCollectionKeys.map((dataCollectionKey) => [
+    dataCollectionKey,
+    toLowerCase(dataCollectionKey),
+  ])
+);
 
-type DataCollectionDict = {
-  name: DataCollectionKey;
-  displayName: string;
-  value: DataCollectionValue;
-};
-
-class DataCollectionSchema
-  implements
-    QuerySchema<DataCollectionKey, DataCollectionValue, DataCollectionDict>
-{
-  private readonly keySchema: DataCollectionKeySchema;
-  readonly keys: DataCollectionKeySchema['enum'];
-
+class DataCollectionSchema extends KeyValueSchema<
+  DataCollectionKey,
+  DataCollectionValue
+> {
   constructor() {
-    this.keySchema = dataCollectionKeySchema;
-    this.keys = dataCollectionKeySchema.enum;
-  }
-  getDefaultKey() {
-    return this.keySchema.enum.YEARLY;
-  }
-  getDefaultValue() {
-    return this.getValue(this.getDefaultKey());
-  }
-  getAllKeys() {
-    return Object.values(this.keySchema.enum);
-  }
-  getAllValues() {
-    return this.getAllKeys().map((key) => this.getValue(key));
-  }
-  getKeyByValue(dataCollectionValue: DataCollectionValue) {
-    return toUpperCase(dataCollectionValue);
-  }
-  getValue(dataCollectionKey: DataCollectionKey) {
-    return toLowerCase(dataCollectionKey);
-  }
-  parseKey(maybeDataCollectionKey: unknown) {
-    this.keySchema.parse(maybeDataCollectionKey);
-  }
-  safeParseKey(maybeDataCollectionKey: unknown) {
-    return this.keySchema.safeParse(maybeDataCollectionKey).success;
-  }
-  refineKey(dataCollectionKeyLike: string) {
-    const upperCasedKey = toUpperCase(dataCollectionKeyLike);
-    this.parseKey(upperCasedKey);
-    return upperCasedKey as DataCollectionKey;
-  }
-  getKeyDict(locale?: AvailableLocale) {
-    return this.getAllKeys().reduce(
-      (keyDict, key) => {
-        keyDict[key] = {
-          name: key,
-          displayName: this.display(key, locale),
-          value: this.getValue(key),
-        };
-        return keyDict;
-      },
-      {} as Record<DataCollectionKey, DataCollectionDict>
+    super(
+      dataCollectionKeySchema,
+      dataCollectionKeySchema.enum.YEARLY,
+      dataCollectionKeyValueMap
     );
   }
   display(

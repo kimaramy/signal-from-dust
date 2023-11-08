@@ -8,9 +8,7 @@ import { dataCollectionSchema, type DataCollectionKey } from './schema';
 
 export function useDataCollectionKey(): DataCollectionKey {
   const lowerCasedKeys = dataCollectionSchema.getAllKeys().map(toLowerCase);
-  const lowerCasedDefaultKey = toLowerCase(
-    dataCollectionSchema.getDefaultKey()
-  );
+  const lowerCasedDefaultKey = toLowerCase(dataCollectionSchema.defaultKey);
   const [lowerCasedKey] = useEnumQueryParam(
     QueryParamEnum.DataCollection,
     lowerCasedKeys,

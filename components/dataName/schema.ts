@@ -1,72 +1,26 @@
 import { z } from 'zod';
 
-import { toLowerCase, toUpperCase, type QuerySchema } from '@/lib/utils';
-import { LocaleSchema, type AvailableLocale } from '@/components/locale';
+import { KeyValueSchema, toLowerCase } from '@/lib/utils';
+import { LocaleSchema } from '@/components/locale';
 
-const dataNameKeySchema = z.enum(['PM_LARGE', 'PM_SMALL']);
+const dataNameKeys = ['PM_LARGE', 'PM_SMALL'] as const;
 
-type DataNameKeySchema = typeof dataNameKeySchema;
+const dataNameKeySchema = z.enum(dataNameKeys);
 
 type DataNameKey = z.infer<typeof dataNameKeySchema>;
 
 type DataNameValue = Lowercase<DataNameKey>;
 
-type DataNameDict = {
-  name: DataNameKey;
-  displayName: string;
-  value: DataNameValue;
-};
+const dataNameKeyValueMap = new Map<DataNameKey, DataNameValue>(
+  dataNameKeys.map((dataNameKey) => [dataNameKey, toLowerCase(dataNameKey)])
+);
 
-class DataNameSchema
-  implements QuerySchema<DataNameKey, DataNameValue, DataNameDict>
-{
-  private readonly keySchema: DataNameKeySchema;
-  readonly keys: DataNameKeySchema['enum'];
-
+class DataNameSchema extends KeyValueSchema<DataNameKey, DataNameValue> {
   constructor() {
-    this.keySchema = dataNameKeySchema;
-    this.keys = dataNameKeySchema.enum;
-  }
-  getDefaultKey() {
-    return this.keySchema.enum.PM_LARGE;
-  }
-  getDefaultValue() {
-    return this.getValue(this.getDefaultKey());
-  }
-  getAllKeys() {
-    return Object.values(this.keySchema.enum);
-  }
-  getAllValues() {
-    return this.getAllKeys().map((key) => this.getValue(key));
-  }
-  getKeyByValue(dataNameValue: DataNameValue) {
-    return toUpperCase(dataNameValue);
-  }
-  getValue(seasonKey: DataNameKey) {
-    return toLowerCase(seasonKey);
-  }
-  parseKey(maybeDataNameKey: unknown) {
-    this.keySchema.parse(maybeDataNameKey);
-  }
-  safeParseKey(maybeDataNameKey: unknown) {
-    return this.keySchema.safeParse(maybeDataNameKey).success;
-  }
-  refineKey(dataNameKeyLike: string) {
-    const upperCasedKey = toUpperCase(dataNameKeyLike);
-    this.parseKey(upperCasedKey);
-    return upperCasedKey as DataNameKey;
-  }
-  getKeyDict(locale?: AvailableLocale) {
-    return this.getAllKeys().reduce(
-      (keyDict, key) => {
-        keyDict[key] = {
-          name: key,
-          displayName: this.display(key, locale),
-          value: this.getValue(key),
-        };
-        return keyDict;
-      },
-      {} as Record<DataNameKey, DataNameDict>
+    super(
+      dataNameKeySchema,
+      dataNameKeySchema.enum.PM_LARGE,
+      dataNameKeyValueMap
     );
   }
   display(dataNameKey: DataNameKey, locale = LocaleSchema.defaultLocale) {

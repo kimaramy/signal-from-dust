@@ -8,7 +8,7 @@ import { monthSchema, type MonthKey } from './schema';
 
 export function useMonthKey(): MonthKey {
   const lowerCasedKeys = monthSchema.getAllKeys().map(toLowerCase);
-  const lowerCasedDefaultKey = toLowerCase(monthSchema.getDefaultKey());
+  const lowerCasedDefaultKey = toLowerCase(monthSchema.defaultKey);
   const [lowerCasedKey] = useEnumQueryParam(
     QueryParamEnum.Month,
     lowerCasedKeys,

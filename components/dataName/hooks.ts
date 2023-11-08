@@ -8,7 +8,7 @@ import { dataNameSchema, type DataNameKey } from './schema';
 
 export function useDataNameKey(): DataNameKey {
   const lowerCasedKeys = dataNameSchema.getAllKeys().map(toLowerCase);
-  const lowerCasedDefaultKey = toLowerCase(dataNameSchema.getDefaultKey());
+  const lowerCasedDefaultKey = toLowerCase(dataNameSchema.defaultKey);
   const [lowerCasedKey] = useEnumQueryParam(
     QueryParamEnum.DataName,
     lowerCasedKeys,

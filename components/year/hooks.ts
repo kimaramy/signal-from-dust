@@ -8,7 +8,7 @@ import { yearSchema, type YearKey } from './schema';
 
 export function useYearKey(): YearKey {
   const lowerCasedKeys = yearSchema.getAllKeys().map(toLowerCase);
-  const lowerCasedDefaultKey = toLowerCase(yearSchema.getDefaultKey());
+  const lowerCasedDefaultKey = toLowerCase(yearSchema.defaultKey);
   const [lowerCasedKey] = useEnumQueryParam(
     QueryParamEnum.Year,
     lowerCasedKeys,

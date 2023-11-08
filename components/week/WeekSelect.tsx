@@ -29,7 +29,7 @@ function WeekSelect(props: WeekSelectProps) {
   const weekKeys = weekSchema.getAllKeys();
 
   const defaultWeekKey = weekKeys.splice(
-    weekKeys.indexOf(weekSchema.getDefaultKey()),
+    weekKeys.indexOf(weekSchema.defaultKey),
     1
   )[0];
 

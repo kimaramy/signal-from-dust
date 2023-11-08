@@ -29,7 +29,7 @@ function SeasonSelect(props: SeasonSelectProps) {
   const seasonKeys = seasonSchema.getAllKeys();
 
   const defaultSeasonKey = seasonKeys.splice(
-    seasonKeys.indexOf(seasonSchema.getDefaultKey()),
+    seasonKeys.indexOf(seasonSchema.defaultKey),
     1
   )[0];
 

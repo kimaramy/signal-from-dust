@@ -29,7 +29,7 @@ function MonthSelect(props: MonthSelectProps) {
   const monthKeys = monthSchema.getAllKeys();
 
   const defaultMonthKey = monthKeys.splice(
-    monthKeys.indexOf(monthSchema.getDefaultKey()),
+    monthKeys.indexOf(monthSchema.defaultKey),
     1
   )[0];
 
