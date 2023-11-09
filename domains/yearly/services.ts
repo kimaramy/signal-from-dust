@@ -1,7 +1,7 @@
 import { supabaseClient } from '../supabaseClient';
-import type { YearlyData } from '../types';
+import type { DistinctYearData, YearlyData } from '../types';
 
-export const fetchYearlyDataset = async (filters?: unknown) => {
+export const fetchYearlyDataset = async (params?: unknown) => {
   const response = await supabaseClient
     .from('yearly')
     .select('*')
@@ -18,6 +18,17 @@ export const fetchYearlyData = async (dataId: number) => {
     .select('*')
     .eq('id', dataId)
     .returns<YearlyData>();
+
+  if (response.error) throw response;
+
+  return response.data;
+};
+
+export const fetchDistinctYearDataset = async () => {
+  const response = await supabaseClient
+    .from('distinct_year')
+    .select()
+    .returns<DistinctYearData[]>();
 
   if (response.error) throw response;
 

@@ -171,7 +171,18 @@ export interface Database {
       };
     };
     Views: {
-      [_ in never]: never;
+      distinct_month: {
+        Row: {
+          month: number | null;
+        };
+        Relationships: [];
+      };
+      distinct_year: {
+        Row: {
+          year: number | null;
+        };
+        Relationships: [];
+      };
     };
     Functions: {
       [_ in never]: never;

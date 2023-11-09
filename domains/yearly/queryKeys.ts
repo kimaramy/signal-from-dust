@@ -12,10 +12,16 @@ export const yearlyQueryKeys = createQueryKeys('yearly', {
       queryFn: () => services.fetchYearlyData(dataId),
     };
   },
-  list(filters?: {}) {
+  list(params = {}) {
     return {
-      queryKey: [{ ...filters }],
-      queryFn: () => services.fetchYearlyDataset(filters),
+      queryKey: [{ ...params }],
+      queryFn: () => services.fetchYearlyDataset(params),
+    };
+  },
+  distinctYearList(params = {}) {
+    return {
+      queryKey: [{ ...params }],
+      queryFn: () => services.fetchDistinctYearDataset(),
     };
   },
 });

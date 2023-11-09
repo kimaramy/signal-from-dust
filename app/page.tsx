@@ -1,13 +1,16 @@
 'use client';
 
+import { useEffect } from 'react';
 import {
   useDailyListQuery,
+  useDistinctYearListQuery,
   useMonthlyListQuery,
   useMonthlyListQueryBySeason,
   useWeekDailyListQuery,
   useWeeklyListQuery,
   useYearlyListQuery,
 } from '@/domains';
+import { toast } from 'react-hot-toast';
 
 import { useDataCollectionKey } from '@/components/dataCollection';
 import { useDataNameKey } from '@/components/dataName';
@@ -24,7 +27,7 @@ import Sequence, {
   toYearlySceneDataset,
 } from '@/components/Sequence';
 import { SettingsDialog } from '@/components/settings';
-import { useYearKey } from '@/components/year';
+import { useYearKey, yearSchema } from '@/components/year';
 
 export default function IndexPage() {
   const displayKey = useDisplayKey();
@@ -38,6 +41,13 @@ export default function IndexPage() {
   const seasonKey = useSeasonKey();
 
   const monthKey = useMonthKey();
+
+  const serverYears = useDistinctYearListQuery({
+    select: (dataset) =>
+      dataset
+        .map((data) => data.year)
+        .filter((year) => !Number.isNaN(Number(year))) as number[],
+  });
 
   const dailySceneDataset = useDailyListQuery(monthKey, {
     enabled: dataCollectionKey === 'DAILY',
@@ -92,6 +102,23 @@ export default function IndexPage() {
         return dailySceneDataset;
     }
   })();
+
+  useEffect(() => {
+    if (serverYears) {
+      const clientYears = yearSchema.getAllValues();
+
+      const isSynced =
+        serverYears.length === clientYears.length &&
+        serverYears.every((serverYear) => clientYears.includes(serverYear));
+
+      if (!isSynced) {
+        console.log({ clientYears, serverYears });
+        toast.error(
+          `Database has been updated. Please check client-side years and server-side years.`
+        );
+      }
+    }
+  }, [serverYears]);
 
   return (
     <>
