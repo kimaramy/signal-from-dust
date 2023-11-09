@@ -1,6 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useDistinctYearListQuery } from '@/domains';
 import { useEnumQueryParam, useSetQueryParam } from '@/hooks';
+import { toast } from 'react-hot-toast';
 
 import { QueryParamEnum, toLowerCase, toUpperCase } from '@/lib/utils';
 
@@ -28,4 +31,25 @@ export function useSetYearKey() {
     const lowerCasedKey = toLowerCase(yearKey);
     setYearKey(lowerCasedKey);
   };
+}
+
+export function useValidateYearSchema() {
+  const dbYears = useDistinctYearListQuery({
+    select: (dataset) =>
+      dataset
+        .map((data) => data.year)
+        .filter((year) => !Number.isNaN(Number(year))) as number[],
+  });
+
+  useEffect(() => {
+    if (dbYears) {
+      const isSynced = yearSchema.checkSyncWithDB(dbYears);
+
+      if (!isSynced) {
+        toast.error(
+          `Database has been updated. Please check schema years with database years.`
+        );
+      }
+    }
+  }, [dbYears]);
 }

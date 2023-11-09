@@ -92,6 +92,13 @@ export class KeyValueSchema<
   safeParseKey(maybeKey: unknown) {
     return this.keySchema.safeParse(maybeKey).success;
   }
+  checkSyncWithDB(dbValues: TValue[]) {
+    const values = this.getAllValues();
+    const isSynced =
+      dbValues.length === values.length &&
+      dbValues.every((dbValue) => values.includes(dbValue));
+    return isSynced;
+  }
 }
 
 // export interface QuerySchema<
