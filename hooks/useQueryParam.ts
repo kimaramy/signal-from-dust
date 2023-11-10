@@ -1,3 +1,5 @@
+'use client';
+
 import { useSearchParams } from 'next/navigation';
 
 type ConditionalType<TValue, TFallbackValue> = TFallbackValue extends undefined

@@ -3,10 +3,8 @@ import { z } from 'zod';
 import { KeyValueSchema } from '@/lib/utils';
 import { LocaleSchema } from '@/components/locale';
 
-const ALL = 'ALL';
-
 const monthKeys = [
-  ALL,
+  'ALL',
   'JAN',
   'FEB',
   'MAR',
@@ -44,7 +42,7 @@ const monthKeyValueMap = new Map<MonthKey, MonthValue>()
 
 class MonthSchema extends KeyValueSchema<MonthKey, MonthValue> {
   constructor() {
-    super(monthKeySchema, ALL, monthKeyValueMap);
+    super(monthKeySchema, monthKeySchema.enum.ALL, monthKeyValueMap);
   }
   protected getMonthName(
     monthValue: MonthValue,

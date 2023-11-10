@@ -3,10 +3,8 @@ import { z } from 'zod';
 import { KeyValueSchema } from '@/lib/utils';
 import { LocaleSchema } from '@/components/locale';
 
-const ALL = 'ALL';
-
 const yearKeys = [
-  ALL,
+  'ALL',
   '2015',
   '2016',
   '2017',
@@ -36,7 +34,7 @@ const yearKeyValueMap = new Map<YearKey, YearValue>()
 
 class YearSchema extends KeyValueSchema<YearKey, YearValue> {
   constructor() {
-    super(yearKeySchema, ALL, yearKeyValueMap);
+    super(yearKeySchema, yearKeySchema.enum.ALL, yearKeyValueMap);
   }
   protected getYearName(
     yearValue: YearValue,

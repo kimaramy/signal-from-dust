@@ -3,10 +3,8 @@ import { z } from 'zod';
 import { KeyValueSchema } from '@/lib/utils';
 import { LocaleSchema } from '@/components/locale';
 
-const ALL = 'ALL';
-
 const weekdayKeys = [
-  ALL,
+  'ALL',
   'SUNDAY',
   'MONDAY',
   'TUESDAY',
@@ -34,7 +32,7 @@ const weekdayKeyValueMap = new Map<WeekdayKey, WeekdayValue>()
 
 class WeekdaySchema extends KeyValueSchema<WeekdayKey, WeekdayValue> {
   constructor() {
-    super(weekdayKeySchema, ALL, weekdayKeyValueMap);
+    super(weekdayKeySchema, weekdayKeySchema.enum.ALL, weekdayKeyValueMap);
   }
   protected getWeekdayName(
     weekdayValue: WeekdayValue,

@@ -5,7 +5,6 @@ import { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
-// import Gnb from '@/components/Gnb';
 import QueryClientProvider from '@/components/QueryClientProvider';
 import SoundFilterX from '@/components/SoundFilterX';
 import SoundFilterY from '@/components/SoundFilterY';
@@ -77,7 +76,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <QueryClientProvider>
               <div className="relative flex min-h-screen flex-col">
-                {/* <Gnb /> */}
                 <SoundFilterX />
                 <SoundFilterY />
                 <div className="flex-1">{children}</div>

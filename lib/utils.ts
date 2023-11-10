@@ -39,7 +39,7 @@ export class KeyValueSchema<
     this.keyValueMap = keyValueMap;
   }
   getKeyByValue(value: TValue) {
-    for (let [mapKey, mapValue] of this.keyValueMap.entries()) {
+    for (const [mapKey, mapValue] of this.keyValueMap) {
       if (value === mapValue) return mapKey;
     }
     return this.defaultKey;
@@ -100,25 +100,6 @@ export class KeyValueSchema<
     return isSynced;
   }
 }
-
-// export interface QuerySchema<
-//   TKey extends string,
-//   TValue extends string | number,
-//   TDict = unknown,
-// > {
-//   readonly keys?: unknown;
-//   getDefaultKey: () => TKey;
-//   getDefaultValue: () => TValue;
-//   getAllKeys: () => TKey[];
-//   getAllValues: () => TValue[];
-//   getKeyByValue: (value: TValue) => TKey;
-//   getValue: (key: TKey) => TValue;
-//   getKeyDict?: () => { [key: string]: TDict };
-//   parseKey: (key: unknown) => void;
-//   safeParseKey: (key: unknown) => boolean;
-//   refineKey?: (keyLike: string) => TKey;
-//   display?: (key: TKey) => string;
-// }
 
 export function toOrderedBy<T extends string>(arr: T[], order: T[]) {
   const orderForIndexVals = order.slice(0).reverse();

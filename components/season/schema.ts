@@ -4,9 +4,7 @@ import { KeyValueSchema, toLowerCase } from '@/lib/utils';
 import { LocaleSchema } from '@/components/locale';
 import { type MonthValue } from '@/components/month';
 
-const ALL = 'ALL';
-
-const seasonKeys = [ALL, 'SPRING', 'SUMMER', 'FALL', 'WINTER'] as const;
+const seasonKeys = ['ALL', 'SPRING', 'SUMMER', 'FALL', 'WINTER'] as const;
 
 const seasonKeySchema = z.enum(seasonKeys);
 
@@ -20,7 +18,7 @@ const seasonKeyValueMap = new Map<SeasonKey, SeasonValue>(
 
 class SeasonSchema extends KeyValueSchema<SeasonKey, SeasonValue> {
   constructor() {
-    super(seasonKeySchema, ALL, seasonKeyValueMap);
+    super(seasonKeySchema, seasonKeySchema.enum.ALL, seasonKeyValueMap);
   }
   display(seasonKey: SeasonKey, locale = LocaleSchema.defaultLocale) {
     const isKorean = LocaleSchema.isKorean(locale);
