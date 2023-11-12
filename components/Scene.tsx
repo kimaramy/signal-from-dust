@@ -2,7 +2,6 @@
 
 import React, { useCallback, useRef, useState } from 'react';
 import { PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
-import { useInView } from 'react-intersection-observer';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -19,10 +18,6 @@ import Bit, { Binary } from './Bit';
 import SceneDataView from './SceneDataView';
 import SceneRoot from './SceneRoot';
 
-export function getSceneLength(decimal: number) {
-  return decimal.toString(2).length;
-}
-
 export interface SceneData {
   id: number;
   name: string;
@@ -34,62 +29,51 @@ export interface SceneData {
   rank: number | null;
 }
 
+type SceneHandler = (data: SceneData, index: number) => void;
+
 export interface SceneProps {
-  displayKey: DisplayKey;
-  sceneId: string;
-  sceneData: SceneData;
-  sceneIndex: number;
-  sceneLength?: number;
-  active?: boolean;
+  id: string;
   className?: string;
-  onSceneChange: (sceneData: SceneData, sceneIndex: number) => void;
+  data: SceneData;
+  index: number;
+  length?: number;
+  displayKey: DisplayKey;
+  onClick?: SceneHandler;
+  onInView?: SceneHandler;
+  onOutOfView?: SceneHandler;
 }
 
 function Scene({
-  displayKey,
-  sceneId,
-  sceneData,
-  sceneIndex,
-  sceneLength = 8,
-  active = false,
+  id,
+  data,
+  index,
+  length = 8,
   className,
-  onSceneChange,
+  displayKey,
+  onClick,
+  onInView,
+  onOutOfView,
 }: SceneProps) {
   const isFullPage = displayKey === 'FULL';
 
-  const binaries = sceneData.value?.toString(2).split('') as
-    | Binary[]
-    | undefined;
+  const binaries = data.value?.toString(2).split('') as Binary[] | undefined;
 
   const sceneRef = useRef<HTMLUListElement>(null);
 
-  const { ref } = useInView({
-    threshold: 0.8,
-    initialInView: sceneIndex === 0,
-    skip: !isFullPage,
-    onChange(inView) {
-      if (inView) {
-        onSceneChange(sceneData, sceneIndex);
-      } else {
-        handleStopSound();
-      }
-    },
-  });
-
   const [isPlaying, setPlaying] = useState(false);
 
-  const [isMouseOver, setMouseOver] = useState(false);
+  // const [isMouseOver, setMouseOver] = useState(false);
 
   const handlePlaySound = useCallback(() => {
     if (binaries) {
       toggleSoundPlay(binaries.map(Number), {
         onStart() {
           setPlaying(true);
-          setMouseOver(true);
+          // setMouseOver(true);
         },
         onStop() {
           setPlaying(false);
-          setMouseOver(false);
+          // setMouseOver(false);
         },
       });
     }
@@ -99,17 +83,13 @@ function Scene({
     stopSoundPlay(() => setPlaying(false));
   }, []);
 
-  const handleMouseOver = useCallback<React.MouseEventHandler>(() => {
-    if (!isFullPage) {
-      onSceneChange(sceneData, sceneIndex);
-      // handleStopSound();
-    }
-    setMouseOver(true);
-  }, [isFullPage, sceneData]);
+  // const handleMouseOver = useCallback<React.MouseEventHandler>(() => {
+  //   setMouseOver(true);
+  // }, [data]);
 
-  const handleMouseOut = useCallback<React.MouseEventHandler>(() => {
-    setMouseOver(false);
-  }, []);
+  // const handleMouseOut = useCallback<React.MouseEventHandler>(() => {
+  //   setMouseOver(false);
+  // }, []);
 
   const handleOverlayClick = useCallback<React.MouseEventHandler>(() => {
     setPlaying((isPlaying) => !isPlaying);
@@ -117,10 +97,9 @@ function Scene({
 
   return (
     <SceneRoot
-      ref={ref}
-      id={sceneId}
+      id={id}
       className={className}
-      justify={isFullPage ? 'center' : 'start'}
+      justify={'start'}
       // style={{
       //   perspective: display === '3d' ? `1500px` : undefined,
       // }}
@@ -133,7 +112,7 @@ function Scene({
         >
           <SceneDataView
             displayKey={displayKey}
-            sceneData={sceneData}
+            sceneData={data}
             binaries={binaries}
             isPlaying={isPlaying}
             onPlayButtonClick={handlePlaySound}
@@ -175,7 +154,7 @@ function Scene({
                   aria-hidden
                   className={cn('h-3.5 w-3.5', !isPlaying && 'hidden')}
                 />
-                <span>{sceneData.dates.join(' ')}</span>
+                <span>{data.dates.join(' ')}</span>
               </Button>
             </div>
           </HoverCardTrigger>
@@ -187,7 +166,7 @@ function Scene({
             )}
           >
             <SceneDataView
-              sceneData={sceneData}
+              sceneData={data}
               binaries={binaries}
               displayKey={displayKey}
               isPlaying={isPlaying}
@@ -208,7 +187,7 @@ function Scene({
             ? binaries
                 ?.map((binary) => (binary === '0' ? '1fr' : '1.5fr'))
                 .join(' ')
-            : `repeat(${sceneLength}, 1fr)`,
+            : `repeat(${length}, 1fr)`,
           transform: isFullPage
             ? `rotateX(70deg) rotateZ(40deg) translateZ(0em) scaleX(1.15) scaleY(1.35)`
             : undefined,
@@ -219,7 +198,7 @@ function Scene({
         // onMouseOut={handleMouseOut}
       >
         {binaries?.map((binary, index) => {
-          const bitId = [sceneId, index].join('-');
+          const bitId = [id, index].join('-');
           return (
             <Bit
               key={`${displayKey}-${bitId}`}

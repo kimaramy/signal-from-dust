@@ -18,15 +18,19 @@ const sceneRootVariants = cva('relative flex h-full items-center gap-6', {
 type SceneRootVariants = typeof sceneRootVariants;
 
 interface SceneRootProps
-  extends React.LiHTMLAttributes<HTMLLIElement>,
+  extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<SceneRootVariants> {}
 
-const SceneRoot = React.forwardRef<HTMLLIElement, SceneRootProps>(
-  function SceneRoot({ justify, className, children }, ref) {
+const SceneRoot = React.forwardRef<HTMLDivElement, SceneRootProps>(
+  function SceneRoot({ justify, className, children, ...rest }, ref) {
     return (
-      <li ref={ref} className={cn(sceneRootVariants({ justify, className }))}>
+      <div
+        ref={ref}
+        className={cn(sceneRootVariants({ justify, className }))}
+        {...rest}
+      >
         {children}
-      </li>
+      </div>
     );
   }
 );

@@ -47,7 +47,7 @@ class DataCollectionSchema extends KeyValueSchema<
   constructor() {
     super(
       dataCollectionKeySchema,
-      dataCollectionKeySchema.enum.YEARLY,
+      dataCollectionKeySchema.enum.DAILY,
       dataCollectionKeyValueMap
     );
   }

@@ -127,3 +127,28 @@ export function isValidJson(value: string) {
     return false;
   }
 }
+
+export type QueryParams = { [key: string]: string | string[] | undefined };
+export interface NextPageProps<TSlug = string> {
+  params: { slug: TSlug };
+  searchParams?: QueryParams;
+}
+
+export const pickQueryParam = <
+  TValue extends string = string,
+  TKey extends string = string,
+  TFallbackValue extends TValue = TValue,
+>(
+  params: QueryParams = {},
+  key: TKey,
+  fallbackValue: TFallbackValue
+) => {
+  let value: TValue;
+  let maybeValues = params[key] as TValue;
+  if (Array.isArray(maybeValues)) {
+    value = maybeValues[0];
+  } else {
+    value = maybeValues;
+  }
+  return value ?? fallbackValue;
+};

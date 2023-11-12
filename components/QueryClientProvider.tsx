@@ -22,8 +22,8 @@ export default function QueryClientProvider({
     new QueryClient({
       defaultOptions: {
         queries: {
-          suspense: false,
-          useErrorBoundary: false,
+          suspense: true,
+          useErrorBoundary: true,
           retry: false,
           refetchOnWindowFocus: false,
         },
