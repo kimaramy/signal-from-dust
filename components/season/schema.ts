@@ -47,6 +47,8 @@ class SeasonSchema extends KeyValueSchema<SeasonKey, SeasonValue> {
         return [6, 7, 8];
       case 'FALL':
         return [9, 10, 11];
+      case 'WINTER':
+        return [1, 2, 12];
       default:
         return this.parseKey(seasonKey) as never;
     }

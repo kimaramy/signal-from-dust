@@ -21,7 +21,7 @@ export const monthlyQueryKeys = createQueryKeys('monthly', {
       queryKey: [{ year }],
       queryFn: () => services.fetchMonthlyDataset(year),
       contextQueries: {
-        seasonal(seasonKey: SeasonKey) {
+        seasonally(seasonKey: SeasonKey) {
           const months = seasonSchema.getMonthRange(seasonKey);
           return {
             queryKey: [{ months }],

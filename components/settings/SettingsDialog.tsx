@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -17,11 +17,18 @@ import {
 import SettingsFormContainer from './SettingsFormContainer';
 import SettingsFormSubmitButton from './SettingsFormSubmitButton';
 
+/**
+ * @issue [How to avoid hydration error](https://github.com/radix-ui/primitives/issues/1386)
+ */
 function SettingsDialog() {
-  const [isOpen, setOpen] = useState(true);
+  const [isOpen, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(true);
+  }, []);
 
   return (
-    <Dialog defaultOpen={isOpen} onOpenChange={() => setOpen(!isOpen)}>
+    <Dialog open={isOpen} onOpenChange={() => setOpen((isOpen) => !isOpen)}>
       <DialogContent className="flex aspect-auto min-w-[768px] gap-0 overflow-hidden p-0 md:w-full">
         <section className="relative isolate w-1/2 flex-none">
           <Image

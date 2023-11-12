@@ -1,3 +1,5 @@
+'use client';
+
 import { DevTool } from '@hookform/devtools';
 import { SubmitHandler, useForm } from 'react-hook-form';
 

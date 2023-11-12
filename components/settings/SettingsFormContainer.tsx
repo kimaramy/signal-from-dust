@@ -17,8 +17,7 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
 
   const handleSubmit = useCallback(
     (values: SettingsFormValues) => {
-      const map = new Map<QueryParamEnum, string | number>();
-      map
+      const map = new Map<QueryParamEnum, string>()
         .set(QueryParamEnum.DataName, values.dataNameKey)
         .set(QueryParamEnum.DataCollection, values.dataCollectionKey)
         .set(QueryParamEnum.Year, values.yearKey)

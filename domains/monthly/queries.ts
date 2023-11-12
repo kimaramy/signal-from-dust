@@ -30,11 +30,11 @@ export function useMonthlyListQueryBySeason<T = MonthlyData[]>(
     MonthlyData[],
     SupabaseError,
     T,
-    MonthlyQueryKeys['list']['_ctx']['seasonal']['queryKey']
+    MonthlyQueryKeys['list']['_ctx']['seasonally']['queryKey']
   >
 ) {
   const { data } = useQuery({
-    ...monthlyQueryKeys.list(yearKey)._ctx.seasonal(seasonKey),
+    ...monthlyQueryKeys.list(yearKey)._ctx.seasonally(seasonKey),
     staleTime: Infinity,
     ...options,
   });
