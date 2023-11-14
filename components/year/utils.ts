@@ -1,9 +1,5 @@
-import {
-  pickQueryParam,
-  QueryParamEnum,
-  toUpperCase,
-  type QueryParams,
-} from '@/lib/utils';
+import type { QueryParams } from '@/lib/types';
+import { pickQueryParam, QueryParamEnum, toUpperCase } from '@/lib/utils';
 
 import { yearSchema, type YearKey } from './schema';
 

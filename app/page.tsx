@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import * as Domains from '@/domains';
 
-import { type NextPageProps } from '@/lib/utils';
+import type { NextPageProps } from '@/lib/types';
 import {
   pickDataCollectionKey,
   type DataCollectionKey,

@@ -2,8 +2,12 @@ import type { TableKeys } from '@/domains';
 import { upperFirst } from 'lodash-es';
 import { z } from 'zod';
 
-import { stringUnionToArray } from '@/lib/ts-utils';
-import { KeyValueSchema, toLowerCase, toOrderedBy } from '@/lib/utils';
+import {
+  KeyValueSchema,
+  stringUnionToArray,
+  toLowerCase,
+  toOrderedBy,
+} from '@/lib/utils';
 import { LocaleSchema } from '@/components/locale';
 
 type DataCollectionKey = Uppercase<TableKeys> | 'SEASONALLY';
@@ -24,7 +28,7 @@ const dataCollectionKeys = Object.freeze(
   )
 );
 
-// z.enum 타입이 [string, ...string[]] 형식, 즉 무조건 하나의 요소는 보장되어야하는 NonEmptyArray 타입이므로 불가피하게 이렇게 할당함
+// z.enum 타입이 [string, ...string[]] 형식. 즉 무조건 하나의 요소가 보장되어야하는 NonEmptyArray 타입이므로 불가피하게 이렇게 할당함
 const dataCollectionKeySchema = z.enum([
   dataCollectionKeys[0],
   ...dataCollectionKeys.slice(1),

@@ -1,10 +1,34 @@
 import { clsx, type ClassValue } from 'clsx';
+import * as enumFor from 'enum-for';
 import { toLower, toUpper } from 'lodash-es';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
 
+import type { MustInclude, NonEmptyArray, QueryParams } from './types';
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+export function stringUnionToArray<T>() {
+  return <U extends NonEmptyArray<T>>(...elements: MustInclude<T, U>) =>
+    elements;
+}
+
+export const getAllEnumEntries = enumFor.getAllEnumEntries;
+
+export const getAllEnumKeys = enumFor.getAllEnumKeys;
+
+export const getAllEnumValues = enumFor.getAllEnumValues;
+
+export function getEnumKeyByValue<T, K extends T[keyof T]>(
+  enumType: T,
+  value: K
+) {
+  const enumMap = new Map(enumFor.getAllEnumEntries(enumType));
+  for (let [enumKey, enumValue] of enumMap.entries()) {
+    if (enumValue === value) return enumKey;
+  }
 }
 
 export enum QueryParamEnum {
@@ -126,12 +150,6 @@ export function isValidJson(value: string) {
   } catch {
     return false;
   }
-}
-
-export type QueryParams = { [key: string]: string | string[] | undefined };
-export interface NextPageProps<TSlug = string> {
-  params: { slug: TSlug };
-  searchParams?: QueryParams;
 }
 
 export const pickQueryParam = <

@@ -3,6 +3,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
 
+import type { Binary } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 // import Overlay from './Overlay';
@@ -14,7 +15,7 @@ import {
 import { type DisplayKey } from '@/components/display';
 import { stopSoundPlay, toggleSoundPlay } from '@/components/sound';
 
-import Bit, { Binary } from './Bit';
+import Bit from './Bit';
 import SceneDataView from './SceneDataView';
 import SceneRoot from './SceneRoot';
 
@@ -66,7 +67,7 @@ function Scene({
 
   const handlePlaySound = useCallback(() => {
     if (binaries) {
-      toggleSoundPlay(binaries.map(Number), {
+      toggleSoundPlay(binaries, {
         onStart() {
           setPlaying(true);
           // setMouseOver(true);
