@@ -15,7 +15,7 @@
     "typecheck": "tsc --noEmit",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
-    "gen-types": "npx supabase gen types typescript --linked > domains/types/supabase.d.ts",
+    "gen-types": "npx supabase gen types typescript --linked > domains/supabase.d.ts",
     "gen-env": "cp .env.template .env.local"
   },
   "dependencies": {

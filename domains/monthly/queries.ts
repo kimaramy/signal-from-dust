@@ -3,7 +3,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { type SeasonKey } from '@/components/season';
 import { type YearKey } from '@/components/year';
 
-import type { MonthlyData, SupabaseError } from '../types';
+import type { MonthlyData, SupabaseError } from '..';
 import { monthlyQueryKeys, type MonthlyQueryKeys } from './queryKeys';
 
 export function useMonthlyListQuery<T = MonthlyData[]>(

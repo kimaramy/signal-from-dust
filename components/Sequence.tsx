@@ -7,7 +7,7 @@ import type {
   WeekDailyData,
   WeeklyData,
   YearlyData,
-} from '@/domains/types';
+} from '@/domains';
 
 import {
   dataCollectionSchema,

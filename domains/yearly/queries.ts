@@ -1,6 +1,6 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
-import type { DistinctYearData, SupabaseError, YearlyData } from '../types';
+import type { DistinctYearData, SupabaseError, YearlyData } from '..';
 import { yearlyQueryKeys, type YearlyQueryKeys } from './queryKeys';
 
 export function useYearlyListQuery<T = YearlyData[]>(

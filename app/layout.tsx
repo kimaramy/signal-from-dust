@@ -6,12 +6,12 @@ import { type Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
+import FakeDataset from '@/components/FakeDataset';
 import QueryClientProvider from '@/components/QueryClientProvider';
 import QueryErrorBoundary from '@/components/QueryErrorBoundary';
 import RuntimeErrorBoundary from '@/components/RuntimeErrorBoundary';
 import SoundFilterX from '@/components/SoundFilterX';
 import SoundFilterY from '@/components/SoundFilterY';
-import Spinner from '@/components/Spinner';
 // import TailwindIndicator from '@/components/TailwindIndicator';
 import ThemeProvider from '@/components/ThemeProvider';
 import ToastProvider from '@/components/ToastProvider';
@@ -82,7 +82,7 @@ function RootLayout({ children }: RootLayoutProps) {
               <div className="flex-1">
                 <RuntimeErrorBoundary>
                   <QueryErrorBoundary>
-                    <Suspense fallback={<Spinner />}>{children}</Suspense>
+                    <Suspense fallback={<FakeDataset />}>{children}</Suspense>
                   </QueryErrorBoundary>
                 </RuntimeErrorBoundary>
               </div>
