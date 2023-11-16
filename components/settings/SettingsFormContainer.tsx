@@ -3,7 +3,7 @@ import { useSetQueryParams } from '@/hooks';
 
 import { QueryParamEnum, toLowerCase } from '@/lib/utils';
 
-import { useSettingsFormDefaultValues } from './hooks';
+import { useSettingsFormDefaultValues, useSettingsModeContext } from './hooks';
 import SettingsForm, { type SettingsFormValues } from './SettingsForm';
 
 interface SettingsFormContainerProps {
@@ -13,7 +13,9 @@ interface SettingsFormContainerProps {
 function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
   const setQueryParams = useSetQueryParams();
 
-  const defaultValues = useSettingsFormDefaultValues();
+  const defaultMode = useSettingsModeContext();
+
+  const defaultValues = useSettingsFormDefaultValues(defaultMode);
 
   const handleSubmit = useCallback(
     (values: SettingsFormValues) => {

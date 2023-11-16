@@ -6,13 +6,16 @@ import { useRouter, useSearchParams } from 'next/navigation';
 /**
  * 복수의 쿼리 파라미터 값을 Upsert하는 Setter 함수입니다.
  */
-function useSetQueryParams(options?: { method: 'push' | 'replace' }) {
+function useSetQueryParams<
+  TValue extends string | number | boolean,
+  TKey extends string = string,
+>(options?: { method: 'push' | 'replace' }) {
   const router = useRouter();
 
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams(); // 'next/navigation' 내부적으로 useContext(SearchParamsContext) 값을 반환
 
   const setQueryParams = useCallback(
-    (map: Map<string, string | number | boolean>) => {
+    (map: Map<TKey, TValue>) => {
       const mutableSearchParams = new URLSearchParams(
         Array.from(searchParams.entries())
       );

@@ -9,8 +9,8 @@ interface SettingsFormSubmitButtonProps {
 function SettingsFormSubmitButton({ label }: SettingsFormSubmitButtonProps) {
   return (
     <Button
-      type="submit"
       form={SETTINGS_FORM_ID}
+      type="submit"
       variant="default"
       size="lg"
       className="w-full"

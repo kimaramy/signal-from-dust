@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
+import { SettingsModeContext } from './context';
 import SettingsFormContainer from './SettingsFormContainer';
 import SettingsFormSubmitButton from './SettingsFormSubmitButton';
 
@@ -50,7 +51,9 @@ function SettingsDialog() {
             <DialogTitle>데이터 선택</DialogTitle>
           </DialogHeader>
           <section className="py-4">
-            <SettingsFormContainer devTool={false} />
+            <SettingsModeContext.Provider value="preset">
+              <SettingsFormContainer devTool={false} />
+            </SettingsModeContext.Provider>
           </section>
           <DialogFooter>
             <DialogClose className="w-full">

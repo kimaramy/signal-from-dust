@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { cn } from '@/lib/utils';
@@ -11,20 +14,24 @@ import { dataNameSchema } from '@/components/dataName';
 
 import { type SettingsFormValues } from './SettingsForm';
 
-interface PresetFieldsProps {
-  defaultValues: SettingsFormValues;
-  className?: string;
-}
-
 /**
  * 데이터 이름, 데이터 유형, 연도, 월, 계절 등이 미리 선택된 집합 중 하나를 선택할 수 있습니다.
  */
-function PresetFields({ defaultValues, className }: PresetFieldsProps) {
-  const { control, watch, reset } = useFormContext<SettingsFormValues>();
+function PresetFields() {
+  const { control, formState, watch, reset } =
+    useFormContext<SettingsFormValues>();
+
+  const defaultValues = formState.defaultValues;
 
   const mode = watch('mode');
 
   const isHidden = mode !== 'preset';
+
+  useEffect(() => {
+    if (!defaultValues) {
+      throw new Error(`SettingsForm has no defaultValues.`);
+    }
+  }, [defaultValues]);
 
   if (isHidden) return null;
 
@@ -36,12 +43,13 @@ function PresetFields({ defaultValues, className }: PresetFieldsProps) {
         render={({ field }) => {
           return (
             <RadioGroup
-              className={cn('gap-2', className)}
+              className="gap-2"
               value={field.value}
               onValueChange={(dataCollectionKey: DataCollectionKey) => {
                 reset({
                   ...defaultValues,
                   dataCollectionKey,
+                  mode,
                 });
               }}
             >
@@ -74,7 +82,7 @@ function PresetFields({ defaultValues, className }: PresetFieldsProps) {
                       {[
                         label.concat(' 나타나는'),
                         dataNameSchema
-                          .display(defaultValues.dataNameKey)
+                          .display(defaultValues?.dataNameKey!)
                           .concat('의 패턴'),
                       ].join(' ')}
                     </p>
