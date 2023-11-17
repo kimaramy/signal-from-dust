@@ -7,6 +7,7 @@ import { siteConfig } from '@/config/site';
 import { fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import FakeDataset from '@/components/FakeDataset';
+import FloatingButtons from '@/components/FloatingButtons';
 import QueryClientProvider from '@/components/QueryClientProvider';
 import QueryErrorBoundary from '@/components/QueryErrorBoundary';
 import RuntimeErrorBoundary from '@/components/RuntimeErrorBoundary';
@@ -82,7 +83,10 @@ function RootLayout({ children }: RootLayoutProps) {
               <div className="flex-1">
                 <RuntimeErrorBoundary>
                   <QueryErrorBoundary>
-                    <Suspense fallback={<FakeDataset />}>{children}</Suspense>
+                    <Suspense fallback={<FakeDataset />}>
+                      {children}
+                      <FloatingButtons />
+                    </Suspense>
                   </QueryErrorBoundary>
                 </RuntimeErrorBoundary>
               </div>

@@ -5,7 +5,6 @@ import type { NextPageProps } from '@/lib/types';
 import { dataCollectionSchema } from '@/components/dataCollection';
 import Dataset from '@/components/Dataset';
 import FakeDataset from '@/components/FakeDataset';
-import FloatingButtons from '@/components/FloatingButtons';
 import Main from '@/components/Main';
 import { monthSchema } from '@/components/month';
 import QueryErrorBoundary from '@/components/QueryErrorBoundary';
@@ -35,7 +34,6 @@ async function IndexPage(_: NextPageProps) {
           </Suspense>
         </QueryErrorBoundary>
       </Main>
-      <FloatingButtons />
       <SettingsDialog />
     </>
   );
