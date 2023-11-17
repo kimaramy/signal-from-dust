@@ -5,36 +5,34 @@ import { useEffect } from 'react';
 import useQueryParam from './useQueryParam';
 
 /**
- * 단일 쿼리 파라미터 값을 안정성 있게 사용하기 위한 Getter 함수입니다.
- * 단, 주어진 validator를 통과하지 못하면 에러를 발생(throw)시키거나, 콘솔에 에러를 출력합니다.
+ * 단일 쿼리 파라미터의 값을 타입 검사하여 안정성 있게 사용하기 위한 Getter 함수입니다.
+ * 주어진 유효성 검사(validator)를 통과하지 못하면 에러를 던지거나, 콘솔에 에러를 출력합니다.
+ * 그 외 스펙은 useQueryParam과 동일합니다.
  *
  * @param name 쿼리 파라미터 이름
- * @param fallbackValue 쿼리 파라미터 값이 없을 경우 해당 값에 의존하는 UI를 위한 fallback 값
- * @param options.validator 쿼리 파라미터 값 검증 predicate 함수
+ * @param fallback 쿼리 파라미터 값이 없을 경우 반환할 fallback 값
+ * @param options.validator 쿼리 파라미터 값 검증 Predicate 함수
  * @param options.errorMessage 유효하지 않을 경우 출력할 에러 메시지
  * @param options.strict true일 경우 에러 throw, false일 경우 console 에러
  *
  * @returns 쿼리 파라미터 값
  */
-function useSafeParam<
+function useSafeQueryParam<
   TValue extends string = string,
   TKey extends string = string,
-  TFallbackValue extends TValue = TValue,
+  TFallback extends TValue | undefined = undefined,
 >(
   name: TKey,
-  fallbackValue: TFallbackValue,
+  fallback: TFallback | undefined,
   options: {
-    validator: (value: TValue[]) => boolean;
-    errorMessage?: string | ((value: TValue[]) => string);
+    validator: (values: TValue[]) => boolean;
+    errorMessage?: string | ((values: TValue[]) => string);
     strict?: boolean;
   }
 ) {
   const { validator, errorMessage, strict = false } = options;
 
-  const values = useQueryParam<TValue, TKey, TFallbackValue>(
-    name,
-    fallbackValue
-  );
+  const values = useQueryParam<TValue, TKey, TFallback>(name, fallback);
 
   useEffect(() => {
     if (!values) return;
@@ -54,4 +52,4 @@ function useSafeParam<
   return values;
 }
 
-export default useSafeParam;
+export default useSafeQueryParam;

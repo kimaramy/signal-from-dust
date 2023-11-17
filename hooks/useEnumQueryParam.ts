@@ -3,9 +3,9 @@ import useSafeQueryParam from './useSafeQueryParam';
 function useEnumQueryParam<
   TValue extends string = string,
   TKey extends string = string,
-  TFallbackValue extends TValue = TValue,
->(name: TKey, enums: TValue[], fallbackValue: TFallbackValue) {
-  return useSafeQueryParam<TValue, TKey, TFallbackValue>(name, fallbackValue, {
+  TFallback extends TValue | undefined = undefined,
+>(name: TKey, enums: TValue[], fallback?: TFallback) {
+  return useSafeQueryParam<TValue, TKey, TFallback>(name, fallback, {
     strict: true,
     validator: (values) => values.every((value) => enums.includes(value)),
     errorMessage: (value) =>

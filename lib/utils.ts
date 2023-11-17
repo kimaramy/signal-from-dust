@@ -155,11 +155,10 @@ export function isValidJson(value: string) {
 export const pickQueryParam = <
   TValue extends string = string,
   TKey extends string = string,
-  TFallbackValue extends TValue = TValue,
 >(
   params: QueryParams = {},
   key: TKey,
-  fallbackValue: TFallbackValue
+  fallback: TValue
 ) => {
   let value: TValue;
   let maybeValues = params[key] as TValue;
@@ -168,5 +167,5 @@ export const pickQueryParam = <
   } else {
     value = maybeValues;
   }
-  return value ?? fallbackValue;
+  return value ?? fallback;
 };

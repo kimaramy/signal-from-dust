@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 /**
- * 복수의 쿼리 파라미터 값을 Upsert하는 Setter 함수입니다.
+ * 복수의 쿼리 파라미터 값을 변경하는 Setter 함수입니다.
  */
 function useSetQueryParams<
   TValue extends string | number | boolean,
