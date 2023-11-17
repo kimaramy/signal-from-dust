@@ -5,7 +5,7 @@ export function middleware({ url, nextUrl }: NextRequest) {
   // console.log(url);
   const hasQuery = [...new Set(nextUrl.searchParams.keys())].length > 0;
   if (hasQuery) {
-    return NextResponse.redirect(new URL('/query' + url.search, url));
+    return NextResponse.redirect(new URL('/query' + nextUrl.search, url));
   } else {
     return NextResponse.next();
   }
