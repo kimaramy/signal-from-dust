@@ -1,26 +1,32 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import { useEnumQueryParam, useSetQueryParam } from '@/hooks';
 
-import { QueryParamEnum, toLowerCase, toUpperCase } from '@/lib/utils';
+import { QueryParamEnum } from '@/lib/utils';
 
 import { displaySchema, type DisplayKey } from './schema';
 
-export function useDisplayKey(): DisplayKey {
-  const lowerCasedKeys = displaySchema.getAllKeys().map(toLowerCase);
-  const lowerCasedDefaultKey = toLowerCase(displaySchema.defaultKey);
-  const [lowerCasedKey] = useEnumQueryParam(
-    QueryParamEnum.Display,
-    lowerCasedKeys,
-    lowerCasedDefaultKey
+export function useDisplayKey(initialKey?: DisplayKey): DisplayKey {
+  const sluggedKeys = displaySchema.getAllSlugs();
+  const defaultSluggedKey = displaySchema.getSlug(
+    initialKey ?? displaySchema.defaultKey
   );
-  return toUpperCase(lowerCasedKey);
+  const [sluggedKey] = useEnumQueryParam(
+    QueryParamEnum.Display,
+    sluggedKeys,
+    defaultSluggedKey
+  );
+  return displaySchema.getKeyBySlug(sluggedKey);
 }
 
 export function useSetDisplayKey() {
-  const setDisplayKey = useSetQueryParam(QueryParamEnum.Display);
+  const setDisplayKey = useSetQueryParam(
+    useSearchParams(),
+    QueryParamEnum.Display
+  );
   return function (displayKey: DisplayKey) {
-    const lowerCasedKey = toLowerCase(displayKey);
-    setDisplayKey(lowerCasedKey);
+    const sluggedKey = displaySchema.getSlug(displayKey);
+    return setDisplayKey(sluggedKey);
   };
 }

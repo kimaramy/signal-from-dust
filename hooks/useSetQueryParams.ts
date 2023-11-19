@@ -1,30 +1,30 @@
 'use client';
 
 import { useCallback } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { ReadonlyURLSearchParams } from 'next/navigation';
 
 /**
- * 복수의 쿼리 파라미터 값을 변경하는 Setter 함수입니다.
+ * 복수의 쿼리 파라미터 값을 업데이트하기 위한 Setter 함수입니다.
+ * 단, Getter 함수인 useQueryParams가 전역 라우터 인스턴스를 구독하고 있으므로 실제 Getter 값 업데이트를 위해서는 useNavigate를 통해 경로 혹은 쿼리 파라미터 변경이 발생해야합니다.
+ *
+ * @param readonlySearchParams 읽기 전용 URLSearchParams 인스턴스
+ * @returns 복수의 쿼리 파라미터 값을 삽입 혹은 업데이트하고 다시 읽기 전용 URLSearchParams를 반환하는 함수
  */
 function useSetQueryParams<
-  TValue extends string | number | boolean,
+  TValue extends string | number | boolean = string,
   TKey extends string = string,
->(options?: { method: 'push' | 'replace' }) {
-  const router = useRouter();
-
-  const searchParams = useSearchParams(); // 'next/navigation' 내부적으로 useContext(SearchParamsContext) 값을 반환
-
+>(readonlySearchParams: ReadonlyURLSearchParams) {
   const setQueryParams = useCallback(
     (map: Map<TKey, TValue>) => {
-      const mutableSearchParams = new URLSearchParams(
-        Array.from(searchParams.entries())
+      const searchParams = new URLSearchParams(
+        Array.from(readonlySearchParams.entries())
       );
-      for (const [key, value] of map.entries()) {
-        mutableSearchParams.set(key, value.toString());
+      for (const [key, value] of map) {
+        searchParams.set(key, value.toString());
       }
-      router[options?.method ?? 'push'](`?${mutableSearchParams.toString()}`);
+      return new ReadonlyURLSearchParams(searchParams);
     },
-    [options, router, searchParams]
+    [readonlySearchParams]
   );
 
   return setQueryParams;

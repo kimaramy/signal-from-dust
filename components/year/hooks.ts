@@ -1,23 +1,26 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useDistinctYearListQuery } from '@/domains';
 import { useEnumQueryParam, useSetQueryParam } from '@/hooks';
 import { toast } from 'react-hot-toast';
 
-import { QueryParamEnum, toLowerCase, toUpperCase } from '@/lib/utils';
+import { QueryParamEnum } from '@/lib/utils';
 
 import { yearSchema, type YearKey } from './schema';
 
-export function useYearKey(): YearKey {
-  const lowerCasedKeys = yearSchema.getAllKeys().map(toLowerCase);
-  const lowerCasedDefaultKey = toLowerCase(yearSchema.defaultKey);
-  const [lowerCasedKey] = useEnumQueryParam(
-    QueryParamEnum.Year,
-    lowerCasedKeys,
-    lowerCasedDefaultKey
+export function useYearKey(initialKey?: YearKey): YearKey {
+  const sluggedKeys = yearSchema.getAllSlugs();
+  const defaultSluggedKey = yearSchema.getSlug(
+    initialKey ?? yearSchema.defaultKey
   );
-  return toUpperCase(lowerCasedKey);
+  const [sluggedKey] = useEnumQueryParam(
+    QueryParamEnum.Year,
+    sluggedKeys,
+    defaultSluggedKey
+  );
+  return yearSchema.getKeyBySlug(sluggedKey);
 }
 
 export function useYearValue() {
@@ -26,10 +29,10 @@ export function useYearValue() {
 }
 
 export function useSetYearKey() {
-  const setYearKey = useSetQueryParam(QueryParamEnum.Year);
+  const setYearKey = useSetQueryParam(useSearchParams(), QueryParamEnum.Year);
   return function (yearKey: YearKey) {
-    const lowerCasedKey = toLowerCase(yearKey);
-    setYearKey(lowerCasedKey);
+    const sluggedKey = yearSchema.getSlug(yearKey);
+    return setYearKey(sluggedKey);
   };
 }
 

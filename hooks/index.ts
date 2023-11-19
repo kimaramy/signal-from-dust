@@ -4,6 +4,11 @@ export { default as useRerender } from './useRerender';
 export { default as useArrayState } from './useArrayState';
 export { default as useRaf } from './useRaf';
 
+export { default as useNavigate } from './useNavigate';
+
+export { default as usePathParam } from './usePathParam';
+export { default as useSafePathParam } from './useSafePathParam';
+
 export { default as useQueryParam } from './useQueryParam';
 export { default as useSetQueryParam } from './useSetQueryParam';
 export { default as useSetQueryParams } from './useSetQueryParams';

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
 
 import type { Binary } from '@/lib/types';
@@ -16,8 +17,16 @@ import { type DisplayKey } from '@/components/display';
 import { stopSoundPlay, toggleSoundPlay } from '@/components/sound';
 
 import Bit from './Bit';
-import SceneDataView from './SceneDataView';
 import SceneRoot from './SceneRoot';
+import { Skeleton } from './ui/skeleton';
+
+const SceneDataView = dynamic(
+  () => import('./SceneDataView' /* webpackChunkName: "SceneDataView" */),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="h-20 w-full" />,
+  }
+);
 
 export interface SceneData {
   id: number;

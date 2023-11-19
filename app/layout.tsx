@@ -1,10 +1,10 @@
-import '@/styles/globals.css';
+import './globals.css';
 
 import { Suspense } from 'react';
 import { type Metadata } from 'next';
 
-import { siteConfig } from '@/config/site';
 import { fontSans } from '@/lib/fonts';
+import { siteConfig } from '@/lib/site';
 import { cn } from '@/lib/utils';
 import FakeDataset from '@/components/FakeDataset';
 import FloatingButtons from '@/components/FloatingButtons';
@@ -13,16 +13,43 @@ import QueryErrorBoundary from '@/components/QueryErrorBoundary';
 import RuntimeErrorBoundary from '@/components/RuntimeErrorBoundary';
 import SoundFilterX from '@/components/SoundFilterX';
 import SoundFilterY from '@/components/SoundFilterY';
-// import TailwindIndicator from '@/components/TailwindIndicator';
 import ThemeProvider from '@/components/ThemeProvider';
 import ToastProvider from '@/components/ToastProvider';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.links.origin),
   title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.title}`,
   },
   description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  authors: {
+    name: siteConfig.author,
+    url: siteConfig.links.github,
+  },
+  openGraph: {
+    type: 'website',
+    siteName: siteConfig.title,
+    images: {
+      url: siteConfig.links.ogImage,
+      alt: siteConfig.title,
+      width: 1200,
+      height: 628,
+    },
+  },
+  twitter: {
+    site: 'Data Visualization',
+    card: 'summary_large_image',
+    creator: siteConfig.author,
+  },
+  viewport: {
+    initialScale: 1.0,
+    width: 'device-width',
+  },
+  formatDetection: {
+    telephone: false,
+  },
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' },
@@ -42,26 +69,8 @@ function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta
-          name="keywords"
-          content="data art, interative, visualization, sonification, graphic, sound, pattern, dust"
-        />
-        <meta name="author" content="Fed" />
-        {/* 페이지별 오픈그래프 공통 */}
-        <meta name="og:type" content="website" />
-        <meta name="og:site_name" content="Sound Of Dust" />
-        <meta name="og:locale" content="ko_KR" />
-        <meta name="og:image" content="" />
-        <meta name="og:image:alt" content="Sound Of Dust" />
-        <meta name="og:image:width" content="1200" />
-        <meta name="og:image:height" content="628" />
-        {/* 페이지별 트위터 공통 */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@DataArt" />
-        <meta name="twitter:creator" content="@Fed" />
+        {/* <meta httpEquiv="Content-Security-Policy" content="script-src 'none'" /> */}
         <link rel="preconnect" href="https://cdn.jsdelivr.net" />
         <link
           rel="stylesheet"
@@ -93,7 +102,6 @@ function RootLayout({ children }: RootLayoutProps) {
             </div>
             <ToastProvider />
           </QueryClientProvider>
-          {/* <TailwindIndicator /> */}
         </ThemeProvider>
       </body>
     </html>

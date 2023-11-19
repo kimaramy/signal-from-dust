@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useLayoutEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import type {
   DailyData,
   MonthlyData,
@@ -9,6 +10,7 @@ import type {
   YearlyData,
 } from '@/domains';
 
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   dataCollectionSchema,
   type DataCollectionKey,
@@ -19,10 +21,17 @@ import { type DisplayKey } from '@/components/display';
 import Grid from '@/components/Grid';
 import { LocaleSchema } from '@/components/locale';
 import { monthSchema } from '@/components/month';
-import Scene, { type SceneData } from '@/components/Scene';
+import { type SceneData } from '@/components/Scene';
 import { weekSchema } from '@/components/week';
 import { weekdaySchema } from '@/components/weekday';
 import { yearSchema } from '@/components/year';
+
+const Scene = dynamic(
+  () => import('@/components/Scene' /* webpackChunkName: "Scene" */),
+  {
+    loading: () => <Skeleton className="h-full w-full" />,
+  }
+);
 
 interface SequenceProps {
   id: string;

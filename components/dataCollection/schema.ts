@@ -1,5 +1,4 @@
 import type { TableKeys } from '@/domains';
-import { upperFirst } from 'lodash-es';
 import { z } from 'zod';
 
 import {
@@ -62,17 +61,17 @@ class DataCollectionSchema extends KeyValueSchema<
     const isKorean = LocaleSchema.isKorean(locale);
     switch (dataCollectionKey) {
       case 'YEARLY':
-        return isKorean ? '연도별' : upperFirst(dataCollectionKey);
+        return isKorean ? '연도별' : 'Yearly';
       case 'SEASONALLY':
-        return isKorean ? '계절별' : upperFirst(dataCollectionKey);
+        return isKorean ? '계절별' : 'Seasonal';
       case 'MONTHLY':
-        return isKorean ? '월별' : upperFirst(dataCollectionKey);
+        return isKorean ? '월별' : 'Monthly';
       case 'WEEKLY':
-        return isKorean ? '주별' : upperFirst(dataCollectionKey);
+        return isKorean ? '주별' : 'Weekly';
       case 'WEEKDAILY':
-        return isKorean ? '요일별' : upperFirst(dataCollectionKey);
+        return isKorean ? '요일별' : 'Weekdaily';
       case 'DAILY':
-        return isKorean ? '일별' : upperFirst(dataCollectionKey);
+        return isKorean ? '일별' : 'Daily';
       default:
         return this.parseKey(dataCollectionKey) as never;
     }

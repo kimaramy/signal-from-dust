@@ -5,6 +5,7 @@ import * as Domains from '@/domains';
 import {
   dataCollectionSchema,
   useDataCollectionKey,
+  type DataCollectionKey,
 } from '@/components/dataCollection';
 import { useDataNameKey } from '@/components/dataName';
 import { useDisplayKey } from '@/components/display';
@@ -16,6 +17,7 @@ import { useYearKey } from '@/components/year';
 import FakeDataset from './FakeDataset';
 
 interface DatasetProps {
+  initialDataCollectionKey?: DataCollectionKey;
   initialDataset: {
     [dataCollectionSchema.keys.YEARLY]?: Domains.YearlyData[];
     [dataCollectionSchema.keys.SEASONALLY]?: Domains.MonthlyData[];
@@ -26,12 +28,12 @@ interface DatasetProps {
   };
 }
 
-function Dataset({ initialDataset }: DatasetProps) {
+function Dataset({ initialDataCollectionKey, initialDataset }: DatasetProps) {
   const displayKey = useDisplayKey();
 
   const dataNameKey = useDataNameKey();
 
-  const dataCollectionKey = useDataCollectionKey();
+  const dataCollectionKey = useDataCollectionKey(initialDataCollectionKey);
 
   const yearKey = useYearKey();
 

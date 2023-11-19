@@ -1,8 +1,13 @@
 import { Suspense } from 'react';
+import type { Metadata } from 'next';
 import { fetchInitialDataset } from '@/domains';
 
 import type { NextPageProps } from '@/lib/types';
-import { pickDataCollectionKey } from '@/components/dataCollection';
+import {
+  dataCollectionSchema,
+  pickDataCollectionKey,
+} from '@/components/dataCollection';
+import { dataNameSchema, pickDataNameKey } from '@/components/dataName';
 import Dataset from '@/components/Dataset';
 import FakeDataset from '@/components/FakeDataset';
 import Main from '@/components/Main';
@@ -11,7 +16,22 @@ import QueryErrorBoundary from '@/components/QueryErrorBoundary';
 import { pickSeasonKey } from '@/components/season';
 import { pickYearKey } from '@/components/year';
 
-async function QueryPage({ searchParams }: NextPageProps) {
+export function generateMetadata({ searchParams }: NextPageProps): Metadata {
+  const dataCollectionKey = pickDataCollectionKey(searchParams);
+  const dataNameKey = pickDataNameKey(searchParams);
+  return {
+    title: [
+      dataCollectionSchema.display(dataCollectionKey, 'en'),
+      dataNameSchema.display(dataNameKey, 'en'),
+    ].join(' '),
+  };
+}
+
+export const dynamicParams = false;
+
+export const revalidate = false;
+
+async function DynamicQueryPage({ searchParams }: NextPageProps) {
   const dataCollectionKey = pickDataCollectionKey(searchParams);
 
   const yearKey = pickYearKey(searchParams);
@@ -31,13 +51,14 @@ async function QueryPage({ searchParams }: NextPageProps) {
     <Main>
       <QueryErrorBoundary>
         <Suspense fallback={<FakeDataset />}>
-          <Dataset initialDataset={{ [dataCollectionKey]: initialDataset }} />
+          <Dataset
+            initialDataCollectionKey={dataCollectionKey}
+            initialDataset={{ [dataCollectionKey]: initialDataset }}
+          />
         </Suspense>
       </QueryErrorBoundary>
     </Main>
   );
 }
 
-export const revalidate = false;
-
-export default QueryPage;
+export default DynamicQueryPage;

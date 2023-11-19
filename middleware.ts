@@ -12,5 +12,5 @@ export function middleware({ url, nextUrl }: NextRequest) {
 }
 
 export const config = {
-  matcher: '/',
+  matcher: ['/', '/:path'],
 };

@@ -1,20 +1,23 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import { useEnumQueryParam, useSetQueryParam } from '@/hooks';
 
-import { QueryParamEnum, toLowerCase, toUpperCase } from '@/lib/utils';
+import { QueryParamEnum } from '@/lib/utils';
 
 import { monthSchema, type MonthKey } from './schema';
 
-export function useMonthKey(): MonthKey {
-  const lowerCasedKeys = monthSchema.getAllKeys().map(toLowerCase);
-  const lowerCasedDefaultKey = toLowerCase(monthSchema.defaultKey);
-  const [lowerCasedKey] = useEnumQueryParam(
-    QueryParamEnum.Month,
-    lowerCasedKeys,
-    lowerCasedDefaultKey
+export function useMonthKey(initialKey?: MonthKey): MonthKey {
+  const sluggedKeys = monthSchema.getAllSlugs();
+  const defaultSluggedKey = monthSchema.getSlug(
+    initialKey ?? monthSchema.defaultKey
   );
-  return toUpperCase(lowerCasedKey);
+  const [sluggedKey] = useEnumQueryParam(
+    QueryParamEnum.Month,
+    sluggedKeys,
+    defaultSluggedKey
+  );
+  return monthSchema.getKeyBySlug(sluggedKey);
 }
 
 export function useMonthValue() {
@@ -23,9 +26,9 @@ export function useMonthValue() {
 }
 
 export function useSetMonthKey() {
-  const setMonthKey = useSetQueryParam(QueryParamEnum.Month);
+  const setMonthKey = useSetQueryParam(useSearchParams(), QueryParamEnum.Month);
   return function (monthKey: MonthKey) {
-    const lowerCasedKey = toLowerCase(monthKey);
-    setMonthKey(lowerCasedKey);
+    const sluggedKey = monthSchema.getSlug(monthKey);
+    return setMonthKey(sluggedKey);
   };
 }

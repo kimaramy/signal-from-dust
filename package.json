@@ -1,6 +1,6 @@
 {
   "name": "sound-of-dust",
-  "description": "You can enjoy graphics and sounds generated from dust statistics data",
+  "description": "Signals and patterns found from PM10 and PM2.5 data.",
   "version": "0.1.0",
   "private": true,
   "author": "kimaramy <fed.haram@gmail.com> (https://github.com/kimaramy)",
@@ -17,7 +17,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
     "gen-types": "npx supabase gen types typescript --linked > domains/supabase.d.ts",
     "gen-env": "cp .env.template .env.local"
-  },
+  }, 
   "dependencies": {
     "@heroicons/react": "^2.0.18",
     "@hookform/resolvers": "^3.3.2",

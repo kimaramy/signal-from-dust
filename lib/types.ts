@@ -16,3 +16,8 @@ export interface NextPageProps<T = string> {
   params: { slug: T };
   searchParams?: QueryParams;
 }
+
+export type NextStaticPageProps<T = string> = Omit<
+  NextPageProps<T>,
+  'searchParams'
+>;
