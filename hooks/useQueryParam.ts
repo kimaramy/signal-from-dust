@@ -35,6 +35,4 @@ function useQueryParam<
     : TValue[] | undefined;
 }
 
-// export type UseQueryParamReturn<T, K> = T extends K ? K[] : K[] | undefined;
-
 export default useQueryParam;

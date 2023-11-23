@@ -14,7 +14,7 @@ export { default as useSetQueryParam } from './useSetQueryParam';
 export { default as useSetQueryParams } from './useSetQueryParams';
 export { default as useSafeQueryParam } from './useSafeQueryParam';
 export { default as useNumberQueryParam } from './useNumberQueryParam';
-export { default as useStringQueryParam } from './useStringQueryParam';
 export { default as useBooleanQueryParam } from './useBooleanQueryParam';
 export { default as useDateQueryParam } from './useDateQueryParam';
+export { default as usePlainStringQueryParam } from './usePlainStringQueryParam';
 export { default as useEnumQueryParam } from './useEnumQueryParam';

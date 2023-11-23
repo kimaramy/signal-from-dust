@@ -33,7 +33,7 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
         map.set(key, toLowerCase(value.toString()));
       });
 
-      const search = setQueryParams(map).toString();
+      const search = setQueryParams(map, { stringify: true });
 
       navigate(`/query`, search, { method: 'push' });
     },

@@ -1,5 +1,9 @@
 import useSafeQueryParam from './useSafeQueryParam';
 
+function isStringifiedDate(value: string) {
+  return !Number.isNaN(Date.parse(value));
+}
+
 function useDateQueryParam<
   TValue extends string = string,
   TKey extends string = string,
@@ -7,13 +11,14 @@ function useDateQueryParam<
 >(name: TKey, fallback?: TFallback) {
   return useSafeQueryParam<TValue, TKey, TFallback>(name, fallback, {
     strict: true,
-    validator: (values) =>
-      values.every((value) => !Number.isNaN(Date.parse(value))),
+    validator: (values) => values.every((value) => isStringifiedDate(value)),
     errorMessage: (value) =>
-      `Type of '${name}' must be a date-like string. But received ${JSON.stringify(
+      `Type of '${name}' must be a stringified date format(ex. '2023-09-01'). But received ${JSON.stringify(
         value
       )}.`,
   });
 }
+
+export { isStringifiedDate };
 
 export default useDateQueryParam;
