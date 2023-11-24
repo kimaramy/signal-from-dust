@@ -25,7 +25,13 @@ function SettingsDialog() {
   const [isOpen, setOpen] = useState(false);
 
   useEffect(() => {
-    setOpen(true);
+    const timeout = setTimeout(() => {
+      setOpen(true);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, []);
 
   return (
