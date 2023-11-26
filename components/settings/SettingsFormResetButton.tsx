@@ -20,7 +20,7 @@ function SettingsFormResetButton() {
     <Button
       variant="ghost"
       size="icon"
-      className="h-8 w-8"
+      className="h-6 w-6"
       disabled={!formState.isDirty}
       onClick={() =>
         reset({
@@ -29,7 +29,7 @@ function SettingsFormResetButton() {
         })
       }
     >
-      <ArrowPathIcon className="h-4 w-4" />
+      <ArrowPathIcon aria-hidden className="h-4 w-4" />
       <span className="sr-only">Reset</span>
     </Button>
   );

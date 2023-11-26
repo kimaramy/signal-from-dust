@@ -138,7 +138,7 @@ function Scene({
           <HoverCardTrigger asChild>
             <div
               className={cn(
-                'peer flex h-full w-40 flex-none cursor-pointer items-center justify-start pl-2 hover:bg-accent'
+                'peer flex h-full w-auto min-w-40 max-w-44 flex-none cursor-pointer items-center justify-start pl-2 hover:bg-accent'
               )}
               // onMouseOver={handleMouseOver}
               // onMouseOut={handleMouseOut}

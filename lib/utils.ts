@@ -33,7 +33,7 @@ export function getEnumKeyByValue<T, K extends T[keyof T]>(
 
 export enum QueryParamEnum {
   DataName = 'name',
-  DataCollection = 'group',
+  DataCollection = 'unit',
   Year = 'year',
   Season = 'season',
   Month = 'month',

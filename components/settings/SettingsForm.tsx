@@ -54,16 +54,16 @@ function SettingsForm({
       <Form {...settingsForm}>
         <form
           id={SETTINGS_FORM_ID}
-          className="space-y-6 py-4"
+          className="space-y-5 py-4"
           noValidate
           autoComplete="off"
           onSubmit={settingsForm.handleSubmit(onSubmit)}
         >
-          <div className="flex items-baseline justify-between gap-2">
+          <div className="flex justify-between gap-2">
             <ModeField />
             <SettingsFormResetButton />
           </div>
-          <Separator className="my-2" />
+          <Separator />
           <PresetFields />
           <CustomSettingsFields />
         </form>
