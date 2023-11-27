@@ -2,6 +2,8 @@
 
 import { useSearchParams } from 'next/navigation';
 
+import type { UseUrlParam } from './useUrlParam';
+
 /**
  * 단일 쿼리(Query) 파라미터의 값을 읽어와 반환하는 Getter 함수입니다.
  * 동일한 쿼리 파라미터의 값이 1개 이상 존재하거나 fallback 값이 주어진다면 한 개의 값이 보장되는 string[] 타입, 아니라면 undefined를 반환합니다.
@@ -18,7 +20,9 @@ function useQueryParam<
   TValue extends string = string,
   TKey extends string = string,
   TFallback extends TValue | undefined = undefined,
->(name: TKey, fallback?: TFallback) {
+>(...args: Parameters<UseUrlParam<TValue, TKey, TFallback>>) {
+  const [name, fallback] = args;
+
   const searchParams = useSearchParams();
 
   const maybeEmptyArray = searchParams.getAll(name) as TValue[]; // 값이 없다면 빈 배열 반환
@@ -30,9 +34,9 @@ function useQueryParam<
       ? [fallback]
       : undefined;
 
-  return undefinedOrNonEmptyArray as TFallback extends TValue
-    ? TValue[]
-    : TValue[] | undefined;
+  return undefinedOrNonEmptyArray as ReturnType<
+    UseUrlParam<TValue, TKey, TFallback>
+  >;
 }
 
 export default useQueryParam;

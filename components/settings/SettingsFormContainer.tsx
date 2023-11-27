@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useNavigate, useSetQueryParams } from '@/hooks';
 
+import { useNavigate, useSetQueryParams } from '@/lib/router';
 import { QueryParamEnum, toLowerCase } from '@/lib/utils';
 
 import { useSettingsFormDefaultValues, useSettingsModeContext } from './hooks';

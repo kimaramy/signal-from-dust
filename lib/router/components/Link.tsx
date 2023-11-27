@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import NextLink from 'next/link';
 
-import { start } from '../events';
+import { start } from '../nprogress';
 import { shouldTriggerStartEvent } from '../utils';
 
 const Link = forwardRef<HTMLAnchorElement, React.ComponentProps<'a'>>(

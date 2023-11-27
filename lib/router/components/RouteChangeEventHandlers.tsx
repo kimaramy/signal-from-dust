@@ -3,7 +3,7 @@
 import { Suspense, useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import { finish } from '../events';
+import { finish } from '../nprogress';
 import NProgress from './NProgress';
 
 function RouteChangeCompleteHandler() {

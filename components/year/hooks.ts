@@ -3,9 +3,9 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useDistinctYearListQuery } from '@/domains';
-import { useEnumQueryParam, useSetQueryParam } from '@/hooks';
 import { toast } from 'react-hot-toast';
 
+import { useEnumQueryParam, useSetQueryParam } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
 
 import { yearSchema, type YearKey } from './schema';

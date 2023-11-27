@@ -1,8 +1,8 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEnumQueryParam, useSetQueryParam } from '@/hooks';
 
+import { useEnumQueryParam, useSetQueryParam } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
 
 import { dataCollectionSchema, type DataCollectionKey } from './schema';

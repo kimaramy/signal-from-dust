@@ -1,7 +1,6 @@
 'use client';
 
-import { useQueryParam } from '@/hooks';
-
+import { useQueryParam } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
 import {
   Select,
