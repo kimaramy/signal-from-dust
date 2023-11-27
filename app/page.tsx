@@ -1,10 +1,8 @@
 import { Suspense } from 'react';
-import type { Metadata } from 'next';
 import { fetchInitialDataset } from '@/domains/prefetches';
 
 import type { NextPageProps } from '@/lib/types';
 import { dataCollectionSchema } from '@/components/dataCollection';
-import { dataNameSchema } from '@/components/dataName';
 import Dataset from '@/components/Dataset';
 import FakeDataset from '@/components/FakeDataset';
 import Main from '@/components/Main';
@@ -13,13 +11,6 @@ import QueryErrorBoundary from '@/components/QueryErrorBoundary';
 import { seasonSchema } from '@/components/season';
 import { SettingsDialog } from '@/components/settings';
 import { yearSchema } from '@/components/year';
-
-export const metadata: Metadata = {
-  title: [
-    dataCollectionSchema.display(dataCollectionSchema.defaultKey, 'en'),
-    dataNameSchema.display(dataNameSchema.defaultKey, 'en'),
-  ].join(' '),
-};
 
 export const revalidate = false; // 다른 동적 패칭 혹은 캐싱 동작 발생 전까지 무기한으로 캐싱
 

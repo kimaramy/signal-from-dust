@@ -17,10 +17,11 @@ import ToastProvider from '@/components/ToastProvider';
 
 import { baseMetadata } from './metadata';
 
-export const metadata = baseMetadata;
 interface RootLayoutProps {
   children: React.ReactNode;
 }
+
+export const metadata = baseMetadata;
 
 function RootLayout({ children }: RootLayoutProps) {
   return (
