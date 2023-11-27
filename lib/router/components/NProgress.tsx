@@ -1,6 +1,6 @@
 'use client';
 
-import { useMountEffect } from '@/hooks';
+import { useEffect } from 'react';
 import nprogress from 'nprogress';
 
 /**
@@ -41,9 +41,9 @@ function NProgress() {
     </style>
   );
 
-  useMountEffect(() => {
+  useEffect(() => {
     nprogress.configure({ showSpinner: false });
-  });
+  }, []);
 
   return styles;
 }

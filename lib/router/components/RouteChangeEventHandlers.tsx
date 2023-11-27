@@ -6,22 +6,22 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { finish } from '../events';
 import NProgress from './NProgress';
 
-function OnRouteChangeCompleteChild() {
+function RouteChangeCompleteHandler() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   useEffect(() => finish(), [pathname, searchParams]);
   return null;
 }
 
-function OnRouteChangeComplete() {
+function RouteChangeEventHandlers() {
   return (
     <>
       <Suspense>
-        <OnRouteChangeCompleteChild />
+        <RouteChangeCompleteHandler />
       </Suspense>
       <NProgress />
     </>
   );
 }
 
-export default OnRouteChangeComplete;
+export default RouteChangeEventHandlers;
