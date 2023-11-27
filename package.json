@@ -17,7 +17,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
     "gen-types": "npx supabase gen types typescript --linked > domains/supabase.d.ts",
     "gen-env": "cp .env.template .env.local"
-  }, 
+  },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
     "@hookform/resolvers": "^3.3.2",
@@ -63,7 +63,7 @@
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
     "@types/lodash-es": "^4.17.10",
     "@types/node": "^17.0.45",
-    "@types/nprogress": "^0.2.1",
+    "@types/nprogress": "^0.2.3",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@typescript-eslint/parser": "^5.61.0",
