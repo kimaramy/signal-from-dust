@@ -4,7 +4,7 @@ import { SupabaseError, SupabaseErrorSchema } from '@/domains';
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import ErrorBox from './ErrorBox';
+import ErrorCode from '@/components/ErrorCode';
 
 type QueryErrorBoundaryProps = {
   children: React.ReactNode;
@@ -26,12 +26,12 @@ export default function QueryErrorBoundary({
               if (isSupabaseError) {
                 const supabaseError = error as unknown as SupabaseError;
                 return (
-                  <ErrorBox>
-                    [{supabaseError.error.code}] {supabaseError.error.message}
-                  </ErrorBox>
+                  <ErrorCode
+                    text={`[${supabaseError.error.code}] ${supabaseError.error.message}}`}
+                  />
                 );
               }
-              return <ErrorBox>{JSON.stringify(error, null, 2)}</ErrorBox>;
+              return <ErrorCode text={JSON.stringify(error, null, 2)} />;
             }}
           >
             {children}

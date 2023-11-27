@@ -2,7 +2,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 
 import { type YearKey } from '@/components/year';
 
-import type { SupabaseError, WeeklyData } from '../types';
+import type { SupabaseError, WeeklyData } from '..';
 import { weeklyQueryKeys, type WeeklyQueryKeys } from './queryKeys';
 
 export function useWeeklyListQuery<T = WeeklyData[]>(

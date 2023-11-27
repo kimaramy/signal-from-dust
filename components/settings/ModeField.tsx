@@ -16,7 +16,7 @@ function ModeField() {
       render={({ field }) => {
         return (
           <RadioGroup
-            className="flex gap-6"
+            className="flex gap-6 py-1"
             defaultValue={field.value}
             onValueChange={field.onChange}
           >

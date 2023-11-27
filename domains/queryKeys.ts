@@ -6,10 +6,12 @@ import { weekDailyQueryKeys } from './weekdaily';
 import { weeklyQueryKeys } from './weekly';
 import { yearlyQueryKeys } from './yearly';
 
-export default mergeQueryKeys(
+const queryKeys = mergeQueryKeys(
   dailyQueryKeys,
   weekDailyQueryKeys,
   weeklyQueryKeys,
   monthlyQueryKeys,
   yearlyQueryKeys
 );
+
+export default queryKeys;

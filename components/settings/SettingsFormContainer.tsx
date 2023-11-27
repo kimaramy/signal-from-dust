@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
-import { useSetQueryParams } from '@/hooks';
+import { useSearchParams } from 'next/navigation';
+import { useNavigate, useSetQueryParams } from '@/hooks';
 
 import { QueryParamEnum, toLowerCase } from '@/lib/utils';
 
-import { useSettingsFormDefaultValues } from './hooks';
+import { useSettingsFormDefaultValues, useSettingsModeContext } from './hooks';
 import SettingsForm, { type SettingsFormValues } from './SettingsForm';
 
 interface SettingsFormContainerProps {
@@ -11,15 +12,19 @@ interface SettingsFormContainerProps {
 }
 
 function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
-  const setQueryParams = useSetQueryParams();
+  const navigate = useNavigate();
 
-  const defaultValues = useSettingsFormDefaultValues();
+  const setQueryParams = useSetQueryParams(useSearchParams());
+
+  const defaultMode = useSettingsModeContext();
+
+  const defaultValues = useSettingsFormDefaultValues(defaultMode);
 
   const handleSubmit = useCallback(
     (values: SettingsFormValues) => {
       const map = new Map<QueryParamEnum, string>()
-        .set(QueryParamEnum.DataName, values.dataNameKey)
         .set(QueryParamEnum.DataCollection, values.dataCollectionKey)
+        .set(QueryParamEnum.DataName, values.dataNameKey)
         .set(QueryParamEnum.Year, values.yearKey)
         .set(QueryParamEnum.Season, values.seasonKey)
         .set(QueryParamEnum.Month, values.monthKey);
@@ -28,9 +33,11 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
         map.set(key, toLowerCase(value.toString()));
       });
 
-      setQueryParams(map);
+      const search = setQueryParams(map, { stringify: true });
+
+      navigate(`/query`, search, { method: 'push' });
     },
-    [setQueryParams]
+    [setQueryParams, navigate]
   );
 
   return (

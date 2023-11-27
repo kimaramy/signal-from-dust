@@ -1,26 +1,34 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import { useEnumQueryParam, useSetQueryParam } from '@/hooks';
 
-import { QueryParamEnum, toLowerCase, toUpperCase } from '@/lib/utils';
+import { QueryParamEnum } from '@/lib/utils';
 
 import { dataCollectionSchema, type DataCollectionKey } from './schema';
 
-export function useDataCollectionKey(): DataCollectionKey {
-  const lowerCasedKeys = dataCollectionSchema.getAllKeys().map(toLowerCase);
-  const lowerCasedDefaultKey = toLowerCase(dataCollectionSchema.defaultKey);
-  const [lowerCasedKey] = useEnumQueryParam(
-    QueryParamEnum.DataCollection,
-    lowerCasedKeys,
-    lowerCasedDefaultKey
+export function useDataCollectionKey(
+  initialKey?: DataCollectionKey
+): DataCollectionKey {
+  const sluggedKeys = dataCollectionSchema.getAllSlugs();
+  const defaultSluggedKey = dataCollectionSchema.getSlug(
+    initialKey ?? dataCollectionSchema.defaultKey
   );
-  return toUpperCase(lowerCasedKey);
+  const [sluggedKey] = useEnumQueryParam(
+    QueryParamEnum.DataCollection,
+    sluggedKeys,
+    defaultSluggedKey
+  );
+  return dataCollectionSchema.getKeyBySlug(sluggedKey);
 }
 
 export function useSetDataCollectionKey() {
-  const setDataCollectionKey = useSetQueryParam(QueryParamEnum.DataCollection);
+  const setDataCollectionKey = useSetQueryParam(
+    useSearchParams(),
+    QueryParamEnum.DataCollection
+  );
   return function (dataCollectionKey: DataCollectionKey) {
-    const lowerCasedKey = toLowerCase(dataCollectionKey);
-    setDataCollectionKey(lowerCasedKey);
+    const sluggedKey = dataCollectionSchema.getSlug(dataCollectionKey);
+    return setDataCollectionKey(sluggedKey);
   };
 }

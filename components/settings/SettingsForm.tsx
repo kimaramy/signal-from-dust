@@ -14,11 +14,14 @@ import { type YearKey } from '@/components/year';
 import CustomSettingsFields from './CustomSettingsFields';
 import ModeField from './ModeField';
 import PresetFields from './PresetFields';
+import SettingsFormResetButton from './SettingsFormResetButton';
 
 const SETTINGS_FORM_ID = 'settings-form';
 
+type SettingsMode = 'preset' | 'custom';
+
 interface SettingsFormValues {
-  mode: 'preset' | 'custom';
+  mode: SettingsMode;
   dataNameKey: DataNameKey;
   dataCollectionKey: DataCollectionKey;
   yearKey: YearKey;
@@ -35,9 +38,9 @@ interface SettingsFormProps {
 }
 
 function SettingsForm({
-  devTool = false,
   defaultValues,
   onSubmit,
+  devTool = false,
 }: SettingsFormProps) {
   const settingsForm = useForm<SettingsFormValues>({
     mode: 'onSubmit',
@@ -51,14 +54,17 @@ function SettingsForm({
       <Form {...settingsForm}>
         <form
           id={SETTINGS_FORM_ID}
-          className="space-y-6 py-4"
+          className="space-y-5 py-4"
           noValidate
           autoComplete="off"
           onSubmit={settingsForm.handleSubmit(onSubmit)}
         >
-          <ModeField />
-          <Separator className="my-2" />
-          <PresetFields defaultValues={defaultValues} />
+          <div className="flex justify-between gap-2">
+            <ModeField />
+            <SettingsFormResetButton />
+          </div>
+          <Separator />
+          <PresetFields />
           <CustomSettingsFields />
         </form>
       </Form>
@@ -70,6 +76,6 @@ function SettingsForm({
 
 export { SETTINGS_FORM_ID };
 
-export type { SettingsFormValues, SettingsFormSubmitHandler };
+export type { SettingsMode, SettingsFormValues, SettingsFormSubmitHandler };
 
 export default SettingsForm;

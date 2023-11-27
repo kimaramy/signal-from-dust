@@ -1,4 +1,6 @@
-import { useMemo } from 'react';
+'use client';
+
+import { useContext, useMemo } from 'react';
 
 import { dataCollectionSchema } from '@/components/dataCollection';
 import { dataNameSchema } from '@/components/dataName';
@@ -6,20 +8,31 @@ import { monthSchema } from '@/components/month';
 import { seasonSchema } from '@/components/season';
 import { yearSchema } from '@/components/year';
 
-import { type SettingsFormValues } from './SettingsForm';
+import { SettingsModeContext } from './context';
+import type { SettingsFormValues, SettingsMode } from './SettingsForm';
 
-function useSettingsFormDefaultValues() {
+function useSettingsModeContext() {
+  const mode = useContext(SettingsModeContext);
+  if (!mode) {
+    throw new Error(
+      `Calling useContext with SettingsModeContext must be inside a SettingsModeContext.Provider with a value.`
+    );
+  }
+  return mode;
+}
+
+function useSettingsFormDefaultValues(defaultMode: SettingsMode) {
   return useMemo<SettingsFormValues>(
     () => ({
-      mode: 'preset',
+      mode: defaultMode,
       dataNameKey: dataNameSchema.defaultKey,
       dataCollectionKey: dataCollectionSchema.defaultKey,
       yearKey: yearSchema.defaultKey,
       seasonKey: seasonSchema.defaultKey,
       monthKey: monthSchema.defaultKey,
     }),
-    []
+    [defaultMode]
   );
 }
 
-export { useSettingsFormDefaultValues };
+export { useSettingsModeContext, useSettingsFormDefaultValues };

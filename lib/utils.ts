@@ -1,15 +1,39 @@
 import { clsx, type ClassValue } from 'clsx';
+import * as enumFor from 'enum-for';
 import { toLower, toUpper } from 'lodash-es';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
+
+import type { MustInclude, NonEmptyArray, QueryParams } from './types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function stringUnionToArray<T>() {
+  return <U extends NonEmptyArray<T>>(...elements: MustInclude<T, U>) =>
+    elements;
+}
+
+export const getAllEnumEntries = enumFor.getAllEnumEntries;
+
+export const getAllEnumKeys = enumFor.getAllEnumKeys;
+
+export const getAllEnumValues = enumFor.getAllEnumValues;
+
+export function getEnumKeyByValue<T, K extends T[keyof T]>(
+  enumType: T,
+  value: K
+) {
+  const enumMap = new Map(enumFor.getAllEnumEntries(enumType));
+  for (let [enumKey, enumValue] of enumMap.entries()) {
+    if (enumValue === value) return enumKey;
+  }
+}
+
 export enum QueryParamEnum {
-  DataName = 'data',
-  DataCollection = 'collection',
+  DataName = 'name',
+  DataCollection = 'unit',
   Year = 'year',
   Season = 'season',
   Month = 'month',
@@ -22,6 +46,7 @@ const numbersSchema = z.array(z.number());
 export class KeyValueSchema<
   TKey extends string,
   TValue extends string | number,
+  TSlug = Lowercase<TKey>,
 > {
   protected readonly keySchema: z.ZodEnum<[TKey, ...TKey[]]>;
   protected readonly keyValueMap: Map<TKey, TValue>;
@@ -99,6 +124,17 @@ export class KeyValueSchema<
       dbValues.every((dbValue) => values.includes(dbValue));
     return isSynced;
   }
+  getSlug(key: TKey) {
+    return toLowerCase(key) as TSlug;
+  }
+  getKeyBySlug(slug: string) {
+    const maybeKey = toUpperCase(slug);
+    this.parseKey(maybeKey);
+    return maybeKey as TKey;
+  }
+  getAllSlugs() {
+    return this.getAllKeys().map((key) => this.getSlug(key));
+  }
 }
 
 export function toOrderedBy<T extends string>(arr: T[], order: T[]) {
@@ -127,3 +163,21 @@ export function isValidJson(value: string) {
     return false;
   }
 }
+
+export const pickQueryParam = <
+  TValue extends string = string,
+  TKey extends string = string,
+>(
+  params: QueryParams = {},
+  key: TKey,
+  fallback: TValue
+) => {
+  let value: TValue;
+  let maybeValues = params[key] as TValue;
+  if (Array.isArray(maybeValues)) {
+    value = maybeValues[0];
+  } else {
+    value = maybeValues;
+  }
+  return value ?? fallback;
+};

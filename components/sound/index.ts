@@ -1,5 +1,7 @@
 import * as Tone from 'tone';
 
+import type { Binary } from '@/lib/types';
+
 export const AMinorScale = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
 export const addOctaveNumbers = (
@@ -379,13 +381,13 @@ const 필립글래스음계 = [
 
 const initMelodyPart = (
   sampler: Tone.Sampler,
-  binaries: number[],
+  binaries: Binary[],
   now: number = 0
 ) => {
   // const scale = addOctaveNumbers(필립글래스음계, 3);
 
   const melodys = binaries
-    .map((binary) => (binary === 1 ? '2n.' : '4n'))
+    .map((binary) => (binary === '1' ? '2n.' : '4n'))
     .map((duration, i, durations) => {
       const prevDurations = durations.slice(0, i);
       const time = prevDurations.reduce(
@@ -399,7 +401,7 @@ const initMelodyPart = (
       };
     });
 
-  console.log(binaries, melodys);
+  // console.log(binaries, melodys);
 
   return new Tone.Part(function (time, note) {
     sampler.triggerAttackRelease(note.note, note.duration, time);
@@ -442,7 +444,7 @@ export const triggerSingleNote = (
 };
 
 export const toggleSoundPlay = async (
-  binaries: number[],
+  binaries: Binary[],
   options?: {
     onStart?: () => void;
     onStop?: () => void;
