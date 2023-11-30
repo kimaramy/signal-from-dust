@@ -10,11 +10,11 @@ export type MustInclude<T, U extends T[]> = [T] extends [ValueOf<U>]
 
 export type Binary = '0' | '1';
 
-export type QueryParams = { [key: string]: string | string[] | undefined };
+export type SearchParams = { [key: string]: string | string[] | undefined };
 
 export interface NextPageProps<T = string> {
-  params: { slug: T };
-  searchParams?: QueryParams;
+  params: { [key: string]: T };
+  searchParams?: SearchParams;
 }
 
 export type NextStaticPageProps<T = string> = Omit<

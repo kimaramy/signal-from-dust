@@ -1,12 +1,13 @@
-import type { QueryParams } from '@/lib/types';
-import { pickQueryParam, QueryParamEnum, toUpperCase } from '@/lib/utils';
+import { parseUrlParam, type UrlParams } from '@/lib/router';
+import { QueryParamEnum } from '@/lib/utils';
 
-import { yearSchema, type YearKey } from './schema';
+import { yearSchema } from './schema';
 
-export const pickYearKey = (params?: QueryParams) => {
-  const maybeYearKey = toUpperCase(
-    pickQueryParam(params, QueryParamEnum.Year, yearSchema.defaultKey)
+export const parseYearKey = (params?: UrlParams) => {
+  const [sluggedYearKey] = parseUrlParam(
+    params,
+    QueryParamEnum.Year,
+    yearSchema.defaultKey
   );
-  yearSchema.parseKey(maybeYearKey);
-  return maybeYearKey as YearKey;
+  return yearSchema.getKeyBySlug(sluggedYearKey);
 };

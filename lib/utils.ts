@@ -4,7 +4,7 @@ import { toLower, toUpper } from 'lodash-es';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
 
-import type { MustInclude, NonEmptyArray, QueryParams } from './types';
+import type { MustInclude, NonEmptyArray } from './types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -163,21 +163,3 @@ export function isValidJson(value: string) {
     return false;
   }
 }
-
-export const pickQueryParam = <
-  TValue extends string = string,
-  TKey extends string = string,
->(
-  params: QueryParams = {},
-  key: TKey,
-  fallback: TValue
-) => {
-  let value: TValue;
-  let maybeValues = params[key] as TValue;
-  if (Array.isArray(maybeValues)) {
-    value = maybeValues[0];
-  } else {
-    value = maybeValues;
-  }
-  return value ?? fallback;
-};

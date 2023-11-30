@@ -1,12 +1,13 @@
-import type { QueryParams } from '@/lib/types';
-import { pickQueryParam, QueryParamEnum, toUpperCase } from '@/lib/utils';
+import { parseUrlParam, type UrlParams } from '@/lib/router';
+import { QueryParamEnum } from '@/lib/utils';
 
-import { dataNameSchema, type DataNameKey } from './schema';
+import { dataNameSchema } from './schema';
 
-export const pickDataNameKey = (params?: QueryParams) => {
-  const maybeDataNameKey = toUpperCase(
-    pickQueryParam(params, QueryParamEnum.DataName, dataNameSchema.defaultKey)
+export const parseDataNameKey = (params?: UrlParams) => {
+  const [sluggedKey] = parseUrlParam(
+    params,
+    QueryParamEnum.DataName,
+    dataNameSchema.defaultKey
   );
-  dataNameSchema.parseKey(maybeDataNameKey);
-  return maybeDataNameKey as DataNameKey;
+  return dataNameSchema.getKeyBySlug(sluggedKey);
 };

@@ -3,7 +3,7 @@ import './globals.css';
 import { Suspense } from 'react';
 
 import { fontSans } from '@/lib/fonts';
-import { RouteChangeEventHandlers } from '@/lib/router';
+import { Progress, RouteChangeEventHandlers } from '@/lib/router';
 import { cn } from '@/lib/utils';
 import FakeDataset from '@/components/FakeDataset';
 import FloatingButtons from '@/components/FloatingButtons';
@@ -61,7 +61,7 @@ function RootLayout({ children }: RootLayoutProps) {
             <ToastProvider />
           </QueryClientProvider>
         </ThemeProvider>
-        <RouteChangeEventHandlers />
+        <RouteChangeEventHandlers progressComponent={<Progress />} />
       </body>
     </html>
   );

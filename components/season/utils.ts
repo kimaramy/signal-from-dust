@@ -1,12 +1,13 @@
-import type { QueryParams } from '@/lib/types';
-import { pickQueryParam, QueryParamEnum, toUpperCase } from '@/lib/utils';
+import { parseUrlParam, type UrlParams } from '@/lib/router';
+import { QueryParamEnum } from '@/lib/utils';
 
-import { seasonSchema, type SeasonKey } from './schema';
+import { seasonSchema } from './schema';
 
-export const pickSeasonKey = (params?: QueryParams) => {
-  const maybeSeasonKey = toUpperCase(
-    pickQueryParam(params, QueryParamEnum.Season, seasonSchema.defaultKey)
+export const parseSeasonKey = (params?: UrlParams) => {
+  const [sluggedKey] = parseUrlParam(
+    params,
+    QueryParamEnum.Season,
+    seasonSchema.defaultKey
   );
-  seasonSchema.parseKey(maybeSeasonKey);
-  return maybeSeasonKey as SeasonKey;
+  return seasonSchema.getKeyBySlug(sluggedKey);
 };
