@@ -2,22 +2,22 @@
 
 import { useRouter } from 'next/navigation';
 
-import { start } from './nprogress';
-import { shouldTriggerStartEvent } from './utils';
+import progress from '../progress';
+import { shouldTriggerStartEvent } from '../utils';
 
 function useDecoratedRouter(): ReturnType<typeof useRouter> {
   const router = useRouter();
   return {
     ...router,
     push(href, options) {
-      if (shouldTriggerStartEvent(href)) start();
+      if (shouldTriggerStartEvent(href)) progress.start();
       router.push(href, options);
     },
     replace(href, options) {
-      if (shouldTriggerStartEvent(href)) start();
+      if (shouldTriggerStartEvent(href)) progress.start();
       router.replace(href, options);
     },
   };
 }
 
-export { useDecoratedRouter };
+export default useDecoratedRouter;

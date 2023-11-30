@@ -1,13 +1,18 @@
 'use client';
 
 import { useEffect } from 'react';
-import nprogress from 'nprogress';
+
+import progress, { type ProgressOptions } from '../progress';
+
+interface ProgressProps extends ProgressOptions {
+  color?: string;
+}
 
 /**
  * https://github.com/apal21/nextjs-progressbar/issues/86#issuecomment-1447977706
  */
-function NProgress() {
-  const color = '#fdc741';
+function Progress(props: ProgressProps) {
+  const { color = '#fdc741', ...options } = props;
 
   const styles = (
     <style>
@@ -42,10 +47,10 @@ function NProgress() {
   );
 
   useEffect(() => {
-    nprogress.configure({ showSpinner: false });
-  }, []);
+    progress.config({ showSpinner: false, ...options });
+  }, [options]);
 
   return styles;
 }
 
-export default NProgress;
+export default Progress;

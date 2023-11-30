@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import NextLink from 'next/link';
 
-import { start } from '../nprogress';
+import progress from '../progress';
 import { shouldTriggerStartEvent } from '../utils';
 
 const Link = forwardRef<HTMLAnchorElement, React.ComponentProps<'a'>>(
@@ -13,7 +13,7 @@ const Link = forwardRef<HTMLAnchorElement, React.ComponentProps<'a'>>(
       <NextLink
         href={href}
         onClick={(event) => {
-          if (shouldTriggerStartEvent(href, event)) start();
+          if (shouldTriggerStartEvent(href, event)) progress.start();
           if (onClick) onClick(event);
         }}
         {...rest}

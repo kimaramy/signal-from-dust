@@ -17,7 +17,10 @@ export function isPlainString(value: string) {
   );
 }
 
-export function usePlainUrlParam<
+export const getPlainErrorMessage = (name: string, value: string) =>
+  `Type of '${name}' must be a plain string - it can't be a stringified date/number/boolean format. But received ${value}.`;
+
+export default function usePlainUrlParam<
   TValue extends string = string,
   TKey extends string = string,
   TFallback extends TValue | undefined = undefined,
@@ -29,10 +32,7 @@ export function usePlainUrlParam<
   return useSafeUrlParam<TValue, TKey, TFallback>(name, fallback, {
     strict: true,
     validator: (values) => values.every((value) => isPlainString(value)),
-    errorMessage: (value) =>
-      `Type of '${name}' must be a plain string - it can't be a stringified date/number/boolean format. But received ${JSON.stringify(
-        value
-      )}.`,
+    errorMessage: (value) => getPlainErrorMessage(name, JSON.stringify(value)),
     part: options?.part,
   });
 }

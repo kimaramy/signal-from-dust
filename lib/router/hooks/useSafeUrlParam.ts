@@ -2,13 +2,7 @@
 
 import { useEffect } from 'react';
 
-import usePathParam from './usePathParam';
-import useQueryParam from './useQueryParam';
-import type { UseUrlParam } from './useUrlParam';
-
-type URLPart = 'path' | 'query';
-
-const defaultURLPart: URLPart = 'query';
+import useUrlParam, { type URLPart } from './useUrlParam';
 
 interface UseSafeUrlParamOptions<TValue> {
   validator: (values: TValue[]) => boolean;
@@ -39,17 +33,9 @@ function useSafeUrlParam<
   fallback: TFallback | undefined,
   options: UseSafeUrlParamOptions<TValue>
 ) {
-  const {
-    validator,
-    errorMessage,
-    part = defaultURLPart,
-    strict = false,
-  } = options;
+  const { validator, errorMessage, part, strict = false } = options;
 
-  const useUrlParam: UseUrlParam<TValue, TKey, TFallback> =
-    part === 'path' ? usePathParam : useQueryParam;
-
-  const values = useUrlParam(name, fallback);
+  const values = useUrlParam(part)<TValue, TKey, TFallback>(name, fallback);
 
   useEffect(() => {
     if (!values) return;
@@ -69,6 +55,6 @@ function useSafeUrlParam<
   return values;
 }
 
-export type { UseSafeUrlParamOptions, URLPart };
+export type { UseSafeUrlParamOptions };
 
 export default useSafeUrlParam;

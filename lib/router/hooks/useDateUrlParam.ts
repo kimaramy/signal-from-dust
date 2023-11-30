@@ -7,7 +7,10 @@ export function isStringifiedDate(value: string) {
   return !Number.isNaN(Date.parse(value));
 }
 
-export function useDateUrlParam<
+export const getDateErrorMessage = (name: string, value: string) =>
+  `Type of '${name}' must be a stringified date format(ex. '2023-09-01'). But received ${value}.`;
+
+export default function useDateUrlParam<
   TValue extends string = string,
   TKey extends string = string,
   TFallback extends TValue | undefined = undefined,
@@ -20,10 +23,7 @@ export function useDateUrlParam<
   const values = useSafeUrlParam<TValue, TKey, TFallback>(name, fallback, {
     strict: true,
     validator: (values) => values.every((value) => isStringifiedDate(value)),
-    errorMessage: (value) =>
-      `Type of '${name}' must be a stringified date format(ex. '2023-09-01'). But received ${JSON.stringify(
-        value
-      )}.`,
+    errorMessage: (value) => getDateErrorMessage(name, JSON.stringify(value)),
     part: options?.part,
   });
   return parseOrNot(

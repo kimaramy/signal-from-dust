@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { useDecoratedRouter } from '../baseHooks';
+import useDecoratedRouter from './_useDecoratedRouter';
 
 interface NavigateOptions {
   method?: 'push' | 'replace';

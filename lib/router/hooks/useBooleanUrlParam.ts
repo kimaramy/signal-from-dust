@@ -7,7 +7,10 @@ export function isStringifiedBoolean(value: string) {
   return value === 'true' || value === 'false';
 }
 
-export function useBooleanUrlParam<
+export const getBooleanErrorMessage = (name: string, value: string) =>
+  `Type of '${name}' must be a stringified boolean format(ex. 'true' or 'false'). But received ${value}.`;
+
+export default function useBooleanUrlParam<
   TValue extends string = string,
   TKey extends string = string,
   TFallback extends TValue | undefined = undefined,
@@ -21,9 +24,7 @@ export function useBooleanUrlParam<
     strict: true,
     validator: (values) => values.every((value) => isStringifiedBoolean(value)),
     errorMessage: (value) =>
-      `Type of '${name}' must be a stringified boolean format(ex. 'true'). But received ${JSON.stringify(
-        value
-      )}.`,
+      getBooleanErrorMessage(name, JSON.stringify(value)),
     part: options?.part,
   });
   return parseOrNot(

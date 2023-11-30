@@ -2,7 +2,13 @@ import useSafeUrlParam, {
   type UseSafeUrlParamOptions,
 } from './useSafeUrlParam';
 
-export function useEnumUrlParam<
+export const getDateErrorMessage = (
+  name: string,
+  value: string,
+  enums: string
+) => `'${value}'(the value of '${name}') is not included in the ${enums}`;
+
+export default function useEnumUrlParam<
   TValue extends string = string,
   TKey extends string = string,
   TFallback extends TValue | undefined = undefined,
@@ -16,9 +22,11 @@ export function useEnumUrlParam<
     validator: (values) =>
       values.every((value) => options.enums.includes(value)),
     errorMessage: (value) =>
-      `'${value}'(the value of '${name}') is not included in the ${JSON.stringify(
-        options.enums
-      )}`,
+      getDateErrorMessage(
+        name,
+        JSON.stringify(value),
+        JSON.stringify(options.enums)
+      ),
     part: options?.part,
   });
 }

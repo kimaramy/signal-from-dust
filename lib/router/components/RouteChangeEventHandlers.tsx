@@ -1,25 +1,30 @@
 'use client';
 
-import { Suspense, useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import { finish } from '../nprogress';
-import NProgress from './NProgress';
+import progress from '../progress';
 
 function RouteChangeCompleteHandler() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  useEffect(() => finish(), [pathname, searchParams]);
+  useEffect(() => progress.end(), [pathname, searchParams]);
   return null;
 }
 
-function RouteChangeEventHandlers() {
+interface RouteChangeEventHandlersProps {
+  progressComponent: React.ReactElement;
+}
+
+function RouteChangeEventHandlers({
+  progressComponent,
+}: RouteChangeEventHandlersProps) {
   return (
     <>
       <Suspense>
         <RouteChangeCompleteHandler />
       </Suspense>
-      <NProgress />
+      {progressComponent}
     </>
   );
 }

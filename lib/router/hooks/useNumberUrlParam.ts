@@ -12,7 +12,10 @@ export function isStringifiedNumber(value: string) {
   return !Number.isNaN(Number(value));
 }
 
-export function useNumberUrlParam<
+export const getNumberErrorMessage = (name: string, value: string) =>
+  `Type of '${name}' must be a stringified number format(ex. '10'). But received ${value}.`;
+
+export default function useNumberUrlParam<
   TValue extends string = string,
   TKey extends string = string,
   TFallback extends TValue | undefined = undefined,
@@ -20,17 +23,12 @@ export function useNumberUrlParam<
 >(
   name: TKey,
   fallback?: TFallback,
-  options?: {
-    parse?: TParsed;
-  } & Pick<UseSafeUrlParamOptions<TValue>, 'part'>
+  options?: { parse?: TParsed } & Pick<UseSafeUrlParamOptions<TValue>, 'part'>
 ) {
   const values = useSafeUrlParam<TValue, TKey, TFallback>(name, fallback, {
     strict: true,
     validator: (values) => values.every((value) => isStringifiedNumber(value)),
-    errorMessage: (value) =>
-      `Type of '${name}' must be a stringified number format(ex. '10'). But received ${JSON.stringify(
-        value
-      )}.`,
+    errorMessage: (value) => getNumberErrorMessage(name, JSON.stringify(value)),
     part: options?.part,
   });
   return parseOrNot(
