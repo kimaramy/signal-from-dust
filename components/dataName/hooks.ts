@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 
-import { useEnumQueryParam, useSetQueryParam } from '@/lib/router';
+import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
 
 import { dataNameSchema, type DataNameKey } from './schema';
@@ -12,10 +12,10 @@ export function useDataNameKey(initialKey?: DataNameKey): DataNameKey {
   const defaultSluggedKey = dataNameSchema.getSlug(
     initialKey ?? dataNameSchema.defaultKey
   );
-  const [sluggedKey] = useEnumQueryParam(
+  const [sluggedKey] = useEnumUrlParam(
     QueryParamEnum.DataName,
-    sluggedKeys,
-    defaultSluggedKey
+    defaultSluggedKey,
+    { enums: sluggedKeys, part: 'query' }
   );
   return dataNameSchema.getKeyBySlug(sluggedKey);
 }

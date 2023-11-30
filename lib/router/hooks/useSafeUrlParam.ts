@@ -6,6 +6,17 @@ import usePathParam from './usePathParam';
 import useQueryParam from './useQueryParam';
 import type { UseUrlParam } from './useUrlParam';
 
+type URLPart = 'path' | 'query';
+
+const defaultURLPart: URLPart = 'query';
+
+interface UseSafeUrlParamOptions<TValue> {
+  validator: (values: TValue[]) => boolean;
+  errorMessage?: string | ((values: TValue[]) => string);
+  part?: URLPart;
+  strict?: boolean;
+}
+
 /**
  * 단일 URL 파라미터의 값을 타입 검사하여 안정성 있게 사용하기 위한 Getter 함수입니다.
  * 주어진 유효성 검사(validator)를 통과하지 못하면 에러를 던지거나, 콘솔에 에러를 출력합니다.
@@ -26,17 +37,17 @@ function useSafeUrlParam<
 >(
   name: TKey,
   fallback: TFallback | undefined,
-  options: {
-    strategy: 'path' | 'query';
-    validator: (values: TValue[]) => boolean;
-    errorMessage?: string | ((values: TValue[]) => string);
-    strict?: boolean;
-  }
+  options: UseSafeUrlParamOptions<TValue>
 ) {
-  const { strategy, validator, errorMessage, strict = false } = options;
+  const {
+    validator,
+    errorMessage,
+    part = defaultURLPart,
+    strict = false,
+  } = options;
 
   const useUrlParam: UseUrlParam<TValue, TKey, TFallback> =
-    strategy === 'path' ? usePathParam : useQueryParam;
+    part === 'path' ? usePathParam : useQueryParam;
 
   const values = useUrlParam(name, fallback);
 
@@ -57,5 +68,7 @@ function useSafeUrlParam<
 
   return values;
 }
+
+export type { UseSafeUrlParamOptions, URLPart };
 
 export default useSafeUrlParam;

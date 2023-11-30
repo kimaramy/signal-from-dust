@@ -1,5 +1,7 @@
 import { isEmptyString } from './usePlainUrlParam';
-import useSafeUrlParam from './useSafeUrlParam';
+import useSafeUrlParam, {
+  type UseSafeUrlParamOptions,
+} from './useSafeUrlParam';
 
 export function isStringifiedNumber(value: string) {
   if (isEmptyString(value)) {
@@ -9,7 +11,7 @@ export function isStringifiedNumber(value: string) {
   return !Number.isNaN(Number(value));
 }
 
-export function useNumberQueryParam<
+export function useNumberUrlParam<
   TValue extends string = string,
   TKey extends string = string,
   TFallback extends TValue | undefined = undefined,
@@ -18,17 +20,17 @@ export function useNumberQueryParam<
   name: TKey,
   fallback: TFallback | undefined,
   options?: {
-    parse: TParsed;
-  }
+    parse?: TParsed;
+  } & Pick<UseSafeUrlParamOptions<TValue>, 'part'>
 ) {
   const values = useSafeUrlParam<TValue, TKey, TFallback>(name, fallback, {
     strict: true,
-    strategy: 'query',
     validator: (values) => values.every((value) => isStringifiedNumber(value)),
     errorMessage: (value) =>
       `Type of '${name}' must be a stringified number format(ex. '10'). But received ${JSON.stringify(
         value
       )}.`,
+    part: options?.part,
   });
   let parsedValues: unknown = values;
   if (options?.parse && Array.isArray(values)) {

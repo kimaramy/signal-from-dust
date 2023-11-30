@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 
-import { useEnumQueryParam, useSetQueryParam } from '@/lib/router';
+import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
 
 import { seasonSchema, type SeasonKey, type SeasonValue } from './schema';
@@ -12,10 +12,10 @@ export function useSeasonKey(initialKey?: SeasonKey): SeasonKey {
   const defaultSluggedKey = seasonSchema.getSlug(
     initialKey ?? seasonSchema.defaultKey
   );
-  const [sluggedKey] = useEnumQueryParam(
+  const [sluggedKey] = useEnumUrlParam(
     QueryParamEnum.Season,
-    sluggedKeys,
-    defaultSluggedKey
+    defaultSluggedKey,
+    { enums: sluggedKeys, part: 'query' }
   );
   return seasonSchema.getKeyBySlug(sluggedKey);
 }

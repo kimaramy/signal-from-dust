@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 
-import { useEnumQueryParam, useSetQueryParam } from '@/lib/router';
+import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
 
 import { monthSchema, type MonthKey } from './schema';
@@ -12,10 +12,10 @@ export function useMonthKey(initialKey?: MonthKey): MonthKey {
   const defaultSluggedKey = monthSchema.getSlug(
     initialKey ?? monthSchema.defaultKey
   );
-  const [sluggedKey] = useEnumQueryParam(
+  const [sluggedKey] = useEnumUrlParam(
     QueryParamEnum.Month,
-    sluggedKeys,
-    defaultSluggedKey
+    defaultSluggedKey,
+    { enums: sluggedKeys, part: 'query' }
   );
   return monthSchema.getKeyBySlug(sluggedKey);
 }

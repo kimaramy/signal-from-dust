@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 
-import { useEnumQueryParam, useSetQueryParam } from '@/lib/router';
+import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
 
 import { displaySchema, type DisplayKey } from './schema';
@@ -12,10 +12,10 @@ export function useDisplayKey(initialKey?: DisplayKey): DisplayKey {
   const defaultSluggedKey = displaySchema.getSlug(
     initialKey ?? displaySchema.defaultKey
   );
-  const [sluggedKey] = useEnumQueryParam(
+  const [sluggedKey] = useEnumUrlParam(
     QueryParamEnum.Display,
-    sluggedKeys,
-    defaultSluggedKey
+    defaultSluggedKey,
+    { enums: sluggedKeys, part: 'query' }
   );
   return displaySchema.getKeyBySlug(sluggedKey);
 }

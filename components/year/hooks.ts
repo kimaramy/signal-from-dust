@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useDistinctYearListQuery } from '@/domains';
 import { toast } from 'react-hot-toast';
 
-import { useEnumQueryParam, useSetQueryParam } from '@/lib/router';
+import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
 
 import { yearSchema, type YearKey } from './schema';
@@ -15,11 +15,10 @@ export function useYearKey(initialKey?: YearKey): YearKey {
   const defaultSluggedKey = yearSchema.getSlug(
     initialKey ?? yearSchema.defaultKey
   );
-  const [sluggedKey] = useEnumQueryParam(
-    QueryParamEnum.Year,
-    sluggedKeys,
-    defaultSluggedKey
-  );
+  const [sluggedKey] = useEnumUrlParam(QueryParamEnum.Year, defaultSluggedKey, {
+    enums: sluggedKeys,
+    part: 'query',
+  });
   return yearSchema.getKeyBySlug(sluggedKey);
 }
 
