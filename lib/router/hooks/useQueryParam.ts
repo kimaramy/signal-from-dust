@@ -25,10 +25,10 @@ function useQueryParam<
 
   const searchParams = useSearchParams();
 
-  const maybeEmptyArray = searchParams.getAll(name) as TValue[]; // 값이 없다면 빈 배열 반환
+  const maybeEmptyArray = searchParams.getAll(name) as TValue[]; // 값이 없다면 빈 배열 반환 (키는 존재하나 값이 없을 경우(ex. '?q=') 포함)
 
   const undefinedOrNonEmptyArray =
-    maybeEmptyArray.length > 0
+    maybeEmptyArray.filter(Boolean).length > 0
       ? maybeEmptyArray
       : fallback
       ? [fallback]

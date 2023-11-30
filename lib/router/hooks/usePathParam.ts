@@ -34,7 +34,8 @@ function usePathParam<
    * 하지만 접근하려는 경로가 존재하지 않을 경우 undefined를 반환해야하나, Next.js 측의 의도적 타이핑이 아니라면 오류로 보입니다.
    * 그래서 접근 값에 undefined를 병합해줍니다.
    */
-  const maybeArrayOrUndefined: string[] | string | undefined = params[name];
+  const maybeArrayOrUndefined: string[] | string | undefined =
+    params[name] || undefined; // 빈 문자열('') 확률 배제
 
   const maybeEmptyArray = Array.isArray(maybeArrayOrUndefined)
     ? maybeArrayOrUndefined
