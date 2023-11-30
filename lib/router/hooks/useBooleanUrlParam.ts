@@ -1,3 +1,4 @@
+import { parseOrNot } from '../utils';
 import useSafeUrlParam, {
   type UseSafeUrlParamOptions,
 } from './useSafeUrlParam';
@@ -13,7 +14,7 @@ export function useBooleanUrlParam<
   TParsed extends boolean = false,
 >(
   name: TKey,
-  fallback: TFallback | undefined,
+  fallback?: TFallback,
   options?: { parse?: TParsed } & Pick<UseSafeUrlParamOptions<TValue>, 'part'>
 ) {
   const values = useSafeUrlParam<TValue, TKey, TFallback>(name, fallback, {
@@ -25,9 +26,9 @@ export function useBooleanUrlParam<
       )}.`,
     part: options?.part,
   });
-  let parsedValues: unknown = values;
-  if (options?.parse && Array.isArray(values)) {
-    parsedValues = values.map((value) => JSON.parse(value));
-  }
-  return parsedValues as TParsed extends true ? boolean[] : typeof values;
+  return parseOrNot(
+    values,
+    (value) => JSON.parse(value) as boolean,
+    (options?.parse ?? false) as TParsed
+  );
 }

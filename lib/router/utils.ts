@@ -30,4 +30,16 @@ function shouldTriggerStartEvent(href: string, clickEvent?: React.MouseEvent) {
   return true;
 }
 
-export { shouldTriggerStartEvent };
+function parseOrNot<
+  TValue = unknown,
+  TParsed extends boolean = false,
+  TParsedValue = unknown,
+>(values: TValue, parser: (value: string) => TParsedValue, parsed: TParsed) {
+  let parsedValues: unknown = values;
+  if (parsed && Array.isArray(values)) {
+    parsedValues = values.map(parser);
+  }
+  return parsedValues as TParsed extends true ? TParsedValue[] : TValue;
+}
+
+export { shouldTriggerStartEvent, parseOrNot };

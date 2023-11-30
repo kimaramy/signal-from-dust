@@ -1,3 +1,4 @@
+import { parseOrNot } from '../utils';
 import { isEmptyString } from './usePlainUrlParam';
 import useSafeUrlParam, {
   type UseSafeUrlParamOptions,
@@ -18,7 +19,7 @@ export function useNumberUrlParam<
   TParsed extends boolean = false,
 >(
   name: TKey,
-  fallback: TFallback | undefined,
+  fallback?: TFallback,
   options?: {
     parse?: TParsed;
   } & Pick<UseSafeUrlParamOptions<TValue>, 'part'>
@@ -32,9 +33,9 @@ export function useNumberUrlParam<
       )}.`,
     part: options?.part,
   });
-  let parsedValues: unknown = values;
-  if (options?.parse && Array.isArray(values)) {
-    parsedValues = values.map(Number);
-  }
-  return parsedValues as TParsed extends true ? number[] : typeof values;
+  return parseOrNot(
+    values,
+    (value) => Number(value),
+    (options?.parse ?? false) as TParsed
+  );
 }
