@@ -2,6 +2,7 @@ import './globals.css';
 
 import { Suspense } from 'react';
 
+import { DesktopOnly } from '@/lib/device';
 import { fontSans } from '@/lib/fonts';
 import { Progress, RouteChangeEventHandlers } from '@/lib/router';
 import { cn } from '@/lib/utils';
@@ -28,7 +29,6 @@ function RootLayout({ children }: RootLayoutProps) {
     <html lang="ko" suppressHydrationWarning>
       <head>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        {/* <meta httpEquiv="Content-Security-Policy" content="script-src 'none'" /> */}
         <link rel="preconnect" href="https://cdn.jsdelivr.net" />
         <link
           rel="stylesheet"
@@ -52,7 +52,9 @@ function RootLayout({ children }: RootLayoutProps) {
                   <QueryErrorBoundary>
                     <Suspense fallback={<FakeDataset />}>
                       {children}
-                      <FloatingButtons />
+                      <DesktopOnly>
+                        <FloatingButtons />
+                      </DesktopOnly>
                     </Suspense>
                   </QueryErrorBoundary>
                 </RuntimeErrorBoundary>
