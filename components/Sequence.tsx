@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import type {
   DailyData,
@@ -44,8 +44,8 @@ function Sequence({ id, scenes, displayKey }: SequenceProps) {
 
   const values = scenes.map((scene) => scene.value ?? 0);
 
-  useLayoutEffect(() => {
-    ref.current?.scrollTo({
+  useEffect(() => {
+    window?.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
