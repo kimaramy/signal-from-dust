@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { fetchInitialDataset } from '@/domains/prefetches';
 
-import type { NextStaticPageProps } from '@/lib/types';
+import type { NextStaticPageProps } from '@/lib/router';
 import { dataCollectionSchema } from '@/components/dataCollection';
 import { dataNameSchema } from '@/components/dataName';
 import Dataset from '@/components/Dataset';

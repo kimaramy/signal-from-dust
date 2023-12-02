@@ -35,7 +35,7 @@ function usePathParam<
    * 그래서 접근 값에 undefined를 병합해줍니다.
    */
   const maybeArrayOrUndefined: string[] | string | undefined =
-    params[name] || undefined; // 빈 문자열('') 확률 배제
+    params[name] || undefined; // 혹시나 빈 문자열('') 확률 배제
 
   const maybeEmptyArray = Array.isArray(maybeArrayOrUndefined)
     ? maybeArrayOrUndefined

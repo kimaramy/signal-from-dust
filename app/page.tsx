@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { fetchInitialDataset } from '@/domains/prefetches';
 
-import type { NextPageProps } from '@/lib/types';
+import type { NextPageProps } from '@/lib/router';
 import { dataCollectionSchema } from '@/components/dataCollection';
 import Dataset from '@/components/Dataset';
 import FakeDataset from '@/components/FakeDataset';
