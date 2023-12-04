@@ -9,7 +9,7 @@ interface DesktopOnlyProps {
 }
 
 function DesktopOnly({ children }: DesktopOnlyProps) {
-  const [isHidden, setHidden] = useState(false);
+  const [isHidden, setHidden] = useState(true);
 
   useLayoutEffect(() => {
     setHidden(isMobile(window.navigator.userAgent));
