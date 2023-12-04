@@ -15,11 +15,10 @@ export function useSetQueryParams<
   TKey extends string = string,
 >(oldReadonlySearchParams: ReadonlyURLSearchParams) {
   const setQueryParams = useCallback(
-    <TStringified extends boolean = false, TPrefixed extends boolean = false>(
+    <TStringified extends boolean = false>(
       map: Map<TKey, TValue>,
       options?: {
         stringify: TStringified;
-        prefixed?: TPrefixed;
       }
     ) => {
       const newSearchParams = new URLSearchParams(
@@ -32,14 +31,10 @@ export function useSetQueryParams<
         newSearchParams
       );
       const maybeSearch = options?.stringify
-        ? options?.prefixed
-          ? `?${newReadonlySearchParams.toString()}`
-          : newReadonlySearchParams.toString() // '?' is not prefixed
+        ? `?${newReadonlySearchParams.toString()}` // URLSearchParams.toString() has no '?' prefix
         : newReadonlySearchParams;
       return maybeSearch as TStringified extends true
-        ? TPrefixed extends true
-          ? `?${string}`
-          : string
+        ? `?${string}`
         : ReadonlyURLSearchParams;
     },
     [oldReadonlySearchParams]
@@ -60,11 +55,10 @@ export function useSetQueryParam<
   TKey extends string = string,
 >(oldReadonlySearchParams: ReadonlyURLSearchParams, name: TKey) {
   const setQueryParam = useCallback(
-    <TStringified extends boolean = false, TPrefixed extends boolean = false>(
+    <TStringified extends boolean = false>(
       value: TValue,
       options?: {
         stringify: TStringified;
-        prefixed?: TPrefixed;
       }
     ) => {
       const newSearchParams = new URLSearchParams(
@@ -75,14 +69,10 @@ export function useSetQueryParam<
         newSearchParams
       );
       const maybeStringified = options?.stringify
-        ? options?.prefixed
-          ? `?${newReadonlySearchParams.toString()}`
-          : newReadonlySearchParams.toString() // '?' is not prefixed
+        ? `?${newReadonlySearchParams.toString()}`
         : newReadonlySearchParams;
       return maybeStringified as TStringified extends true
-        ? TPrefixed extends true
-          ? `?${string}`
-          : string
+        ? `?${string}`
         : ReadonlyURLSearchParams;
     },
     [oldReadonlySearchParams, name]

@@ -7,8 +7,5 @@ export { default as usePlainUrlParam } from './usePlainUrlParam';
 export * from './useSetUrlParam';
 
 export { default as useNavigate } from './useNavigate';
-
-export { default as useSafeUrlParam } from './useSafeUrlParam';
 export { default as useUrlParam } from './useUrlParam';
-export { parseUrlParam } from './useUrlParam';
-export type { UrlParams } from './useUrlParam';
+export { parseUrlParam, type UrlParams } from './_useUnsafeUrlParam';

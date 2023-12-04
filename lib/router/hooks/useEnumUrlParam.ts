@@ -1,6 +1,4 @@
-import useSafeUrlParam, {
-  type UseSafeUrlParamOptions,
-} from './useSafeUrlParam';
+import useUrlParam, { type UseUrlParamOptions } from './useUrlParam';
 
 export const getDateErrorMessage = (
   name: string,
@@ -15,9 +13,9 @@ export default function useEnumUrlParam<
 >(
   name: TKey,
   fallback: TFallback | undefined,
-  options: { enums: TValue[] } & Pick<UseSafeUrlParamOptions<TValue>, 'part'>
+  options: { enums: TValue[] } & Pick<UseUrlParamOptions<TValue>, 'part'>
 ) {
-  return useSafeUrlParam<TValue, TKey, TFallback>(name, fallback, {
+  return useUrlParam<TValue, TKey, TFallback>(name, fallback, {
     strict: true,
     validator: (values) =>
       values.every((value) => options.enums.includes(value)),

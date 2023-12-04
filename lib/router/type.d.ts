@@ -1,3 +1,10 @@
+import type { Route } from 'next';
+
+/**
+ * [Typed Routes](https://nextjs.org/docs/app/building-your-application/configuring/typescript#statically-typed-links)
+ */
+export type TypedRoute = Route;
+
 export type PathParams<T extends string> = { [key: string]: T };
 
 export type SearchParams = { [key: string]: string | string[] | undefined };

@@ -1,7 +1,5 @@
 import { parseOrNot } from '../utils';
-import useSafeUrlParam, {
-  type UseSafeUrlParamOptions,
-} from './useSafeUrlParam';
+import useUrlParam, { type UseUrlParamOptions } from './useUrlParam';
 
 export function isStringifiedDate(value: string) {
   return !Number.isNaN(Date.parse(value));
@@ -18,9 +16,9 @@ export default function useDateUrlParam<
 >(
   name: TKey,
   fallback?: TFallback,
-  options?: { parse?: TParsed } & Pick<UseSafeUrlParamOptions<TValue>, 'part'>
+  options?: { parse?: TParsed } & Pick<UseUrlParamOptions<TValue>, 'part'>
 ) {
-  const values = useSafeUrlParam<TValue, TKey, TFallback>(name, fallback, {
+  const values = useUrlParam<TValue, TKey, TFallback>(name, fallback, {
     strict: true,
     validator: (values) => values.every((value) => isStringifiedDate(value)),
     errorMessage: (value) => getDateErrorMessage(name, JSON.stringify(value)),

@@ -1,8 +1,6 @@
 import { parseOrNot } from '../utils';
 import { isEmptyString } from './usePlainUrlParam';
-import useSafeUrlParam, {
-  type UseSafeUrlParamOptions,
-} from './useSafeUrlParam';
+import useUrlParam, { type UseUrlParamOptions } from './useUrlParam';
 
 export function isStringifiedNumber(value: string) {
   if (isEmptyString(value)) {
@@ -23,9 +21,9 @@ export default function useNumberUrlParam<
 >(
   name: TKey,
   fallback?: TFallback,
-  options?: { parse?: TParsed } & Pick<UseSafeUrlParamOptions<TValue>, 'part'>
+  options?: { parse?: TParsed } & Pick<UseUrlParamOptions<TValue>, 'part'>
 ) {
-  const values = useSafeUrlParam<TValue, TKey, TFallback>(name, fallback, {
+  const values = useUrlParam<TValue, TKey, TFallback>(name, fallback, {
     strict: true,
     validator: (values) => values.every((value) => isStringifiedNumber(value)),
     errorMessage: (value) => getNumberErrorMessage(name, JSON.stringify(value)),

@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 
-import type { UseUrlParam } from './useUrlParam';
+import type { UseUrlParam } from './_useUnsafeUrlParam';
 
 /**
  * 단일 경로(Path) 파라미터의 값을 읽어와 반환하는 Getter 함수입니다.

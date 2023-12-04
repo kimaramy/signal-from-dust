@@ -1,7 +1,5 @@
 import { parseOrNot } from '../utils';
-import useSafeUrlParam, {
-  type UseSafeUrlParamOptions,
-} from './useSafeUrlParam';
+import useUrlParam, { type UseUrlParamOptions } from './useUrlParam';
 
 export function isStringifiedBoolean(value: string) {
   return value === 'true' || value === 'false';
@@ -18,9 +16,9 @@ export default function useBooleanUrlParam<
 >(
   name: TKey,
   fallback?: TFallback,
-  options?: { parse?: TParsed } & Pick<UseSafeUrlParamOptions<TValue>, 'part'>
+  options?: { parse?: TParsed } & Pick<UseUrlParamOptions<TValue>, 'part'>
 ) {
-  const values = useSafeUrlParam<TValue, TKey, TFallback>(name, fallback, {
+  const values = useUrlParam<TValue, TKey, TFallback>(name, fallback, {
     strict: true,
     validator: (values) => values.every((value) => isStringifiedBoolean(value)),
     errorMessage: (value) =>

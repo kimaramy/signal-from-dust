@@ -1,9 +1,7 @@
 import { isStringifiedBoolean } from './useBooleanUrlParam';
 import { isStringifiedDate } from './useDateUrlParam';
 import { isStringifiedNumber } from './useNumberUrlParam';
-import useSafeUrlParam, {
-  type UseSafeUrlParamOptions,
-} from './useSafeUrlParam';
+import useUrlParam, { type UseUrlParamOptions } from './useUrlParam';
 
 export function isEmptyString(value: string) {
   return value === '';
@@ -27,9 +25,9 @@ export default function usePlainUrlParam<
 >(
   name: TKey,
   fallback: TFallback | undefined,
-  options?: Pick<UseSafeUrlParamOptions<TValue>, 'part'>
+  options?: Pick<UseUrlParamOptions<TValue>, 'part'>
 ) {
-  return useSafeUrlParam<TValue, TKey, TFallback>(name, fallback, {
+  return useUrlParam<TValue, TKey, TFallback>(name, fallback, {
     strict: true,
     validator: (values) => values.every((value) => isPlainString(value)),
     errorMessage: (value) => getPlainErrorMessage(name, JSON.stringify(value)),
