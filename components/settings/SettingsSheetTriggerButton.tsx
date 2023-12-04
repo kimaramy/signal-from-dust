@@ -23,7 +23,7 @@ function SettingsSheetTriggerButton({
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip>
-        <TooltipTrigger asChild>
+        <TooltipTrigger>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className={className}>
