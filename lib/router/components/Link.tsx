@@ -1,6 +1,7 @@
 'use client';
 
 import { forwardRef } from 'react';
+import type { Route } from 'next';
 import NextLink from 'next/link';
 
 import progress from '../progress';
@@ -14,7 +15,7 @@ const Link = forwardRef<HTMLAnchorElement, React.ComponentProps<'a'>>(
 
     return (
       <NextLink
-        href={href}
+        href={href as Route}
         onClick={(event) => {
           if (shouldTriggerStartEvent(href, event)) progress.start();
           onClick?.(event);

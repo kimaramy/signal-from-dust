@@ -33,9 +33,9 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
         map.set(key, toLowerCase(value.toString()));
       });
 
-      const search = setQueryParams(map, { stringify: true });
+      const search = setQueryParams(map, { stringify: true, prefixed: true });
 
-      navigate(`/query`, search, { method: 'push' });
+      navigate(`/query${search}`, { method: 'push' });
     },
     [setQueryParams, navigate]
   );

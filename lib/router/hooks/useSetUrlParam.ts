@@ -15,10 +15,11 @@ export function useSetQueryParams<
   TKey extends string = string,
 >(oldReadonlySearchParams: ReadonlyURLSearchParams) {
   const setQueryParams = useCallback(
-    <TFlag extends boolean = false>(
+    <TStringified extends boolean = false, TPrefixed extends boolean = false>(
       map: Map<TKey, TValue>,
       options?: {
-        stringify: TFlag;
+        stringify: TStringified;
+        prefixed?: TPrefixed;
       }
     ) => {
       const newSearchParams = new URLSearchParams(
@@ -31,10 +32,14 @@ export function useSetQueryParams<
         newSearchParams
       );
       const maybeSearch = options?.stringify
-        ? newReadonlySearchParams.toString()
+        ? options?.prefixed
+          ? `?${newReadonlySearchParams.toString()}`
+          : newReadonlySearchParams.toString() // '?' is not prefixed
         : newReadonlySearchParams;
-      return maybeSearch as TFlag extends true
-        ? string
+      return maybeSearch as TStringified extends true
+        ? TPrefixed extends true
+          ? `?${string}`
+          : string
         : ReadonlyURLSearchParams;
     },
     [oldReadonlySearchParams]
@@ -55,10 +60,11 @@ export function useSetQueryParam<
   TKey extends string = string,
 >(oldReadonlySearchParams: ReadonlyURLSearchParams, name: TKey) {
   const setQueryParam = useCallback(
-    <TFlag extends boolean = false>(
+    <TStringified extends boolean = false, TPrefixed extends boolean = false>(
       value: TValue,
       options?: {
-        stringify: TFlag;
+        stringify: TStringified;
+        prefixed?: TPrefixed;
       }
     ) => {
       const newSearchParams = new URLSearchParams(
@@ -69,10 +75,14 @@ export function useSetQueryParam<
         newSearchParams
       );
       const maybeStringified = options?.stringify
-        ? newReadonlySearchParams.toString()
+        ? options?.prefixed
+          ? `?${newReadonlySearchParams.toString()}`
+          : newReadonlySearchParams.toString() // '?' is not prefixed
         : newReadonlySearchParams;
-      return maybeStringified as TFlag extends true
-        ? string
+      return maybeStringified as TStringified extends true
+        ? TPrefixed extends true
+          ? `?${string}`
+          : string
         : ReadonlyURLSearchParams;
     },
     [oldReadonlySearchParams, name]

@@ -1,5 +1,6 @@
 'use client';
 
+import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 
 import progress from '../progress';
@@ -19,5 +20,10 @@ function useDecoratedRouter(): ReturnType<typeof useRouter> {
     },
   };
 }
+
+/**
+ * [Typed Routes](https://nextjs.org/docs/app/building-your-application/configuring/typescript#statically-typed-links)
+ */
+export type TypedRoute = Route;
 
 export default useDecoratedRouter;

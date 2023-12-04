@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import { Github } from 'lucide-react';
 
+import { Link } from '@/lib/router';
 import { siteConfig } from '@/lib/site';
 import { buttonVariants } from '@/components/ui/button';
 import MainNav from '@/components/MainNav';

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import useDecoratedRouter from './_useDecoratedRouter';
+import useDecoratedRouter, { type TypedRoute } from './_useDecoratedRouter';
 
 interface NavigateOptions {
   method?: 'push' | 'replace';
@@ -11,21 +11,21 @@ function useNavigate() {
   const router = useDecoratedRouter();
 
   const navigate = useCallback(
-    (
-      pathname: string,
-      search: string | null = null,
-      options?: NavigateOptions
-    ) => {
+    (href: TypedRoute, options?: NavigateOptions) => {
       const method = options?.method ?? 'push';
       const scroll = options?.scroll ?? false;
 
-      const searchWithPrefix = search
-        ? search.startsWith('?')
-          ? search
-          : `?${search}`
+      const url = new URL(href, 'http://localhost');
+
+      const validSearch = url.search.startsWith('?')
+        ? url.search.indexOf('?') !== url.search.lastIndexOf('?')
+          ? url.search.slice(url.search.lastIndexOf('?'))
+          : url.search
         : '';
 
-      router[method](pathname + searchWithPrefix, { scroll });
+      url.search = validSearch;
+
+      router[method](href, { scroll });
     },
     [router]
   );
