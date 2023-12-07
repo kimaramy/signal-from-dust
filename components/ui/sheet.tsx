@@ -114,6 +114,21 @@ const SheetTitle = React.forwardRef<
 ));
 SheetTitle.displayName = SheetPrimitive.Title.displayName;
 
+const SheetSubTitle = React.forwardRef<
+  React.ElementRef<typeof SheetPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>
+>(({ className, children, ...props }, ref) => (
+  <SheetPrimitive.Title
+    ref={ref}
+    className={cn('text-sm font-semibold text-foreground', className)}
+    asChild
+    {...props}
+  >
+    <h3>{children}</h3>
+  </SheetPrimitive.Title>
+));
+SheetSubTitle.displayName = SheetPrimitive.Title.displayName;
+
 const SheetDescription = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Description>
@@ -136,5 +151,6 @@ export {
   SheetHeader,
   SheetFooter,
   SheetTitle,
+  SheetSubTitle,
   SheetDescription,
 };

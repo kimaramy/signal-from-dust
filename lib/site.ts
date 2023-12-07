@@ -18,7 +18,7 @@ export const siteConfig = {
     origin: 'https://sound-of-dust.vercel.app',
     ogImage:
       'https://ygpfckjmxgbewxkislyq.supabase.co/storage/v1/object/public/imgs/og.webp',
-    github: 'https://github.com/kimaramy',
+    github: 'https://github.com/kimaramy/sound-of-dust',
     repository: 'https://github.com/kimaramy/sound-of-dust',
     docs: 'https://github.com/kimaramy/sound-of-dust/blob/master/README.md',
   },
