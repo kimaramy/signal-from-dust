@@ -30,14 +30,14 @@ export default function Spinner({ relative = false }: SpinnerProps) {
   return (
     <div
       className={cn(
-        'pointer-events-none right-0 top-0 z-[999] flex h-full w-full items-center justify-center bg-white bg-opacity-50',
+        'pointer-events-none right-0 top-0 z-[999] flex h-full w-full items-center justify-center bg-background/80 backdrop-blur-sm',
         relative ? 'absolute' : 'fixed'
       )}
     >
       <div role="status">
         <svg
           aria-hidden="true"
-          className="fill-primary-300 mr-2 h-20 w-20 animate-spin text-gray-200 dark:text-gray-600"
+          className="mr-2 h-20 w-20 animate-spin fill-[#fdc741] text-border"
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

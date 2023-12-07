@@ -1,12 +1,9 @@
 import './globals.css';
 
-import { Suspense } from 'react';
-
 import { DesktopOnly } from '@/lib/device';
 import { fontSans } from '@/lib/fonts';
 import { Progress, RouteChangeEventHandlers } from '@/lib/router';
 import { cn } from '@/lib/utils';
-import FakeDataset from '@/components/FakeDataset';
 import FloatingButtons from '@/components/FloatingButtons';
 import QueryClientProvider from '@/components/QueryClientProvider';
 import QueryErrorBoundary from '@/components/QueryErrorBoundary';
@@ -50,12 +47,10 @@ function RootLayout({ children }: RootLayoutProps) {
               <div className="flex-1">
                 <RuntimeErrorBoundary>
                   <QueryErrorBoundary>
-                    <Suspense fallback={<FakeDataset />}>
-                      {children}
-                      <DesktopOnly>
-                        <FloatingButtons />
-                      </DesktopOnly>
-                    </Suspense>
+                    {children}
+                    <DesktopOnly>
+                      <FloatingButtons />
+                    </DesktopOnly>
                   </QueryErrorBoundary>
                 </RuntimeErrorBoundary>
               </div>

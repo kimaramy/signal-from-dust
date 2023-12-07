@@ -14,8 +14,6 @@ import { useSeasonKey } from '@/components/season';
 import Sequence, { SceneUtils } from '@/components/Sequence';
 import { useYearKey } from '@/components/year';
 
-import FakeDataset from './FakeDataset';
-
 interface DatasetProps {
   initialDataCollectionKey?: DataCollectionKey;
   initialDataset: {
@@ -113,7 +111,7 @@ function Dataset({ initialDataCollectionKey, initialDataset }: DatasetProps) {
     monthKey,
   ].join(',');
 
-  if (!scenes) return <FakeDataset />;
+  if (!scenes) return null;
 
   return <Sequence id={sequenceId} scenes={scenes} displayKey={displayKey} />;
 }

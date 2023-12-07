@@ -7,7 +7,6 @@ import Dataset from '@/components/Dataset';
 import FakeDataset from '@/components/FakeDataset';
 import Main from '@/components/Main';
 import { monthSchema } from '@/components/month';
-import QueryErrorBoundary from '@/components/QueryErrorBoundary';
 import { seasonSchema } from '@/components/season';
 import { SettingsDialog } from '@/components/settings';
 import { yearSchema } from '@/components/year';
@@ -26,15 +25,14 @@ async function IndexPage(_: NextPageProps) {
   return (
     <>
       <Main>
-        <QueryErrorBoundary>
-          <Suspense fallback={<FakeDataset />}>
-            <Dataset
-              initialDataset={{
-                [dataCollectionSchema.defaultKey]: initialDataset,
-              }}
-            />
-          </Suspense>
-        </QueryErrorBoundary>
+        {/* Dataset 내부 클라이언트 사이드 쿼리 요청 대비 Suspense */}
+        <Suspense fallback={<FakeDataset />}>
+          <Dataset
+            initialDataset={{
+              [dataCollectionSchema.defaultKey]: initialDataset,
+            }}
+          />
+        </Suspense>
       </Main>
       <SettingsDialog />
     </>

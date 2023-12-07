@@ -9,7 +9,6 @@ import Dataset from '@/components/Dataset';
 import FakeDataset from '@/components/FakeDataset';
 import Main from '@/components/Main';
 import { monthSchema } from '@/components/month';
-import QueryErrorBoundary from '@/components/QueryErrorBoundary';
 import { seasonSchema } from '@/components/season';
 import { yearSchema } from '@/components/year';
 
@@ -50,16 +49,15 @@ async function StaticQueryPage({ params: { slug } }: StaticQueryPageProps) {
 
   return (
     <Main>
-      <QueryErrorBoundary>
-        <Suspense fallback={<FakeDataset />}>
-          <Dataset
-            initialDataCollectionKey={dataCollectionKey}
-            initialDataset={{
-              [dataCollectionKey]: initialDataset,
-            }}
-          />
-        </Suspense>
-      </QueryErrorBoundary>
+      {/* Dataset 내부 클라이언트 사이드 쿼리 요청 대비 Suspense */}
+      <Suspense fallback={<FakeDataset />}>
+        <Dataset
+          initialDataCollectionKey={dataCollectionKey}
+          initialDataset={{
+            [dataCollectionKey]: initialDataset,
+          }}
+        />
+      </Suspense>
     </Main>
   );
 }

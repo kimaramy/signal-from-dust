@@ -27,8 +27,8 @@ function SettingsSheetTriggerButton({
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className={className}>
-                <Database className="h-4 w-4" />
-                <span className="sr-only">Replace dataset</span>
+                <Database aria-hidden className="h-4 w-4" />
+                <span className="sr-only">Change a dataset</span>
               </Button>
             </SheetTrigger>
             <SettingsSheetContent />

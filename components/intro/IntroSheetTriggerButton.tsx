@@ -14,14 +14,10 @@ import {
 } from '@/components/ui/tooltip';
 import Spinner from '@/components/Spinner';
 
-const IntroSheetContent = dynamic(
-  () =>
-    import('./IntroSheetContent' /* webpackChunkName: "IntroSheetContent" */),
-  {
-    ssr: false,
-    loading: () => <Spinner relative />,
-  }
-);
+const IntroSheetContent = dynamic(() => import('./IntroSheetContent'), {
+  ssr: false,
+  loading: () => <Spinner />,
+});
 
 interface IntroSheetTriggerButtonProps {
   className?: string;

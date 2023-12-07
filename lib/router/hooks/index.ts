@@ -8,4 +8,8 @@ export * from './useSetUrlParam';
 
 export { default as useNavigate } from './useNavigate';
 export { default as useUrlParam } from './useUrlParam';
-export { parseUrlParam, type UrlParams } from './_useUnsafeUrlParam';
+export {
+  parseUrlParam,
+  type UrlParams,
+  type URLPart,
+} from './_useUnsafeUrlParam';

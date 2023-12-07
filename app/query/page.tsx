@@ -12,7 +12,6 @@ import Dataset from '@/components/Dataset';
 import FakeDataset from '@/components/FakeDataset';
 import Main from '@/components/Main';
 import { parseMonthKey } from '@/components/month';
-import QueryErrorBoundary from '@/components/QueryErrorBoundary';
 import { parseSeasonKey } from '@/components/season';
 import { parseYearKey } from '@/components/year';
 
@@ -49,14 +48,13 @@ async function DynamicQueryPage({ searchParams }: NextPageProps) {
 
   return (
     <Main>
-      <QueryErrorBoundary>
-        <Suspense fallback={<FakeDataset />}>
-          <Dataset
-            initialDataCollectionKey={dataCollectionKey}
-            initialDataset={{ [dataCollectionKey]: initialDataset }}
-          />
-        </Suspense>
-      </QueryErrorBoundary>
+      {/* Dataset 내부 클라이언트 사이드 쿼리 요청 대비 Suspense */}
+      <Suspense fallback={<FakeDataset />}>
+        <Dataset
+          initialDataCollectionKey={dataCollectionKey}
+          initialDataset={{ [dataCollectionKey]: initialDataset }}
+        />
+      </Suspense>
     </Main>
   );
 }
