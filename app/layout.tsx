@@ -31,6 +31,10 @@ function RootLayout({ children }: RootLayoutProps) {
     <html lang="ko" suppressHydrationWarning>
       <head>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+          httpEquiv="refresh"
+          content="3600; url=https://sound-of-dust.vercel.app/"
+        />
         <link rel="preconnect" href="https://cdn.jsdelivr.net" />
         <link
           rel="stylesheet"
