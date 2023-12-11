@@ -29,23 +29,23 @@ function IntroSheetTriggerButton({ className }: IntroSheetTriggerButtonProps) {
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip>
-        <TooltipTrigger>
-          <Sheet
-            open={isSheetOpen}
-            onOpenChange={() => setSheetOpen((isSheetOpen) => !isSheetOpen)}
-          >
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className={className}>
-                <HelpCircle aria-hidden className="h-4.5 w-4.5" />
-                <span className="sr-only">About this project</span>
-              </Button>
-            </SheetTrigger>
-            {isSheetOpen && <IntroSheetContent />}
-          </Sheet>
+        <TooltipTrigger asChild>
+          <div role="tooltip">
+            <Sheet
+              open={isSheetOpen}
+              onOpenChange={() => setSheetOpen((isSheetOpen) => !isSheetOpen)}
+            >
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className={className}>
+                  <HelpCircle aria-hidden className="h-4.5 w-4.5" />
+                  <span className="sr-only">About this project</span>
+                </Button>
+              </SheetTrigger>
+              {isSheetOpen && <IntroSheetContent />}
+            </Sheet>
+          </div>
         </TooltipTrigger>
-        <TooltipContent>
-          <p>프로젝트 설명</p>
-        </TooltipContent>
+        <TooltipContent>프로젝트 설명</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

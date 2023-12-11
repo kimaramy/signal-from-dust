@@ -66,7 +66,7 @@ function SettingsDialog() {
             </SettingsModeContext.Provider>
           </section>
           <DialogFooter>
-            <DialogClose className="w-full">
+            <DialogClose className="w-full" asChild>
               <SettingsFormSubmitButton label="시작" />
             </DialogClose>
           </DialogFooter>

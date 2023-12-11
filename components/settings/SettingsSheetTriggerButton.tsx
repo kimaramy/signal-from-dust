@@ -23,20 +23,20 @@ function SettingsSheetTriggerButton({
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip>
-        <TooltipTrigger>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className={className}>
-                <Database aria-hidden className="h-4 w-4" />
-                <span className="sr-only">Change a dataset</span>
-              </Button>
-            </SheetTrigger>
-            <SettingsSheetContent />
-          </Sheet>
+        <TooltipTrigger asChild>
+          <div role="tooltip">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className={className}>
+                  <Database aria-hidden className="h-4 w-4" />
+                  <span className="sr-only">Change a dataset</span>
+                </Button>
+              </SheetTrigger>
+              <SettingsSheetContent />
+            </Sheet>
+          </div>
         </TooltipTrigger>
-        <TooltipContent>
-          <p>데이터 변경</p>
-        </TooltipContent>
+        <TooltipContent>데이터 변경</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

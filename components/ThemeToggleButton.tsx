@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
@@ -36,9 +35,7 @@ export default function ThemeToggleButton({
             <span className="sr-only">Toggle theme</span>
           </Button>
         </TooltipTrigger>
-        <TooltipContent>
-          <p>테마 변경</p>
-        </TooltipContent>
+        <TooltipContent>테마 변경</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
