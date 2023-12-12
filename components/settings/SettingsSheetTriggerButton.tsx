@@ -1,8 +1,7 @@
 'use client';
 
-import { Database } from 'lucide-react';
-
 import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 import { Sheet, SheetTrigger } from '@/components/ui/sheet';
 import {
   Tooltip,
@@ -24,11 +23,11 @@ function SettingsSheetTriggerButton({
     <TooltipProvider delayDuration={0}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <div role="tooltip">
+          <div role="presentation">
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className={className}>
-                  <Database aria-hidden className="h-4 w-4" />
+                  <Icon.Database aria-hidden className="h-4 w-4" />
                   <span className="sr-only">Change a dataset</span>
                 </Button>
               </SheetTrigger>

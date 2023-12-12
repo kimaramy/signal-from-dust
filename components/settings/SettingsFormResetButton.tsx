@@ -1,9 +1,9 @@
 'use client';
 
-import { ArrowPathIcon } from '@heroicons/react/20/solid';
 import { useFormContext } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 
 import type { SettingsFormValues } from './SettingsForm';
 
@@ -29,7 +29,7 @@ function SettingsFormResetButton() {
         })
       }
     >
-      <ArrowPathIcon aria-hidden className="h-4 w-4" />
+      <Icon.RefreshCcw aria-hidden className="h-4 w-4" />
       <span className="sr-only">Reset</span>
     </Button>
   );

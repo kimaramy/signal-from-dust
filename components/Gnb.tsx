@@ -1,8 +1,7 @@
-import { Github } from 'lucide-react';
-
 import { Link } from '@/lib/router';
 import { siteConfig } from '@/lib/site';
 import { buttonVariants } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 import MainNav from '@/components/MainNav';
 import ThemeToggleButton from '@/components/ThemeToggleButton';
 
@@ -24,7 +23,7 @@ export default function Gnb() {
                   variant: 'ghost',
                 })}
               >
-                <Github className="h-4 w-4" />
+                <Icon.Github className="h-4 w-4" />
                 <span className="sr-only">GitHub</span>
               </div>
             </Link>

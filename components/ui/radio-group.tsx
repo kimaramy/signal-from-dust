@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
-import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { Icon } from '@/components/ui/icon';
 
 const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
@@ -34,7 +34,7 @@ const RadioGroupItem = React.forwardRef<
       {...props}
     >
       <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
-        <Check className="h-3 w-3" />
+        <Icon.Check className="h-3 w-3" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   );

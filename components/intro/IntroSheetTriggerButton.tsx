@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { HelpCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 import { Sheet, SheetTrigger } from '@/components/ui/sheet';
 import {
   Tooltip,
@@ -30,14 +30,14 @@ function IntroSheetTriggerButton({ className }: IntroSheetTriggerButtonProps) {
     <TooltipProvider delayDuration={0}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <div role="tooltip">
+          <div role="presentation">
             <Sheet
               open={isSheetOpen}
               onOpenChange={() => setSheetOpen((isSheetOpen) => !isSheetOpen)}
             >
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className={className}>
-                  <HelpCircle aria-hidden className="h-4.5 w-4.5" />
+                  <Icon.HelpCircle aria-hidden className="h-4.5 w-4.5" />
                   <span className="sr-only">About this project</span>
                 </Button>
               </SheetTrigger>

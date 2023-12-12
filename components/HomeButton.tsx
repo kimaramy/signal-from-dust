@@ -1,9 +1,8 @@
 'use client';
 
-import { Home } from 'lucide-react';
-
 import { useNavigate } from '@/lib/router';
 import { Button, ButtonProps } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 import {
   Tooltip,
   TooltipContent,
@@ -24,7 +23,7 @@ function HomeButton(props: ButtonProps) {
             onClick={() => navigate('/', { method: 'replace' })}
             {...props}
           >
-            <Home aria-hidden className="h-4.5 w-4.5" />
+            <Icon.Home aria-hidden className="h-4.5 w-4.5" />
             <span className="sr-only">Home</span>
           </Button>
         </TooltipTrigger>
