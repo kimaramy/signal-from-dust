@@ -61,7 +61,7 @@ function PresetFields() {
 
   return (
     <section>
-      <h4 className="pb-3 text-sm">
+      <h3 className="pb-3 text-sm">
         <span className="inline-block rounded bg-muted px-1.5 py-0.5 font-bold">
           {getPresetLabel(dataCollectionKey)}
         </span>
@@ -69,7 +69,7 @@ function PresetFields() {
           ' 나타나는',
           dataNameSchema.display(defaultValues?.dataNameKey!).concat('의 패턴'),
         ].join(' ')}
-      </h4>
+      </h3>
       <FormField
         name="dataCollectionKey"
         control={control}

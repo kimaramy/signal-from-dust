@@ -5,8 +5,8 @@ import { fontSans } from '@/lib/fonts';
 import { Progress, RouteChangeEventHandlers } from '@/lib/router';
 import { cn } from '@/lib/utils';
 import Floating from '@/components/Floating';
-import FloatingButtons from '@/components/FloatingButtons';
 import HomeButton from '@/components/HomeButton';
+import Menu from '@/components/Menu';
 import QueryClientProvider from '@/components/QueryClientProvider';
 import QueryErrorBoundary from '@/components/QueryErrorBoundary';
 import RuntimeErrorBoundary from '@/components/RuntimeErrorBoundary';
@@ -14,9 +14,6 @@ import SoundFilterX from '@/components/SoundFilterX';
 import SoundFilterY from '@/components/SoundFilterY';
 import ThemeProvider from '@/components/ThemeProvider';
 import ToastProvider from '@/components/ToastProvider';
-import ZoomInButton from '@/components/ZoomInButton';
-import ZoomOutButton from '@/components/ZoomOutButton';
-import ZoomResetHandler from '@/components/ZoomResetHandler';
 
 import { baseMetadata } from './metadata';
 
@@ -31,10 +28,6 @@ function RootLayout({ children }: RootLayoutProps) {
     <html lang="ko" suppressHydrationWarning>
       <head>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta
-          httpEquiv="refresh"
-          content="3600; url=https://sound-of-dust.vercel.app/"
-        />
         <link rel="preconnect" href="https://cdn.jsdelivr.net" />
         <link
           rel="stylesheet"
@@ -58,12 +51,13 @@ function RootLayout({ children }: RootLayoutProps) {
                   <QueryErrorBoundary>
                     {children}
                     <DesktopOnly>
-                      <FloatingButtons />
-                      <Floating className="bottom-[11%] right-[2%] flex-col">
-                        <ZoomInButton />
-                        <ZoomOutButton />
+                      <Floating direction="row" className="right-[2%] top-[3%]">
+                        <Menu />
                       </Floating>
-                      <Floating className="bottom-[3%] right-[2%]">
+                      <Floating
+                        direction="column"
+                        className="bottom-[3%] right-[2%]"
+                      >
                         <HomeButton />
                       </Floating>
                     </DesktopOnly>
@@ -74,7 +68,6 @@ function RootLayout({ children }: RootLayoutProps) {
             <ToastProvider />
           </QueryClientProvider>
         </ThemeProvider>
-        <ZoomResetHandler />
         <RouteChangeEventHandlers progressComponent={<Progress />} />
       </body>
     </html>
