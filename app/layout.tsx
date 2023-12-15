@@ -9,7 +9,6 @@ import HomeButton from '@/components/HomeButton';
 import Menu from '@/components/Menu';
 import QueryClientProvider from '@/components/QueryClientProvider';
 import QueryErrorBoundary from '@/components/QueryErrorBoundary';
-import RuntimeErrorBoundary from '@/components/RuntimeErrorBoundary';
 import SoundFilterX from '@/components/SoundFilterX';
 import SoundFilterY from '@/components/SoundFilterY';
 import ThemeProvider from '@/components/ThemeProvider';
@@ -47,22 +46,20 @@ function RootLayout({ children }: RootLayoutProps) {
               <SoundFilterX />
               <SoundFilterY />
               <div className="flex-1">
-                <RuntimeErrorBoundary>
-                  <QueryErrorBoundary>
-                    {children}
-                    <DesktopOnly>
-                      <Floating direction="row" className="right-[2%] top-[3%]">
-                        <Menu />
-                      </Floating>
-                      <Floating
-                        direction="column"
-                        className="bottom-[3%] right-[2%]"
-                      >
-                        <HomeButton />
-                      </Floating>
-                    </DesktopOnly>
-                  </QueryErrorBoundary>
-                </RuntimeErrorBoundary>
+                <QueryErrorBoundary>
+                  {children}
+                  <DesktopOnly>
+                    <Floating direction="row" className="right-[2%] top-[3%]">
+                      <Menu />
+                    </Floating>
+                    <Floating
+                      direction="column"
+                      className="bottom-[3%] right-[2%]"
+                    >
+                      <HomeButton />
+                    </Floating>
+                  </DesktopOnly>
+                </QueryErrorBoundary>
               </div>
             </div>
             <ToastProvider />
