@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { cache, Suspense } from 'react';
 import type { Metadata } from 'next';
 import { fetchInitialDataset } from '@/domains';
 
@@ -39,7 +39,7 @@ async function DynamicQueryPage({ searchParams }: NextPageProps) {
 
   const seasonKey = parseSeasonKey(searchParams);
 
-  const initialDataset = await fetchInitialDataset(
+  const initialDataset = await cache(fetchInitialDataset)(
     dataCollectionKey,
     yearKey,
     monthKey,

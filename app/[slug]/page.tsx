@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { cache, Suspense } from 'react';
 import type { Metadata } from 'next';
 import { fetchInitialDataset } from '@/domains/prefetches';
 
@@ -40,7 +40,7 @@ export const revalidate = false;
 async function StaticQueryPage({ params: { slug } }: StaticQueryPageProps) {
   const dataCollectionKey = dataCollectionSchema.getKeyBySlug(slug);
 
-  const initialDataset = await fetchInitialDataset(
+  const initialDataset = await cache(fetchInitialDataset)(
     dataCollectionKey,
     yearSchema.defaultKey,
     monthSchema.defaultKey,

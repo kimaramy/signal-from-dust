@@ -1,5 +1,3 @@
-import { cache } from 'react';
-
 import { type DataCollectionKey } from '@/components/dataCollection';
 import { monthSchema, type MonthKey } from '@/components/month';
 import { seasonSchema, type SeasonKey } from '@/components/season';
@@ -11,7 +9,7 @@ import { fetchWeekDailyDataset } from './weekdaily';
 import { fetchWeeklyDataset } from './weekly';
 import { fetchDistinctYearDataset, fetchYearlyDataset } from './yearly';
 
-const fetchInitialDataset = cache(async function fetchInitialDataset(
+const fetchInitialDataset = async function fetchInitialDataset(
   dataCollectionKey: DataCollectionKey,
   yearKey: YearKey,
   monthKey: MonthKey,
@@ -36,9 +34,9 @@ const fetchInitialDataset = cache(async function fetchInitialDataset(
     default:
       return await fetchDailyDataset(month);
   }
-});
+};
 
-const validateDistinctYears = cache(async (): Promise<string | null> => {
+const validateDistinctYears = async (): Promise<string | null> => {
   try {
     const distinctYears = (await fetchDistinctYearDataset())
       .map((dbYearData) => dbYearData.year)
@@ -58,6 +56,6 @@ const validateDistinctYears = cache(async (): Promise<string | null> => {
     console.error(error);
     return null;
   }
-});
+};
 
 export { fetchInitialDataset, validateDistinctYears };
