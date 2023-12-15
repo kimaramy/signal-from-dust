@@ -12,6 +12,8 @@ import { monthSchema } from '@/components/month';
 import { seasonSchema } from '@/components/season';
 import { yearSchema } from '@/components/year';
 
+const fetchInitialCachedDataset = cache(fetchInitialDataset);
+
 type StaticQueryPageProps = NextStaticPageProps<
   ReturnType<typeof generateStaticParams>[0]['slug']
 >;
@@ -40,7 +42,7 @@ export const revalidate = false;
 async function StaticQueryPage({ params: { slug } }: StaticQueryPageProps) {
   const dataCollectionKey = dataCollectionSchema.getKeyBySlug(slug);
 
-  const initialDataset = await cache(fetchInitialDataset)(
+  const initialDataset = await fetchInitialCachedDataset(
     dataCollectionKey,
     yearSchema.defaultKey,
     monthSchema.defaultKey,

@@ -15,6 +15,8 @@ import { parseMonthKey } from '@/components/month';
 import { parseSeasonKey } from '@/components/season';
 import { parseYearKey } from '@/components/year';
 
+const fetchInitialCachedDataset = cache(fetchInitialDataset);
+
 export function generateMetadata({ searchParams }: NextPageProps): Metadata {
   const dataCollectionKey = parseDataCollectionKey(searchParams);
   const dataNameKey = parseDataNameKey(searchParams);
@@ -39,7 +41,7 @@ async function DynamicQueryPage({ searchParams }: NextPageProps) {
 
   const seasonKey = parseSeasonKey(searchParams);
 
-  const initialDataset = await cache(fetchInitialDataset)(
+  const initialDataset = await fetchInitialCachedDataset(
     dataCollectionKey,
     yearKey,
     monthKey,
