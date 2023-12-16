@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Route } from 'next';
 
 /**
@@ -12,10 +13,10 @@ export type SearchParams = { [key: string]: string | string[] | undefined };
 /**
  * - https://nextjs.org/docs/app/api-reference/file-conventions/page#props
  */
-export interface NextPageProps<TPath extends string = string> {
+export type NextPageProps<TPath extends string = string> = {
   params?: PathParams<TPath>;
   searchParams?: SearchParams;
-}
+};
 
 /**
  * Wrap static pages using searchParams with Suspense + useSearchParam comb
@@ -31,4 +32,12 @@ export type NextStaticPageProps<TPath extends string = string> = {
  */
 export type NextLayoutProps<TPath extends string = string> = {
   params?: PathParams<TPath>;
+};
+
+/**
+ * - https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#templates
+ * - https://nextjs.org/docs/app/api-reference/file-conventions/template
+ */
+export type NextTemplateProps = {
+  children: React.ReactNode;
 };
