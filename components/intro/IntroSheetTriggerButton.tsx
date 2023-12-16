@@ -37,7 +37,7 @@ function IntroSheetTriggerButton({ className }: IntroSheetTriggerButtonProps) {
             >
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className={className}>
-                  <Icon.HelpCircle aria-hidden className="h-4.5 w-4.5" />
+                  <Icon.HelpCircle aria-hidden className="h-4 w-4" />
                   <span className="sr-only">About this project</span>
                 </Button>
               </SheetTrigger>

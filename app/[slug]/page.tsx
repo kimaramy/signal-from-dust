@@ -6,7 +6,9 @@ import type { NextStaticPageProps } from '@/lib/router';
 import { dataCollectionSchema } from '@/components/dataCollection';
 import { dataNameSchema } from '@/components/dataName';
 import Dataset from '@/components/Dataset';
+import DatasetDownloadButton from '@/components/DatasetDownloadButton';
 import FakeDataset from '@/components/FakeDataset';
+import Floating from '@/components/Floating';
 import Main from '@/components/Main';
 import { monthSchema } from '@/components/month';
 import { seasonSchema } from '@/components/season';
@@ -42,25 +44,35 @@ export const revalidate = false;
 async function StaticQueryPage({ params: { slug } }: StaticQueryPageProps) {
   const dataCollectionKey = dataCollectionSchema.getKeyBySlug(slug);
 
-  const initialDataset = await fetchInitialCachedDataset(
+  const datasetKeys = [
     dataCollectionKey,
     yearSchema.defaultKey,
     monthSchema.defaultKey,
-    seasonSchema.defaultKey
-  );
+    seasonSchema.defaultKey,
+  ] as const;
+
+  const initialDataset = await fetchInitialCachedDataset(...datasetKeys);
 
   return (
-    <Main>
-      {/* Dataset 내부 클라이언트 사이드 쿼리 요청 대비 Suspense */}
-      <Suspense fallback={<FakeDataset />}>
-        <Dataset
-          initialDataCollectionKey={dataCollectionKey}
-          initialDataset={{
-            [dataCollectionKey]: initialDataset,
-          }}
+    <>
+      <Main>
+        {/* Dataset 내부 클라이언트 사이드 쿼리 요청 대비 Suspense */}
+        <Suspense fallback={<FakeDataset />}>
+          <Dataset
+            initialDataCollectionKey={dataCollectionKey}
+            initialDataset={{
+              [dataCollectionKey]: initialDataset,
+            }}
+          />
+        </Suspense>
+      </Main>
+      <Floating right={2} bottom={11}>
+        <DatasetDownloadButton
+          dataset={initialDataset}
+          datasetKeys={datasetKeys}
         />
-      </Suspense>
-    </Main>
+      </Floating>
+    </>
   );
 }
 

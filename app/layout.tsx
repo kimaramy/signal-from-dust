@@ -49,13 +49,10 @@ function RootLayout({ children }: RootLayoutProps) {
                 <QueryErrorBoundary>
                   {children}
                   <DesktopOnly>
-                    <Floating direction="row" className="right-[2%] top-[3%]">
+                    <Floating direction="row" right={2} top={3}>
                       <Menu />
                     </Floating>
-                    <Floating
-                      direction="column"
-                      className="bottom-[3%] right-[2%]"
-                    >
+                    <Floating direction="column" right={2} bottom={3}>
                       <HomeButton />
                     </Floating>
                   </DesktopOnly>

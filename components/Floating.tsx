@@ -3,8 +3,6 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
 
-interface FloatingProps extends React.HTMLAttributes<HTMLDivElement> {}
-
 const floatingVariants = cva(
   'fixed z-50 flex items-center justify-center gap-2 rounded-md bg-white p-2 shadow-lg dark:bg-muted',
   {
@@ -20,14 +18,40 @@ const floatingVariants = cva(
   }
 );
 
-interface FloatingProps extends VariantProps<typeof floatingVariants> {}
+type Position = string | number;
+
+interface FloatingProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof floatingVariants> {
+  top?: Position;
+  bottom?: Position;
+  left?: Position;
+  right?: Position;
+}
 
 const Floating = React.forwardRef<HTMLDivElement, FloatingProps>(
-  function Floating({ direction, children, className, ...rest }, ref) {
+  function Floating(props, ref) {
+    const {
+      direction,
+      top,
+      bottom,
+      left,
+      right,
+      children,
+      className,
+      ...rest
+    } = props;
+
     return (
       <div
         ref={ref}
         className={cn(floatingVariants({ direction, className }))}
+        style={{
+          top: typeof top === 'number' ? `${top}%` : top,
+          bottom: typeof bottom === 'number' ? `${bottom}%` : bottom,
+          left: typeof left === 'number' ? `${left}%` : left,
+          right: typeof right === 'number' ? `${right}%` : right,
+        }}
         {...rest}
       >
         {children}

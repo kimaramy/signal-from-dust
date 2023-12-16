@@ -3,10 +3,8 @@ import { z } from 'zod';
 import { KeyValueSchema } from '@/lib/utils';
 import { LocaleSchema } from '@/components/locale';
 
-const ALL = 'ALL';
-
 const weekKeys = [
-  ALL,
+  'ALL',
   ...new Array(53).fill(0).map((_, i) => `${i + 1}`),
 ] as const;
 
@@ -17,14 +15,12 @@ type WeekKey = z.infer<typeof weekKeySchema>;
 type WeekValue = number;
 
 const weekKeyValueMap = new Map<WeekKey, WeekValue>(
-  weekKeys.map((weekKey) =>
-    weekKey === ALL ? [weekKey, 0] : [weekKey, Number(weekKey)]
-  )
+  weekKeys.map((weekKey, index) => [weekKey, index])
 );
 
 class WeekSchema extends KeyValueSchema<WeekKey, WeekValue> {
   constructor() {
-    super(weekKeySchema, ALL, weekKeyValueMap);
+    super(weekKeySchema, weekKeys[0], weekKeyValueMap);
   }
   protected getOrdinalName(weekValue: WeekValue) {
     const [firstWeekValue, lastWeekValue] = this.getValueRange();

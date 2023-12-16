@@ -3,9 +3,8 @@
 import { useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
 import CodeBlock from '@/components/CodeBlock';
-
-import { Icon } from './ui/icon';
 
 type RuntimeError = Error & { digest?: string };
 
@@ -36,7 +35,7 @@ function ErrorContainer({ error, reset }: ErrorContainerProps) {
           onClick={() => reset()}
         >
           <Icon.RefreshCcw aria-hidden className="h-3.5 w-3.5" />
-          <span className="sr-only">Reset</span>
+          <span className="sr-only">Retry</span>
         </Button>
       </div>
       <CodeBlock text={serializedError} />

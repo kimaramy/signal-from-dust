@@ -7,8 +7,8 @@ import ThemeToggleButton from '@/components/ThemeToggleButton';
 function Menu() {
   return (
     <>
-      <IntroSheetTriggerButton />
       <SettingsSheetTriggerButton />
+      <IntroSheetTriggerButton />
       <ThemeToggleButton />
     </>
   );

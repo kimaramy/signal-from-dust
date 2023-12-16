@@ -3,10 +3,8 @@ import { z } from 'zod';
 import { KeyValueSchema } from '@/lib/utils';
 import { LocaleSchema } from '@/components/locale';
 
-const ALL = 'ALL';
-
 const dayKeys = [
-  ALL,
+  'ALL',
   ...new Array(31).fill(0).map((_, i) => `${i + 1}`),
 ] as const;
 
@@ -19,14 +17,12 @@ type DayKey = z.infer<DayKeySchema>;
 type DayValue = number;
 
 const dayKeyValueMap = new Map<DayKey, DayValue>(
-  dayKeys.map((dayKey) =>
-    dayKey === ALL ? [dayKey, 0] : [dayKey, Number(dayKey)]
-  )
+  dayKeys.map((dayKey, index) => [dayKey, index])
 );
 
 class DaySchema extends KeyValueSchema<DayKey, DayValue> {
   constructor() {
-    super(dayKeySchema, ALL, dayKeyValueMap);
+    super(dayKeySchema, dayKeys[0], dayKeyValueMap);
   }
   protected getOrdinalName(dayValue: DayValue) {
     const [firstDayValue, lastDayValue] = this.getValueRange();
