@@ -40,7 +40,7 @@ async function IndexPage(_: NextPageProps) {
           />
         </Suspense>
       </Main>
-      <Floating right={2} bottom={11}>
+      <Floating right={2} bottom={3}>
         <DatasetDownloadButton
           dataset={initialDataset}
           datasetKeys={datasetKeys}

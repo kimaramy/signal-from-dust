@@ -5,7 +5,6 @@ import { fontSans } from '@/lib/fonts';
 import { Progress, RouteChangeEventHandlers } from '@/lib/router';
 import { cn } from '@/lib/utils';
 import Floating from '@/components/Floating';
-import HomeButton from '@/components/HomeButton';
 import Menu from '@/components/Menu';
 import QueryClientProvider from '@/components/QueryClientProvider';
 import QueryErrorBoundary from '@/components/QueryErrorBoundary';
@@ -51,9 +50,6 @@ function RootLayout({ children }: RootLayoutProps) {
                   <DesktopOnly>
                     <Floating direction="row" right={2} top={3}>
                       <Menu />
-                    </Floating>
-                    <Floating direction="column" right={2} bottom={3}>
-                      <HomeButton />
                     </Floating>
                   </DesktopOnly>
                 </QueryErrorBoundary>
