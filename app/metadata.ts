@@ -40,9 +40,36 @@ export const baseMetadata: Metadata = {
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' },
   ],
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png',
-  },
+  icons: [
+    {
+      rel: 'shortcut icon',
+      type: 'image/x-icon',
+      sizes: '16x16',
+      url: '/favicon.ico',
+    },
+    {
+      rel: 'apple-touch-icon',
+      type: 'image/png',
+      sizes: '180x180',
+      url: '/apple-icon-180x180.png',
+    },
+    {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '192x192',
+      url: '/android-icon-192x192.png',
+    },
+    {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '32x32',
+      url: '/favicon-32x32.png',
+    },
+    {
+      rel: 'icon',
+      type: 'image/png',
+      sizes: '96x96',
+      url: '/favicon-96x96.png',
+    },
+  ],
 };
