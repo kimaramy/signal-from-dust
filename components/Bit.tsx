@@ -74,7 +74,7 @@ export default function Bit({
 
   useEffect(() => {
     if (isEntering) {
-      const filterId = !isFullPage ? '#sound-filter-y' : '#sound-filter-y';
+      const filterId = !isFullPage ? '#sound-filter' : '#sound-filter';
       $turbulence.current = document.querySelectorAll(
         `${filterId} feTurbulence`
       )[0] as SVGFETurbulenceElement;
@@ -124,7 +124,7 @@ export default function Bit({
   useEffect(() => {
     if (isPlaying) {
       timelineOne.current?.play();
-      const filterId = '#sound-filter-y';
+      const filterId = '#sound-filter';
       ($container.current as HTMLElement).style.filter = `url(${filterId})`;
     } else {
       timelineOne.current?.pause();

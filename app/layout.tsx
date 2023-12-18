@@ -1,27 +1,23 @@
 import './globals.css';
 
-import { DesktopOnly } from '@/lib/device';
 import { fontSans } from '@/lib/fonts';
-import { Progress, RouteChangeEventHandlers } from '@/lib/router';
+import {
+  Progress,
+  RouteChangeEventHandlers,
+  type NextLayoutProps,
+} from '@/lib/router';
 import { cn } from '@/lib/utils';
-import Floating from '@/components/Floating';
-import Menu from '@/components/Menu';
 import QueryClientProvider from '@/components/QueryClientProvider';
 import QueryErrorBoundary from '@/components/QueryErrorBoundary';
-import SoundFilterX from '@/components/SoundFilterX';
-import SoundFilterY from '@/components/SoundFilterY';
 import ThemeProvider from '@/components/ThemeProvider';
 import ToastProvider from '@/components/ToastProvider';
 
+import AppIcons from './app-icons';
 import { baseMetadata } from './metadata';
-
-interface RootLayoutProps {
-  children: React.ReactNode;
-}
 
 export const metadata = baseMetadata;
 
-function RootLayout({ children }: RootLayoutProps) {
+function RootLayout({ children, modal }: NextLayoutProps) {
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
@@ -32,6 +28,7 @@ function RootLayout({ children }: RootLayoutProps) {
           crossOrigin="anonymous"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable-dynamic-subset.css"
         />
+        <AppIcons />
       </head>
       <body
         className={cn(
@@ -41,20 +38,12 @@ function RootLayout({ children }: RootLayoutProps) {
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryClientProvider>
-            <div className="relative flex min-h-screen flex-col">
-              <SoundFilterX />
-              <SoundFilterY />
-              <div className="flex-1">
-                <QueryErrorBoundary>
-                  {children}
-                  <DesktopOnly>
-                    <Floating direction="row" right={2} top={3}>
-                      <Menu />
-                    </Floating>
-                  </DesktopOnly>
-                </QueryErrorBoundary>
+            <QueryErrorBoundary>
+              <div className="relative flex min-h-screen flex-col">
+                {children}
+                {modal}
               </div>
-            </div>
+            </QueryErrorBoundary>
             <ToastProvider />
           </QueryClientProvider>
         </ThemeProvider>

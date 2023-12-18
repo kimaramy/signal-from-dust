@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-const SoundFilterY = React.forwardRef<SVGFilterElement>(
-  function SoundFilterY(_, ref) {
+const SoundFilter = React.forwardRef<SVGFilterElement>(
+  function SoundFilter(_, ref) {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -11,7 +11,7 @@ const SoundFilterY = React.forwardRef<SVGFilterElement>(
         className="invisible absolute h-px w-px"
       >
         <defs>
-          <filter id="sound-filter-y" ref={ref}>
+          <filter id="sound-filter" ref={ref}>
             <feTurbulence
               type="fractalNoise"
               baseFrequency="0.000001"
@@ -33,4 +33,4 @@ const SoundFilterY = React.forwardRef<SVGFilterElement>(
   }
 );
 
-export default SoundFilterY;
+export default SoundFilter;

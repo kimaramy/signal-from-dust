@@ -32,6 +32,8 @@ export type NextStaticPageProps<TPath extends string = string> = {
  */
 export type NextLayoutProps<TPath extends string = string> = {
   params?: PathParams<TPath>;
+  children: React.ReactNode;
+  [slot: string]: React.ReactNode;
 };
 
 /**
