@@ -1,4 +1,4 @@
-import { cache, Suspense } from 'react';
+import { cache } from 'react';
 import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
@@ -7,27 +7,27 @@ import { dataCollectionSchema } from '@/components/dataCollection';
 import { dataNameSchema } from '@/components/dataName';
 import Dataset from '@/components/Dataset';
 import DatasetDownloadButton from '@/components/DatasetDownloadButton';
-import FakeDataset from '@/components/FakeDataset';
 import Floating from '@/components/Floating';
-import Main from '@/components/Main';
 import { monthSchema } from '@/components/month';
 import { seasonSchema } from '@/components/season';
 import { yearSchema } from '@/components/year';
 
 const fetchCachedDataset = cache(fetchDataset);
 
-type StaticQueryPageProps = NextStaticPageProps<
-  ReturnType<typeof generateStaticParams>[0]['slug']
+type GeneratedDatasetPageProps = NextStaticPageProps<
+  ReturnType<typeof generateStaticParams>[0]['collection']
 >;
 
 export function generateStaticParams() {
-  return dataCollectionSchema.getAllSlugs().map((slug) => ({ slug }));
+  return dataCollectionSchema
+    .getAllSlugs()
+    .map((collection) => ({ collection }));
 }
 
 export function generateMetadata({
-  params: { slug },
-}: StaticQueryPageProps): Metadata {
-  const dataCollectionKey = dataCollectionSchema.getKeyBySlug(slug);
+  params: { collection },
+}: GeneratedDatasetPageProps): Metadata {
+  const dataCollectionKey = dataCollectionSchema.getKeyBySlug(collection);
   const dataNameKey = dataNameSchema.defaultKey;
   return {
     title: [
@@ -41,11 +41,13 @@ export const dynamicParams = false;
 
 export const revalidate = false;
 
-async function StaticQueryPage({ params: { slug } }: StaticQueryPageProps) {
-  const dataCollectionKey = dataCollectionSchema.getKeyBySlug(slug);
+async function GeneratedDatasetPage({
+  params: { collection },
+}: GeneratedDatasetPageProps) {
+  const collectionKey = dataCollectionSchema.getKeyBySlug(collection);
 
   const datasetKeys = [
-    dataCollectionKey,
+    collectionKey,
     yearSchema.defaultKey,
     monthSchema.defaultKey,
     seasonSchema.defaultKey,
@@ -55,18 +57,13 @@ async function StaticQueryPage({ params: { slug } }: StaticQueryPageProps) {
 
   return (
     <>
-      <Main>
-        {/* Dataset 내부 클라이언트 사이드 쿼리 요청 대비 Suspense */}
-        <Suspense fallback={<FakeDataset />}>
-          <Dataset
-            initialCollectionKey={dataCollectionKey}
-            initialDataset={{
-              [dataCollectionKey]: initialDataset,
-            }}
-          />
-        </Suspense>
-      </Main>
-      <Floating right={2} bottom={11}>
+      <Dataset
+        initialCollectionKey={collectionKey}
+        initialDataset={{
+          [collectionKey]: initialDataset,
+        }}
+      />
+      <Floating right={2} bottom={3}>
         <DatasetDownloadButton
           dataset={initialDataset}
           datasetKeys={datasetKeys}
@@ -76,4 +73,4 @@ async function StaticQueryPage({ params: { slug } }: StaticQueryPageProps) {
   );
 }
 
-export default StaticQueryPage;
+export default GeneratedDatasetPage;

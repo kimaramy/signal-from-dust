@@ -32,11 +32,18 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
         map.set(key, toLowerCase(value.toString()));
       });
 
-      const search = setQueryParams(map, { stringify: true });
-
-      const pathname = `/${toLowerCase(values.dataCollectionKey)}`;
-
-      navigate(`${pathname}${search}` as TypedRoute, { method: 'push' });
+      if (values.mode === 'preset') {
+        const pathname = `/${toLowerCase(
+          values.dataCollectionKey
+        )}` as TypedRoute;
+        navigate(pathname, { method: 'push' });
+      } else {
+        const pathname = `/${toLowerCase(
+          values.dataCollectionKey
+        )}/search` as TypedRoute;
+        const search = setQueryParams(map, { stringify: true });
+        navigate(`${pathname}${search}`, { method: 'push' });
+      }
     },
     [setQueryParams, navigate]
   );
