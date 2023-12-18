@@ -21,33 +21,27 @@ function JsonToCsvButton<TData extends object = object>({
   parserOptions,
   ...rest
 }: JsonToCsvButtonProps<TData>) {
-  const [fileURL, setFileURL] = useState<string | null>(null);
+  const [fileURL, setFileURL] = useState('#');
 
-  const handleClick = useCallback(() => {
-    try {
-      const parser = new Parser(parserOptions);
-      const csv = parser.parse(json);
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      setFileURL(URL.createObjectURL(blob));
-    } catch (err) {
-      console.error(err);
-      toast.error(
-        `Can't download given dataset. Received ${JSON.stringify(
-          json,
-          null,
-          2
-        )}`
-      );
-    }
-  }, [json, parserOptions]);
+  const handleClick = useCallback<React.MouseEventHandler<HTMLAnchorElement>>(
+    (evt) => {
+      try {
+        const parser = new Parser(parserOptions);
+        const csv = parser.parse(json);
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        setFileURL(URL.createObjectURL(blob));
+      } catch (err) {
+        evt.preventDefault(); // prevent link action
+        console.error(err);
+        toast.error(`Can't download given dataset.`);
+      }
+    },
+    [json, parserOptions]
+  );
 
   return (
     <Button variant="ghost" size="icon" asChild {...rest}>
-      <Link
-        href={fileURL ?? 'javascript:void(0);'}
-        download={fileName}
-        onClick={handleClick}
-      >
+      <Link href={fileURL} download={fileName} onClick={handleClick}>
         <Icon.Download aria-hidden className="h-4 w-4" />
         <span className="sr-only">Download this dataset</span>
       </Link>

@@ -8,8 +8,7 @@ import Floating from '@/components/Floating';
 import Menu from '@/components/Menu';
 import QueryClientProvider from '@/components/QueryClientProvider';
 import QueryErrorBoundary from '@/components/QueryErrorBoundary';
-import SoundFilterX from '@/components/SoundFilterX';
-import SoundFilterY from '@/components/SoundFilterY';
+import SoundFilter from '@/components/SoundFilter';
 import ThemeProvider from '@/components/ThemeProvider';
 import ToastProvider from '@/components/ToastProvider';
 
@@ -26,10 +25,7 @@ function RootLayout({ children }: RootLayoutProps) {
     <html lang="ko" suppressHydrationWarning>
       <head>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        {/* <meta name="msapplication-TileColor" content="#ffffff" />
-        <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
-        <link rel="manifest" href="/manifest.json" /> */}
-        {/* <link
+        <link
           rel="apple-touch-icon"
           type="image/png"
           sizes="180x180"
@@ -41,12 +37,12 @@ function RootLayout({ children }: RootLayoutProps) {
           sizes="192x192"
           href="/android-icon-192x192.png"
         />
-        <link
+        {/* <link
           rel="shortcut icon"
           type="image/x-icon"
           sizes="16x16"
           href="/favicon.ico"
-        />
+        /> */}
         <link
           rel="icon"
           type="image/png"
@@ -58,7 +54,7 @@ function RootLayout({ children }: RootLayoutProps) {
           type="image/png"
           sizes="96x96"
           href="/favicon-96x96.png"
-        /> */}
+        />
         <link rel="preconnect" href="https://cdn.jsdelivr.net" />
         <link
           rel="stylesheet"
@@ -75,8 +71,7 @@ function RootLayout({ children }: RootLayoutProps) {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryClientProvider>
             <div className="relative flex min-h-screen flex-col">
-              <SoundFilterX />
-              <SoundFilterY />
+              <SoundFilter />
               <div className="flex-1">
                 <QueryErrorBoundary>
                   {children}

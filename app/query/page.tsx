@@ -1,6 +1,6 @@
 import { cache, Suspense } from 'react';
 import type { Metadata } from 'next';
-import { fetchInitialDataset } from '@/domains';
+import { fetchDataset } from '@/domains';
 
 import type { NextPageProps } from '@/lib/router';
 import {
@@ -17,7 +17,7 @@ import { parseMonthKey } from '@/components/month';
 import { parseSeasonKey } from '@/components/season';
 import { parseYearKey } from '@/components/year';
 
-const fetchInitialCachedDataset = cache(fetchInitialDataset);
+const fetchCachedDataset = cache(fetchDataset);
 
 export function generateMetadata({ searchParams }: NextPageProps): Metadata {
   const dataCollectionKey = parseDataCollectionKey(searchParams);
@@ -50,7 +50,7 @@ async function DynamicQueryPage({ searchParams }: NextPageProps) {
     seasonKey,
   ] as const;
 
-  const initialDataset = await fetchInitialCachedDataset(...datasetKeys);
+  const initialDataset = await fetchCachedDataset(...datasetKeys);
 
   return (
     <>
@@ -58,7 +58,7 @@ async function DynamicQueryPage({ searchParams }: NextPageProps) {
         {/* Dataset 내부 클라이언트 사이드 쿼리 요청 대비 Suspense */}
         <Suspense fallback={<FakeDataset />}>
           <Dataset
-            initialDataCollectionKey={dataCollectionKey}
+            initialCollectionKey={dataCollectionKey}
             initialDataset={{ [dataCollectionKey]: initialDataset }}
           />
         </Suspense>

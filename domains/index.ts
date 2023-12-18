@@ -1,5 +1,5 @@
 export * from './supabaseClient';
-export * from './prefetches';
+export * from './services';
 
 export * from './daily';
 export * from './weekdaily';

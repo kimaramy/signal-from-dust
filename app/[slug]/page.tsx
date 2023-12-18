@@ -1,6 +1,6 @@
 import { cache, Suspense } from 'react';
 import type { Metadata } from 'next';
-import { fetchInitialDataset } from '@/domains/prefetches';
+import { fetchDataset } from '@/domains';
 
 import type { NextStaticPageProps } from '@/lib/router';
 import { dataCollectionSchema } from '@/components/dataCollection';
@@ -14,7 +14,7 @@ import { monthSchema } from '@/components/month';
 import { seasonSchema } from '@/components/season';
 import { yearSchema } from '@/components/year';
 
-const fetchInitialCachedDataset = cache(fetchInitialDataset);
+const fetchCachedDataset = cache(fetchDataset);
 
 type StaticQueryPageProps = NextStaticPageProps<
   ReturnType<typeof generateStaticParams>[0]['slug']
@@ -51,7 +51,7 @@ async function StaticQueryPage({ params: { slug } }: StaticQueryPageProps) {
     seasonSchema.defaultKey,
   ] as const;
 
-  const initialDataset = await fetchInitialCachedDataset(...datasetKeys);
+  const initialDataset = await fetchCachedDataset(...datasetKeys);
 
   return (
     <>
@@ -59,7 +59,7 @@ async function StaticQueryPage({ params: { slug } }: StaticQueryPageProps) {
         {/* Dataset 내부 클라이언트 사이드 쿼리 요청 대비 Suspense */}
         <Suspense fallback={<FakeDataset />}>
           <Dataset
-            initialDataCollectionKey={dataCollectionKey}
+            initialCollectionKey={dataCollectionKey}
             initialDataset={{
               [dataCollectionKey]: initialDataset,
             }}

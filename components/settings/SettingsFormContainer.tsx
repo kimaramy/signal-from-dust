@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-import { useNavigate, useSetQueryParams } from '@/lib/router';
+import { useNavigate, useSetQueryParams, type TypedRoute } from '@/lib/router';
 import { QueryParamEnum, toLowerCase } from '@/lib/utils';
 
 import { useSettingsFormDefaultValues, useSettingsModeContext } from './hooks';
@@ -23,7 +23,6 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
   const handleSubmit = useCallback(
     (values: SettingsFormValues) => {
       const map = new Map<QueryParamEnum, string>()
-        .set(QueryParamEnum.DataCollection, values.dataCollectionKey)
         .set(QueryParamEnum.DataName, values.dataNameKey)
         .set(QueryParamEnum.Year, values.yearKey)
         .set(QueryParamEnum.Season, values.seasonKey)
@@ -35,7 +34,9 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
 
       const search = setQueryParams(map, { stringify: true });
 
-      navigate(`/query${search}`, { method: 'push' });
+      const pathname = `/${toLowerCase(values.dataCollectionKey)}`;
+
+      navigate(`${pathname}${search}` as TypedRoute, { method: 'push' });
     },
     [setQueryParams, navigate]
   );

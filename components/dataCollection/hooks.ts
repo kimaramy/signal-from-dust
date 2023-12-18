@@ -1,8 +1,6 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-
-import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
+import { useEnumUrlParam } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
 
 import { dataCollectionSchema, type DataCollectionKey } from './schema';
@@ -17,18 +15,7 @@ export function useDataCollectionKey(
   const [sluggedKey] = useEnumUrlParam(
     QueryParamEnum.DataCollection,
     defaultSluggedKey,
-    { enums: sluggedKeys, part: 'query' }
+    { enums: sluggedKeys, part: 'path' }
   );
   return dataCollectionSchema.getKeyBySlug(sluggedKey);
-}
-
-export function useSetDataCollectionKey() {
-  const setDataCollectionKey = useSetQueryParam(
-    useSearchParams(),
-    QueryParamEnum.DataCollection
-  );
-  return function (dataCollectionKey: DataCollectionKey) {
-    const sluggedKey = dataCollectionSchema.getSlug(dataCollectionKey);
-    return setDataCollectionKey(sluggedKey);
-  };
 }

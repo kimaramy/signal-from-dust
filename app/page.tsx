@@ -1,5 +1,5 @@
 import { cache, Suspense } from 'react';
-import { fetchInitialDataset } from '@/domains/prefetches';
+import { fetchDataset } from '@/domains';
 
 import type { NextPageProps } from '@/lib/router';
 import { dataCollectionSchema } from '@/components/dataCollection';
@@ -13,7 +13,7 @@ import { seasonSchema } from '@/components/season';
 import { SettingsDialog } from '@/components/settings';
 import { yearSchema } from '@/components/year';
 
-const fetchInitialCachedDataset = cache(fetchInitialDataset);
+const fetchCachedDataset = cache(fetchDataset);
 
 export const revalidate = false; // 다른 동적 패칭 혹은 캐싱 동작 발생 전까지 무기한으로 캐싱
 
@@ -26,7 +26,7 @@ async function IndexPage(_: NextPageProps) {
     seasonSchema.defaultKey,
   ] as const;
 
-  const initialDataset = await fetchInitialCachedDataset(...datasetKeys);
+  const initialDataset = await fetchCachedDataset(...datasetKeys);
 
   return (
     <>

@@ -15,7 +15,7 @@ import Sequence, { SceneUtils } from '@/components/Sequence';
 import { useYearKey } from '@/components/year';
 
 interface DatasetProps {
-  initialDataCollectionKey?: DataCollectionKey;
+  initialCollectionKey?: DataCollectionKey;
   initialDataset: {
     [dataCollectionSchema.keys.YEARLY]?: Domains.YearlyData[];
     [dataCollectionSchema.keys.SEASONALLY]?: Domains.MonthlyData[];
@@ -26,12 +26,12 @@ interface DatasetProps {
   };
 }
 
-function Dataset({ initialDataCollectionKey, initialDataset }: DatasetProps) {
+function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
   const displayKey = useDisplayKey();
 
   const dataNameKey = useDataNameKey();
 
-  const dataCollectionKey = useDataCollectionKey(initialDataCollectionKey);
+  const dataCollectionKey = useDataCollectionKey(initialCollectionKey);
 
   const yearKey = useYearKey();
 
