@@ -9,13 +9,13 @@ import {
 } from '@/lib/utils';
 import { LocaleSchema } from '@/components/locale';
 
-type DataCollectionKey = Uppercase<TableKeys> | 'SEASONALLY';
+type CollectionKey = Uppercase<TableKeys> | 'SEASONALLY';
 
-type DataCollectionValue = Lowercase<DataCollectionKey>;
+type CollectionValue = Lowercase<CollectionKey>;
 
-const dataCollectionKeys = Object.freeze(
+const collectionKeys = Object.freeze(
   toOrderedBy(
-    stringUnionToArray<DataCollectionKey>()(
+    stringUnionToArray<CollectionKey>()(
       'YEARLY',
       'SEASONALLY',
       'MONTHLY',
@@ -28,38 +28,29 @@ const dataCollectionKeys = Object.freeze(
 );
 
 // z.enum 타입이 [string, ...string[]] 형식. 즉 무조건 하나의 요소가 보장되어야하는 NonEmptyArray 타입이므로 불가피하게 이렇게 할당함
-const dataCollectionKeySchema = z.enum([
-  dataCollectionKeys[0],
-  ...dataCollectionKeys.slice(1),
+const collectionKeySchema = z.enum([
+  collectionKeys[0],
+  ...collectionKeys.slice(1),
 ]);
 
-const dataCollectionKeyValueMap = new Map<
-  DataCollectionKey,
-  DataCollectionValue
->(
-  dataCollectionKeys.map((dataCollectionKey) => [
-    dataCollectionKey,
-    toLowerCase(dataCollectionKey),
+const collectionKeyValueMap = new Map<CollectionKey, CollectionValue>(
+  collectionKeys.map((collectionKey) => [
+    collectionKey,
+    toLowerCase(collectionKey),
   ])
 );
 
-class DataCollectionSchema extends KeyValueSchema<
-  DataCollectionKey,
-  DataCollectionValue
-> {
+class CollectionSchema extends KeyValueSchema<CollectionKey, CollectionValue> {
   constructor() {
     super(
-      dataCollectionKeySchema,
-      dataCollectionKeySchema.enum.DAILY,
-      dataCollectionKeyValueMap
+      collectionKeySchema,
+      collectionKeySchema.enum.DAILY,
+      collectionKeyValueMap
     );
   }
-  display(
-    dataCollectionKey: DataCollectionKey,
-    locale = LocaleSchema.defaultLocale
-  ) {
+  display(collectionKey: CollectionKey, locale = LocaleSchema.defaultLocale) {
     const isKorean = LocaleSchema.isKorean(locale);
-    switch (dataCollectionKey) {
+    switch (collectionKey) {
       case 'YEARLY':
         return isKorean ? '연도별' : 'Yearly';
       case 'SEASONALLY':
@@ -73,11 +64,11 @@ class DataCollectionSchema extends KeyValueSchema<
       case 'DAILY':
         return isKorean ? '일별' : 'Daily';
       default:
-        return this.parseKey(dataCollectionKey) as never;
+        return this.parseKey(collectionKey) as never;
     }
   }
-  getDataCount(dataCollectionKey: DataCollectionKey) {
-    switch (dataCollectionKey) {
+  getDataCount(collectionKey: CollectionKey) {
+    switch (collectionKey) {
       case 'YEARLY':
         return 8;
       case 'SEASONALLY':
@@ -91,15 +82,11 @@ class DataCollectionSchema extends KeyValueSchema<
       case 'DAILY':
         return 31;
       default:
-        return this.parseKey(dataCollectionKey) as never;
+        return this.parseKey(collectionKey) as never;
     }
   }
 }
 
-const dataCollectionSchema = new DataCollectionSchema();
+const collectionSchema = new CollectionSchema();
 
-export {
-  dataCollectionSchema,
-  type DataCollectionKey,
-  type DataCollectionValue,
-};
+export { collectionSchema, type CollectionKey, type CollectionValue };

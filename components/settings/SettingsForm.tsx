@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { Form } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
-import { type DataCollectionKey } from '@/components/dataCollection';
+import { type CollectionKey } from '@/components/collection';
 import { type DataNameKey } from '@/components/dataName';
 import { type MonthKey } from '@/components/month';
 import { type SeasonKey } from '@/components/season';
@@ -23,7 +23,7 @@ type SettingsMode = 'preset' | 'custom';
 interface SettingsFormValues {
   mode: SettingsMode;
   dataNameKey: DataNameKey;
-  dataCollectionKey: DataCollectionKey;
+  collectionKey: CollectionKey;
   yearKey: YearKey;
   seasonKey: SeasonKey;
   monthKey: MonthKey;

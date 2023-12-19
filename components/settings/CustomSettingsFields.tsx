@@ -4,7 +4,7 @@ import { useWatch } from 'react-hook-form';
 
 import { cn } from '@/lib/utils';
 
-import DataCollectionField from './DataCollectionField';
+import CollectionField from './CollectionField';
 import DataNameField from './DataNameField';
 import LocationField from './LocationField';
 import MonthField from './MonthField';
@@ -24,7 +24,7 @@ function CustomSettingsFields() {
         <DataNameField />
       </div>
       <div className="flex justify-between gap-2">
-        <DataCollectionField />
+        <CollectionField />
       </div>
       <div className="flex justify-between gap-2">
         <SeasonField />

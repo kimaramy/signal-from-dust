@@ -11,10 +11,7 @@ import type {
 } from '@/domains';
 
 import { Skeleton } from '@/components/ui/skeleton';
-import {
-  dataCollectionSchema,
-  type DataCollectionKey,
-} from '@/components/dataCollection';
+import { collectionSchema, type CollectionKey } from '@/components/collection';
 import { dataNameSchema, type DataNameKey } from '@/components/dataName';
 import { daySchema } from '@/components/day';
 import { type DisplayKey } from '@/components/display';
@@ -82,7 +79,7 @@ export class SceneUtils {
   static toDailyScenes(
     dataset: DailyData[],
     dataNameKey: DataNameKey,
-    dataCollectionKey: DataCollectionKey,
+    collectionKey: CollectionKey,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, month, day, pm_large, pm_small }) => ({
@@ -95,7 +92,7 @@ export class SceneUtils {
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: dataCollectionSchema.display(dataCollectionKey),
+      collection: collectionSchema.display(collectionKey),
       dates: [
         monthSchema.display(monthSchema.getKeyByValue(month), 'short', locale),
         daySchema.display(daySchema.getKeyByValue(day), locale),
@@ -107,7 +104,7 @@ export class SceneUtils {
   static toWeekDailyScenes(
     dataset: WeekDailyData[],
     dataNameKey: DataNameKey,
-    dataCollectionKey: DataCollectionKey,
+    collectionKey: CollectionKey,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, month, weekday, pm_large, pm_small }) => ({
@@ -120,7 +117,7 @@ export class SceneUtils {
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: dataCollectionSchema.display(dataCollectionKey),
+      collection: collectionSchema.display(collectionKey),
       dates: [
         monthSchema.display(monthSchema.getKeyByValue(month), 'short', locale),
         weekdaySchema.display(
@@ -136,7 +133,7 @@ export class SceneUtils {
   static toWeeklyScenes(
     dataset: WeeklyData[],
     dataNameKey: DataNameKey,
-    dataCollectionKey: DataCollectionKey,
+    collectionKey: CollectionKey,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, year, week, pm_large, pm_small }) => ({
@@ -149,7 +146,7 @@ export class SceneUtils {
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: dataCollectionSchema.display(dataCollectionKey),
+      collection: collectionSchema.display(collectionKey),
       dates: [
         yearSchema.display(yearSchema.getKeyByValue(year), 'short', locale),
         weekSchema.display(weekSchema.getKeyByValue(week), locale),
@@ -161,7 +158,7 @@ export class SceneUtils {
   static toMonthlyScenes(
     dataset: MonthlyData[],
     dataNameKey: DataNameKey,
-    dataCollectionKey: DataCollectionKey,
+    collectionKey: CollectionKey,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, year, month, pm_large, pm_small }) => ({
@@ -174,7 +171,7 @@ export class SceneUtils {
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: dataCollectionSchema.display(dataCollectionKey),
+      collection: collectionSchema.display(collectionKey),
       dates: [
         yearSchema.display(yearSchema.getKeyByValue(year), 'short', locale),
         monthSchema.display(monthSchema.getKeyByValue(month), 'short', locale),
@@ -186,7 +183,7 @@ export class SceneUtils {
   static toYearlyScenes(
     dataset: YearlyData[],
     dataNameKey: DataNameKey,
-    dataCollectionKey: DataCollectionKey,
+    collectionKey: CollectionKey,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, year, pm_large, pm_small }) => ({
@@ -199,7 +196,7 @@ export class SceneUtils {
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: dataCollectionSchema.display(dataCollectionKey),
+      collection: collectionSchema.display(collectionKey),
       dates: [
         yearSchema.display(yearSchema.getKeyByValue(year), 'short', locale),
       ],

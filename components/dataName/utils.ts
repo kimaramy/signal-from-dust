@@ -4,10 +4,10 @@ import { QueryParamEnum } from '@/lib/utils';
 import { dataNameSchema } from './schema';
 
 export const parseDataNameKey = (params?: UrlParams) => {
-  const [sluggedKey] = parseUrlParam(
+  const [parsedKey] = parseUrlParam(
     params,
     QueryParamEnum.DataName,
     dataNameSchema.defaultKey
   );
-  return dataNameSchema.getKeyBySlug(sluggedKey);
+  return dataNameSchema.upperCaseKey(parsedKey);
 };

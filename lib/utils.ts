@@ -32,8 +32,8 @@ export function getEnumKeyByValue<T, K extends T[keyof T]>(
 }
 
 export enum QueryParamEnum {
+  Collection = 'collection',
   DataName = 'name',
-  DataCollection = 'unit',
   Year = 'year',
   Season = 'season',
   Month = 'month',
@@ -46,7 +46,6 @@ const numbersSchema = z.array(z.number());
 export class KeyValueSchema<
   TKey extends string,
   TValue extends string | number,
-  TSlug = Lowercase<TKey>,
 > {
   protected readonly keySchema: z.ZodEnum<[TKey, ...TKey[]]>;
   protected readonly keyValueMap: Map<TKey, TValue>;
@@ -124,16 +123,16 @@ export class KeyValueSchema<
       dbValues.every((dbValue) => values.includes(dbValue));
     return isSynced;
   }
-  getSlug(key: TKey) {
-    return toLowerCase(key) as TSlug;
+  lowerCaseKey(key: TKey) {
+    return toLowerCase(key);
   }
-  getKeyBySlug(slug: string) {
-    const maybeKey = toUpperCase(slug);
-    this.parseKey(maybeKey);
-    return maybeKey as TKey;
+  upperCaseKey(lowerCasedKey: string) {
+    const upperCasedKey = toUpperCase(lowerCasedKey);
+    this.parseKey(upperCasedKey);
+    return upperCasedKey as TKey;
   }
-  getAllSlugs() {
-    return this.getAllKeys().map((key) => this.getSlug(key));
+  mapKeys<T>(fn: (key: TKey) => T) {
+    return this.getAllKeys().map(fn);
   }
 }
 

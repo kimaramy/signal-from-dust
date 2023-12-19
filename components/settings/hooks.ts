@@ -2,7 +2,7 @@
 
 import { useContext, useMemo } from 'react';
 
-import { dataCollectionSchema } from '@/components/dataCollection';
+import { collectionSchema } from '@/components/collection';
 import { dataNameSchema } from '@/components/dataName';
 import { monthSchema } from '@/components/month';
 import { seasonSchema } from '@/components/season';
@@ -26,7 +26,7 @@ function useSettingsFormDefaultValues(defaultMode: SettingsMode) {
     () => ({
       mode: defaultMode,
       dataNameKey: dataNameSchema.defaultKey,
-      dataCollectionKey: dataCollectionSchema.defaultKey,
+      collectionKey: collectionSchema.defaultKey,
       yearKey: yearSchema.defaultKey,
       seasonKey: seasonSchema.defaultKey,
       monthKey: monthSchema.defaultKey,

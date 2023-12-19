@@ -2,11 +2,7 @@
 
 import * as Domains from '@/domains';
 
-import {
-  dataCollectionSchema,
-  useDataCollectionKey,
-  type DataCollectionKey,
-} from '@/components/dataCollection';
+import { collectionSchema, type CollectionKey } from '@/components/collection';
 import { useDataNameKey } from '@/components/dataName';
 import { useDisplayKey } from '@/components/display';
 import { useMonthKey } from '@/components/month';
@@ -15,14 +11,14 @@ import Sequence, { SceneUtils } from '@/components/Sequence';
 import { useYearKey } from '@/components/year';
 
 interface DatasetProps {
-  initialCollectionKey?: DataCollectionKey;
-  initialDataset: {
-    [dataCollectionSchema.keys.YEARLY]?: Domains.YearlyData[];
-    [dataCollectionSchema.keys.SEASONALLY]?: Domains.MonthlyData[];
-    [dataCollectionSchema.keys.MONTHLY]?: Domains.MonthlyData[];
-    [dataCollectionSchema.keys.WEEKLY]?: Domains.WeeklyData[];
-    [dataCollectionSchema.keys.WEEKDAILY]?: Domains.WeekDailyData[];
-    [dataCollectionSchema.keys.DAILY]?: Domains.DailyData[];
+  initialCollectionKey: CollectionKey;
+  initialDataset?: {
+    [collectionSchema.keys.YEARLY]?: Domains.YearlyData[];
+    [collectionSchema.keys.SEASONALLY]?: Domains.MonthlyData[];
+    [collectionSchema.keys.MONTHLY]?: Domains.MonthlyData[];
+    [collectionSchema.keys.WEEKLY]?: Domains.WeeklyData[];
+    [collectionSchema.keys.WEEKDAILY]?: Domains.WeekDailyData[];
+    [collectionSchema.keys.DAILY]?: Domains.DailyData[];
   };
 }
 
@@ -31,8 +27,6 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
 
   const dataNameKey = useDataNameKey();
 
-  const dataCollectionKey = useDataCollectionKey(initialCollectionKey);
-
   const yearKey = useYearKey();
 
   const seasonKey = useSeasonKey();
@@ -40,53 +34,53 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
   const monthKey = useMonthKey();
 
   const yearlyScenes = Domains.useYearlyListQuery({
-    initialData: initialDataset['YEARLY'],
-    enabled: dataCollectionKey === 'YEARLY',
+    initialData: initialDataset?.['YEARLY'],
+    enabled: initialCollectionKey === 'YEARLY',
     select: (dataset) =>
-      SceneUtils.toYearlyScenes(dataset, dataNameKey, dataCollectionKey),
+      SceneUtils.toYearlyScenes(dataset, dataNameKey, initialCollectionKey),
   });
 
   const seasonalScenes = Domains.useMonthlyListQueryBySeason(
     yearKey,
     seasonKey,
     {
-      initialData: initialDataset['SEASONALLY'],
-      enabled: dataCollectionKey === 'SEASONALLY',
+      initialData: initialDataset?.['SEASONALLY'],
+      enabled: initialCollectionKey === 'SEASONALLY',
       select: (dataset) =>
-        SceneUtils.toMonthlyScenes(dataset, dataNameKey, dataCollectionKey),
+        SceneUtils.toMonthlyScenes(dataset, dataNameKey, initialCollectionKey),
     }
   );
 
   const monthlyScenes = Domains.useMonthlyListQuery(yearKey, {
-    initialData: initialDataset['MONTHLY'],
-    enabled: dataCollectionKey === 'MONTHLY',
+    initialData: initialDataset?.['MONTHLY'],
+    enabled: initialCollectionKey === 'MONTHLY',
     select: (dataset) =>
-      SceneUtils.toMonthlyScenes(dataset, dataNameKey, dataCollectionKey),
+      SceneUtils.toMonthlyScenes(dataset, dataNameKey, initialCollectionKey),
   });
 
   const weeklyScenes = Domains.useWeeklyListQuery(yearKey, {
-    initialData: initialDataset['WEEKLY'],
-    enabled: dataCollectionKey === 'WEEKLY',
+    initialData: initialDataset?.['WEEKLY'],
+    enabled: initialCollectionKey === 'WEEKLY',
     select: (dataset) =>
-      SceneUtils.toWeeklyScenes(dataset, dataNameKey, dataCollectionKey),
+      SceneUtils.toWeeklyScenes(dataset, dataNameKey, initialCollectionKey),
   });
 
   const weekdailyScenes = Domains.useWeekDailyListQuery(monthKey, {
-    initialData: initialDataset['WEEKDAILY'],
-    enabled: dataCollectionKey === 'WEEKDAILY',
+    initialData: initialDataset?.['WEEKDAILY'],
+    enabled: initialCollectionKey === 'WEEKDAILY',
     select: (dataset) =>
-      SceneUtils.toWeekDailyScenes(dataset, dataNameKey, dataCollectionKey),
+      SceneUtils.toWeekDailyScenes(dataset, dataNameKey, initialCollectionKey),
   });
 
   const dailyScenes = Domains.useDailyListQuery(monthKey, {
-    initialData: initialDataset['DAILY'],
-    enabled: dataCollectionKey === 'DAILY',
+    initialData: initialDataset?.['DAILY'],
+    enabled: initialCollectionKey === 'DAILY',
     select: (dataset) =>
-      SceneUtils.toDailyScenes(dataset, dataNameKey, dataCollectionKey),
+      SceneUtils.toDailyScenes(dataset, dataNameKey, initialCollectionKey),
   });
 
   const scenes = (function () {
-    switch (dataCollectionKey) {
+    switch (initialCollectionKey) {
       case 'YEARLY':
         return yearlyScenes;
       case 'SEASONALLY':
@@ -104,7 +98,7 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
   })();
 
   const sequenceId = [
-    dataCollectionKey,
+    initialCollectionKey,
     dataNameKey,
     yearKey,
     seasonKey,

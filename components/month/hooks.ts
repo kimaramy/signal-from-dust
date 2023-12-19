@@ -8,16 +8,16 @@ import { QueryParamEnum } from '@/lib/utils';
 import { monthSchema, type MonthKey } from './schema';
 
 export function useMonthKey(initialKey?: MonthKey): MonthKey {
-  const sluggedKeys = monthSchema.getAllSlugs();
-  const defaultSluggedKey = monthSchema.getSlug(
+  const lowerCasedKeys = monthSchema.mapKeys(monthSchema.lowerCaseKey);
+  const lowerCasedDefaultKey = monthSchema.lowerCaseKey(
     initialKey ?? monthSchema.defaultKey
   );
-  const [sluggedKey] = useEnumUrlParam(
+  const [lowerCasedKey] = useEnumUrlParam(
     QueryParamEnum.Month,
-    defaultSluggedKey,
-    { enums: sluggedKeys, part: 'query' }
+    lowerCasedDefaultKey,
+    { enums: lowerCasedKeys, part: 'query' }
   );
-  return monthSchema.getKeyBySlug(sluggedKey);
+  return monthSchema.upperCaseKey(lowerCasedKey);
 }
 
 export function useMonthValue() {
@@ -28,7 +28,7 @@ export function useMonthValue() {
 export function useSetMonthKey() {
   const setMonthKey = useSetQueryParam(useSearchParams(), QueryParamEnum.Month);
   return function (monthKey: MonthKey) {
-    const sluggedKey = monthSchema.getSlug(monthKey);
-    return setMonthKey(sluggedKey);
+    const lowerCasedKey = monthSchema.lowerCaseKey(monthKey);
+    return setMonthKey(lowerCasedKey);
   };
 }

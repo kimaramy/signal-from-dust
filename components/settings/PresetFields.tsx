@@ -7,10 +7,7 @@ import { useFormContext } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 import { FormField } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import {
-  dataCollectionSchema,
-  type DataCollectionKey,
-} from '@/components/dataCollection';
+import { collectionSchema, type CollectionKey } from '@/components/collection';
 import { dataNameSchema } from '@/components/dataName';
 
 import { type SettingsFormValues } from './SettingsForm';
@@ -26,15 +23,15 @@ function PresetFields() {
 
   const mode = watch('mode');
 
-  const dataCollectionKey = watch('dataCollectionKey');
+  const collectionKey = watch('collectionKey');
 
   const isPresetMode = mode === 'preset';
 
   const handleValueChange = useCallback(
-    (dataCollectionKey: DataCollectionKey) => {
+    (collectionKey: CollectionKey) => {
       reset({
         ...defaultValues,
-        dataCollectionKey,
+        collectionKey,
         mode: 'preset',
       });
     },
@@ -63,7 +60,7 @@ function PresetFields() {
     <section>
       <h3 className="pb-3 text-sm">
         <span className="inline-block rounded bg-muted px-1.5 py-0.5 font-bold">
-          {getPresetLabel(dataCollectionKey)}
+          {getPresetLabel(collectionKey)}
         </span>
         {[
           ' 나타나는',
@@ -71,7 +68,7 @@ function PresetFields() {
         ].join(' ')}
       </h3>
       <FormField
-        name="dataCollectionKey"
+        name="collectionKey"
         control={control}
         render={({ field }) => {
           return (
@@ -80,23 +77,21 @@ function PresetFields() {
               value={field.value}
               onValueChange={handleValueChange}
             >
-              {dataCollectionSchema
+              {collectionSchema
                 .getAllKeys()
                 .reverse()
-                .map((dataCollectionKey) => {
+                .map((collectionKey) => {
                   return (
                     <label
-                      key={dataCollectionKey}
+                      key={collectionKey}
                       className={cn(
                         'relative flex w-full cursor-pointer items-center justify-between rounded-md border px-3 py-2 shadow-sm',
-                        field.value === dataCollectionKey &&
+                        field.value === collectionKey &&
                           'bg-accent/50 shadow-inner'
                       )}
                     >
-                      <p className="text-sm">
-                        {getPresetLabel(dataCollectionKey)}
-                      </p>
-                      <RadioGroupItem value={dataCollectionKey} />
+                      <p className="text-sm">{getPresetLabel(collectionKey)}</p>
+                      <RadioGroupItem value={collectionKey} />
                     </label>
                   );
                 })}
@@ -108,18 +103,18 @@ function PresetFields() {
   );
 }
 
-function getPresetLabel(dataCollectionKey: DataCollectionKey) {
-  return dataCollectionKey === 'YEARLY'
+function getPresetLabel(collectionKey: CollectionKey) {
+  return collectionKey === 'YEARLY'
     ? '매년'
-    : dataCollectionKey === 'SEASONALLY'
+    : collectionKey === 'SEASONALLY'
     ? '사계절마다'
-    : dataCollectionKey === 'MONTHLY'
+    : collectionKey === 'MONTHLY'
     ? '매달'
-    : dataCollectionKey === 'WEEKLY'
+    : collectionKey === 'WEEKLY'
     ? '매주'
-    : dataCollectionKey === 'WEEKDAILY'
+    : collectionKey === 'WEEKDAILY'
     ? '요일마다'
-    : dataCollectionKey === 'DAILY'
+    : collectionKey === 'DAILY'
     ? '매일'
     : '';
 }

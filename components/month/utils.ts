@@ -4,10 +4,10 @@ import { QueryParamEnum } from '@/lib/utils';
 import { monthSchema } from './schema';
 
 export const parseMonthKey = (params?: UrlParams) => {
-  const [sluggedKey] = parseUrlParam(
+  const [parsedKey] = parseUrlParam(
     params,
     QueryParamEnum.Month,
     monthSchema.defaultKey
   );
-  return monthSchema.getKeyBySlug(sluggedKey);
+  return monthSchema.upperCaseKey(parsedKey);
 };

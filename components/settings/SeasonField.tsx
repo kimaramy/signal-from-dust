@@ -15,11 +15,11 @@ function SeasonField() {
 
   const mode = watch('mode');
 
-  const dataCollectionKey = watch('dataCollectionKey');
+  const collectionKey = watch('collectionKey');
 
   const isDisabled = mode === 'preset';
 
-  const isVisible = dataCollectionKey === 'SEASONALLY';
+  const isVisible = collectionKey === 'SEASONALLY';
 
   return (
     <FormField

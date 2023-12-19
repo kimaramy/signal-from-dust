@@ -1,17 +1,14 @@
 'use client';
 
 import { Skeleton } from '@/components/ui/skeleton';
-import {
-  dataCollectionSchema,
-  useDataCollectionKey,
-} from '@/components/dataCollection';
+import { collectionSchema, useCollectionKey } from '@/components/collection';
 import Grid from '@/components/Grid';
 
 function FakeDataset() {
-  const dataCollectionKey = useDataCollectionKey();
+  const collectionKey = useCollectionKey();
 
   const numbers: number[] = new Array(
-    dataCollectionSchema.getDataCount(dataCollectionKey)
+    collectionSchema.getDataCount(collectionKey)
   ).fill(0);
 
   return (

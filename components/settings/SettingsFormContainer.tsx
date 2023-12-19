@@ -22,7 +22,14 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
 
   const handleSubmit = useCallback(
     (values: SettingsFormValues) => {
+      if (values.mode === 'preset') {
+        const pathname = `/${toLowerCase(values.collectionKey)}` as TypedRoute;
+
+        return navigate(pathname, { method: 'push' });
+      }
+
       const map = new Map<QueryParamEnum, string>()
+        .set(QueryParamEnum.Collection, values.collectionKey)
         .set(QueryParamEnum.DataName, values.dataNameKey)
         .set(QueryParamEnum.Year, values.yearKey)
         .set(QueryParamEnum.Season, values.seasonKey)
@@ -32,18 +39,11 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
         map.set(key, toLowerCase(value.toString()));
       });
 
-      if (values.mode === 'preset') {
-        const pathname = `/${toLowerCase(
-          values.dataCollectionKey
-        )}` as TypedRoute;
-        navigate(pathname, { method: 'push' });
-      } else {
-        const pathname = `/${toLowerCase(
-          values.dataCollectionKey
-        )}/search` as TypedRoute;
-        const search = setQueryParams(map, { stringify: true });
-        navigate(`${pathname}${search}`, { method: 'push' });
-      }
+      const pathname = `/search` as TypedRoute;
+
+      const search = setQueryParams(map, { stringify: true });
+
+      navigate(`${pathname}${search}`, { method: 'push' });
     },
     [setQueryParams, navigate]
   );

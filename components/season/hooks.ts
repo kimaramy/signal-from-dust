@@ -8,16 +8,16 @@ import { QueryParamEnum } from '@/lib/utils';
 import { seasonSchema, type SeasonKey, type SeasonValue } from './schema';
 
 export function useSeasonKey(initialKey?: SeasonKey): SeasonKey {
-  const sluggedKeys = seasonSchema.getAllSlugs();
-  const defaultSluggedKey = seasonSchema.getSlug(
+  const lowerCasedKeys = seasonSchema.mapKeys(seasonSchema.lowerCaseKey);
+  const lowerCasedDefaultKey = seasonSchema.lowerCaseKey(
     initialKey ?? seasonSchema.defaultKey
   );
-  const [sluggedKey] = useEnumUrlParam(
+  const [lowerCasedKey] = useEnumUrlParam(
     QueryParamEnum.Season,
-    defaultSluggedKey,
-    { enums: sluggedKeys, part: 'query' }
+    lowerCasedDefaultKey,
+    { enums: lowerCasedKeys, part: 'query' }
   );
-  return seasonSchema.getKeyBySlug(sluggedKey);
+  return seasonSchema.upperCaseKey(lowerCasedKey);
 }
 
 export function useSeasonValue(): SeasonValue {
@@ -31,7 +31,7 @@ export function useSetSeasonKey() {
     QueryParamEnum.Season
   );
   return function (seasonKey: SeasonKey) {
-    const sluggedKey = seasonSchema.getSlug(seasonKey);
-    return setSeasonKey(sluggedKey);
+    const lowerCasedKey = seasonSchema.lowerCaseKey(seasonKey);
+    return setSeasonKey(lowerCasedKey);
   };
 }

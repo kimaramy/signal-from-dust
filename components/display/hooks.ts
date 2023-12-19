@@ -8,16 +8,16 @@ import { QueryParamEnum } from '@/lib/utils';
 import { displaySchema, type DisplayKey } from './schema';
 
 export function useDisplayKey(initialKey?: DisplayKey): DisplayKey {
-  const sluggedKeys = displaySchema.getAllSlugs();
-  const defaultSluggedKey = displaySchema.getSlug(
+  const lowerCasedKeys = displaySchema.mapKeys(displaySchema.lowerCaseKey);
+  const lowerCasedDefaultKey = displaySchema.lowerCaseKey(
     initialKey ?? displaySchema.defaultKey
   );
-  const [sluggedKey] = useEnumUrlParam(
+  const [lowerCasedKey] = useEnumUrlParam(
     QueryParamEnum.Display,
-    defaultSluggedKey,
-    { enums: sluggedKeys, part: 'query' }
+    lowerCasedDefaultKey,
+    { enums: lowerCasedKeys, part: 'query' }
   );
-  return displaySchema.getKeyBySlug(sluggedKey);
+  return displaySchema.upperCaseKey(lowerCasedKey);
 }
 
 export function useSetDisplayKey() {
@@ -26,7 +26,7 @@ export function useSetDisplayKey() {
     QueryParamEnum.Display
   );
   return function (displayKey: DisplayKey) {
-    const sluggedKey = displaySchema.getSlug(displayKey);
-    return setDisplayKey(sluggedKey);
+    const lowerCasedKey = displaySchema.lowerCaseKey(displayKey);
+    return setDisplayKey(lowerCasedKey);
   };
 }

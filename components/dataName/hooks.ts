@@ -8,16 +8,16 @@ import { QueryParamEnum } from '@/lib/utils';
 import { dataNameSchema, type DataNameKey } from './schema';
 
 export function useDataNameKey(initialKey?: DataNameKey): DataNameKey {
-  const sluggedKeys = dataNameSchema.getAllSlugs();
-  const defaultSluggedKey = dataNameSchema.getSlug(
+  const lowerCasedKeys = dataNameSchema.mapKeys(dataNameSchema.lowerCaseKey);
+  const lowerCasedDefaultKey = dataNameSchema.lowerCaseKey(
     initialKey ?? dataNameSchema.defaultKey
   );
-  const [sluggedKey] = useEnumUrlParam(
+  const [lowerCasedKey] = useEnumUrlParam(
     QueryParamEnum.DataName,
-    defaultSluggedKey,
-    { enums: sluggedKeys, part: 'query' }
+    lowerCasedDefaultKey,
+    { enums: lowerCasedKeys, part: 'query' }
   );
-  return dataNameSchema.getKeyBySlug(sluggedKey);
+  return dataNameSchema.upperCaseKey(lowerCasedKey);
 }
 
 export function useSetDataNameKey() {
@@ -26,7 +26,7 @@ export function useSetDataNameKey() {
     QueryParamEnum.DataName
   );
   return function (dataNameKey: DataNameKey) {
-    const sluggedKey = dataNameSchema.getSlug(dataNameKey);
-    return setDataNameKey(sluggedKey);
+    const lowerCasedKey = dataNameSchema.lowerCaseKey(dataNameKey);
+    return setDataNameKey(lowerCasedKey);
   };
 }

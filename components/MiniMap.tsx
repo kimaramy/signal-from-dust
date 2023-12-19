@@ -4,13 +4,13 @@ import React, { useEffect, useRef } from 'react';
 // @ts-ignore
 import pagemap from 'pagemap';
 
-import { useDataCollectionKey } from '@/components/dataCollection';
+import { useCollectionKey } from '@/components/collection';
 import { useDisplayKey } from '@/components/display';
 
 function MiniMap() {
   const displayKey = useDisplayKey();
 
-  const dataCollectionKey = useDataCollectionKey();
+  const collectionKey = useCollectionKey();
 
   const canvasRef = useRef(null);
 
@@ -34,13 +34,13 @@ function MiniMap() {
     return () => {
       clearTimeout(timeout);
     };
-  }, [displayKey, dataCollectionKey]);
+  }, [displayKey, collectionKey]);
 
   if (displayKey === 'AUTO') return null;
 
   return (
     <canvas
-      key={dataCollectionKey}
+      key={collectionKey}
       ref={canvasRef}
       className="absolute right-0 top-0 z-50 h-screen"
     ></canvas>

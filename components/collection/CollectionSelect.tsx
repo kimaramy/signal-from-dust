@@ -7,17 +7,17 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { dataCollectionSchema, type DataCollectionKey } from './schema';
+import { collectionSchema, type CollectionKey } from './schema';
 
-interface DataCollectionSelectProps {
-  value: DataCollectionKey;
-  onValueChange: (value: DataCollectionKey) => void;
+interface CollectionSelectProps {
+  value: CollectionKey;
+  onValueChange: (value: CollectionKey) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
 }
 
-function DataCollectionSelect(props: DataCollectionSelectProps) {
+function CollectionSelect(props: CollectionSelectProps) {
   const {
     value,
     onValueChange,
@@ -26,7 +26,7 @@ function DataCollectionSelect(props: DataCollectionSelectProps) {
     className,
   } = props;
 
-  const dataCollectionKeys = dataCollectionSchema.getAllKeys();
+  const collectionKeys = collectionSchema.getAllKeys();
 
   return (
     <Select value={value} disabled={disabled} onValueChange={onValueChange}>
@@ -34,9 +34,9 @@ function DataCollectionSelect(props: DataCollectionSelectProps) {
         <SelectValue placeholder="조회 기간 선택" />
       </SelectTrigger>
       <SelectContent>
-        {dataCollectionKeys.map((dataCollectionKey) => (
-          <SelectItem key={dataCollectionKey} value={dataCollectionKey}>
-            {dataCollectionSchema.display(dataCollectionKey)}
+        {collectionKeys.map((collectionKey) => (
+          <SelectItem key={collectionKey} value={collectionKey}>
+            {collectionSchema.display(collectionKey)}
           </SelectItem>
         ))}
       </SelectContent>
@@ -44,4 +44,4 @@ function DataCollectionSelect(props: DataCollectionSelectProps) {
   );
 }
 
-export default DataCollectionSelect;
+export default CollectionSelect;

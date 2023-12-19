@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
 import type { NextStaticPageProps } from '@/lib/router';
-import { dataCollectionSchema } from '@/components/dataCollection';
+import { collectionSchema } from '@/components/collection';
 import { dataNameSchema } from '@/components/dataName';
 import Dataset from '@/components/Dataset';
 import DatasetDownloadButton from '@/components/DatasetDownloadButton';
@@ -14,24 +14,24 @@ import { yearSchema } from '@/components/year';
 
 const fetchCachedDataset = cache(fetchDataset);
 
-type GeneratedDatasetPageProps = NextStaticPageProps<
+type StaticDatasetPageProps = NextStaticPageProps<
   ReturnType<typeof generateStaticParams>[0]['collection']
 >;
 
 export function generateStaticParams() {
-  return dataCollectionSchema
-    .getAllSlugs()
+  return collectionSchema
+    .mapKeys(collectionSchema.lowerCaseKey)
     .map((collection) => ({ collection }));
 }
 
 export function generateMetadata({
   params: { collection },
-}: GeneratedDatasetPageProps): Metadata {
-  const dataCollectionKey = dataCollectionSchema.getKeyBySlug(collection);
+}: StaticDatasetPageProps): Metadata {
+  const collectionKey = collectionSchema.upperCaseKey(collection);
   const dataNameKey = dataNameSchema.defaultKey;
   return {
     title: [
-      dataCollectionSchema.display(dataCollectionKey, 'en'),
+      collectionSchema.display(collectionKey, 'en'),
       dataNameSchema.display(dataNameKey, 'en'),
     ].join(' '),
   };
@@ -41,10 +41,10 @@ export const dynamicParams = false;
 
 export const revalidate = false;
 
-async function GeneratedDatasetPage({
+async function StaticDatasetPage({
   params: { collection },
-}: GeneratedDatasetPageProps) {
-  const collectionKey = dataCollectionSchema.getKeyBySlug(collection);
+}: StaticDatasetPageProps) {
+  const collectionKey = collectionSchema.upperCaseKey(collection);
 
   const datasetKeys = [
     collectionKey,
@@ -73,4 +73,4 @@ async function GeneratedDatasetPage({
   );
 }
 
-export default GeneratedDatasetPage;
+export default StaticDatasetPage;

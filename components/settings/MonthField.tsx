@@ -16,16 +16,15 @@ function MonthField() {
 
   const mode = watch('mode');
 
-  const dataCollectionKey = watch('dataCollectionKey');
+  const collectionKey = watch('collectionKey');
 
   const isDisabled = mode === 'preset';
 
-  const isVisible =
-    dataCollectionKey === 'DAILY' || dataCollectionKey === 'WEEKDAILY';
+  const isVisible = collectionKey === 'DAILY' || collectionKey === 'WEEKDAILY';
 
   useUpdateEffect(() => {
     resetField('monthKey');
-  }, [dataCollectionKey]);
+  }, [collectionKey]);
 
   return (
     <FormField

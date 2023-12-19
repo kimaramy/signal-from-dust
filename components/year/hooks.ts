@@ -11,15 +11,19 @@ import { QueryParamEnum } from '@/lib/utils';
 import { yearSchema, type YearKey } from './schema';
 
 export function useYearKey(initialKey?: YearKey): YearKey {
-  const sluggedKeys = yearSchema.getAllSlugs();
-  const defaultSluggedKey = yearSchema.getSlug(
+  const lowerCasedKeys = yearSchema.mapKeys(yearSchema.lowerCaseKey);
+  const lowerCasedDefaultKey = yearSchema.lowerCaseKey(
     initialKey ?? yearSchema.defaultKey
   );
-  const [sluggedKey] = useEnumUrlParam(QueryParamEnum.Year, defaultSluggedKey, {
-    enums: sluggedKeys,
-    part: 'query',
-  });
-  return yearSchema.getKeyBySlug(sluggedKey);
+  const [lowerCasedKey] = useEnumUrlParam(
+    QueryParamEnum.Year,
+    lowerCasedDefaultKey,
+    {
+      enums: lowerCasedKeys,
+      part: 'query',
+    }
+  );
+  return yearSchema.upperCaseKey(lowerCasedKey);
 }
 
 export function useYearValue() {
@@ -30,8 +34,8 @@ export function useYearValue() {
 export function useSetYearKey() {
   const setYearKey = useSetQueryParam(useSearchParams(), QueryParamEnum.Year);
   return function (yearKey: YearKey) {
-    const sluggedKey = yearSchema.getSlug(yearKey);
-    return setYearKey(sluggedKey);
+    const lowerCasedKey = yearSchema.lowerCaseKey(yearKey);
+    return setYearKey(lowerCasedKey);
   };
 }
 

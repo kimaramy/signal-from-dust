@@ -6,11 +6,11 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form';
-import { DataCollectionSelect } from '@/components/dataCollection';
+import { CollectionSelect } from '@/components/collection';
 
 import { type SettingsFormValues } from './SettingsForm';
 
-function DataCollectionField() {
+function CollectionField() {
   const { control, watch } = useFormContext<SettingsFormValues>();
 
   const mode = watch('mode');
@@ -19,14 +19,14 @@ function DataCollectionField() {
 
   return (
     <FormField
-      name="dataCollectionKey"
+      name="collectionKey"
       control={control}
       render={({ field }) => {
         return (
           <FormItem>
             <FormLabel>조회 유형</FormLabel>
             <FormControl>
-              <DataCollectionSelect
+              <CollectionSelect
                 value={field.value}
                 disabled={isDisabled}
                 onValueChange={(value) => {
@@ -41,4 +41,4 @@ function DataCollectionField() {
   );
 }
 
-export default DataCollectionField;
+export default CollectionField;

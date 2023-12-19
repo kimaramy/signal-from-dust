@@ -3,10 +3,7 @@ import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
 import type { NextPageProps } from '@/lib/router';
-import {
-  dataCollectionSchema,
-  parseDataCollectionKey,
-} from '@/components/dataCollection';
+import { collectionSchema, parseCollectionKey } from '@/components/collection';
 import { dataNameSchema, parseDataNameKey } from '@/components/dataName';
 import Dataset from '@/components/Dataset';
 import DatasetDownloadButton from '@/components/DatasetDownloadButton';
@@ -17,15 +14,12 @@ import { parseYearKey } from '@/components/year';
 
 const fetchCachedDataset = cache(fetchDataset);
 
-export function generateMetadata({
-  params,
-  searchParams,
-}: NextPageProps): Metadata {
-  const collectionKey = parseDataCollectionKey(params);
+export function generateMetadata({ searchParams }: NextPageProps): Metadata {
+  const collectionKey = parseCollectionKey(searchParams);
   const dataNameKey = parseDataNameKey(searchParams);
   return {
     title: [
-      dataCollectionSchema.display(collectionKey, 'en'),
+      collectionSchema.display(collectionKey, 'en'),
       dataNameSchema.display(dataNameKey, 'en'),
     ].join(' '),
   };
@@ -35,8 +29,8 @@ export const dynamicParams = false;
 
 export const revalidate = false;
 
-async function DynamicDatasetPage({ params, searchParams }: NextPageProps) {
-  const collectionKey = parseDataCollectionKey(params);
+async function DynamicDatasetPage({ searchParams }: NextPageProps) {
+  const collectionKey = parseCollectionKey(searchParams);
 
   const yearKey = parseYearKey(searchParams);
 

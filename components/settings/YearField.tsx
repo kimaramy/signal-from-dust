@@ -16,18 +16,18 @@ function YearField() {
 
   const mode = watch('mode');
 
-  const dataCollectionKey = watch('dataCollectionKey');
+  const collectionKey = watch('collectionKey');
 
   const isDisabled = mode === 'preset';
 
   const isVisible =
-    dataCollectionKey === 'WEEKLY' ||
-    dataCollectionKey === 'MONTHLY' ||
-    dataCollectionKey === 'SEASONALLY';
+    collectionKey === 'WEEKLY' ||
+    collectionKey === 'MONTHLY' ||
+    collectionKey === 'SEASONALLY';
 
   useUpdateEffect(() => {
     resetField('yearKey');
-  }, [dataCollectionKey]);
+  }, [collectionKey]);
 
   return (
     <FormField
