@@ -1,20 +1,21 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-
+import {
+  useSupabaseSuspendedQuery,
+  type UseSupabaseSuspendedQueryOptions,
+} from '@/lib/react-query';
 import { type MonthKey } from '@/components/month';
 
-import type { SupabaseError, WeekDailyData } from '..';
+import type { WeekDailyData } from '..';
 import { weekDailyQueryKeys, type WeekDailyQueryKeys } from './queryKeys';
 
 export function useWeekDailyListQuery<T = WeekDailyData[]>(
   monthKey: MonthKey,
-  options?: UseQueryOptions<
+  options?: UseSupabaseSuspendedQueryOptions<
     WeekDailyData[],
-    SupabaseError,
     T,
     WeekDailyQueryKeys['list']['queryKey']
   >
 ) {
-  const { data } = useQuery({
+  const { data } = useSupabaseSuspendedQuery({
     ...weekDailyQueryKeys.list(monthKey),
     staleTime: Infinity,
     ...options,
@@ -24,14 +25,13 @@ export function useWeekDailyListQuery<T = WeekDailyData[]>(
 
 export function useWeekDailyQuery<T = WeekDailyData>(
   dataId: number,
-  options?: UseQueryOptions<
+  options?: UseSupabaseSuspendedQueryOptions<
     WeekDailyData,
-    SupabaseError,
     T,
     WeekDailyQueryKeys['detail']['queryKey']
   >
 ) {
-  const { data } = useQuery({
+  const { data } = useSupabaseSuspendedQuery({
     ...weekDailyQueryKeys.detail(dataId),
     staleTime: Infinity,
     ...options,

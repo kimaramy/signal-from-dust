@@ -1,17 +1,19 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import {
+  useSupabaseSuspendedQuery,
+  type UseSupabaseSuspendedQueryOptions,
+} from '@/lib/react-query';
 
-import type { DistinctYearData, SupabaseError, YearlyData } from '..';
+import type { DistinctYearData, YearlyData } from '..';
 import { yearlyQueryKeys, type YearlyQueryKeys } from './queryKeys';
 
 export function useYearlyListQuery<T = YearlyData[]>(
-  options?: UseQueryOptions<
+  options?: UseSupabaseSuspendedQueryOptions<
     YearlyData[],
-    SupabaseError,
     T,
     YearlyQueryKeys['list']['queryKey']
   >
 ) {
-  const { data } = useQuery({
+  const { data } = useSupabaseSuspendedQuery({
     ...yearlyQueryKeys.list(),
     staleTime: Infinity,
     ...options,
@@ -21,14 +23,13 @@ export function useYearlyListQuery<T = YearlyData[]>(
 
 export function useYearlyQuery<T = YearlyData>(
   dataId: number,
-  options?: UseQueryOptions<
+  options?: UseSupabaseSuspendedQueryOptions<
     YearlyData,
-    SupabaseError,
     T,
     YearlyQueryKeys['detail']['queryKey']
   >
 ) {
-  const { data } = useQuery({
+  const { data } = useSupabaseSuspendedQuery({
     ...yearlyQueryKeys.detail(dataId),
     staleTime: Infinity,
     ...options,
@@ -37,14 +38,13 @@ export function useYearlyQuery<T = YearlyData>(
 }
 
 export function useDistinctYearListQuery<T = DistinctYearData[]>(
-  options?: UseQueryOptions<
+  options?: UseSupabaseSuspendedQueryOptions<
     DistinctYearData[],
-    SupabaseError,
     T,
     YearlyQueryKeys['distinctYearList']['queryKey']
   >
 ) {
-  const { data } = useQuery({
+  const { data } = useSupabaseSuspendedQuery({
     ...yearlyQueryKeys.distinctYearList(),
     staleTime: Infinity,
     ...options,

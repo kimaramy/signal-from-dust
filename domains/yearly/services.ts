@@ -7,7 +7,7 @@ export const fetchYearlyDataset = async (params?: unknown) => {
     .select('*')
     .returns<YearlyData[]>();
 
-  if (response.error) throw response;
+  if (response.error) throw response.error;
 
   return response.data;
 };
@@ -19,7 +19,7 @@ export const fetchYearlyData = async (dataId: number) => {
     .eq('id', dataId)
     .returns<YearlyData>();
 
-  if (response.error) throw response;
+  if (response.error) throw response.error;
 
   return response.data;
 };
@@ -30,7 +30,7 @@ export const fetchDistinctYearDataset = async () => {
     .select()
     .returns<DistinctYearData[]>();
 
-  if (response.error) throw response;
+  if (response.error) throw response.error;
 
   return response.data;
 };

@@ -1,21 +1,22 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-
+import {
+  useSupabaseSuspendedQuery,
+  type UseSupabaseSuspendedQueryOptions,
+} from '@/lib/react-query';
 import { type SeasonKey } from '@/components/season';
 import { type YearKey } from '@/components/year';
 
-import type { MonthlyData, SupabaseError } from '..';
+import type { MonthlyData } from '..';
 import { monthlyQueryKeys, type MonthlyQueryKeys } from './queryKeys';
 
 export function useMonthlyListQuery<T = MonthlyData[]>(
   yearKey: YearKey,
-  options?: UseQueryOptions<
+  options?: UseSupabaseSuspendedQueryOptions<
     MonthlyData[],
-    SupabaseError,
     T,
     MonthlyQueryKeys['list']['queryKey']
   >
 ) {
-  const { data } = useQuery({
+  const { data } = useSupabaseSuspendedQuery({
     ...monthlyQueryKeys.list(yearKey),
     staleTime: Infinity,
     ...options,
@@ -26,14 +27,13 @@ export function useMonthlyListQuery<T = MonthlyData[]>(
 export function useMonthlyListQueryBySeason<T = MonthlyData[]>(
   yearKey: YearKey,
   seasonKey: SeasonKey,
-  options?: UseQueryOptions<
+  options?: UseSupabaseSuspendedQueryOptions<
     MonthlyData[],
-    SupabaseError,
     T,
     MonthlyQueryKeys['list']['_ctx']['seasonally']['queryKey']
   >
 ) {
-  const { data } = useQuery({
+  const { data } = useSupabaseSuspendedQuery({
     ...monthlyQueryKeys.list(yearKey)._ctx.seasonally(seasonKey),
     staleTime: Infinity,
     ...options,
@@ -43,14 +43,13 @@ export function useMonthlyListQueryBySeason<T = MonthlyData[]>(
 
 export function useMonthlyQuery<T = MonthlyData>(
   dataId: number,
-  options?: UseQueryOptions<
+  options?: UseSupabaseSuspendedQueryOptions<
     MonthlyData,
-    SupabaseError,
     T,
     MonthlyQueryKeys['detail']['queryKey']
   >
 ) {
-  const { data } = useQuery({
+  const { data } = useSupabaseSuspendedQuery({
     ...monthlyQueryKeys.detail(dataId),
     staleTime: Infinity,
     ...options,

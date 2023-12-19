@@ -8,7 +8,7 @@ export const fetchDailyDataset = async (month: number) => {
     .eq('month', month)
     .returns<DailyData[]>();
 
-  if (response.error) throw response;
+  if (response.error) throw response.error;
 
   return response.data;
 };
@@ -20,7 +20,7 @@ export const fetchDailyData = async (dataId: number) => {
     .eq('id', dataId)
     .returns<DailyData>();
 
-  if (response.error) throw response;
+  if (response.error) throw response.error;
 
   return response.data;
 };

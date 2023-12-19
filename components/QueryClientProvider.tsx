@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { SupabaseError, SupabaseErrorSchema } from '@/domains';
 import {
   MutationCache,
   QueryCache,
@@ -10,6 +9,8 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import toast from 'react-hot-toast';
+
+import { postgrestErrorSchema, type PostgrestError } from '@/lib/react-query';
 
 type QueryClientProviderProps = {
   children: React.ReactNode;
@@ -39,11 +40,11 @@ export default function QueryClientProvider({
             (unknownError as Error)?.message ??
             '';
 
-          const isSupabaseError =
-            SupabaseErrorSchema.safeParse(unknownError).success;
+          const isPostgrestError =
+            postgrestErrorSchema.safeParse(unknownError).success;
 
-          if (isSupabaseError) {
-            const { error } = unknownError as SupabaseError;
+          if (isPostgrestError) {
+            const error = unknownError as PostgrestError;
             errorMessage = `[${error.code}] ${error.message}`;
           }
 
@@ -62,11 +63,11 @@ export default function QueryClientProvider({
             (unknownError as Error)?.message ??
             '';
 
-          const isSupabaseError =
-            SupabaseErrorSchema.safeParse(unknownError).success;
+          const isPostgrestError =
+            postgrestErrorSchema.safeParse(unknownError).success;
 
-          if (isSupabaseError) {
-            const { error } = unknownError as SupabaseError;
+          if (isPostgrestError) {
+            const error = unknownError as PostgrestError;
             errorMessage = `[${error.code}] ${error.message}`;
           }
 

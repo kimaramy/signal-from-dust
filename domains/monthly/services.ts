@@ -8,7 +8,7 @@ export const fetchMonthlyDataset = async (year: number) => {
     .eq('year', year)
     .returns<MonthlyData[]>();
 
-  if (response.error) throw response;
+  if (response.error) throw response.error;
 
   return response.data;
 };
@@ -24,7 +24,7 @@ export const fetchMonthlyDatasetBySeason = async (
     .in('month', months)
     .returns<MonthlyData[]>();
 
-  if (response.error) throw response;
+  if (response.error) throw response.error;
 
   return response.data;
 };
@@ -36,7 +36,7 @@ export const fetchMonthlyData = async (dataId: number) => {
     .eq('id', dataId)
     .returns<MonthlyData>();
 
-  if (response.error) throw response;
+  if (response.error) throw response.error;
 
   return response.data;
 };

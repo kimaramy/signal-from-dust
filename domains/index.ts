@@ -9,4 +9,3 @@ export * from './yearly';
 
 export * from './collection.d';
 export * from './supabase.d';
-export * from './error.d';
