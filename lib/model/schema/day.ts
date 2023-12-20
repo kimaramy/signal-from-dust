@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { KeyValueSchema } from '@/lib/utils';
-import { LocaleSchema } from '@/components/locale';
+import { ModelSchema } from './base';
+import { LocaleSchema } from './locale';
 
 const dayKeys = [
   'ALL',
@@ -16,13 +16,13 @@ type DayKey = z.infer<DayKeySchema>;
 
 type DayValue = number;
 
-const dayKeyValueMap = new Map<DayKey, DayValue>(
+const dayMap = new Map<DayKey, DayValue>(
   dayKeys.map((dayKey, index) => [dayKey, index])
 );
 
-class DaySchema extends KeyValueSchema<DayKey, DayValue> {
+class DaySchema extends ModelSchema<DayKey, DayValue> {
   constructor() {
-    super(dayKeySchema, dayKeys[0], dayKeyValueMap);
+    super(dayKeySchema, dayKeys[0], dayMap);
   }
   protected getOrdinalName(dayValue: DayValue) {
     const [firstDayValue, lastDayValue] = this.getValueRange();

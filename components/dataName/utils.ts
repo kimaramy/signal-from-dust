@@ -1,7 +1,6 @@
+import { dataNameSchema } from '@/lib/model';
 import { parseUrlParam, type UrlParams } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
-
-import { dataNameSchema } from './schema';
 
 export const parseDataNameKey = (params?: UrlParams) => {
   const [parsedKey] = parseUrlParam(

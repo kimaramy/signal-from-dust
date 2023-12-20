@@ -1,4 +1,4 @@
-import { type DataNameKey } from '@/components/dataName';
+import { type DataNameKey } from '@/lib/model';
 
 class Dust {
   static unit = '㎍/㎥';

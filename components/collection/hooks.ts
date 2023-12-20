@@ -1,9 +1,8 @@
 'use client';
 
+import { collectionSchema, type CollectionKey } from '@/lib/model';
 import { useEnumUrlParam } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
-
-import { collectionSchema, type CollectionKey } from './schema';
 
 export function useCollectionKey(initialKey?: CollectionKey): CollectionKey {
   const lowerCasedKeys = collectionSchema.mapKeys(

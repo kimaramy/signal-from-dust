@@ -1,30 +1,36 @@
 import { type QueryKey } from '@tanstack/react-query';
 
-import {
-  useSupabaseQuery,
-  type UseSupabaseQueryOptions,
-} from './useSupabaseQuery';
+import { useSbQ, type UseSbQOptions } from './useSupabaseQuery';
 
-export type UseSupabaseSuspendedQueryOptions<
+/**
+ * @alias UseSbSQOptions
+ * @description Abbreviation of UseSupabaseSuspendedQueryOptions
+ */
+type UseSupabaseSuspendedQueryOptions<
   TQueryFnData = unknown,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey,
 > = Omit<
-  UseSupabaseQueryOptions<TQueryFnData, TData, TQueryKey>,
+  UseSbQOptions<TQueryFnData, TData, TQueryKey>,
   'suspense' | 'useErrorBoundary' | 'onError'
 >;
 
-export function useSupabaseSuspendedQuery<
+/**
+ * @alias useSbSQ
+ * @description Abbreviation of useSupabaseSuspendedQuery
+ */
+function useSupabaseSuspendedQuery<
   TQueryFnData = unknown,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey,
 >(options: UseSupabaseSuspendedQueryOptions<TQueryFnData, TData, TQueryKey>) {
-  const { isLoading, isFetching, isError, error, ...others } = useSupabaseQuery(
-    {
-      useErrorBoundary: true,
-      suspense: true,
-      ...options,
-    }
-  );
+  const { isLoading, isFetching, isError, error, ...others } = useSbQ({
+    useErrorBoundary: true,
+    suspense: true,
+    ...options,
+  });
   return others;
 }
+
+export { useSupabaseSuspendedQuery as useSbSQ };
+export type { UseSupabaseSuspendedQueryOptions as UseSbSQOptions };

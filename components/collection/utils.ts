@@ -1,7 +1,6 @@
+import { collectionSchema } from '@/lib/model';
 import { parseUrlParam, type UrlParams } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
-
-import { collectionSchema } from './schema';
 
 export const parseCollectionKey = (params?: UrlParams) => {
   const [parsedKey] = parseUrlParam(

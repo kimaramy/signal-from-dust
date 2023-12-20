@@ -5,10 +5,9 @@ import { useSearchParams } from 'next/navigation';
 import { useDistinctYearListQuery } from '@/domains';
 import { toast } from 'react-hot-toast';
 
+import { yearSchema, type YearKey } from '@/lib/model';
 import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
-
-import { yearSchema, type YearKey } from './schema';
 
 export function useYearKey(initialKey?: YearKey): YearKey {
   const lowerCasedKeys = yearSchema.mapKeys(yearSchema.lowerCaseKey);

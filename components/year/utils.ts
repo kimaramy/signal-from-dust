@@ -1,7 +1,6 @@
+import { yearSchema } from '@/lib/model';
 import { parseUrlParam, type UrlParams } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
-
-import { yearSchema } from './schema';
 
 export const parseYearKey = (params?: UrlParams) => {
   const [parsedKey] = parseUrlParam(

@@ -1,4 +1,5 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/css';
+import { monthSchema, type MonthKey } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -6,8 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-import { monthSchema, type MonthKey } from './schema';
 
 interface MonthSelectProps {
   value: MonthKey;

@@ -1,5 +1,4 @@
-import type { DailyData } from '..';
-import { supabaseClient } from '../supabaseClient';
+import { supabaseClient, type DailyData } from '@/lib/model';
 
 export const fetchDailyDataset = async (month: number) => {
   const response = await supabaseClient

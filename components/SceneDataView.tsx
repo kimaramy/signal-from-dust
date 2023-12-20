@@ -1,14 +1,14 @@
 import React from 'react';
 import { ArrowRightIcon, PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
 
-import type { Binary } from '@/lib/types';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/css';
+import { type DataNameKey } from '@/lib/model';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { type DataNameKey } from '@/components/dataName';
 import { type DisplayKey } from '@/components/display';
 import { Dust } from '@/components/dust';
 
+import type { Binary } from './Bit';
 import type { SceneData } from './Scene';
 
 interface SceneDataViewProps {

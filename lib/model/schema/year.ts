@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { KeyValueSchema } from '@/lib/utils';
-import { LocaleSchema } from '@/components/locale';
+import { ModelSchema } from './base';
+import { LocaleSchema } from './locale';
 
 const yearKeys = [
   'ALL',
@@ -21,7 +21,7 @@ type YearKey = z.infer<typeof yearKeySchema>;
 
 type YearValue = number;
 
-const yearKeyValueMap = new Map<YearKey, YearValue>()
+const yearMap = new Map<YearKey, YearValue>()
   .set('ALL', 0)
   .set('2015', 2015)
   .set('2016', 2016)
@@ -32,9 +32,9 @@ const yearKeyValueMap = new Map<YearKey, YearValue>()
   .set('2021', 2021)
   .set('2022', 2022);
 
-class YearSchema extends KeyValueSchema<YearKey, YearValue> {
+class YearSchema extends ModelSchema<YearKey, YearValue> {
   constructor() {
-    super(yearKeySchema, yearKeySchema.enum.ALL, yearKeyValueMap);
+    super(yearKeySchema, yearKeySchema.enum.ALL, yearMap);
   }
   protected getYearName(
     yearValue: YearValue,

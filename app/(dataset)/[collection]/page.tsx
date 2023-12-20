@@ -2,15 +2,11 @@ import { cache } from 'react';
 import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
+import * as Model from '@/lib/model';
 import type { NextStaticPageProps } from '@/lib/router';
-import { collectionSchema } from '@/components/collection';
-import { dataNameSchema } from '@/components/dataName';
 import Dataset from '@/components/Dataset';
 import DatasetDownloadButton from '@/components/DatasetDownloadButton';
 import Floating from '@/components/Floating';
-import { monthSchema } from '@/components/month';
-import { seasonSchema } from '@/components/season';
-import { yearSchema } from '@/components/year';
 
 const fetchCachedDataset = cache(fetchDataset);
 
@@ -19,20 +15,20 @@ type StaticDatasetPageProps = NextStaticPageProps<
 >;
 
 export function generateStaticParams() {
-  return collectionSchema
-    .mapKeys(collectionSchema.lowerCaseKey)
+  return Model.collectionSchema
+    .mapKeys(Model.collectionSchema.lowerCaseKey)
     .map((collection) => ({ collection }));
 }
 
 export function generateMetadata({
   params: { collection },
 }: StaticDatasetPageProps): Metadata {
-  const collectionKey = collectionSchema.upperCaseKey(collection);
-  const dataNameKey = dataNameSchema.defaultKey;
+  const collectionKey = Model.collectionSchema.upperCaseKey(collection);
+  const dataNameKey = Model.dataNameSchema.defaultKey;
   return {
     title: [
-      collectionSchema.display(collectionKey, 'en'),
-      dataNameSchema.display(dataNameKey, 'en'),
+      Model.collectionSchema.display(collectionKey, 'en'),
+      Model.dataNameSchema.display(dataNameKey, 'en'),
     ].join(' '),
   };
 }
@@ -44,13 +40,13 @@ export const revalidate = false;
 async function StaticDatasetPage({
   params: { collection },
 }: StaticDatasetPageProps) {
-  const collectionKey = collectionSchema.upperCaseKey(collection);
+  const collectionKey = Model.collectionSchema.upperCaseKey(collection);
 
   const datasetKeys = [
     collectionKey,
-    yearSchema.defaultKey,
-    monthSchema.defaultKey,
-    seasonSchema.defaultKey,
+    Model.yearSchema.defaultKey,
+    Model.monthSchema.defaultKey,
+    Model.seasonSchema.defaultKey,
   ] as const;
 
   const initialDataset = await fetchCachedDataset(...datasetKeys);

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { KeyValueSchema } from '@/lib/utils';
-import { LocaleSchema } from '@/components/locale';
+import { ModelSchema } from './base';
+import { LocaleSchema } from './locale';
 
 const weekdayKeys = [
   'ALL',
@@ -20,7 +20,7 @@ type WeekdayKey = z.infer<typeof weekdayKeySchema>;
 
 type WeekdayValue = number;
 
-const weekdayKeyValueMap = new Map<WeekdayKey, WeekdayValue>()
+const weekdayMap = new Map<WeekdayKey, WeekdayValue>()
   .set('ALL', 0)
   .set('SUNDAY', 1)
   .set('MONDAY', 2)
@@ -30,9 +30,9 @@ const weekdayKeyValueMap = new Map<WeekdayKey, WeekdayValue>()
   .set('FRIDAY', 6)
   .set('SATURDAY', 7);
 
-class WeekdaySchema extends KeyValueSchema<WeekdayKey, WeekdayValue> {
+class WeekdaySchema extends ModelSchema<WeekdayKey, WeekdayValue> {
   constructor() {
-    super(weekdayKeySchema, weekdayKeySchema.enum.ALL, weekdayKeyValueMap);
+    super(weekdayKeySchema, weekdayKeySchema.enum.ALL, weekdayMap);
   }
   protected getWeekdayName(
     weekdayValue: WeekdayValue,

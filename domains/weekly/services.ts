@@ -1,5 +1,4 @@
-import type { WeeklyData } from '..';
-import { supabaseClient } from '../supabaseClient';
+import { supabaseClient, type WeeklyData } from '@/lib/model';
 
 export const fetchWeeklyDataset = async (year: number) => {
   const response = await supabaseClient

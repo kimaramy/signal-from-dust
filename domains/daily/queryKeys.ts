@@ -3,7 +3,7 @@ import {
   inferQueryKeys,
 } from '@lukemorales/query-key-factory';
 
-import { monthSchema, type MonthKey } from '@/components/month';
+import { monthSchema, type MonthKey } from '@/lib/model';
 
 import * as services from './services';
 

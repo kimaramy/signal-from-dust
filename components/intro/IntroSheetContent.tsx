@@ -1,7 +1,7 @@
 'use client';
 
 import { Link } from '@/lib/router';
-import { siteConfig } from '@/lib/site';
+import { seoConfig } from '@/lib/seo';
 import { Icon } from '@/components/ui/icon';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -48,7 +48,7 @@ function IntroSheetContent() {
           </ul>
           <div>
             <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
-              <Link href={siteConfig.links.github} target="_blank">
+              <Link href={seoConfig.links.github} target="_blank">
                 <Icon.Github aria-hidden className="h-4 w-4" />
                 <span className="sr-only">Gitub</span>
               </Link>

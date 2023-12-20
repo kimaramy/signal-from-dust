@@ -2,10 +2,9 @@
 
 import { useSearchParams } from 'next/navigation';
 
+import { dataNameSchema, type DataNameKey } from '@/lib/model';
 import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
-
-import { dataNameSchema, type DataNameKey } from './schema';
 
 export function useDataNameKey(initialKey?: DataNameKey): DataNameKey {
   const lowerCasedKeys = dataNameSchema.mapKeys(dataNameSchema.lowerCaseKey);

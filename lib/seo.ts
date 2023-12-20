@@ -1,6 +1,4 @@
-export type SiteConfig = typeof siteConfig;
-
-export const siteConfig = {
+export const seoConfig = {
   title: 'Signal from dust',
   description: 'Signals and patterns found from PM10 and PM2.5 data',
   keywords: [
@@ -23,3 +21,5 @@ export const siteConfig = {
     docs: 'https://github.com/kimaramy/sound-of-dust/blob/master/README.md',
   },
 };
+
+export type SeoConfig = typeof seoConfig;

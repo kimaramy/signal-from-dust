@@ -2,26 +2,12 @@
 
 import React, { useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
-import type {
-  DailyData,
-  MonthlyData,
-  WeekDailyData,
-  WeeklyData,
-  YearlyData,
-} from '@/domains';
 
+import * as Model from '@/lib/model';
 import { Skeleton } from '@/components/ui/skeleton';
-import { collectionSchema, type CollectionKey } from '@/components/collection';
-import { dataNameSchema, type DataNameKey } from '@/components/dataName';
-import { daySchema } from '@/components/day';
 import { type DisplayKey } from '@/components/display';
 import Grid from '@/components/Grid';
-import { LocaleSchema } from '@/components/locale';
-import { monthSchema } from '@/components/month';
 import { type SceneData } from '@/components/Scene';
-import { weekSchema } from '@/components/week';
-import { weekdaySchema } from '@/components/weekday';
-import { yearSchema } from '@/components/year';
 
 const Scene = dynamic(
   () => import('@/components/Scene' /* webpackChunkName: "Scene" */),
@@ -77,130 +63,154 @@ export class SceneUtils {
     return value.toString(2).length;
   }
   static toDailyScenes(
-    dataset: DailyData[],
-    dataNameKey: DataNameKey,
-    collectionKey: CollectionKey,
-    locale = LocaleSchema.defaultLocale
+    dataset: Model.DailyData[],
+    dataNameKey: Model.DataNameKey,
+    collectionKey: Model.CollectionKey,
+    locale = Model.LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, month, day, pm_large, pm_small }) => ({
       id,
       name: dataNameKey,
-      displayName: dataNameSchema.display(dataNameKey),
+      displayName: Model.dataNameSchema.display(dataNameKey),
       value:
         dataNameKey === 'PM_LARGE'
           ? pm_large
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: collectionSchema.display(collectionKey),
+      collection: Model.collectionSchema.display(collectionKey),
       dates: [
-        monthSchema.display(monthSchema.getKeyByValue(month), 'short', locale),
-        daySchema.display(daySchema.getKeyByValue(day), locale),
+        Model.monthSchema.display(
+          Model.monthSchema.getKeyByValue(month),
+          'short',
+          locale
+        ),
+        Model.daySchema.display(Model.daySchema.getKeyByValue(day), locale),
       ],
-      location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
+      location: Model.LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
       rank: null,
     }));
   }
   static toWeekDailyScenes(
-    dataset: WeekDailyData[],
-    dataNameKey: DataNameKey,
-    collectionKey: CollectionKey,
-    locale = LocaleSchema.defaultLocale
+    dataset: Model.WeekDailyData[],
+    dataNameKey: Model.DataNameKey,
+    collectionKey: Model.CollectionKey,
+    locale = Model.LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, month, weekday, pm_large, pm_small }) => ({
       id,
       name: dataNameKey,
-      displayName: dataNameSchema.display(dataNameKey),
+      displayName: Model.dataNameSchema.display(dataNameKey),
       value:
         dataNameKey === 'PM_LARGE'
           ? pm_large
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: collectionSchema.display(collectionKey),
+      collection: Model.collectionSchema.display(collectionKey),
       dates: [
-        monthSchema.display(monthSchema.getKeyByValue(month), 'short', locale),
-        weekdaySchema.display(
-          weekdaySchema.getKeyByValue(weekday),
+        Model.monthSchema.display(
+          Model.monthSchema.getKeyByValue(month),
+          'short',
+          locale
+        ),
+        Model.weekdaySchema.display(
+          Model.weekdaySchema.getKeyByValue(weekday),
           'long',
           locale
         ),
       ],
-      location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
+      location: Model.LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
       rank: null,
     }));
   }
   static toWeeklyScenes(
-    dataset: WeeklyData[],
-    dataNameKey: DataNameKey,
-    collectionKey: CollectionKey,
-    locale = LocaleSchema.defaultLocale
+    dataset: Model.WeeklyData[],
+    dataNameKey: Model.DataNameKey,
+    collectionKey: Model.CollectionKey,
+    locale = Model.LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, year, week, pm_large, pm_small }) => ({
       id,
       name: dataNameKey,
-      displayName: dataNameSchema.display(dataNameKey),
+      displayName: Model.dataNameSchema.display(dataNameKey),
       value:
         dataNameKey === 'PM_LARGE'
           ? pm_large
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: collectionSchema.display(collectionKey),
+      collection: Model.collectionSchema.display(collectionKey),
       dates: [
-        yearSchema.display(yearSchema.getKeyByValue(year), 'short', locale),
-        weekSchema.display(weekSchema.getKeyByValue(week), locale),
+        Model.yearSchema.display(
+          Model.yearSchema.getKeyByValue(year),
+          'short',
+          locale
+        ),
+        Model.weekSchema.display(Model.weekSchema.getKeyByValue(week), locale),
       ],
-      location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
+      location: Model.LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
       rank: null,
     }));
   }
   static toMonthlyScenes(
-    dataset: MonthlyData[],
-    dataNameKey: DataNameKey,
-    collectionKey: CollectionKey,
-    locale = LocaleSchema.defaultLocale
+    dataset: Model.MonthlyData[],
+    dataNameKey: Model.DataNameKey,
+    collectionKey: Model.CollectionKey,
+    locale = Model.LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, year, month, pm_large, pm_small }) => ({
       id,
       name: dataNameKey,
-      displayName: dataNameSchema.display(dataNameKey),
+      displayName: Model.dataNameSchema.display(dataNameKey),
       value:
         dataNameKey === 'PM_LARGE'
           ? pm_large
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: collectionSchema.display(collectionKey),
+      collection: Model.collectionSchema.display(collectionKey),
       dates: [
-        yearSchema.display(yearSchema.getKeyByValue(year), 'short', locale),
-        monthSchema.display(monthSchema.getKeyByValue(month), 'short', locale),
+        Model.yearSchema.display(
+          Model.yearSchema.getKeyByValue(year),
+          'short',
+          locale
+        ),
+        Model.monthSchema.display(
+          Model.monthSchema.getKeyByValue(month),
+          'short',
+          locale
+        ),
       ],
-      location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
+      location: Model.LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
       rank: null,
     }));
   }
   static toYearlyScenes(
-    dataset: YearlyData[],
-    dataNameKey: DataNameKey,
-    collectionKey: CollectionKey,
-    locale = LocaleSchema.defaultLocale
+    dataset: Model.YearlyData[],
+    dataNameKey: Model.DataNameKey,
+    collectionKey: Model.CollectionKey,
+    locale = Model.LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, year, pm_large, pm_small }) => ({
       id,
       name: dataNameKey,
-      displayName: dataNameSchema.display(dataNameKey),
+      displayName: Model.dataNameSchema.display(dataNameKey),
       value:
         dataNameKey === 'PM_LARGE'
           ? pm_large
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: collectionSchema.display(collectionKey),
+      collection: Model.collectionSchema.display(collectionKey),
       dates: [
-        yearSchema.display(yearSchema.getKeyByValue(year), 'short', locale),
+        Model.yearSchema.display(
+          Model.yearSchema.getKeyByValue(year),
+          'short',
+          locale
+        ),
       ],
-      location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
+      location: Model.LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
       rank: null,
     }));
   }

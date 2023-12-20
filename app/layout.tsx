@@ -1,12 +1,12 @@
 import './globals.css';
 
+import { cn } from '@/lib/css';
 import { fontSans } from '@/lib/fonts';
 import {
   Progress,
   RouteChangeEventHandlers,
   type NextLayoutProps,
 } from '@/lib/router';
-import { cn } from '@/lib/utils';
 import QueryClientProvider from '@/components/QueryClientProvider';
 import QueryErrorBoundary from '@/components/QueryErrorBoundary';
 import ThemeProvider from '@/components/ThemeProvider';

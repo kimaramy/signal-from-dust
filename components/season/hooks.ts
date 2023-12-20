@@ -2,10 +2,9 @@
 
 import { useSearchParams } from 'next/navigation';
 
+import { seasonSchema, type SeasonKey, type SeasonValue } from '@/lib/model';
 import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
-
-import { seasonSchema, type SeasonKey, type SeasonValue } from './schema';
 
 export function useSeasonKey(initialKey?: SeasonKey): SeasonKey {
   const lowerCasedKeys = seasonSchema.mapKeys(seasonSchema.lowerCaseKey);

@@ -1,13 +1,10 @@
-import type { TableKeys } from '@/domains';
 import { z } from 'zod';
 
-import {
-  KeyValueSchema,
-  stringUnionToArray,
-  toLowerCase,
-  toOrderedBy,
-} from '@/lib/utils';
-import { LocaleSchema } from '@/components/locale';
+import { stringUnionToArray, toLowerCase, toOrderedBy } from '@/lib/utils';
+
+import type { TableKeys } from '../supabase';
+import { ModelSchema } from './base';
+import { LocaleSchema } from './locale';
 
 type CollectionKey = Uppercase<TableKeys> | 'SEASONALLY';
 
@@ -33,20 +30,16 @@ const collectionKeySchema = z.enum([
   ...collectionKeys.slice(1),
 ]);
 
-const collectionKeyValueMap = new Map<CollectionKey, CollectionValue>(
+const collectionMap = new Map<CollectionKey, CollectionValue>(
   collectionKeys.map((collectionKey) => [
     collectionKey,
     toLowerCase(collectionKey),
   ])
 );
 
-class CollectionSchema extends KeyValueSchema<CollectionKey, CollectionValue> {
+class CollectionSchema extends ModelSchema<CollectionKey, CollectionValue> {
   constructor() {
-    super(
-      collectionKeySchema,
-      collectionKeySchema.enum.DAILY,
-      collectionKeyValueMap
-    );
+    super(collectionKeySchema, collectionKeySchema.enum.DAILY, collectionMap);
   }
   display(collectionKey: CollectionKey, locale = LocaleSchema.defaultLocale) {
     const isKorean = LocaleSchema.isKorean(locale);

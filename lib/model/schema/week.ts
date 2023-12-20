@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { KeyValueSchema } from '@/lib/utils';
-import { LocaleSchema } from '@/components/locale';
+import { ModelSchema } from './base';
+import { LocaleSchema } from './locale';
 
 const weekKeys = [
   'ALL',
@@ -14,13 +14,13 @@ type WeekKey = z.infer<typeof weekKeySchema>;
 
 type WeekValue = number;
 
-const weekKeyValueMap = new Map<WeekKey, WeekValue>(
+const weekMap = new Map<WeekKey, WeekValue>(
   weekKeys.map((weekKey, index) => [weekKey, index])
 );
 
-class WeekSchema extends KeyValueSchema<WeekKey, WeekValue> {
+class WeekSchema extends ModelSchema<WeekKey, WeekValue> {
   constructor() {
-    super(weekKeySchema, weekKeys[0], weekKeyValueMap);
+    super(weekKeySchema, weekKeys[0], weekMap);
   }
   protected getOrdinalName(weekValue: WeekValue) {
     const [firstWeekValue, lastWeekValue] = this.getValueRange();

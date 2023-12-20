@@ -1,5 +1,8 @@
-import type { DistinctYearData, YearlyData } from '..';
-import { supabaseClient } from '../supabaseClient';
+import {
+  supabaseClient,
+  type DistinctYearData,
+  type YearlyData,
+} from '@/lib/model';
 
 export const fetchYearlyDataset = async (params?: unknown) => {
   const response = await supabaseClient

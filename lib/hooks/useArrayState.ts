@@ -1,5 +1,3 @@
-'use client';
-
 import { useCallback, useMemo, useState } from 'react';
 
 type Push<T> = (...args: Parameters<Array<T>['push']>) => void;

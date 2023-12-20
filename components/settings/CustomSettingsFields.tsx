@@ -2,7 +2,7 @@
 
 import { useWatch } from 'react-hook-form';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/css';
 
 import CollectionField from './CollectionField';
 import DataNameField from './DataNameField';

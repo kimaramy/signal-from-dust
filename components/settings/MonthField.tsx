@@ -1,6 +1,6 @@
-import { useUpdateEffect } from '@/hooks';
 import { useFormContext } from 'react-hook-form';
 
+import { useUpdateEffect } from '@/lib/hooks';
 import {
   FormControl,
   FormField,

@@ -1,7 +1,5 @@
 import * as Tone from 'tone';
 
-import type { Binary } from '@/lib/types';
-
 export const AMinorScale = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
 export const addOctaveNumbers = (
@@ -381,7 +379,7 @@ const 필립글래스음계 = [
 
 const initMelodyPart = (
   sampler: Tone.Sampler,
-  binaries: Binary[],
+  binaries: string[],
   now: number = 0
 ) => {
   // const scale = addOctaveNumbers(필립글래스음계, 3);
@@ -444,7 +442,7 @@ export const triggerSingleNote = (
 };
 
 export const toggleSoundPlay = async (
-  binaries: Binary[],
+  binaries: string[],
   options?: {
     onStart?: () => void;
     onStop?: () => void;

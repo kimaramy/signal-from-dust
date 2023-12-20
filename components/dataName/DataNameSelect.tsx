@@ -1,4 +1,5 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/css';
+import { dataNameSchema, type DataNameKey } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -6,8 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-import { dataNameSchema, type DataNameKey } from './schema';
 
 interface DataNameSelectProps {
   value: DataNameKey;

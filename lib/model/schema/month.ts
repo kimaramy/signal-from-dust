@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { KeyValueSchema } from '@/lib/utils';
-import { LocaleSchema } from '@/components/locale';
+import { ModelSchema } from './base';
+import { LocaleSchema } from './locale';
 
 const monthKeys = [
   'ALL',
@@ -25,7 +25,7 @@ type MonthKey = z.infer<typeof monthKeySchema>;
 
 type MonthValue = number;
 
-const monthKeyValueMap = new Map<MonthKey, MonthValue>()
+const monthMap = new Map<MonthKey, MonthValue>()
   .set('ALL', 0)
   .set('JAN', 1)
   .set('FEB', 2)
@@ -40,9 +40,9 @@ const monthKeyValueMap = new Map<MonthKey, MonthValue>()
   .set('NOV', 11)
   .set('DEC', 12);
 
-class MonthSchema extends KeyValueSchema<MonthKey, MonthValue> {
+class MonthSchema extends ModelSchema<MonthKey, MonthValue> {
   constructor() {
-    super(monthKeySchema, monthKeySchema.enum.ALL, monthKeyValueMap);
+    super(monthKeySchema, monthKeySchema.enum.ALL, monthMap);
   }
   protected getMonthName(
     monthValue: MonthValue,

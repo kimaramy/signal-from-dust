@@ -1,7 +1,8 @@
 'use client';
 
+import { collectionSchema } from '@/lib/model';
 import { Skeleton } from '@/components/ui/skeleton';
-import { collectionSchema, useCollectionKey } from '@/components/collection';
+import { useCollectionKey } from '@/components/collection';
 import Grid from '@/components/Grid';
 
 function FakeDataset() {

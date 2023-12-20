@@ -1,7 +1,7 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/css';
 
 const floatingVariants = cva(
   'fixed z-50 flex items-center justify-center gap-2 rounded-md bg-white p-2 shadow-lg dark:bg-muted',

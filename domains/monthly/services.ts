@@ -1,5 +1,4 @@
-import type { MonthlyData } from '..';
-import { supabaseClient } from '../supabaseClient';
+import { supabaseClient, type MonthlyData } from '@/lib/model';
 
 export const fetchMonthlyDataset = async (year: number) => {
   const response = await supabaseClient

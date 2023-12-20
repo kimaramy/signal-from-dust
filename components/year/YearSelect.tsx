@@ -1,4 +1,5 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/css';
+import { yearSchema, type YearKey } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -6,8 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-import { yearSchema, type YearKey } from './schema';
 
 interface YearSelectProps {
   value: YearKey;

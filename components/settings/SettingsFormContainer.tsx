@@ -24,7 +24,6 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
     (values: SettingsFormValues) => {
       if (values.mode === 'preset') {
         const pathname = `/${toLowerCase(values.collectionKey)}` as TypedRoute;
-
         return navigate(pathname, { method: 'push' });
       }
 
@@ -40,7 +39,6 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
       });
 
       const pathname = `/search` as TypedRoute;
-
       const search = setQueryParams(map, { stringify: true });
 
       navigate(`${pathname}${search}`, { method: 'push' });

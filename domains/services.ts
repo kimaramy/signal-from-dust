@@ -1,7 +1,12 @@
-import { type CollectionKey } from '@/components/collection';
-import { monthSchema, type MonthKey } from '@/components/month';
-import { seasonSchema, type SeasonKey } from '@/components/season';
-import { yearSchema, type YearKey } from '@/components/year';
+import {
+  monthSchema,
+  seasonSchema,
+  yearSchema,
+  type CollectionKey,
+  type MonthKey,
+  type SeasonKey,
+  type YearKey,
+} from '@/lib/model';
 
 import { fetchDailyDataset } from './daily';
 import { fetchMonthlyDataset, fetchMonthlyDatasetBySeason } from './monthly';

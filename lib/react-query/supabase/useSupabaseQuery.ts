@@ -6,16 +6,27 @@ import {
 
 import type { PostgrestError } from './types';
 
-export type UseSupabaseQueryOptions<
+/**
+ * @alias UseSbQOptions
+ * @description Abbreviation of UseSupabaseQueryOptions
+ */
+type UseSupabaseQueryOptions<
   TQueryFnData = unknown,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey,
 > = UseQueryOptions<TQueryFnData, PostgrestError, TData, TQueryKey>;
 
-export function useSupabaseQuery<
+/**
+ * @alias useSbQ
+ * @description Abbreviation of useSupabaseQuery
+ */
+function useSupabaseQuery<
   TQueryFnData = unknown,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey,
 >(options: UseSupabaseQueryOptions<TQueryFnData, TData, TQueryKey>) {
   return useQuery(options);
 }
+
+export { useSupabaseQuery as useSbQ };
+export type { UseSupabaseQueryOptions as UseSbQOptions };

@@ -3,8 +3,12 @@ import {
   inferQueryKeys,
 } from '@lukemorales/query-key-factory';
 
-import { seasonSchema, type SeasonKey } from '@/components/season';
-import { yearSchema, type YearKey } from '@/components/year';
+import {
+  seasonSchema,
+  yearSchema,
+  type SeasonKey,
+  type YearKey,
+} from '@/lib/model';
 
 import * as services from './services';
 

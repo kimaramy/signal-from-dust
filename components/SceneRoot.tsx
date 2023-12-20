@@ -1,9 +1,9 @@
 import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/css';
 
-const sceneRootVariants = cva('relative flex h-full items-center gap-6', {
+const sceneRootStyle = cva('relative flex h-full items-center gap-6', {
   variants: {
     justify: {
       start: 'justify-start',
@@ -15,18 +15,16 @@ const sceneRootVariants = cva('relative flex h-full items-center gap-6', {
   },
 });
 
-type SceneRootVariants = typeof sceneRootVariants;
-
 interface SceneRootProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<SceneRootVariants> {}
+    VariantProps<typeof sceneRootStyle> {}
 
 const SceneRoot = React.forwardRef<HTMLDivElement, SceneRootProps>(
   function SceneRoot({ justify, className, children, ...rest }, ref) {
     return (
       <div
         ref={ref}
-        className={cn(sceneRootVariants({ justify, className }))}
+        className={cn(sceneRootStyle({ justify, className }))}
         {...rest}
       >
         {children}

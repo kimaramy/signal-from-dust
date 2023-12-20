@@ -2,10 +2,9 @@
 
 import { useSearchParams } from 'next/navigation';
 
+import { monthSchema, type MonthKey } from '@/lib/model';
 import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
 import { QueryParamEnum } from '@/lib/utils';
-
-import { monthSchema, type MonthKey } from './schema';
 
 export function useMonthKey(initialKey?: MonthKey): MonthKey {
   const lowerCasedKeys = monthSchema.mapKeys(monthSchema.lowerCaseKey);

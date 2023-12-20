@@ -1,14 +1,13 @@
 'use client';
 
 import { useCallback } from 'react';
-import { useMountEffect, useUpdateEffect } from '@/hooks';
 import { useFormContext } from 'react-hook-form';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/css';
+import { useMountEffect, useUpdateEffect } from '@/lib/hooks';
+import * as Model from '@/lib/model';
 import { FormField } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { collectionSchema, type CollectionKey } from '@/components/collection';
-import { dataNameSchema } from '@/components/dataName';
 
 import { type SettingsFormValues } from './SettingsForm';
 
@@ -28,7 +27,7 @@ function PresetFields() {
   const isPresetMode = mode === 'preset';
 
   const handleValueChange = useCallback(
-    (collectionKey: CollectionKey) => {
+    (collectionKey: Model.CollectionKey) => {
       reset({
         ...defaultValues,
         collectionKey,
@@ -64,7 +63,9 @@ function PresetFields() {
         </span>
         {[
           ' 나타나는',
-          dataNameSchema.display(defaultValues?.dataNameKey!).concat('의 패턴'),
+          Model.dataNameSchema
+            .display(defaultValues?.dataNameKey!)
+            .concat('의 패턴'),
         ].join(' ')}
       </h3>
       <FormField
@@ -77,7 +78,7 @@ function PresetFields() {
               value={field.value}
               onValueChange={handleValueChange}
             >
-              {collectionSchema
+              {Model.collectionSchema
                 .getAllKeys()
                 .reverse()
                 .map((collectionKey) => {
@@ -103,7 +104,7 @@ function PresetFields() {
   );
 }
 
-function getPresetLabel(collectionKey: CollectionKey) {
+function getPresetLabel(collectionKey: Model.CollectionKey) {
   return collectionKey === 'YEARLY'
     ? '매년'
     : collectionKey === 'SEASONALLY'

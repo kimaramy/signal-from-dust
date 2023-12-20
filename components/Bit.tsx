@@ -1,16 +1,17 @@
 'use client';
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useUpdateEffect } from '@/hooks';
 import { Power0, TimelineLite } from 'gsap';
 import { random } from 'lodash-es';
 
-import type { Binary } from '@/lib/types';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/css';
+import { useUpdateEffect } from '@/lib/hooks';
 import { type DisplayKey } from '@/components/display';
 
 import Overlay from './Overlay';
 import { triggerSingleNote } from './sound';
+
+export type Binary = '0' | '1';
 
 export interface BitProps {
   id: string;

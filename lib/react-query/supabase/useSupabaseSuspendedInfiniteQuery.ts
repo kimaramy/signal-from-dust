@@ -1,20 +1,25 @@
 import { type QueryKey } from '@tanstack/react-query';
 
-import {
-  useSupabaseInfiniteQuery,
-  type UseSupabaseInfiniteQueryOptions,
-} from './useSupabaseInfiniteQuery';
+import { useSbIQ, type UseSbIQOptions } from './useSupabaseInfiniteQuery';
 
-export type UseSupabaseSuspendedInfiniteQueryOptions<
+/**
+ * @alias UseSbSIQOptions
+ * @description Abbreviation of UseSupabaseSuspendedInfiniteQueryOptions
+ */
+type UseSupabaseSuspendedInfiniteQueryOptions<
   TQueryFnData = unknown,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey,
 > = Omit<
-  UseSupabaseInfiniteQueryOptions<TQueryFnData, TData, TQueryKey>,
+  UseSbIQOptions<TQueryFnData, TData, TQueryKey>,
   'suspense' | 'useErrorBoundary' | 'onError'
 >;
 
-export function useSupabaseSuspensedInfiniteQuery<
+/**
+ * @alias useSbSIQ
+ * @description Abbreviation of useSupabaseSuspensedInfiniteQuery
+ */
+function useSupabaseSuspensedInfiniteQuery<
   TQueryFnData = unknown,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey,
@@ -25,11 +30,13 @@ export function useSupabaseSuspensedInfiniteQuery<
     TQueryKey
   >
 ) {
-  const { isLoading, isFetching, isError, error, ...others } =
-    useSupabaseInfiniteQuery({
-      useErrorBoundary: true,
-      suspense: true,
-      ...options,
-    });
+  const { isLoading, isFetching, isError, error, ...others } = useSbIQ({
+    useErrorBoundary: true,
+    suspense: true,
+    ...options,
+  });
   return others;
 }
+
+export { useSupabaseSuspensedInfiniteQuery as useSbSIQ };
+export type { UseSupabaseSuspendedInfiniteQueryOptions as UseSbSIQOptions };
