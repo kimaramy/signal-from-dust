@@ -2,7 +2,12 @@ import { cache } from 'react';
 import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
-import * as Model from '@/lib/model';
+import {
+  dataNameSchema,
+  monthSchema,
+  seasonSchema,
+  yearSchema,
+} from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
 import { parseCollectionKey } from '@/components/collection';
 import { parseDataNameKey } from '@/components/dataName';
@@ -16,35 +21,18 @@ import { parseYearKey } from '@/components/year';
 const fetchCachedDataset = cache(fetchDataset);
 
 export function generateMetadata({ searchParams }: NextPageProps): Metadata {
-  const collection = Model.collectionSchema.display(
-    parseCollectionKey(searchParams),
-    'en'
-  );
-  const dataName = Model.dataNameSchema.display(
-    parseDataNameKey(searchParams),
-    'en'
-  );
-  const year = Model.yearSchema.display(
-    parseYearKey(searchParams),
-    'short',
-    'en'
-  );
-  const season = Model.seasonSchema.display(parseSeasonKey(searchParams), 'en');
-  const month = Model.monthSchema.display(
-    parseMonthKey(searchParams),
-    'short',
-    'en'
-  );
+  const dataNameKey = parseDataNameKey(searchParams);
+  const yearKey = parseYearKey(searchParams);
+  const seasonKey = parseSeasonKey(searchParams);
+  const monthKey = parseMonthKey(searchParams);
   return {
     title: [
-      collection,
-      [
-        'Dust',
-        '(',
-        [dataName, season !== 'Every season' ? season : month, year].join(', '),
-        ')',
-      ].join(''),
-    ].join(' '),
+      dataNameSchema.display(dataNameKey, 'en'),
+      seasonKey !== seasonSchema.defaultKey
+        ? seasonSchema.display(seasonKey, 'en')
+        : monthSchema.display(monthKey, 'short', 'en'),
+      yearSchema.display(yearKey, 'short', 'en'),
+    ].join(', '),
   };
 }
 

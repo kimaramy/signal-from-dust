@@ -1,23 +1,36 @@
 import { z } from 'zod';
 
-import { LocaleSchema, ModelSchema } from '@/lib/model';
+import { LocaleSchema, MapSchema } from '@/lib/model';
 import { toLowerCase } from '@/lib/utils';
+
+const displaySchemaName = 'display';
 
 const displayKeys = ['FULL', 'AUTO'] as const;
 
 const displayKeySchema = z.enum(displayKeys);
 
+type DisplaySchemaName = typeof displaySchemaName;
+
 type DisplayKey = z.infer<typeof displayKeySchema>;
 
 type DisplayValue = Lowercase<DisplayKey>;
 
-const displayKeyValueMap = new Map<DisplayKey, DisplayValue>(
+const displayMap = new Map<DisplayKey, DisplayValue>(
   displayKeys.map((displayKey) => [displayKey, toLowerCase(displayKey)])
 );
 
-class DisplaySchema extends ModelSchema<DisplayKey, DisplayValue> {
+class DisplaySchema extends MapSchema<
+  DisplaySchemaName,
+  DisplayKey,
+  DisplayValue
+> {
   constructor() {
-    super(displayKeySchema, displayKeySchema.enum.AUTO, displayKeyValueMap);
+    super(
+      displaySchemaName,
+      displayMap,
+      displayKeySchema,
+      displayKeySchema.enum.AUTO
+    );
   }
   display(displayKey: DisplayKey, locale = LocaleSchema.defaultLocale) {
     const isKorean = LocaleSchema.isKorean(locale);

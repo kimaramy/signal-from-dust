@@ -1,20 +1,17 @@
-'use client';
-
-import { useSearchParams } from 'next/navigation';
-
 import { seasonSchema, type SeasonKey, type SeasonValue } from '@/lib/model';
-import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
-import { QueryParamEnum } from '@/lib/utils';
+import { useEnumUrlParam, useSetQueryParam, type URLPart } from '@/lib/router';
 
-export function useSeasonKey(initialKey?: SeasonKey): SeasonKey {
-  const lowerCasedKeys = seasonSchema.mapKeys(seasonSchema.lowerCaseKey);
-  const lowerCasedDefaultKey = seasonSchema.lowerCaseKey(
-    initialKey ?? seasonSchema.defaultKey
-  );
+export function useSeasonKey(
+  part?: URLPart,
+  initialKey?: SeasonKey
+): SeasonKey {
   const [lowerCasedKey] = useEnumUrlParam(
-    QueryParamEnum.Season,
-    lowerCasedDefaultKey,
-    { enums: lowerCasedKeys, part: 'query' }
+    seasonSchema.name,
+    seasonSchema.lowerCaseKey(initialKey ?? seasonSchema.defaultKey),
+    {
+      enums: seasonSchema.mapKeys(seasonSchema.lowerCaseKey),
+      part,
+    }
   );
   return seasonSchema.upperCaseKey(lowerCasedKey);
 }
@@ -25,12 +22,8 @@ export function useSeasonValue(): SeasonValue {
 }
 
 export function useSetSeasonKey() {
-  const setSeasonKey = useSetQueryParam(
-    useSearchParams(),
-    QueryParamEnum.Season
-  );
+  const setSeasonKey = useSetQueryParam(seasonSchema.name);
   return function (seasonKey: SeasonKey) {
-    const lowerCasedKey = seasonSchema.lowerCaseKey(seasonKey);
-    return setSeasonKey(lowerCasedKey);
+    return setSeasonKey(seasonSchema.lowerCaseKey(seasonKey));
   };
 }

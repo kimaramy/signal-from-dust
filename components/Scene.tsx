@@ -133,16 +133,17 @@ function Scene({
         >
           <HoverCardTrigger asChild>
             <div
+              style={{ width: `max(10rem, 12vw)` }}
               className={cn(
-                'peer flex h-full w-auto min-w-40 max-w-44 flex-none cursor-pointer items-center justify-start pl-2 hover:bg-accent'
+                'peer flex h-full flex-none cursor-pointer flex-nowrap items-center justify-start hover:bg-accent'
               )}
               // onMouseOver={handleMouseOver}
               // onMouseOut={handleMouseOut}
             >
               <Button
                 variant="ghost"
-                size="sm"
-                className="flex items-center gap-2 text-sm"
+                size="icon"
+                className="flex-none"
                 onClick={() => {
                   if (isPlaying) {
                     handlePlaySound();
@@ -160,8 +161,10 @@ function Scene({
                   aria-hidden
                   className={cn('h-3.5 w-3.5', !isPlaying && 'hidden')}
                 />
-                <span>{data.dates.join(' ')}</span>
               </Button>
+              <p className="flex-1 truncate font-mono">
+                {data.dates.join(',')}
+              </p>
             </div>
           </HoverCardTrigger>
           <HoverCardContent

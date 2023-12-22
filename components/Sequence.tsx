@@ -80,12 +80,12 @@ export class SceneUtils {
           : null,
       collection: Model.collectionSchema.display(collectionKey),
       dates: [
+        Model.daySchema.display(Model.daySchema.getKeyByValue(day), locale),
         Model.monthSchema.display(
           Model.monthSchema.getKeyByValue(month),
           'short',
           locale
         ),
-        Model.daySchema.display(Model.daySchema.getKeyByValue(day), locale),
       ],
       location: Model.LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
       rank: null,
@@ -109,14 +109,14 @@ export class SceneUtils {
           : null,
       collection: Model.collectionSchema.display(collectionKey),
       dates: [
-        Model.monthSchema.display(
-          Model.monthSchema.getKeyByValue(month),
-          'short',
-          locale
-        ),
         Model.weekdaySchema.display(
           Model.weekdaySchema.getKeyByValue(weekday),
           'long',
+          locale
+        ),
+        Model.monthSchema.display(
+          Model.monthSchema.getKeyByValue(month),
+          'short',
           locale
         ),
       ],
@@ -142,12 +142,12 @@ export class SceneUtils {
           : null,
       collection: Model.collectionSchema.display(collectionKey),
       dates: [
+        Model.weekSchema.display(Model.weekSchema.getKeyByValue(week), locale),
         Model.yearSchema.display(
           Model.yearSchema.getKeyByValue(year),
           'short',
           locale
         ),
-        Model.weekSchema.display(Model.weekSchema.getKeyByValue(week), locale),
       ],
       location: Model.LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
       rank: null,
@@ -171,13 +171,13 @@ export class SceneUtils {
           : null,
       collection: Model.collectionSchema.display(collectionKey),
       dates: [
-        Model.yearSchema.display(
-          Model.yearSchema.getKeyByValue(year),
-          'short',
-          locale
-        ),
         Model.monthSchema.display(
           Model.monthSchema.getKeyByValue(month),
+          'long',
+          locale
+        ),
+        Model.yearSchema.display(
+          Model.yearSchema.getKeyByValue(year),
           'short',
           locale
         ),

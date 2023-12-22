@@ -23,21 +23,26 @@ interface DatasetProps {
 }
 
 function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
-  const displayKey = useDisplayKey();
+  const displayKey = useDisplayKey('query');
 
-  const dataNameKey = useDataNameKey();
+  const dataNameKey = useDataNameKey('query');
 
-  const yearKey = useYearKey();
+  const yearKey = useYearKey('query');
 
-  const seasonKey = useSeasonKey();
+  const seasonKey = useSeasonKey('query');
 
-  const monthKey = useMonthKey();
+  const monthKey = useMonthKey('query');
 
   const yearlyScenes = Domains.useYearlyListQuery({
     initialData: initialDataset?.['YEARLY'],
     enabled: initialCollectionKey === 'YEARLY',
     select: (dataset) =>
-      SceneUtils.toYearlyScenes(dataset, dataNameKey, initialCollectionKey),
+      SceneUtils.toYearlyScenes(
+        dataset,
+        dataNameKey,
+        initialCollectionKey,
+        'en'
+      ),
   });
 
   const seasonalScenes = Domains.useMonthlyListQueryBySeason(
@@ -47,7 +52,12 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
       initialData: initialDataset?.['SEASONALLY'],
       enabled: initialCollectionKey === 'SEASONALLY',
       select: (dataset) =>
-        SceneUtils.toMonthlyScenes(dataset, dataNameKey, initialCollectionKey),
+        SceneUtils.toMonthlyScenes(
+          dataset,
+          dataNameKey,
+          initialCollectionKey,
+          'en'
+        ),
     }
   );
 
@@ -55,28 +65,48 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
     initialData: initialDataset?.['MONTHLY'],
     enabled: initialCollectionKey === 'MONTHLY',
     select: (dataset) =>
-      SceneUtils.toMonthlyScenes(dataset, dataNameKey, initialCollectionKey),
+      SceneUtils.toMonthlyScenes(
+        dataset,
+        dataNameKey,
+        initialCollectionKey,
+        'en'
+      ),
   });
 
   const weeklyScenes = Domains.useWeeklyListQuery(yearKey, {
     initialData: initialDataset?.['WEEKLY'],
     enabled: initialCollectionKey === 'WEEKLY',
     select: (dataset) =>
-      SceneUtils.toWeeklyScenes(dataset, dataNameKey, initialCollectionKey),
+      SceneUtils.toWeeklyScenes(
+        dataset,
+        dataNameKey,
+        initialCollectionKey,
+        'en'
+      ),
   });
 
   const weekdailyScenes = Domains.useWeekDailyListQuery(monthKey, {
     initialData: initialDataset?.['WEEKDAILY'],
     enabled: initialCollectionKey === 'WEEKDAILY',
     select: (dataset) =>
-      SceneUtils.toWeekDailyScenes(dataset, dataNameKey, initialCollectionKey),
+      SceneUtils.toWeekDailyScenes(
+        dataset,
+        dataNameKey,
+        initialCollectionKey,
+        'en'
+      ),
   });
 
   const dailyScenes = Domains.useDailyListQuery(monthKey, {
     initialData: initialDataset?.['DAILY'],
     enabled: initialCollectionKey === 'DAILY',
     select: (dataset) =>
-      SceneUtils.toDailyScenes(dataset, dataNameKey, initialCollectionKey),
+      SceneUtils.toDailyScenes(
+        dataset,
+        dataNameKey,
+        initialCollectionKey,
+        'en'
+      ),
   });
 
   const scenes = (function () {

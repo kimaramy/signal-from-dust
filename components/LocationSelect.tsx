@@ -1,7 +1,6 @@
 'use client';
 
 import { usePlainUrlParam } from '@/lib/router';
-import { QueryParamEnum } from '@/lib/utils';
 import {
   Select,
   SelectContent,
@@ -13,7 +12,7 @@ import {
 export interface LocationSelectProps {}
 
 export default function LocationSelect() {
-  const [location] = usePlainUrlParam(QueryParamEnum.Location, 'Seoul');
+  const [location] = usePlainUrlParam('location', 'Seoul');
 
   return (
     <Select disabled value={location}>

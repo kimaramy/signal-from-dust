@@ -17,7 +17,9 @@ import { baseMetadata } from './metadata';
 
 export const metadata = baseMetadata;
 
-function RootLayout({ children, modal }: NextLayoutProps) {
+type RootLayoutProps = NextLayoutProps & { modal: React.ReactNode };
+
+function RootLayout({ children, modal }: RootLayoutProps) {
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>

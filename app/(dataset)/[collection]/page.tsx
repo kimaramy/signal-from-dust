@@ -2,7 +2,13 @@ import { cache } from 'react';
 import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
-import * as Model from '@/lib/model';
+import {
+  collectionSchema,
+  dataNameSchema,
+  monthSchema,
+  seasonSchema,
+  yearSchema,
+} from '@/lib/model';
 import type { NextStaticPageProps } from '@/lib/router';
 import Dataset from '@/components/Dataset';
 import DatasetDownloadButton from '@/components/DatasetDownloadButton';
@@ -15,21 +21,21 @@ type StaticDatasetPageProps = NextStaticPageProps<
 >;
 
 export function generateStaticParams() {
-  return Model.collectionSchema
-    .mapKeys(Model.collectionSchema.lowerCaseKey)
+  return collectionSchema
+    .mapKeys(collectionSchema.lowerCaseKey)
     .map((collection) => ({ collection }));
 }
 
 export function generateMetadata({
   params: { collection },
 }: StaticDatasetPageProps): Metadata {
-  const collectionKey = Model.collectionSchema.upperCaseKey(collection);
-  const dataNameKey = Model.dataNameSchema.defaultKey;
+  const collectionKey = collectionSchema.upperCaseKey(collection);
+  const dataNameKey = dataNameSchema.defaultKey;
   return {
     title: [
-      Model.collectionSchema.display(collectionKey, 'en'),
-      Model.dataNameSchema.display(dataNameKey, 'en'),
-    ].join(' '),
+      dataNameSchema.display(dataNameKey, 'en'),
+      collectionSchema.display(collectionKey, 'en'),
+    ].join(', '),
   };
 }
 
@@ -40,13 +46,13 @@ export const revalidate = false;
 async function StaticDatasetPage({
   params: { collection },
 }: StaticDatasetPageProps) {
-  const collectionKey = Model.collectionSchema.upperCaseKey(collection);
+  const collectionKey = collectionSchema.upperCaseKey(collection);
 
   const datasetKeys = [
     collectionKey,
-    Model.yearSchema.defaultKey,
-    Model.monthSchema.defaultKey,
-    Model.seasonSchema.defaultKey,
+    yearSchema.defaultKey,
+    monthSchema.defaultKey,
+    seasonSchema.defaultKey,
   ] as const;
 
   const initialDataset = await fetchCachedDataset(...datasetKeys);

@@ -1,31 +1,24 @@
-'use client';
-
-import { useSearchParams } from 'next/navigation';
-
 import { dataNameSchema, type DataNameKey } from '@/lib/model';
-import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
-import { QueryParamEnum } from '@/lib/utils';
+import { useEnumUrlParam, useSetQueryParam, type URLPart } from '@/lib/router';
 
-export function useDataNameKey(initialKey?: DataNameKey): DataNameKey {
-  const lowerCasedKeys = dataNameSchema.mapKeys(dataNameSchema.lowerCaseKey);
-  const lowerCasedDefaultKey = dataNameSchema.lowerCaseKey(
-    initialKey ?? dataNameSchema.defaultKey
-  );
+export function useDataNameKey(
+  part?: URLPart,
+  initialKey?: DataNameKey
+): DataNameKey {
   const [lowerCasedKey] = useEnumUrlParam(
-    QueryParamEnum.DataName,
-    lowerCasedDefaultKey,
-    { enums: lowerCasedKeys, part: 'query' }
+    dataNameSchema.name,
+    dataNameSchema.lowerCaseKey(initialKey ?? dataNameSchema.defaultKey),
+    {
+      enums: dataNameSchema.mapKeys(dataNameSchema.lowerCaseKey),
+      part,
+    }
   );
   return dataNameSchema.upperCaseKey(lowerCasedKey);
 }
 
 export function useSetDataNameKey() {
-  const setDataNameKey = useSetQueryParam(
-    useSearchParams(),
-    QueryParamEnum.DataName
-  );
+  const setDataNameKey = useSetQueryParam(dataNameSchema.name);
   return function (dataNameKey: DataNameKey) {
-    const lowerCasedKey = dataNameSchema.lowerCaseKey(dataNameKey);
-    return setDataNameKey(lowerCasedKey);
+    return setDataNameKey(dataNameSchema.lowerCaseKey(dataNameKey));
   };
 }

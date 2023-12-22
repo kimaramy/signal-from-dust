@@ -1,13 +1,12 @@
-'use client';
-
-import { collectionSchema } from '@/lib/model';
+import { collectionSchema, type CollectionKey } from '@/lib/model';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useCollectionKey } from '@/components/collection';
 import Grid from '@/components/Grid';
 
-function FakeDataset() {
-  const collectionKey = useCollectionKey();
+interface FakeDatasetProps {
+  collectionKey: CollectionKey;
+}
 
+function FakeDataset({ collectionKey }: FakeDatasetProps) {
   const numbers: number[] = new Array(
     collectionSchema.getDataCount(collectionKey)
   ).fill(0);

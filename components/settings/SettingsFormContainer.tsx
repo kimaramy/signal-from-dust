@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import { useSearchParams } from 'next/navigation';
 
+import { type SchemaName } from '@/lib/model';
 import { useNavigate, useSetQueryParams, type TypedRoute } from '@/lib/router';
-import { QueryParamEnum, toLowerCase } from '@/lib/utils';
+import { toLowerCase } from '@/lib/utils';
 
 import { useSettingsFormDefaultValues, useSettingsModeContext } from './hooks';
 import SettingsForm, { type SettingsFormValues } from './SettingsForm';
@@ -14,7 +14,7 @@ interface SettingsFormContainerProps {
 function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
   const navigate = useNavigate();
 
-  const setQueryParams = useSetQueryParams(useSearchParams());
+  const setQueryParams = useSetQueryParams();
 
   const defaultMode = useSettingsModeContext();
 
@@ -27,21 +27,20 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
         return navigate(pathname, { method: 'push' });
       }
 
-      const map = new Map<QueryParamEnum, string>()
-        .set(QueryParamEnum.Collection, values.collectionKey)
-        .set(QueryParamEnum.DataName, values.dataNameKey)
-        .set(QueryParamEnum.Year, values.yearKey)
-        .set(QueryParamEnum.Season, values.seasonKey)
-        .set(QueryParamEnum.Month, values.monthKey);
+      const map = new Map<SchemaName, string>()
+        .set('collection', values.collectionKey)
+        .set('dataName', values.dataNameKey)
+        .set('year', values.yearKey)
+        .set('season', values.seasonKey)
+        .set('month', values.monthKey);
 
       map.forEach((value, key) => {
         map.set(key, toLowerCase(value.toString()));
       });
 
-      const pathname = `/search` as TypedRoute;
       const search = setQueryParams(map, { stringify: true });
 
-      navigate(`${pathname}${search}`, { method: 'push' });
+      navigate(`/search${search}`, { method: 'push' });
     },
     [setQueryParams, navigate]
   );

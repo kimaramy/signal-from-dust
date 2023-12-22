@@ -1,11 +1,12 @@
 import { dataNameSchema } from '@/lib/model';
-import { parseUrlParam, type UrlParams } from '@/lib/router';
-import { QueryParamEnum } from '@/lib/utils';
+import { parseUrlParam } from '@/lib/router';
 
-export const parseDataNameKey = (params?: UrlParams) => {
+export const parseDataNameKey = (
+  params?: Parameters<typeof parseUrlParam>[0]
+) => {
   const [parsedKey] = parseUrlParam(
     params,
-    QueryParamEnum.DataName,
+    dataNameSchema.name,
     dataNameSchema.defaultKey
   );
   return dataNameSchema.upperCaseKey(parsedKey);

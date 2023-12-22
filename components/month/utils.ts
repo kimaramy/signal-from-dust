@@ -1,11 +1,10 @@
 import { monthSchema } from '@/lib/model';
-import { parseUrlParam, type UrlParams } from '@/lib/router';
-import { QueryParamEnum } from '@/lib/utils';
+import { parseUrlParam } from '@/lib/router';
 
-export const parseMonthKey = (params?: UrlParams) => {
+export const parseMonthKey = (params?: Parameters<typeof parseUrlParam>[0]) => {
   const [parsedKey] = parseUrlParam(
     params,
-    QueryParamEnum.Month,
+    monthSchema.name,
     monthSchema.defaultKey
   );
   return monthSchema.upperCaseKey(parsedKey);
