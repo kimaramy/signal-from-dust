@@ -1,4 +1,3 @@
-import * as enumFor from 'enum-for';
 import { toLower, toUpper } from 'lodash-es';
 
 export type ValueOf<T> = T[keyof T];
@@ -29,32 +28,6 @@ export function toOrderedBy<T extends string>(arr: T[], order: T[]) {
     const bIndex = -orderForIndexVals.indexOf(b);
     return aIndex - bIndex;
   });
-}
-
-export const getAllEnumEntries = enumFor.getAllEnumEntries;
-
-export const getAllEnumKeys = enumFor.getAllEnumKeys;
-
-export const getAllEnumValues = enumFor.getAllEnumValues;
-
-export function getEnumKeyByValue<T, K extends T[keyof T]>(
-  enumType: T,
-  value: K
-) {
-  const enumMap = new Map(enumFor.getAllEnumEntries(enumType));
-  for (let [enumKey, enumValue] of enumMap.entries()) {
-    if (enumValue === value) return enumKey;
-  }
-}
-
-export enum QueryParamEnum {
-  Collection = 'collection',
-  DataName = 'name',
-  Year = 'year',
-  Season = 'season',
-  Month = 'month',
-  Location = 'location',
-  Display = 'display',
 }
 
 export const isServer = typeof window === 'undefined';
