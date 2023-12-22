@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import type { TypedRoute } from '../type';
+import type { TypedRoute } from '../types';
 import useDecoratedRouter from './_useDecoratedRouter';
 
 interface NavigateOptions {

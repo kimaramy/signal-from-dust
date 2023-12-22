@@ -31,9 +31,8 @@ export type NextStaticPageProps<TPath extends string = string> = {
  * - https://nextjs.org/docs/app/api-reference/file-conventions/layout#layouts-do-not-receive-searchparams
  */
 export type NextLayoutProps<TPath extends string = string> = {
-  params?: PathParams<TPath>;
   children: React.ReactNode;
-  [slot: string]: React.ReactNode;
+  params?: PathParams<TPath>;
 };
 
 /**
