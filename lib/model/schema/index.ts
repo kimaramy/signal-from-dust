@@ -1,4 +1,5 @@
 export * from './base';
+export * from './reducer';
 export * from './locale';
 export * from './collection';
 export * from './dataName';

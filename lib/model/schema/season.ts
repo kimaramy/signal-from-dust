@@ -2,13 +2,17 @@ import { z } from 'zod';
 
 import { toLowerCase } from '@/lib/utils';
 
-import { ModelSchema } from './base';
+import { MapSchema } from './base';
 import { LocaleSchema } from './locale';
 import { type MonthValue } from './month';
+
+const seasonSchemaName = 'season';
 
 const seasonKeys = ['ALL', 'SPRING', 'SUMMER', 'FALL', 'WINTER'] as const;
 
 const seasonKeySchema = z.enum(seasonKeys);
+
+type SeasonSchemaName = typeof seasonSchemaName;
 
 type SeasonKey = z.infer<typeof seasonKeySchema>;
 
@@ -18,9 +22,14 @@ const seasonMap = new Map<SeasonKey, SeasonValue>(
   seasonKeys.map((seasonKey) => [seasonKey, toLowerCase(seasonKey)])
 );
 
-class SeasonSchema extends ModelSchema<SeasonKey, SeasonValue> {
+class SeasonSchema extends MapSchema<SeasonSchemaName, SeasonKey, SeasonValue> {
   constructor() {
-    super(seasonKeySchema, seasonKeySchema.enum.ALL, seasonMap);
+    super(
+      seasonSchemaName,
+      seasonMap,
+      seasonKeySchema,
+      seasonKeySchema.enum.ALL
+    );
   }
   display(seasonKey: SeasonKey, locale = LocaleSchema.defaultLocale) {
     const isKorean = LocaleSchema.isKorean(locale);
@@ -59,4 +68,9 @@ class SeasonSchema extends ModelSchema<SeasonKey, SeasonValue> {
 
 const seasonSchema = new SeasonSchema();
 
-export { seasonSchema, type SeasonKey, type SeasonValue };
+export {
+  seasonSchema,
+  type SeasonSchemaName,
+  type SeasonKey,
+  type SeasonValue,
+};

@@ -2,12 +2,16 @@ import { z } from 'zod';
 
 import { toLowerCase } from '@/lib/utils';
 
-import { ModelSchema } from './base';
+import { MapSchema } from './base';
 import { LocaleSchema } from './locale';
+
+const dataNameSchemaName = 'dataName';
 
 const dataNameKeys = ['PM_LARGE', 'PM_SMALL'] as const;
 
 const dataNameKeySchema = z.enum(dataNameKeys);
+
+type DataNameSchemaName = typeof dataNameSchemaName;
 
 type DataNameKey = z.infer<typeof dataNameKeySchema>;
 
@@ -17,9 +21,18 @@ const dataNameMap = new Map<DataNameKey, DataNameValue>(
   dataNameKeys.map((dataNameKey) => [dataNameKey, toLowerCase(dataNameKey)])
 );
 
-class DataNameSchema extends ModelSchema<DataNameKey, DataNameValue> {
+class DataNameSchema extends MapSchema<
+  DataNameSchemaName,
+  DataNameKey,
+  DataNameValue
+> {
   constructor() {
-    super(dataNameKeySchema, dataNameKeySchema.enum.PM_LARGE, dataNameMap);
+    super(
+      dataNameSchemaName,
+      dataNameMap,
+      dataNameKeySchema,
+      dataNameKeySchema.enum.PM_LARGE
+    );
   }
   display(dataNameKey: DataNameKey, locale = LocaleSchema.defaultLocale) {
     const isKorean = LocaleSchema.isKorean(locale);
@@ -36,4 +49,9 @@ class DataNameSchema extends ModelSchema<DataNameKey, DataNameValue> {
 
 const dataNameSchema = new DataNameSchema();
 
-export { dataNameSchema, type DataNameKey, type DataNameValue };
+export {
+  dataNameSchema,
+  type DataNameSchemaName,
+  type DataNameKey,
+  type DataNameValue,
+};

@@ -3,8 +3,12 @@ import { z } from 'zod';
 import { stringUnionToArray, toLowerCase, toOrderedBy } from '@/lib/utils';
 
 import type { TableKeys } from '../supabase';
-import { ModelSchema } from './base';
+import { MapSchema } from './base';
 import { LocaleSchema } from './locale';
+
+const collectionSchemaName = 'collection';
+
+type CollectionSchemaName = typeof collectionSchemaName;
 
 type CollectionKey = Uppercase<TableKeys> | 'SEASONALLY';
 
@@ -37,9 +41,18 @@ const collectionMap = new Map<CollectionKey, CollectionValue>(
   ])
 );
 
-class CollectionSchema extends ModelSchema<CollectionKey, CollectionValue> {
+class CollectionSchema extends MapSchema<
+  CollectionSchemaName,
+  CollectionKey,
+  CollectionValue
+> {
   constructor() {
-    super(collectionKeySchema, collectionKeySchema.enum.DAILY, collectionMap);
+    super(
+      collectionSchemaName,
+      collectionMap,
+      collectionKeySchema,
+      collectionKeySchema.enum.DAILY
+    );
   }
   display(collectionKey: CollectionKey, locale = LocaleSchema.defaultLocale) {
     const isKorean = LocaleSchema.isKorean(locale);
@@ -82,4 +95,9 @@ class CollectionSchema extends ModelSchema<CollectionKey, CollectionValue> {
 
 const collectionSchema = new CollectionSchema();
 
-export { collectionSchema, type CollectionKey, type CollectionValue };
+export {
+  collectionSchema,
+  type CollectionSchemaName,
+  type CollectionKey,
+  type CollectionValue,
+};
