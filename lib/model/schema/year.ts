@@ -71,4 +71,9 @@ class YearSchema extends MapSchema<YearSchemaName, YearKey, YearValue> {
 
 const yearSchema = new YearSchema();
 
-export { yearSchema, type YearSchemaName, type YearKey, type YearValue };
+export namespace AppYear {
+  export type Key = YearKey;
+  export type Value = YearValue;
+  export type SchemaName = YearSchemaName;
+  export const schema = yearSchema;
+}

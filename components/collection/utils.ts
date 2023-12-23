@@ -1,4 +1,4 @@
-import { collectionSchema } from '@/lib/model';
+import { AppCollection } from '@/lib/model';
 import { parseUrlParam } from '@/lib/router';
 
 export const parseCollectionKey = (
@@ -6,8 +6,8 @@ export const parseCollectionKey = (
 ) => {
   const [parsedKey] = parseUrlParam(
     params,
-    collectionSchema.name,
-    collectionSchema.defaultKey
+    AppCollection.schema.name,
+    AppCollection.schema.defaultKey
   );
-  return collectionSchema.upperCaseKey(parsedKey);
+  return AppCollection.schema.upperCaseKey(parsedKey);
 };

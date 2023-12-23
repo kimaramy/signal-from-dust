@@ -1,5 +1,5 @@
 import { cn } from '@/lib/css';
-import { yearSchema, type YearKey } from '@/lib/model';
+import { AppYear } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -9,8 +9,8 @@ import {
 } from '@/components/ui/select';
 
 interface YearSelectProps {
-  value: YearKey;
-  onValueChange: (value: YearKey) => void;
+  value: AppYear.Key;
+  onValueChange: (value: AppYear.Key) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
@@ -25,10 +25,10 @@ function YearSelect(props: YearSelectProps) {
     className,
   } = props;
 
-  const yearKeys = yearSchema.getAllKeys();
+  const yearKeys = AppYear.schema.getAllKeys();
 
   const defaultYearKey = yearKeys.splice(
-    yearKeys.indexOf(yearSchema.defaultKey),
+    yearKeys.indexOf(AppYear.schema.defaultKey),
     1
   )[0];
 
@@ -39,11 +39,11 @@ function YearSelect(props: YearSelectProps) {
       </SelectTrigger>
       <SelectContent>
         <SelectItem value={defaultYearKey}>
-          {yearSchema.display(defaultYearKey)}
+          {AppYear.schema.display(defaultYearKey)}
         </SelectItem>
         {yearKeys.reverse().map((yearKey) => (
           <SelectItem key={yearKey} value={yearKey}>
-            {yearSchema.display(yearKey)}
+            {AppYear.schema.display(yearKey)}
           </SelectItem>
         ))}
       </SelectContent>

@@ -82,4 +82,9 @@ class MonthSchema extends MapSchema<MonthSchemaName, MonthKey, MonthValue> {
 
 const monthSchema = new MonthSchema();
 
-export { monthSchema, type MonthSchemaName, type MonthKey, type MonthValue };
+export namespace AppMonth {
+  export type Key = MonthKey;
+  export type Value = MonthValue;
+  export type SchemaName = MonthSchemaName;
+  export const schema = monthSchema;
+}

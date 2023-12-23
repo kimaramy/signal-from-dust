@@ -1,5 +1,5 @@
 import { cn } from '@/lib/css';
-import { dataNameSchema, type DataNameKey } from '@/lib/model';
+import { AppDataName } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -9,8 +9,8 @@ import {
 } from '@/components/ui/select';
 
 interface DataNameSelectProps {
-  value: DataNameKey;
-  onValueChange: (value: DataNameKey) => void;
+  value: AppDataName.Key;
+  onValueChange: (value: AppDataName.Key) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
@@ -25,7 +25,7 @@ function DataNameSelect(props: DataNameSelectProps) {
     className,
   } = props;
 
-  const dataNameKeys = dataNameSchema.getAllKeys();
+  const dataNameKeys = AppDataName.schema.getAllKeys();
 
   return (
     <Select value={value} disabled={disabled} onValueChange={onValueChange}>
@@ -35,7 +35,7 @@ function DataNameSelect(props: DataNameSelectProps) {
       <SelectContent>
         {dataNameKeys.map((dataNameKey) => (
           <SelectItem key={dataNameKey} value={dataNameKey}>
-            {dataNameSchema.display(dataNameKey)}
+            {AppDataName.schema.display(dataNameKey)}
           </SelectItem>
         ))}
       </SelectContent>

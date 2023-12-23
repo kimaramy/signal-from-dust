@@ -4,30 +4,33 @@ import { useEffect } from 'react';
 import { useDistinctYearListQuery } from '@/domains';
 import { toast } from 'react-hot-toast';
 
-import { yearSchema, type YearKey } from '@/lib/model';
+import { AppYear } from '@/lib/model';
 import { useEnumUrlParam, useSetQueryParam, type URLPart } from '@/lib/router';
 
-export function useYearKey(part?: URLPart, initialKey?: YearKey): YearKey {
+export function useYearKey(
+  part?: URLPart,
+  initialKey?: AppYear.Key
+): AppYear.Key {
   const [lowerCasedKey] = useEnumUrlParam(
-    yearSchema.name,
-    yearSchema.lowerCaseKey(initialKey ?? yearSchema.defaultKey),
+    AppYear.schema.name,
+    AppYear.schema.lowerCaseKey(initialKey ?? AppYear.schema.defaultKey),
     {
-      enums: yearSchema.mapKeys(yearSchema.lowerCaseKey),
+      enums: AppYear.schema.mapKeys(AppYear.schema.lowerCaseKey),
       part,
     }
   );
-  return yearSchema.upperCaseKey(lowerCasedKey);
+  return AppYear.schema.upperCaseKey(lowerCasedKey);
 }
 
 export function useYearValue() {
   const yearKey = useYearKey();
-  return yearSchema.getValue(yearKey);
+  return AppYear.schema.getValue(yearKey);
 }
 
 export function useSetYearKey() {
-  const setYearKey = useSetQueryParam(yearSchema.name);
-  return function (yearKey: YearKey) {
-    return setYearKey(yearSchema.lowerCaseKey(yearKey));
+  const setYearKey = useSetQueryParam(AppYear.schema.name);
+  return function (yearKey: AppYear.Key) {
+    return setYearKey(AppYear.schema.lowerCaseKey(yearKey));
   };
 }
 
@@ -41,7 +44,7 @@ export function useValidateYearSchema() {
 
   useEffect(() => {
     if (dbYears) {
-      const isSynced = yearSchema.checkSyncWithDB(dbYears);
+      const isSynced = AppYear.schema.checkSyncWithDB(dbYears);
 
       if (!isSynced) {
         toast.error(

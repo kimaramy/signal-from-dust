@@ -49,9 +49,9 @@ class DataNameSchema extends MapSchema<
 
 const dataNameSchema = new DataNameSchema();
 
-export {
-  dataNameSchema,
-  type DataNameSchemaName,
-  type DataNameKey,
-  type DataNameValue,
-};
+export namespace AppDataName {
+  export type Key = DataNameKey;
+  export type Value = DataNameValue;
+  export type SchemaName = DataNameSchemaName;
+  export const schema = dataNameSchema;
+}

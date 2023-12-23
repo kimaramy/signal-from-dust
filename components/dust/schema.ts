@@ -1,4 +1,4 @@
-import { type DataNameKey } from '@/lib/model';
+import { AppDataName } from '@/lib/model';
 
 class Dust {
   static unit = '㎍/㎥';
@@ -43,7 +43,7 @@ class Dust {
     if (value <= 75) return Dust.grades.BAD;
     return Dust.grades.WORST;
   }
-  static getGrade(value: number, dataName: DataNameKey) {
+  static getGrade(value: number, dataName: AppDataName.Key) {
     if (dataName === 'PM_LARGE') return this.getLargeDustGrade(value);
     if (dataName === 'PM_SMALL') return this.getSmallDustGrade(value);
     return Dust.grades.NULL;

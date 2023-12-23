@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { stringUnionToArray, toLowerCase, toOrderedBy } from '@/lib/utils';
 
-import type { TableKeys } from '../supabase';
+import { AppData } from '../supabase';
 import { MapSchema } from './base';
 import { LocaleSchema } from './locale';
 
@@ -10,7 +10,7 @@ const collectionSchemaName = 'collection';
 
 type CollectionSchemaName = typeof collectionSchemaName;
 
-type CollectionKey = Uppercase<TableKeys> | 'SEASONALLY';
+type CollectionKey = Uppercase<AppData.TableKeys> | 'SEASONALLY';
 
 type CollectionValue = Lowercase<CollectionKey>;
 
@@ -95,9 +95,9 @@ class CollectionSchema extends MapSchema<
 
 const collectionSchema = new CollectionSchema();
 
-export {
-  collectionSchema,
-  type CollectionSchemaName,
-  type CollectionKey,
-  type CollectionValue,
-};
+export namespace AppCollection {
+  export type Key = CollectionKey;
+  export type Value = CollectionValue;
+  export type SchemaName = CollectionSchemaName;
+  export const schema = collectionSchema;
+}

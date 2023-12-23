@@ -1,14 +1,14 @@
-import { collectionSchema, type CollectionKey } from '@/lib/model';
+import { AppCollection } from '@/lib/model';
 import { Skeleton } from '@/components/ui/skeleton';
 import Grid from '@/components/Grid';
 
 interface FakeDatasetProps {
-  collectionKey: CollectionKey;
+  collectionKey: AppCollection.Key;
 }
 
 function FakeDataset({ collectionKey }: FakeDatasetProps) {
   const numbers: number[] = new Array(
-    collectionSchema.getDataCount(collectionKey)
+    AppCollection.schema.getDataCount(collectionKey)
   ).fill(0);
 
   return (

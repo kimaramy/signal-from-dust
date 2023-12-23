@@ -1,5 +1,5 @@
 import { cn } from '@/lib/css';
-import { monthSchema, type MonthKey } from '@/lib/model';
+import { AppMonth } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -9,8 +9,8 @@ import {
 } from '@/components/ui/select';
 
 interface MonthSelectProps {
-  value: MonthKey;
-  onValueChange: (value: MonthKey) => void;
+  value: AppMonth.Key;
+  onValueChange: (value: AppMonth.Key) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
@@ -25,10 +25,10 @@ function MonthSelect(props: MonthSelectProps) {
     className,
   } = props;
 
-  const monthKeys = monthSchema.getAllKeys();
+  const monthKeys = AppMonth.schema.getAllKeys();
 
   const defaultMonthKey = monthKeys.splice(
-    monthKeys.indexOf(monthSchema.defaultKey),
+    monthKeys.indexOf(AppMonth.schema.defaultKey),
     1
   )[0];
 
@@ -39,11 +39,11 @@ function MonthSelect(props: MonthSelectProps) {
       </SelectTrigger>
       <SelectContent>
         <SelectItem value={defaultMonthKey}>
-          {monthSchema.display(defaultMonthKey)}
+          {AppMonth.schema.display(defaultMonthKey)}
         </SelectItem>
         {monthKeys.map((monthKey) => (
           <SelectItem key={monthKey} value={monthKey}>
-            {monthSchema.display(monthKey)}
+            {AppMonth.schema.display(monthKey)}
           </SelectItem>
         ))}
       </SelectContent>

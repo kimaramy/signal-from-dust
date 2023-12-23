@@ -1,12 +1,12 @@
-import type { MonthKey, WeekDailyData } from '@/lib/model';
+import { AppData, AppMonth } from '@/lib/model';
 import { useSbSQ, type UseSbSQOptions } from '@/lib/react-query';
 
 import { weekDailyQueryKeys, type WeekDailyQueryKeys } from './queryKeys';
 
-export function useWeekDailyListQuery<T = WeekDailyData[]>(
-  monthKey: MonthKey,
+export function useWeekDailyListQuery<T = AppData.WeekDailyData[]>(
+  monthKey: AppMonth.Key,
   options?: UseSbSQOptions<
-    WeekDailyData[],
+    AppData.WeekDailyData[],
     T,
     WeekDailyQueryKeys['list']['queryKey']
   >
@@ -19,10 +19,10 @@ export function useWeekDailyListQuery<T = WeekDailyData[]>(
   return data;
 }
 
-export function useWeekDailyQuery<T = WeekDailyData>(
+export function useWeekDailyQuery<T = AppData.WeekDailyData>(
   dataId: number,
   options?: UseSbSQOptions<
-    WeekDailyData,
+    AppData.WeekDailyData,
     T,
     WeekDailyQueryKeys['detail']['queryKey']
   >

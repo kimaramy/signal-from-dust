@@ -3,7 +3,13 @@
 import { DevTool } from '@hookform/devtools';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import * as Model from '@/lib/model';
+import {
+  AppCollection,
+  AppDataName,
+  AppMonth,
+  AppSeason,
+  AppYear,
+} from '@/lib/model';
 import { Form } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
 
@@ -18,11 +24,11 @@ type SettingsMode = 'preset' | 'custom';
 
 interface SettingsFormValues {
   mode: SettingsMode;
-  dataNameKey: Model.DataNameKey;
-  collectionKey: Model.CollectionKey;
-  yearKey: Model.YearKey;
-  seasonKey: Model.SeasonKey;
-  monthKey: Model.MonthKey;
+  dataNameKey: AppDataName.Key;
+  collectionKey: AppCollection.Key;
+  yearKey: AppYear.Key;
+  seasonKey: AppSeason.Key;
+  monthKey: AppMonth.Key;
 }
 
 type SettingsFormSubmitHandler = SubmitHandler<SettingsFormValues>;

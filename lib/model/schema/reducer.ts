@@ -1,45 +1,35 @@
-import { collectionSchema, type CollectionSchemaName } from './collection';
-import { dataNameSchema, type DataNameSchemaName } from './dataName';
-import { daySchema, type DaySchemaName } from './day';
-import { monthSchema, type MonthSchemaName } from './month';
-import { seasonSchema, type SeasonSchemaName } from './season';
-import { weekSchema, type WeekSchemaName } from './week';
-import { weekdaySchema, type WeekdaySchemaName } from './weekday';
-import { yearSchema, type YearSchemaName } from './year';
+import { AppCollection } from './collection';
+import { AppDataName } from './dataName';
+import { AppDay } from './day';
+import { LocaleSchema } from './locale';
+import { AppMonth } from './month';
+import { AppSeason } from './season';
+import { AppWeek } from './week';
+import { AppWeekday } from './weekday';
+import { AppYear } from './year';
 
-export type Schema =
-  | typeof collectionSchema
-  | typeof dataNameSchema
-  | typeof daySchema
-  | typeof monthSchema
-  | typeof seasonSchema
-  | typeof weekSchema
-  | typeof weekdaySchema
-  | typeof yearSchema;
+const appSchemaMap = {
+  locale: LocaleSchema,
+  [AppCollection.schema.name]: AppCollection.schema,
+  [AppDataName.schema.name]: AppDataName.schema,
+  [AppDay.schema.name]: AppDay.schema,
+  [AppMonth.schema.name]: AppMonth.schema,
+  [AppSeason.schema.name]: AppSeason.schema,
+  [AppWeek.schema.name]: AppWeek.schema,
+  [AppWeekday.schema.name]: AppWeekday.schema,
+  [AppYear.schema.name]: AppYear.schema,
+} as const;
 
-export type SchemaName =
-  | CollectionSchemaName
-  | DataNameSchemaName
-  | DaySchemaName
-  | MonthSchemaName
-  | SeasonSchemaName
-  | WeekSchemaName
-  | WeekdaySchemaName
-  | YearSchemaName;
+type AppSchemaMap = typeof appSchemaMap;
 
-// export const modelSchemaMap = new Map<SchemaName, Schema>()
-//   .set('collection', collectionSchema)
-//   .set('dataName', dataNameSchema)
-//   .set('day', daySchema)
-//   .set('month', monthSchema)
-//   .set('season', seasonSchema)
-//   .set('week', weekSchema)
-//   .set('weekday', weekdaySchema)
-//   .set('year', yearSchema);
+type AppSchemaName = keyof AppSchemaMap;
 
-// export class ModelSchema {
-//   static get<T>(schemaName: SchemaName) {
-//     const schema = schemaMap.get(schemaName)!;
-//     return schema;
-//   }
-// }
+class AppSchema {
+  static get<T extends AppSchemaName>(schemaName: T): AppSchemaMap[T] {
+    return appSchemaMap[schemaName];
+  }
+}
+
+export type { AppSchemaMap, AppSchemaName };
+
+export { AppSchema };

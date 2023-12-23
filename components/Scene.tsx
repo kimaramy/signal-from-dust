@@ -2,7 +2,6 @@
 
 import React, { useCallback, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
 
 import { cn } from '@/lib/css';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
+import { Icon } from '@/components/ui/icon';
 import { type DisplayKey } from '@/components/display';
 import { stopSoundPlay, toggleSoundPlay } from '@/components/sound';
 
@@ -153,17 +153,14 @@ function Scene({
                   }
                 }}
               >
-                <PlayIcon
-                  aria-hidden
-                  className={cn('h-3.5 w-3.5', isPlaying && 'hidden')}
-                />
-                <PauseIcon
-                  aria-hidden
-                  className={cn('h-3.5 w-3.5', !isPlaying && 'hidden')}
-                />
+                {isPlaying ? (
+                  <Icon.Pause aria-label="Pause" className="h-3.5 w-3.5" />
+                ) : (
+                  <Icon.Play aria-label="Play" className="h-3.5 w-3.5" />
+                )}
               </Button>
-              <p className="flex-1 truncate font-mono">
-                {data.dates.join(',')}
+              <p className="flex-1 truncate font-mono text-xs">
+                {data.dates.join(', ')}
               </p>
             </div>
           </HoverCardTrigger>

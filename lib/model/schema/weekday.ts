@@ -82,9 +82,9 @@ class WeekdaySchema extends MapSchema<
 
 const weekdaySchema = new WeekdaySchema();
 
-export {
-  weekdaySchema,
-  type WeekdaySchemaName,
-  type WeekdayKey,
-  type WeekdayValue,
-};
+export namespace AppWeekday {
+  export type Key = WeekdayKey;
+  export type Value = WeekdayValue;
+  export type SchemaName = WeekdaySchemaName;
+  export const schema = weekdaySchema;
+}

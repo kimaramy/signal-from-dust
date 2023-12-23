@@ -1,11 +1,11 @@
-import { yearSchema } from '@/lib/model';
+import { AppYear } from '@/lib/model';
 import { parseUrlParam } from '@/lib/router';
 
 export const parseYearKey = (params?: Parameters<typeof parseUrlParam>[0]) => {
   const [parsedKey] = parseUrlParam(
     params,
-    yearSchema.name,
-    yearSchema.defaultKey
+    AppYear.schema.name,
+    AppYear.schema.defaultKey
   );
-  return yearSchema.upperCaseKey(parsedKey);
+  return AppYear.schema.upperCaseKey(parsedKey);
 };

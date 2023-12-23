@@ -1,5 +1,5 @@
 import { cn } from '@/lib/css';
-import { seasonSchema, type SeasonKey } from '@/lib/model';
+import { AppSeason } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -9,8 +9,8 @@ import {
 } from '@/components/ui/select';
 
 interface SeasonSelectProps {
-  value: SeasonKey;
-  onValueChange: (value: SeasonKey) => void;
+  value: AppSeason.Key;
+  onValueChange: (value: AppSeason.Key) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
@@ -25,10 +25,10 @@ function SeasonSelect(props: SeasonSelectProps) {
     className,
   } = props;
 
-  const seasonKeys = seasonSchema.getAllKeys();
+  const seasonKeys = AppSeason.schema.getAllKeys();
 
   const defaultSeasonKey = seasonKeys.splice(
-    seasonKeys.indexOf(seasonSchema.defaultKey),
+    seasonKeys.indexOf(AppSeason.schema.defaultKey),
     1
   )[0];
 
@@ -39,11 +39,11 @@ function SeasonSelect(props: SeasonSelectProps) {
       </SelectTrigger>
       <SelectContent>
         <SelectItem value={defaultSeasonKey}>
-          {seasonSchema.display(defaultSeasonKey)}
+          {AppSeason.schema.display(defaultSeasonKey)}
         </SelectItem>
         {seasonKeys.map((seasonKey) => (
           <SelectItem key={seasonKey} value={seasonKey}>
-            {seasonSchema.display(seasonKey)}
+            {AppSeason.schema.display(seasonKey)}
           </SelectItem>
         ))}
       </SelectContent>

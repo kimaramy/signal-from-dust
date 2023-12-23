@@ -63,4 +63,9 @@ class DaySchema extends MapSchema<DaySchemaName, DayKey, DayValue> {
 
 const daySchema = new DaySchema();
 
-export { daySchema, type DaySchemaName, type DayKey, type DayValue };
+export namespace AppDay {
+  export type Key = DayKey;
+  export type Value = DayValue;
+  export type SchemaName = DaySchemaName;
+  export const schema = daySchema;
+}

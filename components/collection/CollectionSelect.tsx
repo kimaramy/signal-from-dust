@@ -1,5 +1,5 @@
 import { cn } from '@/lib/css';
-import { collectionSchema, type CollectionKey } from '@/lib/model';
+import { AppCollection } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -9,8 +9,8 @@ import {
 } from '@/components/ui/select';
 
 interface CollectionSelectProps {
-  value: CollectionKey;
-  onValueChange: (value: CollectionKey) => void;
+  value: AppCollection.Key;
+  onValueChange: (value: AppCollection.Key) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
@@ -25,7 +25,7 @@ function CollectionSelect(props: CollectionSelectProps) {
     className,
   } = props;
 
-  const collectionKeys = collectionSchema.getAllKeys();
+  const collectionKeys = AppCollection.schema.getAllKeys();
 
   return (
     <Select value={value} disabled={disabled} onValueChange={onValueChange}>
@@ -35,7 +35,7 @@ function CollectionSelect(props: CollectionSelectProps) {
       <SelectContent>
         {collectionKeys.map((collectionKey) => (
           <SelectItem key={collectionKey} value={collectionKey}>
-            {collectionSchema.display(collectionKey)}
+            {AppCollection.schema.display(collectionKey)}
           </SelectItem>
         ))}
       </SelectContent>
