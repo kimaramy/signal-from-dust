@@ -1,26 +1,26 @@
-import { AppDataName } from '@/lib/model';
+import { DataNameUtils } from '@/lib/model';
 import { useEnumUrlParam, useSetQueryParam, type URLPart } from '@/lib/router';
 
 export function useDataNameKey(
   part?: URLPart,
-  initialKey?: AppDataName.Key
-): AppDataName.Key {
+  initialKey?: DataNameUtils.Key
+): DataNameUtils.Key {
   const [lowerCasedKey] = useEnumUrlParam(
-    AppDataName.schema.name,
-    AppDataName.schema.lowerCaseKey(
-      initialKey ?? AppDataName.schema.defaultKey
+    DataNameUtils.schema.name,
+    DataNameUtils.schema.lowerCaseKey(
+      initialKey ?? DataNameUtils.schema.defaultKey
     ),
     {
-      enums: AppDataName.schema.mapKeys(AppDataName.schema.lowerCaseKey),
+      enums: DataNameUtils.schema.mapKeys(DataNameUtils.schema.lowerCaseKey),
       part,
     }
   );
-  return AppDataName.schema.upperCaseKey(lowerCasedKey);
+  return DataNameUtils.schema.upperCaseKey(lowerCasedKey);
 }
 
 export function useSetDataNameKey() {
-  const setDataNameKey = useSetQueryParam(AppDataName.schema.name);
-  return function (dataNameKey: AppDataName.Key) {
-    return setDataNameKey(AppDataName.schema.lowerCaseKey(dataNameKey));
+  const setDataNameKey = useSetQueryParam(DataNameUtils.schema.name);
+  return function (dataNameKey: DataNameUtils.Key) {
+    return setDataNameKey(DataNameUtils.schema.lowerCaseKey(dataNameKey));
   };
 }

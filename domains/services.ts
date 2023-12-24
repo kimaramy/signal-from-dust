@@ -1,4 +1,9 @@
-import { AppCollection, AppMonth, AppSeason, AppYear } from '@/lib/model';
+import {
+  CollectionUtils,
+  MonthUtils,
+  SeasonUtils,
+  YearUtils,
+} from '@/lib/model';
 
 import { fetchDailyDataset } from './daily';
 import { fetchMonthlyDataset, fetchMonthlyDatasetBySeason } from './monthly';
@@ -7,14 +12,14 @@ import { fetchWeeklyDataset } from './weekly';
 import { fetchYearlyDataset } from './yearly';
 
 async function fetchDataset(
-  collectionKey: AppCollection.Key,
-  yearKey: AppYear.Key,
-  monthKey: AppMonth.Key,
-  seasonKey: AppSeason.Key
+  collectionKey: CollectionUtils.Key,
+  yearKey: YearUtils.Key,
+  monthKey: MonthUtils.Key,
+  seasonKey: SeasonUtils.Key
 ) {
-  const year = AppYear.schema.getValue(yearKey);
-  const month = AppMonth.schema.getValue(monthKey);
-  const monthRange = AppSeason.schema.getMonthRange(seasonKey);
+  const year = YearUtils.schema.getValue(yearKey);
+  const month = MonthUtils.schema.getValue(monthKey);
+  const monthRange = SeasonUtils.schema.getMonthRange(seasonKey);
 
   switch (collectionKey) {
     case 'YEARLY':

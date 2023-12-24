@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { type AppSchemaName } from '@/lib/model';
+import { type SchemaName } from '@/lib/model';
 import { useNavigate, useSetQueryParams, type TypedRoute } from '@/lib/router';
 import { toLowerCase } from '@/lib/utils';
 
@@ -27,7 +27,7 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
         return navigate(pathname, { method: 'push' });
       }
 
-      const map = new Map<AppSchemaName, string>()
+      const map = new Map<SchemaName, string>()
         .set('collection', values.collectionKey)
         .set('dataName', values.dataNameKey)
         .set('year', values.yearKey)
@@ -40,7 +40,7 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
 
       const search = setQueryParams(map, { stringify: true });
 
-      navigate(`/search${search}`, { method: 'push' });
+      navigate(`/search${search}` as TypedRoute, { method: 'push' });
     },
     [setQueryParams, navigate]
   );

@@ -1,11 +1,11 @@
-import { AppData } from '@/lib/model';
+import { Model } from '@/lib/model';
 import { useSbSQ, type UseSbSQOptions } from '@/lib/react-query';
 
 import { yearlyQueryKeys, type YearlyQueryKeys } from './queryKeys';
 
-export function useYearlyListQuery<T = AppData.YearlyData[]>(
+export function useYearlyListQuery<T = Model.YearlyData[]>(
   options?: UseSbSQOptions<
-    AppData.YearlyData[],
+    Model.YearlyData[],
     T,
     YearlyQueryKeys['list']['queryKey']
   >
@@ -18,10 +18,10 @@ export function useYearlyListQuery<T = AppData.YearlyData[]>(
   return data;
 }
 
-export function useYearlyQuery<T = AppData.YearlyData>(
+export function useYearlyQuery<T = Model.YearlyData>(
   dataId: number,
   options?: UseSbSQOptions<
-    AppData.YearlyData,
+    Model.YearlyData,
     T,
     YearlyQueryKeys['detail']['queryKey']
   >
@@ -34,9 +34,9 @@ export function useYearlyQuery<T = AppData.YearlyData>(
   return data;
 }
 
-export function useDistinctYearListQuery<T = AppData.DistinctYearData[]>(
+export function useDistinctYearListQuery<T = Model.DistinctYearData[]>(
   options?: UseSbSQOptions<
-    AppData.DistinctYearData[],
+    Model.DistinctYearData[],
     T,
     YearlyQueryKeys['distinctYearList']['queryKey']
   >

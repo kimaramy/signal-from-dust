@@ -1,4 +1,4 @@
-import { AppDataName } from '@/lib/model';
+import { DataNameUtils } from '@/lib/model';
 import { parseUrlParam } from '@/lib/router';
 
 export const parseDataNameKey = (
@@ -6,8 +6,8 @@ export const parseDataNameKey = (
 ) => {
   const [parsedKey] = parseUrlParam(
     params,
-    AppDataName.schema.name,
-    AppDataName.schema.defaultKey
+    DataNameUtils.schema.name,
+    DataNameUtils.schema.defaultKey
   );
-  return AppDataName.schema.upperCaseKey(parsedKey);
+  return DataNameUtils.schema.upperCaseKey(parsedKey);
 };

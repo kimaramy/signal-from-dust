@@ -1,5 +1,5 @@
 import { cn } from '@/lib/css';
-import { AppWeek } from '@/lib/model';
+import { WeekUtils } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -9,8 +9,8 @@ import {
 } from '@/components/ui/select';
 
 interface WeekSelectProps {
-  value: AppWeek.Key;
-  onValueChange: (value: AppWeek.Key) => void;
+  value: WeekUtils.Key;
+  onValueChange: (value: WeekUtils.Key) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
@@ -25,10 +25,10 @@ function WeekSelect(props: WeekSelectProps) {
     className,
   } = props;
 
-  const weekKeys = AppWeek.schema.getAllKeys();
+  const weekKeys = WeekUtils.schema.getAllKeys();
 
   const defaultWeekKey = weekKeys.splice(
-    weekKeys.indexOf(AppWeek.schema.defaultKey),
+    weekKeys.indexOf(WeekUtils.schema.defaultKey),
     1
   )[0];
 
@@ -39,11 +39,11 @@ function WeekSelect(props: WeekSelectProps) {
       </SelectTrigger>
       <SelectContent>
         <SelectItem value={defaultWeekKey}>
-          {AppWeek.schema.display(defaultWeekKey)}
+          {WeekUtils.schema.display(defaultWeekKey)}
         </SelectItem>
         {weekKeys.map((weekKey) => (
           <SelectItem key={weekKey} value={weekKey}>
-            {AppWeek.schema.display(weekKey)}
+            {WeekUtils.schema.display(weekKey)}
           </SelectItem>
         ))}
       </SelectContent>

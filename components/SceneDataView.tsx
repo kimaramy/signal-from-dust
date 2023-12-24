@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowRightIcon, PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
 
 import { cn } from '@/lib/css';
-import { AppDataName } from '@/lib/model';
+import { DataNameUtils } from '@/lib/model';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { type DisplayKey } from '@/components/display';
@@ -27,7 +27,7 @@ function SceneDataView(props: SceneDataViewProps) {
 
   const dustGrade = Dust.getGrade(
     sceneData.value ?? 0,
-    sceneData.name as AppDataName.Key
+    sceneData.name as DataNameUtils.Key
   );
 
   const title = [sceneData.dates.join(' ') + '의', sceneData.displayName].join(

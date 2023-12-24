@@ -1,35 +1,35 @@
-import { AppCollection } from './collection';
-import { AppDataName } from './dataName';
-import { AppDay } from './day';
+import { CollectionUtils } from './collection';
+import { DataNameUtils } from './dataName';
+import { DayUtils } from './day';
 import { LocaleSchema } from './locale';
-import { AppMonth } from './month';
-import { AppSeason } from './season';
-import { AppWeek } from './week';
-import { AppWeekday } from './weekday';
-import { AppYear } from './year';
+import { MonthUtils } from './month';
+import { SeasonUtils } from './season';
+import { WeekUtils } from './week';
+import { WeekdayUtils } from './weekday';
+import { YearUtils } from './year';
 
-const appSchemaMap = {
+const schemaMap = {
   locale: LocaleSchema,
-  [AppCollection.schema.name]: AppCollection.schema,
-  [AppDataName.schema.name]: AppDataName.schema,
-  [AppDay.schema.name]: AppDay.schema,
-  [AppMonth.schema.name]: AppMonth.schema,
-  [AppSeason.schema.name]: AppSeason.schema,
-  [AppWeek.schema.name]: AppWeek.schema,
-  [AppWeekday.schema.name]: AppWeekday.schema,
-  [AppYear.schema.name]: AppYear.schema,
+  [CollectionUtils.schema.name]: CollectionUtils.schema,
+  [DataNameUtils.schema.name]: DataNameUtils.schema,
+  [DayUtils.schema.name]: DayUtils.schema,
+  [MonthUtils.schema.name]: MonthUtils.schema,
+  [SeasonUtils.schema.name]: SeasonUtils.schema,
+  [WeekUtils.schema.name]: WeekUtils.schema,
+  [WeekdayUtils.schema.name]: WeekdayUtils.schema,
+  [YearUtils.schema.name]: YearUtils.schema,
 } as const;
 
-type AppSchemaMap = typeof appSchemaMap;
+type SchemaMap = typeof schemaMap;
 
-type AppSchemaName = keyof AppSchemaMap;
+type SchemaName = keyof SchemaMap;
 
-class AppSchema {
-  static get<T extends AppSchemaName>(schemaName: T): AppSchemaMap[T] {
-    return appSchemaMap[schemaName];
+class Schema {
+  static get<T extends SchemaName>(schemaName: T): SchemaMap[T] {
+    return schemaMap[schemaName];
   }
 }
 
-export type { AppSchemaMap, AppSchemaName };
+export type { SchemaMap, SchemaName };
 
-export { AppSchema };
+export { Schema };

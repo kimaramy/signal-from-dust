@@ -1,11 +1,11 @@
-import { AppData, supabaseClient } from '@/lib/model';
+import { Model, supabaseClient } from '@/lib/model';
 
 export const fetchDailyDataset = async (month: number) => {
   const response = await supabaseClient
     .from('daily')
     .select('*')
     .eq('month', month)
-    .returns<AppData.DailyData[]>();
+    .returns<Model.DailyData[]>();
 
   if (response.error) throw response.error;
 
@@ -17,7 +17,7 @@ export const fetchDailyData = async (dataId: number) => {
     .from('daily')
     .select('*')
     .eq('id', dataId)
-    .returns<AppData.DailyData>();
+    .returns<Model.DailyData>();
 
   if (response.error) throw response.error;
 

@@ -1,4 +1,4 @@
-import { AppSeason } from '@/lib/model';
+import { SeasonUtils } from '@/lib/model';
 import { parseUrlParam } from '@/lib/router';
 
 export const parseSeasonKey = (
@@ -6,8 +6,8 @@ export const parseSeasonKey = (
 ) => {
   const [parsedKey] = parseUrlParam(
     params,
-    AppSeason.schema.name,
-    AppSeason.schema.defaultKey
+    SeasonUtils.schema.name,
+    SeasonUtils.schema.defaultKey
   );
-  return AppSeason.schema.upperCaseKey(parsedKey);
+  return SeasonUtils.schema.upperCaseKey(parsedKey);
 };

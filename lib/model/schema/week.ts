@@ -61,7 +61,7 @@ class WeekSchema extends MapSchema<WeekSchemaName, WeekKey, WeekValue> {
 
 const weekSchema = new WeekSchema();
 
-export namespace AppWeek {
+export namespace WeekUtils {
   export type Key = WeekKey;
   export type Value = WeekValue;
   export type SchemaName = WeekSchemaName;

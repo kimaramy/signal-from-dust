@@ -2,7 +2,7 @@ import { cache } from 'react';
 import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
-import { AppSchema } from '@/lib/model';
+import { Schema } from '@/lib/model';
 import type { NextStaticPageProps } from '@/lib/router';
 import Dataset from '@/components/Dataset';
 import DatasetDownloadButton from '@/components/DatasetDownloadButton';
@@ -15,7 +15,7 @@ type StaticDatasetPageProps = NextStaticPageProps<
 >;
 
 export function generateStaticParams() {
-  const collectionSchema = AppSchema.get('collection');
+  const collectionSchema = Schema.get('collection');
   return collectionSchema
     .mapKeys(collectionSchema.lowerCaseKey)
     .map((collection) => ({ collection }));
@@ -24,8 +24,8 @@ export function generateStaticParams() {
 export function generateMetadata({
   params: { collection },
 }: StaticDatasetPageProps): Metadata {
-  const collectionSchema = AppSchema.get('collection');
-  const dataNameSchema = AppSchema.get('dataName');
+  const collectionSchema = Schema.get('collection');
+  const dataNameSchema = Schema.get('dataName');
   const collectionKey = collectionSchema.upperCaseKey(collection);
   const dataNameKey = dataNameSchema.defaultKey;
   return {
@@ -43,13 +43,13 @@ export const revalidate = false;
 async function StaticDatasetPage({
   params: { collection },
 }: StaticDatasetPageProps) {
-  const collectionKey = AppSchema.get('collection').upperCaseKey(collection);
+  const collectionKey = Schema.get('collection').upperCaseKey(collection);
 
   const datasetKeys = [
     collectionKey,
-    AppSchema.get('year').defaultKey,
-    AppSchema.get('month').defaultKey,
-    AppSchema.get('season').defaultKey,
+    Schema.get('year').defaultKey,
+    Schema.get('month').defaultKey,
+    Schema.get('season').defaultKey,
   ] as const;
 
   const initialDataset = await fetchCachedDataset(...datasetKeys);

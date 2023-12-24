@@ -1,29 +1,29 @@
-import { AppMonth } from '@/lib/model';
+import { MonthUtils } from '@/lib/model';
 import { useEnumUrlParam, useSetQueryParam, type URLPart } from '@/lib/router';
 
 export function useMonthKey(
   part?: URLPart,
-  initialKey?: AppMonth.Key
-): AppMonth.Key {
+  initialKey?: MonthUtils.Key
+): MonthUtils.Key {
   const [lowerCasedKey] = useEnumUrlParam(
-    AppMonth.schema.name,
-    AppMonth.schema.lowerCaseKey(initialKey ?? AppMonth.schema.defaultKey),
+    MonthUtils.schema.name,
+    MonthUtils.schema.lowerCaseKey(initialKey ?? MonthUtils.schema.defaultKey),
     {
-      enums: AppMonth.schema.mapKeys(AppMonth.schema.lowerCaseKey),
+      enums: MonthUtils.schema.mapKeys(MonthUtils.schema.lowerCaseKey),
       part,
     }
   );
-  return AppMonth.schema.upperCaseKey(lowerCasedKey);
+  return MonthUtils.schema.upperCaseKey(lowerCasedKey);
 }
 
 export function useMonthValue() {
   const monthKey = useMonthKey();
-  return AppMonth.schema.getValue(monthKey);
+  return MonthUtils.schema.getValue(monthKey);
 }
 
 export function useSetMonthKey() {
-  const setMonthKey = useSetQueryParam(AppMonth.schema.name);
-  return function (monthKey: AppMonth.Key) {
-    return setMonthKey(AppMonth.schema.lowerCaseKey(monthKey));
+  const setMonthKey = useSetQueryParam(MonthUtils.schema.name);
+  return function (monthKey: MonthUtils.Key) {
+    return setMonthKey(MonthUtils.schema.lowerCaseKey(monthKey));
   };
 }

@@ -1,14 +1,16 @@
-import { AppCollection } from '@/lib/model';
+import { CollectionUtils } from '@/lib/model';
 import { useEnumUrlParam, type URLPart } from '@/lib/router';
 
-export function useCollectionKey(part?: URLPart): AppCollection.Key {
+export function useCollectionKey(part?: URLPart): CollectionUtils.Key {
   const [lowerCasedKey] = useEnumUrlParam(
-    AppCollection.schema.name,
-    AppCollection.schema.lowerCaseKey(AppCollection.schema.defaultKey),
+    CollectionUtils.schema.name,
+    CollectionUtils.schema.lowerCaseKey(CollectionUtils.schema.defaultKey),
     {
-      enums: AppCollection.schema.mapKeys(AppCollection.schema.lowerCaseKey),
+      enums: CollectionUtils.schema.mapKeys(
+        CollectionUtils.schema.lowerCaseKey
+      ),
       part,
     }
   );
-  return AppCollection.schema.upperCaseKey(lowerCasedKey);
+  return CollectionUtils.schema.upperCaseKey(lowerCasedKey);
 }

@@ -1,11 +1,11 @@
-import { AppData, supabaseClient } from '@/lib/model';
+import { Model, supabaseClient } from '@/lib/model';
 
 export const fetchMonthlyDataset = async (year: number) => {
   const response = await supabaseClient
     .from('monthly')
     .select('*')
     .eq('year', year)
-    .returns<AppData.MonthlyData[]>();
+    .returns<Model.MonthlyData[]>();
 
   if (response.error) throw response.error;
 
@@ -21,7 +21,7 @@ export const fetchMonthlyDatasetBySeason = async (
     .select('*')
     .eq('year', year)
     .in('month', months)
-    .returns<AppData.MonthlyData[]>();
+    .returns<Model.MonthlyData[]>();
 
   if (response.error) throw response.error;
 
@@ -33,7 +33,7 @@ export const fetchMonthlyData = async (dataId: number) => {
     .from('monthly')
     .select('*')
     .eq('id', dataId)
-    .returns<AppData.MonthlyData>();
+    .returns<Model.MonthlyData>();
 
   if (response.error) throw response.error;
 

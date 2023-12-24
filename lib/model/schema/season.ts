@@ -4,7 +4,7 @@ import { toLowerCase } from '@/lib/utils';
 
 import { MapSchema } from './base';
 import { LocaleSchema } from './locale';
-import { AppMonth } from './month';
+import { MonthUtils } from './month';
 
 const seasonSchemaName = 'season';
 
@@ -48,7 +48,7 @@ class SeasonSchema extends MapSchema<SeasonSchemaName, SeasonKey, SeasonValue> {
         return this.parseKey(seasonKey) as never;
     }
   }
-  getMonthRange(seasonKey: SeasonKey): AppMonth.Value[] {
+  getMonthRange(seasonKey: SeasonKey): MonthUtils.Value[] {
     switch (seasonKey) {
       case 'ALL':
         return new Array(12).fill(0).map((_, i) => i + 1);
@@ -68,7 +68,7 @@ class SeasonSchema extends MapSchema<SeasonSchemaName, SeasonKey, SeasonValue> {
 
 const seasonSchema = new SeasonSchema();
 
-export namespace AppSeason {
+export namespace SeasonUtils {
   export type Key = SeasonKey;
   export type Value = SeasonValue;
   export type SchemaName = SeasonSchemaName;

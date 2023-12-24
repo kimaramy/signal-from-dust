@@ -1,12 +1,12 @@
-import { AppData, AppYear } from '@/lib/model';
+import { Model, YearUtils } from '@/lib/model';
 import { useSbSQ, type UseSbSQOptions } from '@/lib/react-query';
 
 import { weeklyQueryKeys, type WeeklyQueryKeys } from './queryKeys';
 
-export function useWeeklyListQuery<T = AppData.WeeklyData[]>(
-  yearKey: AppYear.Key,
+export function useWeeklyListQuery<T = Model.WeeklyData[]>(
+  yearKey: YearUtils.Key,
   options?: UseSbSQOptions<
-    AppData.WeeklyData[],
+    Model.WeeklyData[],
     T,
     WeeklyQueryKeys['list']['queryKey']
   >
@@ -19,10 +19,10 @@ export function useWeeklyListQuery<T = AppData.WeeklyData[]>(
   return data;
 }
 
-export function useWeeklyQuery<T = AppData.WeeklyData>(
+export function useWeeklyQuery<T = Model.WeeklyData>(
   dataId: number,
   options?: UseSbSQOptions<
-    AppData.WeeklyData,
+    Model.WeeklyData,
     T,
     WeeklyQueryKeys['detail']['queryKey']
   >

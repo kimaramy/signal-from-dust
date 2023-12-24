@@ -1,5 +1,5 @@
 import { cn } from '@/lib/css';
-import { AppWeekday } from '@/lib/model';
+import { WeekdayUtils } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -9,8 +9,8 @@ import {
 } from '@/components/ui/select';
 
 interface WeekdaySelectProps {
-  value: AppWeekday.Key;
-  onValueChange: (value: AppWeekday.Key) => void;
+  value: WeekdayUtils.Key;
+  onValueChange: (value: WeekdayUtils.Key) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
@@ -25,10 +25,10 @@ function WeekdaySelect(props: WeekdaySelectProps) {
     className,
   } = props;
 
-  const weekdayKeys = AppWeekday.schema.getAllKeys();
+  const weekdayKeys = WeekdayUtils.schema.getAllKeys();
 
   const defaultWeekdayKey = weekdayKeys.splice(
-    weekdayKeys.indexOf(AppWeekday.schema.defaultKey),
+    weekdayKeys.indexOf(WeekdayUtils.schema.defaultKey),
     1
   )[0];
 
@@ -41,7 +41,7 @@ function WeekdaySelect(props: WeekdaySelectProps) {
         <SelectItem value={defaultWeekdayKey}>요일 전체</SelectItem>
         {weekdayKeys.map((weekdayKey) => (
           <SelectItem key={weekdayKey} value={weekdayKey}>
-            {AppWeekday.schema.display(weekdayKey)}
+            {WeekdayUtils.schema.display(weekdayKey)}
           </SelectItem>
         ))}
       </SelectContent>

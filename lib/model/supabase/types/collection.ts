@@ -4,7 +4,7 @@ type Tables = Database['public']['Tables'];
 
 type Views = Database['public']['Views'];
 
-export namespace AppData {
+export namespace Model {
   export type TableKeys = keyof Tables;
   export type ViewKeys = keyof Views;
   export type DailyData = Tables['daily']['Row'];

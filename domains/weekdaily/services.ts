@@ -1,11 +1,11 @@
-import { AppData, supabaseClient } from '@/lib/model';
+import { Model, supabaseClient } from '@/lib/model';
 
 export const fetchWeekDailyDataset = async (month: number) => {
   const response = await supabaseClient
     .from('weekdaily')
     .select('*')
     .eq('month', month)
-    .returns<AppData.WeekDailyData[]>();
+    .returns<Model.WeekDailyData[]>();
 
   if (response.error) throw response.error;
 
@@ -17,7 +17,7 @@ export const fetchWeekDailyData = async (dataId: number) => {
     .from('weekdaily')
     .select('*')
     .eq('id', dataId)
-    .returns<AppData.WeekDailyData>();
+    .returns<Model.WeekDailyData>();
 
   if (response.error) throw response.error;
 

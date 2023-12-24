@@ -49,7 +49,7 @@ class DataNameSchema extends MapSchema<
 
 const dataNameSchema = new DataNameSchema();
 
-export namespace AppDataName {
+export namespace DataNameUtils {
   export type Key = DataNameKey;
   export type Value = DataNameValue;
   export type SchemaName = DataNameSchemaName;

@@ -2,7 +2,7 @@
 
 import * as Domains from '@/domains';
 
-import { AppCollection, AppData } from '@/lib/model';
+import { CollectionUtils, Model } from '@/lib/model';
 import { useDataNameKey } from '@/components/dataName';
 import { useDisplayKey } from '@/components/display';
 import { useMonthKey } from '@/components/month';
@@ -11,14 +11,14 @@ import Sequence, { SceneUtils } from '@/components/Sequence';
 import { useYearKey } from '@/components/year';
 
 interface DatasetProps {
-  initialCollectionKey: AppCollection.Key;
+  initialCollectionKey: CollectionUtils.Key;
   initialDataset?: {
-    [AppCollection.schema.keys.YEARLY]?: AppData.YearlyData[];
-    [AppCollection.schema.keys.SEASONALLY]?: AppData.MonthlyData[];
-    [AppCollection.schema.keys.MONTHLY]?: AppData.MonthlyData[];
-    [AppCollection.schema.keys.WEEKLY]?: AppData.WeeklyData[];
-    [AppCollection.schema.keys.WEEKDAILY]?: AppData.WeekDailyData[];
-    [AppCollection.schema.keys.DAILY]?: AppData.DailyData[];
+    [CollectionUtils.schema.keys.YEARLY]?: Model.YearlyData[];
+    [CollectionUtils.schema.keys.SEASONALLY]?: Model.MonthlyData[];
+    [CollectionUtils.schema.keys.MONTHLY]?: Model.MonthlyData[];
+    [CollectionUtils.schema.keys.WEEKLY]?: Model.WeeklyData[];
+    [CollectionUtils.schema.keys.WEEKDAILY]?: Model.WeekDailyData[];
+    [CollectionUtils.schema.keys.DAILY]?: Model.DailyData[];
   };
 }
 
