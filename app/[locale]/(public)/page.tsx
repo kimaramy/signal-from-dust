@@ -1,8 +1,11 @@
 import { cache } from 'react';
+import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
+import type { Locale } from '@/lib/i18n';
 import {
   CollectionUtils,
+  DataNameUtils,
   MonthUtils,
   SeasonUtils,
   YearUtils,
@@ -14,6 +17,18 @@ import Floating from '@/components/Floating';
 import { SettingsDialog } from '@/components/settings';
 
 const fetchCachedDataset = cache(fetchDataset);
+
+export function generateMetadata({ params }: NextPageProps): Metadata {
+  const locale = params?.locale as Locale;
+  const dataNameSchema = DataNameUtils.schema;
+  const collectionSchema = CollectionUtils.schema;
+  return {
+    title: [
+      dataNameSchema.display(dataNameSchema.defaultKey, locale),
+      collectionSchema.display(collectionSchema.defaultKey, locale),
+    ].join(', '),
+  };
+}
 
 export const revalidate = false; // 다른 동적 패칭 혹은 캐싱 동작 발생 전까지 무기한으로 캐싱
 

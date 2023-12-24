@@ -1,4 +1,5 @@
 import { cn } from '@/lib/css';
+import { useLocaleDictionary } from '@/lib/i18n';
 import { CollectionUtils } from '@/lib/model';
 import {
   Select,
@@ -25,17 +26,22 @@ function CollectionSelect(props: CollectionSelectProps) {
     className,
   } = props;
 
+  const {
+    locale,
+    dictionary: { settings },
+  } = useLocaleDictionary();
+
   const collectionKeys = CollectionUtils.schema.getAllKeys();
 
   return (
     <Select value={value} disabled={disabled} onValueChange={onValueChange}>
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
-        <SelectValue placeholder="조회 기간 선택" />
+        <SelectValue placeholder={settings.form.collection.placeholder} />
       </SelectTrigger>
       <SelectContent>
         {collectionKeys.map((collectionKey) => (
           <SelectItem key={collectionKey} value={collectionKey}>
-            {CollectionUtils.schema.display(collectionKey)}
+            {CollectionUtils.schema.display(collectionKey, locale)}
           </SelectItem>
         ))}
       </SelectContent>

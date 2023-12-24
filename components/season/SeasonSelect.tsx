@@ -1,4 +1,5 @@
 import { cn } from '@/lib/css';
+import { useLocaleDictionary } from '@/lib/i18n';
 import { SeasonUtils } from '@/lib/model';
 import {
   Select,
@@ -25,6 +26,11 @@ function SeasonSelect(props: SeasonSelectProps) {
     className,
   } = props;
 
+  const {
+    locale,
+    dictionary: { settings },
+  } = useLocaleDictionary();
+
   const seasonKeys = SeasonUtils.schema.getAllKeys();
 
   const defaultSeasonKey = seasonKeys.splice(
@@ -35,15 +41,15 @@ function SeasonSelect(props: SeasonSelectProps) {
   return (
     <Select value={value} disabled={disabled} onValueChange={onValueChange}>
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
-        <SelectValue placeholder="조회 계절 선택" />
+        <SelectValue placeholder={settings.form.season.placeholder} />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value={defaultSeasonKey}>
-          {SeasonUtils.schema.display(defaultSeasonKey)}
+          {SeasonUtils.schema.display(defaultSeasonKey, locale)}
         </SelectItem>
         {seasonKeys.map((seasonKey) => (
           <SelectItem key={seasonKey} value={seasonKey}>
-            {SeasonUtils.schema.display(seasonKey)}
+            {SeasonUtils.schema.display(seasonKey, locale)}
           </SelectItem>
         ))}
       </SelectContent>

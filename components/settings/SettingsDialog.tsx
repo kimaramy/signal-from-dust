@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { useLocaleDictionary } from '@/lib/i18n';
 import {
   Dialog,
   DialogClose,
@@ -21,6 +22,11 @@ import SettingsFormSubmitButton from './SettingsFormSubmitButton';
  * @issue [How to avoid hydration error](https://github.com/radix-ui/primitives/issues/1386)
  */
 function SettingsDialog() {
+  const {
+    locale,
+    dictionary: { intro, settings },
+  } = useLocaleDictionary();
+
   const [isOpen, setOpen] = useState(false);
 
   useEffect(() => {
@@ -48,16 +54,16 @@ function SettingsDialog() {
           <div className="absolute left-0 top-0 h-full w-full bg-primary mix-blend-multiply dark:bg-background dark:mix-blend-screen"></div>
           <div className="z-5 absolute left-0 top-0 flex h-full w-full items-center justify-center">
             <Link
-              href="/"
+              href={`/${locale}`}
               className="inline-block font-bold uppercase text-white"
             >
-              미세먼지의 신호
+              {intro.content.title}
             </Link>
           </div>
         </section>
         <section className="flex w-1/2 flex-col p-6">
           <DialogHeader>
-            <DialogTitle>데이터 선택</DialogTitle>
+            <DialogTitle>{settings.dialog.title}</DialogTitle>
           </DialogHeader>
           <section className="py-4">
             <SettingsModeContext.Provider value="preset">
@@ -66,7 +72,7 @@ function SettingsDialog() {
           </section>
           <DialogFooter>
             <DialogClose className="w-full" asChild>
-              <SettingsFormSubmitButton label="시작" />
+              <SettingsFormSubmitButton label={settings.dialog.ok_btn} />
             </DialogClose>
           </DialogFooter>
         </section>

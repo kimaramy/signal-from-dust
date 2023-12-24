@@ -1,5 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 
+import { useLocaleDictionary } from '@/lib/i18n';
 import {
   FormControl,
   FormField,
@@ -11,6 +12,10 @@ import { SeasonSelect } from '@/components/season';
 import { type SettingsFormValues } from './SettingsForm';
 
 function SeasonField() {
+  const {
+    dictionary: { settings },
+  } = useLocaleDictionary();
+
   const { control, watch } = useFormContext<SettingsFormValues>();
 
   const mode = watch('mode');
@@ -28,7 +33,7 @@ function SeasonField() {
       render={({ field }) => {
         return (
           <FormItem hidden={!isVisible}>
-            <FormLabel>계절</FormLabel>
+            <FormLabel>{settings.form.season.title}</FormLabel>
             <FormControl>
               <SeasonSelect
                 value={field.value}

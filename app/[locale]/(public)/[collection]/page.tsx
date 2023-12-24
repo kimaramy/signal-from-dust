@@ -2,27 +2,30 @@ import { cache } from 'react';
 import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
+import { i18n } from '@/lib/i18n';
 import { Schema } from '@/lib/model';
-import type { NextStaticPageProps } from '@/lib/router';
+import type { NextPageProps } from '@/lib/router';
 import Dataset from '@/components/Dataset';
 import DatasetDownloadButton from '@/components/DatasetDownloadButton';
 import Floating from '@/components/Floating';
 
 const fetchCachedDataset = cache(fetchDataset);
 
-type StaticDatasetPageProps = NextStaticPageProps<
-  ReturnType<typeof generateStaticParams>[0]['collection']
+type StaticDatasetPageProps = NextPageProps<
+  ReturnType<typeof generateStaticParams>[0]
 >;
 
 export function generateStaticParams() {
   const collectionSchema = Schema.get('collection');
   return collectionSchema
     .mapKeys(collectionSchema.lowerCaseKey)
-    .map((collection) => ({ collection }));
+    .flatMap((collection) =>
+      i18n.locales.map((locale) => ({ locale, collection }))
+    );
 }
 
 export function generateMetadata({
-  params: { collection },
+  params: { collection, locale },
 }: StaticDatasetPageProps): Metadata {
   const collectionSchema = Schema.get('collection');
   const dataNameSchema = Schema.get('dataName');
@@ -30,8 +33,8 @@ export function generateMetadata({
   const dataNameKey = dataNameSchema.defaultKey;
   return {
     title: [
-      dataNameSchema.display(dataNameKey, 'en'),
-      collectionSchema.display(collectionKey, 'en'),
+      dataNameSchema.display(dataNameKey, locale),
+      collectionSchema.display(collectionKey, locale),
     ].join(', '),
   };
 }

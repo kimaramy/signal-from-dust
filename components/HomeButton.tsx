@@ -1,6 +1,7 @@
 'use client';
 
-import { useNavigate } from '@/lib/router';
+import { useLocaleDictionary } from '@/lib/i18n';
+import { TypedRoute, useNavigate } from '@/lib/router';
 import { Button, ButtonProps } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import {
@@ -11,6 +12,8 @@ import {
 } from '@/components/ui/tooltip';
 
 function HomeButton(props: ButtonProps) {
+  const { locale } = useLocaleDictionary();
+
   const navigate = useNavigate();
 
   return (
@@ -20,7 +23,9 @@ function HomeButton(props: ButtonProps) {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => navigate('/', { method: 'replace' })}
+            onClick={() =>
+              navigate(`/${locale}` as TypedRoute, { method: 'replace' })
+            }
             {...props}
           >
             <Icon.Home aria-hidden className="h-4 w-4" />

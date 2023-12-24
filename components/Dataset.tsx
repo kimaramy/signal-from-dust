@@ -2,6 +2,7 @@
 
 import * as Domains from '@/domains';
 
+import { useLocaleDictionary } from '@/lib/i18n';
 import { CollectionUtils, Model } from '@/lib/model';
 import { useDataNameKey } from '@/components/dataName';
 import { useDisplayKey } from '@/components/display';
@@ -23,6 +24,8 @@ interface DatasetProps {
 }
 
 function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
+  const { locale } = useLocaleDictionary();
+
   const displayKey = useDisplayKey('query');
 
   const dataNameKey = useDataNameKey('query');
@@ -41,7 +44,7 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
         dataset,
         dataNameKey,
         initialCollectionKey,
-        'en'
+        locale
       ),
   });
 
@@ -56,7 +59,7 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
           dataset,
           dataNameKey,
           initialCollectionKey,
-          'en'
+          locale
         ),
     }
   );
@@ -69,7 +72,7 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
         dataset,
         dataNameKey,
         initialCollectionKey,
-        'en'
+        locale
       ),
   });
 
@@ -81,7 +84,7 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
         dataset,
         dataNameKey,
         initialCollectionKey,
-        'en'
+        locale
       ),
   });
 
@@ -93,7 +96,7 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
         dataset,
         dataNameKey,
         initialCollectionKey,
-        'en'
+        locale
       ),
   });
 
@@ -105,7 +108,7 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
         dataset,
         dataNameKey,
         initialCollectionKey,
-        'en'
+        locale
       ),
   });
 

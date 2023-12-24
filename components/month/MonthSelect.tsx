@@ -1,4 +1,5 @@
 import { cn } from '@/lib/css';
+import { useLocaleDictionary } from '@/lib/i18n';
 import { MonthUtils } from '@/lib/model';
 import {
   Select,
@@ -25,6 +26,11 @@ function MonthSelect(props: MonthSelectProps) {
     className,
   } = props;
 
+  const {
+    locale,
+    dictionary: { settings },
+  } = useLocaleDictionary();
+
   const monthKeys = MonthUtils.schema.getAllKeys();
 
   const defaultMonthKey = monthKeys.splice(
@@ -35,15 +41,15 @@ function MonthSelect(props: MonthSelectProps) {
   return (
     <Select value={value} disabled={disabled} onValueChange={onValueChange}>
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
-        <SelectValue placeholder="조회 월 선택" />
+        <SelectValue placeholder={settings.form.month.placeholder} />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value={defaultMonthKey}>
-          {MonthUtils.schema.display(defaultMonthKey)}
+          {MonthUtils.schema.display(defaultMonthKey, 'short', locale)}
         </SelectItem>
         {monthKeys.map((monthKey) => (
           <SelectItem key={monthKey} value={monthKey}>
-            {MonthUtils.schema.display(monthKey)}
+            {MonthUtils.schema.display(monthKey, 'short', locale)}
           </SelectItem>
         ))}
       </SelectContent>

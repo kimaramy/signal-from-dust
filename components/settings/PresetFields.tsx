@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { cn } from '@/lib/css';
 import { useMountEffect, useUpdateEffect } from '@/lib/hooks';
+import { useLocaleDictionary } from '@/lib/i18n';
 import { CollectionUtils, DataNameUtils } from '@/lib/model';
 import { FormField } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -15,6 +16,8 @@ import { type SettingsFormValues } from './SettingsForm';
  * 데이터 이름, 데이터 유형, 연도, 월, 계절 등이 미리 선택된 집합 중 하나를 선택할 수 있습니다.
  */
 function PresetFields() {
+  const { locale } = useLocaleDictionary();
+
   const { control, formState, watch, reset } =
     useFormContext<SettingsFormValues>();
 

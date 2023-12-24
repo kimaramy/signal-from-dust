@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 
+import { useLocaleDictionary } from '@/lib/i18n';
 import { type SchemaName } from '@/lib/model';
 import { useNavigate, useSetQueryParams, type TypedRoute } from '@/lib/router';
 import { toLowerCase } from '@/lib/utils';
@@ -12,6 +13,8 @@ interface SettingsFormContainerProps {
 }
 
 function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
+  const { locale } = useLocaleDictionary();
+
   const navigate = useNavigate();
 
   const setQueryParams = useSetQueryParams();
@@ -40,9 +43,9 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
 
       const search = setQueryParams(map, { stringify: true });
 
-      navigate(`/search${search}` as TypedRoute, { method: 'push' });
+      navigate(`/${locale}/search${search}` as TypedRoute, { method: 'push' });
     },
-    [setQueryParams, navigate]
+    [locale, setQueryParams, navigate]
   );
 
   return (

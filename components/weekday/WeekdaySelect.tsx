@@ -1,4 +1,5 @@
 import { cn } from '@/lib/css';
+import { useLocaleDictionary } from '@/lib/i18n';
 import { WeekdayUtils } from '@/lib/model';
 import {
   Select,
@@ -25,6 +26,11 @@ function WeekdaySelect(props: WeekdaySelectProps) {
     className,
   } = props;
 
+  const {
+    locale,
+    dictionary: { settings },
+  } = useLocaleDictionary();
+
   const weekdayKeys = WeekdayUtils.schema.getAllKeys();
 
   const defaultWeekdayKey = weekdayKeys.splice(
@@ -35,13 +41,15 @@ function WeekdaySelect(props: WeekdaySelectProps) {
   return (
     <Select value={value} disabled={disabled} onValueChange={onValueChange}>
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
-        <SelectValue placeholder="조회 요일 선택" />
+        <SelectValue placeholder={settings.form.weekday.placeholder} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value={defaultWeekdayKey}>요일 전체</SelectItem>
+        <SelectItem value={defaultWeekdayKey}>
+          {WeekdayUtils.schema.display(defaultWeekdayKey, 'short', locale)}
+        </SelectItem>
         {weekdayKeys.map((weekdayKey) => (
           <SelectItem key={weekdayKey} value={weekdayKey}>
-            {WeekdayUtils.schema.display(weekdayKey)}
+            {WeekdayUtils.schema.display(weekdayKey, 'short', locale)}
           </SelectItem>
         ))}
       </SelectContent>

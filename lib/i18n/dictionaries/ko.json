@@ -1,0 +1,72 @@
+{
+  "intro": {
+    "content": {
+      "title": "미세먼지의 신호",
+      "subtitle": "통계 데이터로부터 찾아낸 미세먼지의 신호와 패턴",
+      "description": "우리는 자연 현상을 너무 과학적으로 해석해온 것이 아닐까? 이 프로젝트는 미세먼지 현상을 자연이 주는 신호로 바라보는 관점에서 시작한다. 그 방법으로 미세먼지 데이터를 2진 신호로 변환하고, 웹 기술을 통해 시각과 청각적 요소로 표현한다. 이를 통해 체험자는 눈과 귀를 통해 미세먼지의 패턴을 찾아가는 사색의 시간을 보내게 된다. 최종적으로, 체험자가 데이터마다 각기 다른 신호가 발생하고 있음을 인지하고, 자연이 어떤 메시지를 전달하고 있는지 발견해나가길 기대해본다.",
+      "type": "데이터시각화",
+      "author": "김하람",
+      "year": 2023
+    },
+    "trigger_btn": "프로젝트 설명"
+  },
+  "not_found": {
+    "title": "페이지를 찾을 수 없습니다",
+    "ok_btn": "홈으로"
+  },
+  "error": {
+    "title": "데이터를 로드하는 도중 문제가 발생했습니다",
+    "ok_btn": "재시도"
+  },
+  "settings": {
+    "trigger_btn": "데이터 변경",
+    "dialog": {
+      "title": "데이터 선택",
+      "ok_btn": "시작"
+    },
+    "sheet": {
+      "title": "조회할 데이터를 선택하세요",
+      "ok_btn": "적용"
+    },
+    "form": {
+      "preset_title": "추천 설정",
+      "custom_title": "직접 설정",
+      "location": {
+        "title": "측정 장소",
+        "placeholder": "측정 장소 선택"
+      },
+      "collection": {
+        "title": "조회 유형",
+        "placeholder": "조회 유형 선택"
+      },
+      "dataName": {
+        "title": "조회 데이터",
+        "placeholder": "조회 데이터 선택"
+      },
+      "year": {
+        "title": "연도",
+        "placeholder": "조회 연도 선택"
+      },
+      "month": {
+        "title": "월",
+        "placeholder": "조회 월 선택"
+      },
+      "season": {
+        "title": "계절",
+        "placeholder": "조회 계절 선택"
+      },
+      "week": {
+        "title": "주",
+        "placeholder": "조회 주 선택"
+      },
+      "weekday": {
+        "title": "요일",
+        "placeholder": "조회 요일 선택"
+      },
+      "day": {
+        "title": "일",
+        "Placeholder": "조회 일 선택"
+      }
+    }
+  }
+}

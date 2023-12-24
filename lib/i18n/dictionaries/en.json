@@ -1,0 +1,72 @@
+{
+  "intro": {
+    "content": {
+      "title": "Signal from dust",
+      "subtitle": "Signals and patterns found from PM10 and PM2.5 data",
+      "description": "Don't you think we're approaching natural phenomena with too much scientific way? This project starts from the perspective of looking at air pollution as signals from nature. In this way, PM(Particle Matter) data is converted into binary signals and printed by visual and auditory elements through web technology. Through this, the user spends time finding the pattern of dust through the eyes and ears. Finally, I hope that the user will recognize that different signals are occurring for each data and discover what message nature is delivering.",
+      "type": "Data Visualization",
+      "author": "Haram Kim",
+      "year": 2023
+    },
+    "trigger_btn": "About this project"
+  },
+  "not_found": {
+    "title": "Page not found",
+    "ok_btn": "Home"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "ok_btn": "Retry"
+  },
+  "settings": {
+    "trigger_btn": "Change data",
+    "dialog": {
+      "title": "Select data",
+      "ok_btn": "Start"
+    },
+    "sheet": {
+      "title": "Select the data you want to query",
+      "ok_btn": "Apply"
+    },
+    "form": {
+      "preset_title": "Preset settings",
+      "custom_title": "Custom settings",
+      "location": {
+        "title": "Location",
+        "placeholder": "Select a location"
+      },
+      "collection": {
+        "title": "Collection",
+        "placeholder": "Select a collection"
+      },
+      "dataName": {
+        "title": "Data",
+        "placeholder": "Select a data"
+      },
+      "year": {
+        "title": "Year",
+        "placeholder": "Select a year"
+      },
+      "month": {
+        "title": "Month",
+        "placeholder": "Select a month"
+      },
+      "season": {
+        "title": "Season",
+        "placeholder": "Select a season"
+      },
+      "week": {
+        "title": "Week",
+        "placeholder": "Select a week"
+      },
+      "weekday": {
+        "title": "Weekday",
+        "placeholder": "Select a weekday"
+      },
+      "day": {
+        "title": "Day",
+        "Placeholder": "Select a day"
+      }
+    }
+  }
+}

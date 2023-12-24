@@ -2,6 +2,7 @@ import { cache } from 'react';
 import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
+import type { Locale } from '@/lib/i18n';
 import { DataNameUtils, MonthUtils, SeasonUtils, YearUtils } from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
 import { parseCollectionKey } from '@/components/collection';
@@ -15,18 +16,22 @@ import { parseYearKey } from '@/components/year';
 
 const fetchCachedDataset = cache(fetchDataset);
 
-export function generateMetadata({ searchParams }: NextPageProps): Metadata {
+export function generateMetadata({
+  params,
+  searchParams,
+}: NextPageProps): Metadata {
+  const locale = params?.locale as Locale;
   const dataNameKey = parseDataNameKey(searchParams);
   const yearKey = parseYearKey(searchParams);
   const seasonKey = parseSeasonKey(searchParams);
   const monthKey = parseMonthKey(searchParams);
   return {
     title: [
-      DataNameUtils.schema.display(dataNameKey, 'en'),
+      DataNameUtils.schema.display(dataNameKey, locale),
       seasonKey !== SeasonUtils.schema.defaultKey
-        ? SeasonUtils.schema.display(seasonKey, 'en')
-        : MonthUtils.schema.display(monthKey, 'short', 'en'),
-      YearUtils.schema.display(yearKey, 'short', 'en'),
+        ? SeasonUtils.schema.display(seasonKey, locale)
+        : MonthUtils.schema.display(monthKey, 'short', locale),
+      YearUtils.schema.display(yearKey, 'short', locale),
     ].join(', '),
   };
 }

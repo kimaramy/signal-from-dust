@@ -17,11 +17,9 @@ import { baseMetadata } from './metadata';
 
 export const metadata = baseMetadata;
 
-type RootLayoutProps = NextLayoutProps & { modal: React.ReactNode };
-
-function RootLayout({ children, modal }: RootLayoutProps) {
+function RootLayout({ children }: NextLayoutProps) {
   return (
-    <html lang="ko" suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <head>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <link rel="preconnect" href="https://cdn.jsdelivr.net" />
@@ -41,9 +39,11 @@ function RootLayout({ children, modal }: RootLayoutProps) {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryClientProvider>
             <QueryErrorBoundary>
-              <div className="relative flex min-h-screen flex-col">
+              <div
+                id="root-layout"
+                className="relative flex min-h-screen flex-col"
+              >
                 {children}
-                {modal}
               </div>
             </QueryErrorBoundary>
             <ToastProvider />

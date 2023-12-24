@@ -1,4 +1,5 @@
 import { cn } from '@/lib/css';
+import { useLocaleDictionary } from '@/lib/i18n';
 import { YearUtils } from '@/lib/model';
 import {
   Select,
@@ -25,6 +26,11 @@ function YearSelect(props: YearSelectProps) {
     className,
   } = props;
 
+  const {
+    locale,
+    dictionary: { settings },
+  } = useLocaleDictionary();
+
   const yearKeys = YearUtils.schema.getAllKeys();
 
   const defaultYearKey = yearKeys.splice(
@@ -35,15 +41,15 @@ function YearSelect(props: YearSelectProps) {
   return (
     <Select value={value} disabled={disabled} onValueChange={onValueChange}>
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
-        <SelectValue placeholder="조회 연도 선택" />
+        <SelectValue placeholder={settings.form.year.placeholder} />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value={defaultYearKey}>
-          {YearUtils.schema.display(defaultYearKey)}
+          {YearUtils.schema.display(defaultYearKey, 'short', locale)}
         </SelectItem>
         {yearKeys.reverse().map((yearKey) => (
           <SelectItem key={yearKey} value={yearKey}>
-            {YearUtils.schema.display(yearKey)}
+            {YearUtils.schema.display(yearKey, 'short', locale)}
           </SelectItem>
         ))}
       </SelectContent>

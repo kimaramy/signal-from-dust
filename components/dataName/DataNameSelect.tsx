@@ -1,4 +1,5 @@
 import { cn } from '@/lib/css';
+import { useLocaleDictionary } from '@/lib/i18n';
 import { DataNameUtils } from '@/lib/model';
 import {
   Select,
@@ -25,17 +26,22 @@ function DataNameSelect(props: DataNameSelectProps) {
     className,
   } = props;
 
+  const {
+    locale,
+    dictionary: { settings },
+  } = useLocaleDictionary();
+
   const dataNameKeys = DataNameUtils.schema.getAllKeys();
 
   return (
     <Select value={value} disabled={disabled} onValueChange={onValueChange}>
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
-        <SelectValue placeholder="조회 데이터 선택" />
+        <SelectValue placeholder={settings.form.dataName.placeholder} />
       </SelectTrigger>
       <SelectContent>
         {dataNameKeys.map((dataNameKey) => (
           <SelectItem key={dataNameKey} value={dataNameKey}>
-            {DataNameUtils.schema.display(dataNameKey)}
+            {DataNameUtils.schema.display(dataNameKey, locale)}
           </SelectItem>
         ))}
       </SelectContent>
