@@ -7,7 +7,7 @@ const numbersSchema = z.array(z.number());
 export class MapSchema<
   TName extends string = string,
   TKey extends string = string,
-  TValue extends number | string = number,
+  TValue extends number | string | object = number,
 > {
   protected readonly keySchema: z.ZodEnum<[TKey, ...TKey[]]>;
   protected readonly map: Map<TKey, TValue>;

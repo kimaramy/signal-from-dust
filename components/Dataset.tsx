@@ -11,6 +11,8 @@ import { useSeasonKey } from '@/components/season';
 import Sequence, { SceneUtils } from '@/components/Sequence';
 import { useYearKey } from '@/components/year';
 
+import { useLocationKey } from './location/hooks';
+
 interface DatasetProps {
   initialCollectionKey: CollectionUtils.Key;
   initialDataset?: {
@@ -25,6 +27,8 @@ interface DatasetProps {
 
 function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
   const { locale } = useLocaleDictionary();
+
+  const locationKey = useLocationKey('query');
 
   const displayKey = useDisplayKey('query');
 
@@ -44,6 +48,7 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
         dataset,
         dataNameKey,
         initialCollectionKey,
+        locationKey,
         locale
       ),
   });
@@ -59,6 +64,7 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
           dataset,
           dataNameKey,
           initialCollectionKey,
+          locationKey,
           locale
         ),
     }
@@ -72,6 +78,7 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
         dataset,
         dataNameKey,
         initialCollectionKey,
+        locationKey,
         locale
       ),
   });
@@ -84,6 +91,7 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
         dataset,
         dataNameKey,
         initialCollectionKey,
+        locationKey,
         locale
       ),
   });
@@ -96,6 +104,7 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
         dataset,
         dataNameKey,
         initialCollectionKey,
+        locationKey,
         locale
       ),
   });
@@ -108,6 +117,7 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
         dataset,
         dataNameKey,
         initialCollectionKey,
+        locationKey,
         locale
       ),
   });

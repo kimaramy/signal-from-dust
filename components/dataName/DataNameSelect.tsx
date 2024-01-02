@@ -18,13 +18,7 @@ interface DataNameSelectProps {
 }
 
 function DataNameSelect(props: DataNameSelectProps) {
-  const {
-    value,
-    onValueChange,
-    hidden = false,
-    disabled = false,
-    className,
-  } = props;
+  const { value, onValueChange, hidden = false, disabled, className } = props;
 
   const {
     locale,
@@ -34,7 +28,11 @@ function DataNameSelect(props: DataNameSelectProps) {
   const dataNameKeys = DataNameUtils.schema.getAllKeys();
 
   return (
-    <Select value={value} disabled={disabled} onValueChange={onValueChange}>
+    <Select
+      value={value}
+      disabled={disabled ?? dataNameKeys.length < 2}
+      onValueChange={onValueChange}
+    >
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
         <SelectValue placeholder={settings.form.dataName.placeholder} />
       </SelectTrigger>

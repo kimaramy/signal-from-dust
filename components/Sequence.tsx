@@ -8,6 +8,7 @@ import {
   DataNameUtils,
   DayUtils,
   LocaleSchema,
+  LocationUtils,
   Model,
   MonthUtils,
   WeekdayUtils,
@@ -73,6 +74,7 @@ export class SceneUtils {
     dataset: Model.DailyData[],
     dataNameKey: DataNameUtils.Key,
     collectionKey: CollectionUtils.Key,
+    locationKey: LocationUtils.Key,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, month, day, pm_large, pm_small }) => ({
@@ -94,7 +96,7 @@ export class SceneUtils {
           locale
         ),
       ],
-      location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
+      location: LocationUtils.schema.display(locationKey, locale),
       rank: null,
     }));
   }
@@ -102,6 +104,7 @@ export class SceneUtils {
     dataset: Model.WeekDailyData[],
     dataNameKey: DataNameUtils.Key,
     collectionKey: CollectionUtils.Key,
+    locationKey: LocationUtils.Key,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, month, weekday, pm_large, pm_small }) => ({
@@ -127,7 +130,7 @@ export class SceneUtils {
           locale
         ),
       ],
-      location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
+      location: LocationUtils.schema.display(locationKey, locale),
       rank: null,
     }));
   }
@@ -135,6 +138,7 @@ export class SceneUtils {
     dataset: Model.WeeklyData[],
     dataNameKey: DataNameUtils.Key,
     collectionKey: CollectionUtils.Key,
+    locationKey: LocationUtils.Key,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, year, week, pm_large, pm_small }) => ({
@@ -156,7 +160,7 @@ export class SceneUtils {
           locale
         ),
       ],
-      location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
+      location: LocationUtils.schema.display(locationKey, locale),
       rank: null,
     }));
   }
@@ -164,6 +168,7 @@ export class SceneUtils {
     dataset: Model.MonthlyData[],
     dataNameKey: DataNameUtils.Key,
     collectionKey: CollectionUtils.Key,
+    locationKey: LocationUtils.Key,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, year, month, pm_large, pm_small }) => ({
@@ -189,7 +194,7 @@ export class SceneUtils {
           locale
         ),
       ],
-      location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
+      location: LocationUtils.schema.display(locationKey, locale),
       rank: null,
     }));
   }
@@ -197,6 +202,7 @@ export class SceneUtils {
     dataset: Model.YearlyData[],
     dataNameKey: DataNameUtils.Key,
     collectionKey: CollectionUtils.Key,
+    locationKey: LocationUtils.Key,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, year, pm_large, pm_small }) => ({
@@ -217,7 +223,7 @@ export class SceneUtils {
           locale
         ),
       ],
-      location: LocaleSchema.isKorean(locale) ? '서울시' : 'Seoul',
+      location: LocationUtils.schema.display(locationKey, locale),
       rank: null,
     }));
   }

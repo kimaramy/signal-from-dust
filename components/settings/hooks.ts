@@ -5,6 +5,7 @@ import { useContext, useMemo } from 'react';
 import {
   CollectionUtils,
   DataNameUtils,
+  LocationUtils,
   MonthUtils,
   SeasonUtils,
   YearUtils,
@@ -27,6 +28,7 @@ function useSettingsFormDefaultValues(defaultMode: SettingsMode) {
   return useMemo<SettingsFormValues>(
     () => ({
       mode: defaultMode,
+      locationKey: LocationUtils.schema.defaultKey,
       dataNameKey: DataNameUtils.schema.defaultKey,
       collectionKey: CollectionUtils.schema.defaultKey,
       yearKey: YearUtils.schema.defaultKey,

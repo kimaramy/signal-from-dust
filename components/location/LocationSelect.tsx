@@ -1,6 +1,8 @@
+'use client';
+
 import { cn } from '@/lib/css';
 import { useLocaleDictionary } from '@/lib/i18n';
-import { CollectionUtils } from '@/lib/model';
+import { LocationUtils } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -9,15 +11,15 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-interface CollectionSelectProps {
-  value: CollectionUtils.Key;
-  onValueChange: (value: CollectionUtils.Key) => void;
+interface LocationSelectProps {
+  value: LocationUtils.Key;
+  onValueChange: (value: LocationUtils.Key) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
 }
 
-function CollectionSelect(props: CollectionSelectProps) {
+function LocationSelect(props: LocationSelectProps) {
   const { value, onValueChange, hidden = false, disabled, className } = props;
 
   const {
@@ -25,21 +27,21 @@ function CollectionSelect(props: CollectionSelectProps) {
     dictionary: { settings },
   } = useLocaleDictionary();
 
-  const collectionKeys = CollectionUtils.schema.getAllKeys();
+  const locationKeys = LocationUtils.schema.getAllKeys();
 
   return (
     <Select
       value={value}
-      disabled={disabled ?? collectionKeys.length < 2}
+      disabled={disabled ?? locationKeys.length < 2}
       onValueChange={onValueChange}
     >
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
-        <SelectValue placeholder={settings.form.collection.placeholder} />
+        <SelectValue placeholder={settings.form.location.placeholder} />
       </SelectTrigger>
       <SelectContent>
-        {collectionKeys.map((collectionKey) => (
-          <SelectItem key={collectionKey} value={collectionKey}>
-            {CollectionUtils.schema.display(collectionKey, locale)}
+        {locationKeys.map((locationKey) => (
+          <SelectItem key={locationKey} value={locationKey}>
+            {LocationUtils.schema.display(locationKey, locale)}
           </SelectItem>
         ))}
       </SelectContent>
@@ -47,4 +49,4 @@ function CollectionSelect(props: CollectionSelectProps) {
   );
 }
 
-export default CollectionSelect;
+export default LocationSelect;

@@ -18,13 +18,7 @@ interface WeekSelectProps {
 }
 
 function WeekSelect(props: WeekSelectProps) {
-  const {
-    value,
-    onValueChange,
-    hidden = false,
-    disabled = false,
-    className,
-  } = props;
+  const { value, onValueChange, hidden = false, disabled, className } = props;
 
   const {
     locale,
@@ -39,7 +33,11 @@ function WeekSelect(props: WeekSelectProps) {
   )[0];
 
   return (
-    <Select value={value} disabled={disabled} onValueChange={onValueChange}>
+    <Select
+      value={value}
+      disabled={disabled ?? weekKeys.length < 2}
+      onValueChange={onValueChange}
+    >
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
         <SelectValue placeholder={settings.form.week.placeholder} />
       </SelectTrigger>

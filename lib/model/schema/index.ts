@@ -9,3 +9,4 @@ export * from './month';
 export * from './week';
 export * from './weekday';
 export * from './day';
+export * from './location';

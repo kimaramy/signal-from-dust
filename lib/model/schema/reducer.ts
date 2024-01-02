@@ -2,6 +2,7 @@ import { CollectionUtils } from './collection';
 import { DataNameUtils } from './dataName';
 import { DayUtils } from './day';
 import { LocaleSchema } from './locale';
+import { LocationUtils } from './location';
 import { MonthUtils } from './month';
 import { SeasonUtils } from './season';
 import { WeekUtils } from './week';
@@ -10,6 +11,7 @@ import { YearUtils } from './year';
 
 const schemaMap = {
   locale: LocaleSchema,
+  [LocationUtils.schema.name]: LocationUtils.schema,
   [CollectionUtils.schema.name]: CollectionUtils.schema,
   [DataNameUtils.schema.name]: DataNameUtils.schema,
   [DayUtils.schema.name]: DayUtils.schema,

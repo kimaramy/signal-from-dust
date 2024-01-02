@@ -31,6 +31,7 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
       }
 
       const map = new Map<SchemaName, string>()
+        .set('location', values.locationKey)
         .set('collection', values.collectionKey)
         .set('dataName', values.dataNameKey)
         .set('year', values.yearKey)
