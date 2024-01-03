@@ -2,6 +2,7 @@
 
 import { useTheme } from 'next-themes';
 
+import { useLocaleDictionary } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import {
@@ -20,6 +21,8 @@ export default function ThemeToggleButton({
 }: ThemeToggleButtonProps) {
   const { setTheme, theme } = useTheme();
 
+  const { dictionary } = useLocaleDictionary();
+
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip>
@@ -32,10 +35,10 @@ export default function ThemeToggleButton({
           >
             <Icon.Sun className="h-[1.375rem] w-[1.1rem] dark:hidden" />
             <Icon.Moon className="hidden h-4 w-4 dark:block" />
-            <span className="sr-only">Toggle theme</span>
+            <span className="sr-only">{dictionary.theme.trigger_btn}</span>
           </Button>
         </TooltipTrigger>
-        <TooltipContent>테마 변경</TooltipContent>
+        <TooltipContent>{dictionary.theme.trigger_btn}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

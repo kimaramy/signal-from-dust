@@ -1,4 +1,10 @@
 {
+  "theme": {
+    "trigger_btn": "테마 변경"
+  },
+  "locale": {
+    "trigger_btn": "언어 변경"
+  },
   "intro": {
     "content": {
       "title": "미세먼지의 신호",
