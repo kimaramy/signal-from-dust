@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRightIcon, PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
 
 import { cn } from '@/lib/css';
+import { useLocaleDictionary } from '@/lib/i18n';
 import { DataNameUtils } from '@/lib/model';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -19,9 +20,14 @@ interface SceneDataViewProps {
   onPlayButtonClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-function SceneDataView(props: SceneDataViewProps) {
-  const { sceneData, binaries, displayKey, isPlaying, onPlayButtonClick } =
-    props;
+function SceneDataView({
+  sceneData,
+  binaries,
+  displayKey,
+  isPlaying,
+  onPlayButtonClick,
+}: SceneDataViewProps) {
+  const { locale } = useLocaleDictionary();
 
   const isFullPage = displayKey === 'FULL';
 
@@ -30,9 +36,7 @@ function SceneDataView(props: SceneDataViewProps) {
     sceneData.name as DataNameUtils.Key
   );
 
-  const title = [sceneData.dates.join(' ') + '의', sceneData.displayName].join(
-    ' '
-  );
+  const title = [sceneData.dates.join(', '), sceneData.displayName].join(', ');
 
   return (
     <div
@@ -58,10 +62,12 @@ function SceneDataView(props: SceneDataViewProps) {
         <div className="flex flex-col justify-center">
           <h3 className="text-lg font-bold text-foreground">{title}</h3>
           <h4 className="pl-px text-xs tracking-tight text-muted-foreground">
-            데이터 :{' '}
+            {locale === 'en' ? 'Source' : '데이터'} :{' '}
             {[
-              `${sceneData.collection} ${sceneData.displayName} 평균`,
-              `2015~2022년`,
+              `${sceneData.collection} ${sceneData.displayName} ${
+                locale === 'en' ? 'Average' : '평균'
+              }`,
+              `${locale === 'en' ? `2015~2022` : `2015~2022년`}`,
               sceneData.location,
             ].join(', ')}
           </h4>
@@ -75,7 +81,9 @@ function SceneDataView(props: SceneDataViewProps) {
         )}
       >
         <h4 className="pb-2 text-sm tracking-tight text-muted-foreground">
-          {title} 평균 수치를 2진 신호로 출력한 결과입니다
+          {locale === 'en'
+            ? 'This is the result of a binary signal output of the average figure'
+            : '평균 수치를 2진 신호로 출력한 결과입니다'}
         </h4>
         <div className="flex items-center gap-2">
           <p
@@ -86,12 +94,6 @@ function SceneDataView(props: SceneDataViewProps) {
             }}
           >
             {sceneData.value}({Dust.unit})
-            {/* <span
-              className="ml-1.5 inline-block rounded px-1 py-px text-[0.9em] text-black"
-              style={{ backgroundColor: getDustGradeColor(dustGrade) }}
-            >
-              {dustGrade}
-            </span> */}
           </p>
           <ArrowRightIcon className="h-4 w-4" />
           <p className="inline-block divide-x divide-ring border border-ring font-mono text-base font-semibold tracking-wider text-accent-foreground dark:divide-white dark:border-white">
@@ -104,16 +106,6 @@ function SceneDataView(props: SceneDataViewProps) {
               </span>
             ))}
           </p>
-          {/* <p className="inline-block divide-x divide-ring border border-ring font-mono text-base font-semibold tracking-wider text-accent-foreground">
-            {binaries?.map((binary, i) => (
-              <span
-                key={`${binary}-${i}`}
-                className="inline-flex items-center justify-center px-2 py-1"
-              >
-                {binary}
-              </span>
-            ))}
-          </p> */}
         </div>
       </div>
     </div>
