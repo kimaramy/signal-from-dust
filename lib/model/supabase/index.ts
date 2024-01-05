@@ -1,2 +1,2 @@
-export * from './collection.d';
+export * from './types/collection';
 export * from './supabaseClient';

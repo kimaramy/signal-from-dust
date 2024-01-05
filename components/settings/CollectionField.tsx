@@ -1,5 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 
+import { useLocaleDictionary } from '@/lib/i18n';
 import {
   FormControl,
   FormField,
@@ -11,6 +12,10 @@ import { CollectionSelect } from '@/components/collection';
 import { type SettingsFormValues } from './SettingsForm';
 
 function CollectionField() {
+  const {
+    dictionary: { settings },
+  } = useLocaleDictionary();
+
   const { control, watch } = useFormContext<SettingsFormValues>();
 
   const mode = watch('mode');
@@ -24,7 +29,7 @@ function CollectionField() {
       render={({ field }) => {
         return (
           <FormItem>
-            <FormLabel>조회 유형</FormLabel>
+            <FormLabel>{settings.form.collection.title}</FormLabel>
             <FormControl>
               <CollectionSelect
                 value={field.value}

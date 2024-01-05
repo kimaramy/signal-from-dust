@@ -1,14 +1,14 @@
-type AvailableLocale = 'en' | 'ko';
+import type { Locale } from '@/lib/i18n';
 
 class LocaleSchema {
-  static defaultLocale: AvailableLocale = 'ko';
-  static locales: Record<AvailableLocale, AvailableLocale> = {
+  static defaultLocale: Locale = 'ko';
+  static locales: Record<Locale, Locale> = {
     en: 'en',
     ko: 'ko',
   };
-  static isKorean(locale: AvailableLocale) {
+  static isKorean(locale: Locale) {
     return locale.startsWith('ko');
   }
 }
 
-export { LocaleSchema, type AvailableLocale };
+export { LocaleSchema, type Locale };

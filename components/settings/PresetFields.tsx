@@ -5,7 +5,8 @@ import { useFormContext } from 'react-hook-form';
 
 import { cn } from '@/lib/css';
 import { useMountEffect, useUpdateEffect } from '@/lib/hooks';
-import * as Model from '@/lib/model';
+import { useLocaleDictionary } from '@/lib/i18n';
+import { CollectionUtils, DataNameUtils } from '@/lib/model';
 import { FormField } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
@@ -15,6 +16,8 @@ import { type SettingsFormValues } from './SettingsForm';
  * 데이터 이름, 데이터 유형, 연도, 월, 계절 등이 미리 선택된 집합 중 하나를 선택할 수 있습니다.
  */
 function PresetFields() {
+  const { locale } = useLocaleDictionary();
+
   const { control, formState, watch, reset } =
     useFormContext<SettingsFormValues>();
 
@@ -26,8 +29,33 @@ function PresetFields() {
 
   const isPresetMode = mode === 'preset';
 
+  const labelTitle = CollectionUtils.schema.display(
+    collectionKey,
+    locale,
+    'patterned'
+  );
+
+  const labelDescription = (function () {
+    switch (locale) {
+      case 'ko':
+        return [
+          ' 나타나는',
+          DataNameUtils.schema
+            .display(defaultValues?.dataNameKey!, locale)
+            .concat('의 패턴'),
+        ].join(' ');
+      case 'en':
+      default:
+        return [
+          'Pattern of',
+          DataNameUtils.schema.display(defaultValues?.dataNameKey!, locale),
+          ',',
+        ].join(' ');
+    }
+  })();
+
   const handleValueChange = useCallback(
-    (collectionKey: Model.CollectionKey) => {
+    (collectionKey: CollectionUtils.Key) => {
       reset({
         ...defaultValues,
         collectionKey,
@@ -57,16 +85,18 @@ function PresetFields() {
 
   return (
     <section>
-      <h3 className="pb-3 text-sm">
+      <h3
+        className={cn(
+          'flex items-baseline gap-1 pb-3 text-sm',
+          locale === 'en'
+            ? 'flex-row-reverse justify-end'
+            : 'flex-row justify-start'
+        )}
+      >
         <span className="inline-block rounded bg-muted px-1.5 py-0.5 font-bold">
-          {getPresetLabel(collectionKey)}
+          {labelTitle}
         </span>
-        {[
-          ' 나타나는',
-          Model.dataNameSchema
-            .display(defaultValues?.dataNameKey!)
-            .concat('의 패턴'),
-        ].join(' ')}
+        {labelDescription}
       </h3>
       <FormField
         name="collectionKey"
@@ -78,7 +108,7 @@ function PresetFields() {
               value={field.value}
               onValueChange={handleValueChange}
             >
-              {Model.collectionSchema
+              {CollectionUtils.schema
                 .getAllKeys()
                 .reverse()
                 .map((collectionKey) => {
@@ -91,7 +121,13 @@ function PresetFields() {
                           'bg-accent/50 shadow-inner'
                       )}
                     >
-                      <p className="text-sm">{getPresetLabel(collectionKey)}</p>
+                      <p className="text-sm">
+                        {CollectionUtils.schema.display(
+                          collectionKey,
+                          locale,
+                          'patterned'
+                        )}
+                      </p>
                       <RadioGroupItem value={collectionKey} />
                     </label>
                   );
@@ -102,22 +138,6 @@ function PresetFields() {
       />
     </section>
   );
-}
-
-function getPresetLabel(collectionKey: Model.CollectionKey) {
-  return collectionKey === 'YEARLY'
-    ? '매년'
-    : collectionKey === 'SEASONALLY'
-    ? '사계절마다'
-    : collectionKey === 'MONTHLY'
-    ? '매달'
-    : collectionKey === 'WEEKLY'
-    ? '매주'
-    : collectionKey === 'WEEKDAILY'
-    ? '요일마다'
-    : collectionKey === 'DAILY'
-    ? '매일'
-    : '';
 }
 
 export default PresetFields;

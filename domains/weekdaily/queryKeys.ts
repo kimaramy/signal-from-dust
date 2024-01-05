@@ -3,7 +3,7 @@ import {
   inferQueryKeys,
 } from '@lukemorales/query-key-factory';
 
-import { monthSchema, type MonthKey } from '@/lib/model';
+import { MonthUtils } from '@/lib/model';
 
 import * as services from './services';
 
@@ -14,8 +14,8 @@ export const weekDailyQueryKeys = createQueryKeys('weekdaily', {
       queryFn: () => services.fetchWeekDailyData(dataId),
     };
   },
-  list(monthKey: MonthKey) {
-    const month = monthSchema.getValue(monthKey);
+  list(monthKey: MonthUtils.Key) {
+    const month = MonthUtils.schema.getValue(monthKey);
     return {
       queryKey: [{ month }],
       queryFn: () => services.fetchWeekDailyDataset(month),

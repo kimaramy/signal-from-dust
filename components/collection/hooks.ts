@@ -1,20 +1,16 @@
-'use client';
+import { CollectionUtils } from '@/lib/model';
+import { useEnumUrlParam, type URLPart } from '@/lib/router';
 
-import { collectionSchema, type CollectionKey } from '@/lib/model';
-import { useEnumUrlParam } from '@/lib/router';
-import { QueryParamEnum } from '@/lib/utils';
-
-export function useCollectionKey(initialKey?: CollectionKey): CollectionKey {
-  const lowerCasedKeys = collectionSchema.mapKeys(
-    collectionSchema.lowerCaseKey
-  );
-  const lowerCasedDefaultKey = collectionSchema.lowerCaseKey(
-    initialKey ?? collectionSchema.defaultKey
-  );
+export function useCollectionKey(part?: URLPart): CollectionUtils.Key {
   const [lowerCasedKey] = useEnumUrlParam(
-    QueryParamEnum.Collection,
-    lowerCasedDefaultKey,
-    { enums: lowerCasedKeys, part: 'path' }
+    CollectionUtils.schema.name,
+    CollectionUtils.schema.lowerCaseKey(CollectionUtils.schema.defaultKey),
+    {
+      enums: CollectionUtils.schema.mapKeys(
+        CollectionUtils.schema.lowerCaseKey
+      ),
+      part,
+    }
   );
-  return collectionSchema.upperCaseKey(lowerCasedKey);
+  return CollectionUtils.schema.upperCaseKey(lowerCasedKey);
 }

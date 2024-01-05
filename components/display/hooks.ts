@@ -1,32 +1,25 @@
-'use client';
-
-import { useSearchParams } from 'next/navigation';
-
-import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
-import { QueryParamEnum } from '@/lib/utils';
+import { useEnumUrlParam, useSetQueryParam, type URLPart } from '@/lib/router';
 
 import { displaySchema, type DisplayKey } from './schema';
 
-export function useDisplayKey(initialKey?: DisplayKey): DisplayKey {
-  const lowerCasedKeys = displaySchema.mapKeys(displaySchema.lowerCaseKey);
-  const lowerCasedDefaultKey = displaySchema.lowerCaseKey(
-    initialKey ?? displaySchema.defaultKey
-  );
+export function useDisplayKey(
+  part?: URLPart,
+  initialKey?: DisplayKey
+): DisplayKey {
   const [lowerCasedKey] = useEnumUrlParam(
-    QueryParamEnum.Display,
-    lowerCasedDefaultKey,
-    { enums: lowerCasedKeys, part: 'query' }
+    displaySchema.name,
+    displaySchema.lowerCaseKey(initialKey ?? displaySchema.defaultKey),
+    {
+      enums: displaySchema.mapKeys(displaySchema.lowerCaseKey),
+      part,
+    }
   );
   return displaySchema.upperCaseKey(lowerCasedKey);
 }
 
 export function useSetDisplayKey() {
-  const setDisplayKey = useSetQueryParam(
-    useSearchParams(),
-    QueryParamEnum.Display
-  );
+  const setDisplayKey = useSetQueryParam(displaySchema.name);
   return function (displayKey: DisplayKey) {
-    const lowerCasedKey = displaySchema.lowerCaseKey(displayKey);
-    return setDisplayKey(lowerCasedKey);
+    return setDisplayKey(displaySchema.lowerCaseKey(displayKey));
   };
 }

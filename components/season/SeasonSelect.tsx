@@ -1,5 +1,6 @@
 import { cn } from '@/lib/css';
-import { seasonSchema, type SeasonKey } from '@/lib/model';
+import { useLocaleDictionary } from '@/lib/i18n';
+import { SeasonUtils } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -9,41 +10,44 @@ import {
 } from '@/components/ui/select';
 
 interface SeasonSelectProps {
-  value: SeasonKey;
-  onValueChange: (value: SeasonKey) => void;
+  value: SeasonUtils.Key;
+  onValueChange: (value: SeasonUtils.Key) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
 }
 
 function SeasonSelect(props: SeasonSelectProps) {
-  const {
-    value,
-    onValueChange,
-    hidden = false,
-    disabled = false,
-    className,
-  } = props;
+  const { value, onValueChange, hidden = false, disabled, className } = props;
 
-  const seasonKeys = seasonSchema.getAllKeys();
+  const {
+    locale,
+    dictionary: { settings },
+  } = useLocaleDictionary();
+
+  const seasonKeys = SeasonUtils.schema.getAllKeys();
 
   const defaultSeasonKey = seasonKeys.splice(
-    seasonKeys.indexOf(seasonSchema.defaultKey),
+    seasonKeys.indexOf(SeasonUtils.schema.defaultKey),
     1
   )[0];
 
   return (
-    <Select value={value} disabled={disabled} onValueChange={onValueChange}>
+    <Select
+      value={value}
+      disabled={disabled ?? seasonKeys.length < 2}
+      onValueChange={onValueChange}
+    >
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
-        <SelectValue placeholder="조회 계절 선택" />
+        <SelectValue placeholder={settings.form.season.placeholder} />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value={defaultSeasonKey}>
-          {seasonSchema.display(defaultSeasonKey)}
+          {SeasonUtils.schema.display(defaultSeasonKey, locale)}
         </SelectItem>
         {seasonKeys.map((seasonKey) => (
           <SelectItem key={seasonKey} value={seasonKey}>
-            {seasonSchema.display(seasonKey)}
+            {SeasonUtils.schema.display(seasonKey, locale)}
           </SelectItem>
         ))}
       </SelectContent>

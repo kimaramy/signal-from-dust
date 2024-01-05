@@ -1,8 +1,6 @@
-'use client';
-
 import { useSearchParams } from 'next/navigation';
 
-import type { UseUrlParam } from './_useUnsafeUrlParam';
+import type { UseURLParam } from './_useUnsafeUrlParam';
 
 /**
  * 단일 쿼리(Query) 파라미터의 값을 읽어와 반환하는 Getter 함수입니다.
@@ -20,7 +18,7 @@ function useQueryParam<
   TValue extends string = string,
   TKey extends string = string,
   TFallback extends TValue | undefined = undefined,
->(...args: Parameters<UseUrlParam<TValue, TKey, TFallback>>) {
+>(...args: Parameters<UseURLParam<TValue, TKey, TFallback>>) {
   const [name, fallback] = args;
 
   const searchParams = useSearchParams();
@@ -39,7 +37,7 @@ function useQueryParam<
       : undefined;
 
   return undefinedOrNonEmptyArray as ReturnType<
-    UseUrlParam<TValue, TKey, TFallback>
+    UseURLParam<TValue, TKey, TFallback>
   >;
 }
 

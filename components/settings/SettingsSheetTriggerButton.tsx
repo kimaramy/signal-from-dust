@@ -1,5 +1,6 @@
 'use client';
 
+import { useLocaleDictionary } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Sheet, SheetTrigger } from '@/components/ui/sheet';
@@ -19,6 +20,10 @@ interface SettingsSheetTriggerButtonProps {
 function SettingsSheetTriggerButton({
   className,
 }: SettingsSheetTriggerButtonProps) {
+  const {
+    dictionary: { settings },
+  } = useLocaleDictionary();
+
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip>
@@ -28,14 +33,14 @@ function SettingsSheetTriggerButton({
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className={className}>
                   <Icon.Database aria-hidden className="h-4 w-4" />
-                  <span className="sr-only">Change a dataset</span>
+                  <span className="sr-only">{settings.trigger_btn}</span>
                 </Button>
               </SheetTrigger>
               <SettingsSheetContent />
             </Sheet>
           </div>
         </TooltipTrigger>
-        <TooltipContent>데이터 변경</TooltipContent>
+        <TooltipContent>{settings.trigger_btn}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

@@ -1,5 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 
+import { useLocaleDictionary } from '@/lib/i18n';
 import {
   FormControl,
   FormField,
@@ -11,6 +12,10 @@ import { DataNameSelect } from '@/components/dataName';
 import { type SettingsFormValues } from './SettingsForm';
 
 function DataNameField() {
+  const {
+    dictionary: { settings },
+  } = useLocaleDictionary();
+
   const { control, watch } = useFormContext<SettingsFormValues>();
 
   const mode = watch('mode');
@@ -24,7 +29,7 @@ function DataNameField() {
       render={({ field }) => {
         return (
           <FormItem>
-            <FormLabel>데이터</FormLabel>
+            <FormLabel>{settings.form.dataName.title}</FormLabel>
             <FormControl>
               <DataNameSelect
                 value={field.value}

@@ -2,7 +2,6 @@
 
 import React, { useCallback, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
 
 import { cn } from '@/lib/css';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
+import { Icon } from '@/components/ui/icon';
 import { type DisplayKey } from '@/components/display';
 import { stopSoundPlay, toggleSoundPlay } from '@/components/sound';
 
@@ -133,16 +133,17 @@ function Scene({
         >
           <HoverCardTrigger asChild>
             <div
+              style={{ width: `max(10rem, 12vw)` }}
               className={cn(
-                'peer flex h-full w-auto min-w-40 max-w-44 flex-none cursor-pointer items-center justify-start pl-2 hover:bg-accent'
+                'peer flex h-full flex-none cursor-pointer flex-nowrap items-center justify-start hover:bg-accent'
               )}
               // onMouseOver={handleMouseOver}
               // onMouseOut={handleMouseOut}
             >
               <Button
                 variant="ghost"
-                size="sm"
-                className="flex items-center gap-2 text-sm"
+                size="icon"
+                className="flex-none"
                 onClick={() => {
                   if (isPlaying) {
                     handlePlaySound();
@@ -152,16 +153,15 @@ function Scene({
                   }
                 }}
               >
-                <PlayIcon
-                  aria-hidden
-                  className={cn('h-3.5 w-3.5', isPlaying && 'hidden')}
-                />
-                <PauseIcon
-                  aria-hidden
-                  className={cn('h-3.5 w-3.5', !isPlaying && 'hidden')}
-                />
-                <span>{data.dates.join(' ')}</span>
+                {isPlaying ? (
+                  <Icon.Pause aria-label="Pause" className="h-3.5 w-3.5" />
+                ) : (
+                  <Icon.Play aria-label="Play" className="h-3.5 w-3.5" />
+                )}
               </Button>
+              <p className="flex-1 truncate font-mono text-xs">
+                {data.dates.join(', ')}
+              </p>
             </div>
           </HoverCardTrigger>
           <HoverCardContent

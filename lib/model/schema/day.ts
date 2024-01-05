@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
-import { ModelSchema } from './base';
+import { MapSchema } from './base';
 import { LocaleSchema } from './locale';
+
+const daySchemaName = 'day';
 
 const dayKeys = [
   'ALL',
@@ -9,6 +11,8 @@ const dayKeys = [
 ] as const;
 
 const dayKeySchema = z.enum(dayKeys);
+
+type DaySchemaName = typeof daySchemaName;
 
 type DayKeySchema = typeof dayKeySchema;
 
@@ -20,9 +24,9 @@ const dayMap = new Map<DayKey, DayValue>(
   dayKeys.map((dayKey, index) => [dayKey, index])
 );
 
-class DaySchema extends ModelSchema<DayKey, DayValue> {
+class DaySchema extends MapSchema<DaySchemaName, DayKey, DayValue> {
   constructor() {
-    super(dayKeySchema, dayKeys[0], dayMap);
+    super(daySchemaName, dayMap, dayKeySchema, dayKeys[0]);
   }
   protected getOrdinalName(dayValue: DayValue) {
     const [firstDayValue, lastDayValue] = this.getValueRange();
@@ -59,4 +63,9 @@ class DaySchema extends ModelSchema<DayKey, DayValue> {
 
 const daySchema = new DaySchema();
 
-export { daySchema, type DayKey, type DayValue };
+export namespace DayUtils {
+  export type Key = DayKey;
+  export type Value = DayValue;
+  export type SchemaName = DaySchemaName;
+  export const schema = daySchema;
+}

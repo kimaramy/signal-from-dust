@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
-import { ModelSchema } from './base';
+import { MapSchema } from './base';
 import { LocaleSchema } from './locale';
+
+const monthSchemaName = 'month';
 
 const monthKeys = [
   'ALL',
@@ -20,6 +22,8 @@ const monthKeys = [
 ] as const;
 
 const monthKeySchema = z.enum(monthKeys);
+
+type MonthSchemaName = typeof monthSchemaName;
 
 type MonthKey = z.infer<typeof monthKeySchema>;
 
@@ -40,9 +44,9 @@ const monthMap = new Map<MonthKey, MonthValue>()
   .set('NOV', 11)
   .set('DEC', 12);
 
-class MonthSchema extends ModelSchema<MonthKey, MonthValue> {
+class MonthSchema extends MapSchema<MonthSchemaName, MonthKey, MonthValue> {
   constructor() {
-    super(monthKeySchema, monthKeySchema.enum.ALL, monthMap);
+    super(monthSchemaName, monthMap, monthKeySchema, monthKeySchema.enum.ALL);
   }
   protected getMonthName(
     monthValue: MonthValue,
@@ -78,4 +82,9 @@ class MonthSchema extends ModelSchema<MonthKey, MonthValue> {
 
 const monthSchema = new MonthSchema();
 
-export { monthSchema, type MonthKey, type MonthValue };
+export namespace MonthUtils {
+  export type Key = MonthKey;
+  export type Value = MonthValue;
+  export type SchemaName = MonthSchemaName;
+  export const schema = monthSchema;
+}

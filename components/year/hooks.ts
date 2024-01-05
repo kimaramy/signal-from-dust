@@ -1,40 +1,36 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { useDistinctYearListQuery } from '@/domains';
 import { toast } from 'react-hot-toast';
 
-import { yearSchema, type YearKey } from '@/lib/model';
-import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
-import { QueryParamEnum } from '@/lib/utils';
+import { YearUtils } from '@/lib/model';
+import { useEnumUrlParam, useSetQueryParam, type URLPart } from '@/lib/router';
 
-export function useYearKey(initialKey?: YearKey): YearKey {
-  const lowerCasedKeys = yearSchema.mapKeys(yearSchema.lowerCaseKey);
-  const lowerCasedDefaultKey = yearSchema.lowerCaseKey(
-    initialKey ?? yearSchema.defaultKey
-  );
+export function useYearKey(
+  part?: URLPart,
+  initialKey?: YearUtils.Key
+): YearUtils.Key {
   const [lowerCasedKey] = useEnumUrlParam(
-    QueryParamEnum.Year,
-    lowerCasedDefaultKey,
+    YearUtils.schema.name,
+    YearUtils.schema.lowerCaseKey(initialKey ?? YearUtils.schema.defaultKey),
     {
-      enums: lowerCasedKeys,
-      part: 'query',
+      enums: YearUtils.schema.mapKeys(YearUtils.schema.lowerCaseKey),
+      part,
     }
   );
-  return yearSchema.upperCaseKey(lowerCasedKey);
+  return YearUtils.schema.upperCaseKey(lowerCasedKey);
 }
 
 export function useYearValue() {
   const yearKey = useYearKey();
-  return yearSchema.getValue(yearKey);
+  return YearUtils.schema.getValue(yearKey);
 }
 
 export function useSetYearKey() {
-  const setYearKey = useSetQueryParam(useSearchParams(), QueryParamEnum.Year);
-  return function (yearKey: YearKey) {
-    const lowerCasedKey = yearSchema.lowerCaseKey(yearKey);
-    return setYearKey(lowerCasedKey);
+  const setYearKey = useSetQueryParam(YearUtils.schema.name);
+  return function (yearKey: YearUtils.Key) {
+    return setYearKey(YearUtils.schema.lowerCaseKey(yearKey));
   };
 }
 
@@ -48,7 +44,7 @@ export function useValidateYearSchema() {
 
   useEffect(() => {
     if (dbYears) {
-      const isSynced = yearSchema.checkSyncWithDB(dbYears);
+      const isSynced = YearUtils.schema.checkSyncWithDB(dbYears);
 
       if (!isSynced) {
         toast.error(

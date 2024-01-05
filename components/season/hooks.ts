@@ -1,36 +1,31 @@
-'use client';
+import { SeasonUtils } from '@/lib/model';
+import { useEnumUrlParam, useSetQueryParam, type URLPart } from '@/lib/router';
 
-import { useSearchParams } from 'next/navigation';
-
-import { seasonSchema, type SeasonKey, type SeasonValue } from '@/lib/model';
-import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
-import { QueryParamEnum } from '@/lib/utils';
-
-export function useSeasonKey(initialKey?: SeasonKey): SeasonKey {
-  const lowerCasedKeys = seasonSchema.mapKeys(seasonSchema.lowerCaseKey);
-  const lowerCasedDefaultKey = seasonSchema.lowerCaseKey(
-    initialKey ?? seasonSchema.defaultKey
-  );
+export function useSeasonKey(
+  part?: URLPart,
+  initialKey?: SeasonUtils.Key
+): SeasonUtils.Key {
   const [lowerCasedKey] = useEnumUrlParam(
-    QueryParamEnum.Season,
-    lowerCasedDefaultKey,
-    { enums: lowerCasedKeys, part: 'query' }
+    SeasonUtils.schema.name,
+    SeasonUtils.schema.lowerCaseKey(
+      initialKey ?? SeasonUtils.schema.defaultKey
+    ),
+    {
+      enums: SeasonUtils.schema.mapKeys(SeasonUtils.schema.lowerCaseKey),
+      part,
+    }
   );
-  return seasonSchema.upperCaseKey(lowerCasedKey);
+  return SeasonUtils.schema.upperCaseKey(lowerCasedKey);
 }
 
-export function useSeasonValue(): SeasonValue {
+export function useSeasonValue(): SeasonUtils.Value {
   const seasonKey = useSeasonKey();
-  return seasonSchema.getValue(seasonKey);
+  return SeasonUtils.schema.getValue(seasonKey);
 }
 
 export function useSetSeasonKey() {
-  const setSeasonKey = useSetQueryParam(
-    useSearchParams(),
-    QueryParamEnum.Season
-  );
-  return function (seasonKey: SeasonKey) {
-    const lowerCasedKey = seasonSchema.lowerCaseKey(seasonKey);
-    return setSeasonKey(lowerCasedKey);
+  const setSeasonKey = useSetQueryParam(SeasonUtils.schema.name);
+  return function (seasonKey: SeasonUtils.Key) {
+    return setSeasonKey(SeasonUtils.schema.lowerCaseKey(seasonKey));
   };
 }

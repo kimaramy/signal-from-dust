@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 
+import { useLocaleDictionary } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Sheet, SheetTrigger } from '@/components/ui/sheet';
@@ -24,6 +25,10 @@ interface IntroSheetTriggerButtonProps {
 }
 
 function IntroSheetTriggerButton({ className }: IntroSheetTriggerButtonProps) {
+  const {
+    dictionary: { intro },
+  } = useLocaleDictionary();
+
   const [isSheetOpen, setSheetOpen] = useState(false);
 
   return (
@@ -38,14 +43,14 @@ function IntroSheetTriggerButton({ className }: IntroSheetTriggerButtonProps) {
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className={className}>
                   <Icon.HelpCircle aria-hidden className="h-4 w-4" />
-                  <span className="sr-only">About this project</span>
+                  <span className="sr-only">{intro.trigger_btn}</span>
                 </Button>
               </SheetTrigger>
               {isSheetOpen && <IntroSheetContent />}
             </Sheet>
           </div>
         </TooltipTrigger>
-        <TooltipContent>프로젝트 설명</TooltipContent>
+        <TooltipContent>{intro.trigger_btn}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

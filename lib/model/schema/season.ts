@@ -2,13 +2,17 @@ import { z } from 'zod';
 
 import { toLowerCase } from '@/lib/utils';
 
-import { ModelSchema } from './base';
+import { MapSchema } from './base';
 import { LocaleSchema } from './locale';
-import { type MonthValue } from './month';
+import { MonthUtils } from './month';
+
+const seasonSchemaName = 'season';
 
 const seasonKeys = ['ALL', 'SPRING', 'SUMMER', 'FALL', 'WINTER'] as const;
 
 const seasonKeySchema = z.enum(seasonKeys);
+
+type SeasonSchemaName = typeof seasonSchemaName;
 
 type SeasonKey = z.infer<typeof seasonKeySchema>;
 
@@ -18,9 +22,14 @@ const seasonMap = new Map<SeasonKey, SeasonValue>(
   seasonKeys.map((seasonKey) => [seasonKey, toLowerCase(seasonKey)])
 );
 
-class SeasonSchema extends ModelSchema<SeasonKey, SeasonValue> {
+class SeasonSchema extends MapSchema<SeasonSchemaName, SeasonKey, SeasonValue> {
   constructor() {
-    super(seasonKeySchema, seasonKeySchema.enum.ALL, seasonMap);
+    super(
+      seasonSchemaName,
+      seasonMap,
+      seasonKeySchema,
+      seasonKeySchema.enum.ALL
+    );
   }
   display(seasonKey: SeasonKey, locale = LocaleSchema.defaultLocale) {
     const isKorean = LocaleSchema.isKorean(locale);
@@ -39,7 +48,7 @@ class SeasonSchema extends ModelSchema<SeasonKey, SeasonValue> {
         return this.parseKey(seasonKey) as never;
     }
   }
-  getMonthRange(seasonKey: SeasonKey): MonthValue[] {
+  getMonthRange(seasonKey: SeasonKey): MonthUtils.Value[] {
     switch (seasonKey) {
       case 'ALL':
         return new Array(12).fill(0).map((_, i) => i + 1);
@@ -59,4 +68,9 @@ class SeasonSchema extends ModelSchema<SeasonKey, SeasonValue> {
 
 const seasonSchema = new SeasonSchema();
 
-export { seasonSchema, type SeasonKey, type SeasonValue };
+export namespace SeasonUtils {
+  export type Key = SeasonKey;
+  export type Value = SeasonValue;
+  export type SchemaName = SeasonSchemaName;
+  export const schema = seasonSchema;
+}

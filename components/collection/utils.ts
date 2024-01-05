@@ -1,12 +1,13 @@
-import { collectionSchema } from '@/lib/model';
-import { parseUrlParam, type UrlParams } from '@/lib/router';
-import { QueryParamEnum } from '@/lib/utils';
+import { CollectionUtils } from '@/lib/model';
+import { parseUrlParam } from '@/lib/router';
 
-export const parseCollectionKey = (params?: UrlParams) => {
+export const parseCollectionKey = (
+  params?: Parameters<typeof parseUrlParam>[0]
+) => {
   const [parsedKey] = parseUrlParam(
     params,
-    QueryParamEnum.Collection,
-    collectionSchema.defaultKey
+    CollectionUtils.schema.name,
+    CollectionUtils.schema.defaultKey
   );
-  return collectionSchema.upperCaseKey(parsedKey);
+  return CollectionUtils.schema.upperCaseKey(parsedKey);
 };

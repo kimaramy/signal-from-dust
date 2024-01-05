@@ -2,49 +2,36 @@ import { cache } from 'react';
 import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
-import * as Model from '@/lib/model';
+import type { Locale } from '@/lib/i18n';
+import { DataNameUtils, MonthUtils, SeasonUtils, YearUtils } from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
 import { parseCollectionKey } from '@/components/collection';
 import { parseDataNameKey } from '@/components/dataName';
 import Dataset from '@/components/Dataset';
-import DatasetDownloadButton from '@/components/DatasetDownloadButton';
-import Floating from '@/components/Floating';
+import DatasetControl from '@/components/DatasetControl';
 import { parseMonthKey } from '@/components/month';
 import { parseSeasonKey } from '@/components/season';
 import { parseYearKey } from '@/components/year';
 
 const fetchCachedDataset = cache(fetchDataset);
 
-export function generateMetadata({ searchParams }: NextPageProps): Metadata {
-  const collection = Model.collectionSchema.display(
-    parseCollectionKey(searchParams),
-    'en'
-  );
-  const dataName = Model.dataNameSchema.display(
-    parseDataNameKey(searchParams),
-    'en'
-  );
-  const year = Model.yearSchema.display(
-    parseYearKey(searchParams),
-    'short',
-    'en'
-  );
-  const season = Model.seasonSchema.display(parseSeasonKey(searchParams), 'en');
-  const month = Model.monthSchema.display(
-    parseMonthKey(searchParams),
-    'short',
-    'en'
-  );
+export function generateMetadata({
+  params,
+  searchParams,
+}: NextPageProps): Metadata {
+  const locale = params?.locale as Locale;
+  const dataNameKey = parseDataNameKey(searchParams);
+  const yearKey = parseYearKey(searchParams);
+  const seasonKey = parseSeasonKey(searchParams);
+  const monthKey = parseMonthKey(searchParams);
   return {
     title: [
-      collection,
-      [
-        'Dust',
-        '(',
-        [dataName, season !== 'Every season' ? season : month, year].join(', '),
-        ')',
-      ].join(''),
-    ].join(' '),
+      DataNameUtils.schema.display(dataNameKey, locale),
+      seasonKey !== SeasonUtils.schema.defaultKey
+        ? SeasonUtils.schema.display(seasonKey, locale)
+        : MonthUtils.schema.display(monthKey, 'short', locale),
+      YearUtils.schema.display(yearKey, 'short', locale),
+    ].join(', '),
   };
 }
 
@@ -67,16 +54,11 @@ async function DynamicDatasetPage({ searchParams }: NextPageProps) {
 
   return (
     <>
+      <DatasetControl dataset={initialDataset} datasetKeys={datasetKeys} />
       <Dataset
         initialCollectionKey={collectionKey}
         initialDataset={{ [collectionKey]: initialDataset }}
       />
-      <Floating right={2} bottom={3}>
-        <DatasetDownloadButton
-          dataset={initialDataset}
-          datasetKeys={datasetKeys}
-        />
-      </Floating>
     </>
   );
 }

@@ -1,4 +1,5 @@
 export * from './base';
+export * from './reducer';
 export * from './locale';
 export * from './collection';
 export * from './dataName';
@@ -8,3 +9,4 @@ export * from './month';
 export * from './week';
 export * from './weekday';
 export * from './day';
+export * from './location';

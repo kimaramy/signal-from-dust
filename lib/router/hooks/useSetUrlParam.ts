@@ -1,19 +1,18 @@
-'use client';
-
 import { useCallback } from 'react';
-import { ReadonlyURLSearchParams } from 'next/navigation';
+import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 
 /**
  * 복수의 쿼리 파라미터 값을 업데이트하기 위한 Setter 함수입니다.
  * 단, Getter 함수인 useQueryParams가 전역 라우터 인스턴스를 구독하고 있으므로 실제 Getter 값 업데이트를 위해서는 useNavigate를 통해 경로 혹은 쿼리 파라미터 변경이 발생해야합니다.
  *
- * @param readonlySearchParams 읽기 전용 URLSearchParams 인스턴스
- * @returns 복수의 쿼리 파라미터 값을 삽입 혹은 업데이트하고 다시 읽기 전용 URLSearchParams 인스턴스를 반환하거나, 옵션에 따라 쿼리 문자열로 변환 후 반환하는 함수
+ * @returns 복수의 쿼리 파라미터 값을 삽입 혹은 업데이트하고 읽기 전용 URLSearchParams 인스턴스를 반환하거나, 옵션에 따라 쿼리 문자열로 변환 후 반환하는 함수
  */
 export function useSetQueryParams<
   TValue extends string | number | boolean = string,
   TKey extends string = string,
->(oldReadonlySearchParams: ReadonlyURLSearchParams) {
+>() {
+  const oldReadonlyURLSearchParams = useSearchParams();
+
   const setQueryParams = useCallback(
     <TStringified extends boolean = false>(
       map: Map<TKey, TValue>,
@@ -21,23 +20,23 @@ export function useSetQueryParams<
         stringify: TStringified;
       }
     ) => {
-      const newSearchParams = new URLSearchParams(
-        Array.from(oldReadonlySearchParams.entries())
+      const newURLSearchParams = new URLSearchParams(
+        Array.from(oldReadonlyURLSearchParams.entries())
       );
       for (const [key, value] of map) {
-        newSearchParams.set(key, value.toString());
+        newURLSearchParams.set(key, value.toString());
       }
-      const newReadonlySearchParams = new ReadonlyURLSearchParams(
-        newSearchParams
+      const newReadonlyURLSearchParams = new ReadonlyURLSearchParams(
+        newURLSearchParams
       );
       const maybeSearch = options?.stringify
-        ? `?${newReadonlySearchParams.toString()}` // URLSearchParams.toString() has no '?' prefix
-        : newReadonlySearchParams;
+        ? `?${newReadonlyURLSearchParams.toString()}` // URLSearchParams.toString() has no '?' prefix
+        : newReadonlyURLSearchParams;
       return maybeSearch as TStringified extends true
         ? `?${string}`
         : ReadonlyURLSearchParams;
     },
-    [oldReadonlySearchParams]
+    [oldReadonlyURLSearchParams]
   );
 
   return setQueryParams;
@@ -47,13 +46,15 @@ export function useSetQueryParams<
  * 단일 쿼리 파라미터의 값을 업데이트하기 위한 Setter 함수입니다.
  * 단, Getter 함수인 useQueryParam가 전역 라우터 인스턴스를 구독하고 있으므로 실제 Getter 값 업데이트를 위해서는 useNavigate를 통해 경로 혹은 쿼리 파라미터 변경이 발생해야합니다.
  *
- * @param readonlySearchParams 읽기 전용 URLSearchParams 인스턴스
- * @returns 단일 쿼리 파라미터 값을 삽입 혹은 업데이트하고 다시 읽기 전용 URLSearchParams 인스턴스를 반환하거나, 옵션에 따라 쿼리 문자열로 변환 후 반환하는 함수
+ * @param name 변경할 쿼리 파라미터 이름
+ * @returns 단일 쿼리 파라미터 값을 삽입 혹은 업데이트하고 읽기 전용 URLSearchParams 인스턴스를 반환하거나, 옵션에 따라 쿼리 문자열로 변환 후 반환하는 함수
  */
 export function useSetQueryParam<
   TValue extends string | number | boolean = string,
   TKey extends string = string,
->(oldReadonlySearchParams: ReadonlyURLSearchParams, name: TKey) {
+>(name: TKey) {
+  const oldReadonlyURLSearchParams = useSearchParams();
+
   const setQueryParam = useCallback(
     <TStringified extends boolean = false>(
       value: TValue,
@@ -61,21 +62,21 @@ export function useSetQueryParam<
         stringify: TStringified;
       }
     ) => {
-      const newSearchParams = new URLSearchParams(
-        Array.from(oldReadonlySearchParams.entries())
+      const newURLSearchParams = new URLSearchParams(
+        Array.from(oldReadonlyURLSearchParams.entries())
       );
-      newSearchParams.set(name, value.toString());
-      const newReadonlySearchParams = new ReadonlyURLSearchParams(
-        newSearchParams
+      newURLSearchParams.set(name, value.toString());
+      const newReadonlyURLSearchParams = new ReadonlyURLSearchParams(
+        newURLSearchParams
       );
       const maybeStringified = options?.stringify
-        ? `?${newReadonlySearchParams.toString()}`
-        : newReadonlySearchParams;
+        ? `?${newReadonlyURLSearchParams.toString()}`
+        : newReadonlyURLSearchParams;
       return maybeStringified as TStringified extends true
         ? `?${string}`
         : ReadonlyURLSearchParams;
     },
-    [oldReadonlySearchParams, name]
+    [oldReadonlyURLSearchParams, name]
   );
 
   return setQueryParam;

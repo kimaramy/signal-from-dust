@@ -17,6 +17,7 @@ function DatasetDownloadButton({
       json={dataset}
       fileName={`${datasetKeys.join('_')}.csv`}
       parserOptions={getParserOptions(selectedFields)}
+      className="rounded-full"
     />
   );
 }

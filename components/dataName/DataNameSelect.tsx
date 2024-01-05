@@ -1,5 +1,6 @@
 import { cn } from '@/lib/css';
-import { dataNameSchema, type DataNameKey } from '@/lib/model';
+import { useLocaleDictionary } from '@/lib/i18n';
+import { DataNameUtils } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -9,33 +10,36 @@ import {
 } from '@/components/ui/select';
 
 interface DataNameSelectProps {
-  value: DataNameKey;
-  onValueChange: (value: DataNameKey) => void;
+  value: DataNameUtils.Key;
+  onValueChange: (value: DataNameUtils.Key) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
 }
 
 function DataNameSelect(props: DataNameSelectProps) {
-  const {
-    value,
-    onValueChange,
-    hidden = false,
-    disabled = false,
-    className,
-  } = props;
+  const { value, onValueChange, hidden = false, disabled, className } = props;
 
-  const dataNameKeys = dataNameSchema.getAllKeys();
+  const {
+    locale,
+    dictionary: { settings },
+  } = useLocaleDictionary();
+
+  const dataNameKeys = DataNameUtils.schema.getAllKeys();
 
   return (
-    <Select value={value} disabled={disabled} onValueChange={onValueChange}>
+    <Select
+      value={value}
+      disabled={disabled ?? dataNameKeys.length < 2}
+      onValueChange={onValueChange}
+    >
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
-        <SelectValue placeholder="조회 데이터 선택" />
+        <SelectValue placeholder={settings.form.dataName.placeholder} />
       </SelectTrigger>
       <SelectContent>
         {dataNameKeys.map((dataNameKey) => (
           <SelectItem key={dataNameKey} value={dataNameKey}>
-            {dataNameSchema.display(dataNameKey)}
+            {DataNameUtils.schema.display(dataNameKey, locale)}
           </SelectItem>
         ))}
       </SelectContent>

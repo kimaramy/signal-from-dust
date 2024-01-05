@@ -4,21 +4,28 @@ import { toLowerCase, toUpperCase } from '@/lib/utils';
 
 const numbersSchema = z.array(z.number());
 
-export class ModelSchema<TKey extends string, TValue extends string | number> {
+export class MapSchema<
+  TName extends string = string,
+  TKey extends string = string,
+  TValue extends number | string | object = number,
+> {
   protected readonly keySchema: z.ZodEnum<[TKey, ...TKey[]]>;
   protected readonly map: Map<TKey, TValue>;
   readonly keys: z.ZodEnum<[TKey, ...TKey[]]>['enum'];
   readonly defaultKey: TKey;
+  readonly name: TName;
 
   constructor(
+    name: TName,
+    map: Map<TKey, TValue>,
     keySchema: z.ZodEnum<[TKey, ...TKey[]]>,
-    defaultKey: TKey,
-    keyValueMap: Map<TKey, TValue>
+    defaultKey: TKey
   ) {
+    this.name = name;
+    this.map = map;
     this.keySchema = keySchema;
     this.keys = keySchema.enum;
     this.defaultKey = defaultKey;
-    this.map = keyValueMap;
   }
   getKeyByValue(value: TValue) {
     for (const [mapKey, mapValue] of this.map) {

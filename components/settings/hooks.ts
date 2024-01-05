@@ -2,7 +2,14 @@
 
 import { useContext, useMemo } from 'react';
 
-import * as Model from '@/lib/model';
+import {
+  CollectionUtils,
+  DataNameUtils,
+  LocationUtils,
+  MonthUtils,
+  SeasonUtils,
+  YearUtils,
+} from '@/lib/model';
 
 import { SettingsModeContext } from './context';
 import type { SettingsFormValues, SettingsMode } from './SettingsForm';
@@ -21,11 +28,12 @@ function useSettingsFormDefaultValues(defaultMode: SettingsMode) {
   return useMemo<SettingsFormValues>(
     () => ({
       mode: defaultMode,
-      dataNameKey: Model.dataNameSchema.defaultKey,
-      collectionKey: Model.collectionSchema.defaultKey,
-      yearKey: Model.yearSchema.defaultKey,
-      seasonKey: Model.seasonSchema.defaultKey,
-      monthKey: Model.monthSchema.defaultKey,
+      locationKey: LocationUtils.schema.defaultKey,
+      dataNameKey: DataNameUtils.schema.defaultKey,
+      collectionKey: CollectionUtils.schema.defaultKey,
+      yearKey: YearUtils.schema.defaultKey,
+      seasonKey: SeasonUtils.schema.defaultKey,
+      monthKey: MonthUtils.schema.defaultKey,
     }),
     [defaultMode]
   );

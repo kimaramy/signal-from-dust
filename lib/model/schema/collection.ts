@@ -2,11 +2,15 @@ import { z } from 'zod';
 
 import { stringUnionToArray, toLowerCase, toOrderedBy } from '@/lib/utils';
 
-import type { TableKeys } from '../supabase';
-import { ModelSchema } from './base';
+import { Model } from '../supabase';
+import { MapSchema } from './base';
 import { LocaleSchema } from './locale';
 
-type CollectionKey = Uppercase<TableKeys> | 'SEASONALLY';
+const collectionSchemaName = 'collection';
+
+type CollectionSchemaName = typeof collectionSchemaName;
+
+type CollectionKey = Uppercase<Model.TableKeys> | 'SEASONALLY';
 
 type CollectionValue = Lowercase<CollectionKey>;
 
@@ -37,25 +41,74 @@ const collectionMap = new Map<CollectionKey, CollectionValue>(
   ])
 );
 
-class CollectionSchema extends ModelSchema<CollectionKey, CollectionValue> {
+class CollectionSchema extends MapSchema<
+  CollectionSchemaName,
+  CollectionKey,
+  CollectionValue
+> {
   constructor() {
-    super(collectionKeySchema, collectionKeySchema.enum.DAILY, collectionMap);
+    super(
+      collectionSchemaName,
+      collectionMap,
+      collectionKeySchema,
+      collectionKeySchema.enum.DAILY
+    );
   }
-  display(collectionKey: CollectionKey, locale = LocaleSchema.defaultLocale) {
+  display(
+    collectionKey: CollectionKey,
+    locale = LocaleSchema.defaultLocale,
+    version: 'sequential' | 'patterned' = 'sequential'
+  ) {
     const isKorean = LocaleSchema.isKorean(locale);
     switch (collectionKey) {
       case 'YEARLY':
-        return isKorean ? '연도별' : 'Yearly';
+        return isKorean
+          ? version === 'sequential'
+            ? '연도별'
+            : '매년'
+          : version === 'sequential'
+          ? 'Yearly'
+          : 'Every year';
       case 'SEASONALLY':
-        return isKorean ? '계절별' : 'Seasonal';
+        return isKorean
+          ? version === 'sequential'
+            ? '계절별'
+            : '사계절마다'
+          : version === 'sequential'
+          ? 'Seasonal'
+          : 'Every Season';
       case 'MONTHLY':
-        return isKorean ? '월별' : 'Monthly';
+        return isKorean
+          ? version === 'sequential'
+            ? '월별'
+            : '매달'
+          : version === 'sequential'
+          ? 'Monthly'
+          : 'Every month';
       case 'WEEKLY':
-        return isKorean ? '주별' : 'Weekly';
+        return isKorean
+          ? version === 'sequential'
+            ? '주별'
+            : '매주'
+          : version === 'sequential'
+          ? 'Weekly'
+          : 'Every week';
       case 'WEEKDAILY':
-        return isKorean ? '요일별' : 'Weekdaily';
+        return isKorean
+          ? version === 'sequential'
+            ? '요일별'
+            : '요일마다'
+          : version === 'sequential'
+          ? 'Weekdaily'
+          : 'Every weekday';
       case 'DAILY':
-        return isKorean ? '일별' : 'Daily';
+        return isKorean
+          ? version === 'sequential'
+            ? '일별'
+            : '매일'
+          : version === 'sequential'
+          ? 'Daily'
+          : 'Everyday';
       default:
         return this.parseKey(collectionKey) as never;
     }
@@ -82,4 +135,9 @@ class CollectionSchema extends ModelSchema<CollectionKey, CollectionValue> {
 
 const collectionSchema = new CollectionSchema();
 
-export { collectionSchema, type CollectionKey, type CollectionValue };
+export namespace CollectionUtils {
+  export type Key = CollectionKey;
+  export type Value = CollectionValue;
+  export type SchemaName = CollectionSchemaName;
+  export const schema = collectionSchema;
+}

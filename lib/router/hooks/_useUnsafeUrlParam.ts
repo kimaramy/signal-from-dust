@@ -1,17 +1,17 @@
 import usePathParam from './_usePathParam';
 import useQueryParam from './_useQueryParam';
 
-type UrlParams = { [key: string]: string[] | string | undefined };
+type URLParams = { [key: string]: string[] | string | undefined };
 
-type ParsedUrlParam<TValue, TFallback> = TFallback extends TValue
+type ParsedURLParam<TValue, TFallback> = TFallback extends TValue
   ? TValue[]
   : TValue[] | undefined;
 
-type UseUrlParam<
+type UseURLParam<
   TValue extends string = string,
   TKey extends string = string,
   TFallback extends TValue | undefined = undefined,
-> = (name: TKey, fallback?: TFallback) => ParsedUrlParam<TValue, TFallback>;
+> = (name: TKey, fallback?: TFallback) => ParsedURLParam<TValue, TFallback>;
 
 type URLPart = 'path' | 'query';
 
@@ -24,7 +24,7 @@ function parseUrlParam<
   TValue extends string = string,
   TKey extends string = string,
   TFallback extends TValue | undefined = undefined,
->(params = {} as UrlParams, name: TKey, fallback?: TFallback) {
+>(params = {} as URLParams, name: TKey, fallback?: TFallback) {
   const maybeArrayOrUndefined = params[name] ?? undefined;
 
   const maybeEmptyArray = Array.isArray(maybeArrayOrUndefined)
@@ -40,10 +40,10 @@ function parseUrlParam<
       ? [fallback]
       : undefined;
 
-  return undefinedOrNonEmptyArray as ParsedUrlParam<TValue, TFallback>;
+  return undefinedOrNonEmptyArray as ParsedURLParam<TValue, TFallback>;
 }
 
-export type { UrlParams, ParsedUrlParam, UseUrlParam, URLPart };
+export type { URLParams, ParsedURLParam, UseURLParam, URLPart };
 
 export { defaultURLPart, parseUrlParam };
 

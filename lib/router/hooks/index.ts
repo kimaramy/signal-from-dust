@@ -10,6 +10,7 @@ export { default as useNavigate } from './useNavigate';
 export { default as useUrlParam } from './useUrlParam';
 export {
   parseUrlParam,
-  type UrlParams,
+  type UseURLParam,
+  type URLParams,
   type URLPart,
 } from './_useUnsafeUrlParam';

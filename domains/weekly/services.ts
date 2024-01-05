@@ -1,11 +1,11 @@
-import { supabaseClient, type WeeklyData } from '@/lib/model';
+import { Model, supabaseClient } from '@/lib/model';
 
 export const fetchWeeklyDataset = async (year: number) => {
   const response = await supabaseClient
     .from('weekly')
     .select('*')
     .eq('year', year)
-    .returns<WeeklyData[]>();
+    .returns<Model.WeeklyData[]>();
 
   if (response.error) throw response.error;
 
@@ -17,7 +17,7 @@ export const fetchWeeklyData = async (dataId: number) => {
     .from('weekly')
     .select('*')
     .eq('id', dataId)
-    .returns<WeeklyData>();
+    .returns<Model.WeeklyData>();
 
   if (response.error) throw response.error;
 

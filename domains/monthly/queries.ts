@@ -1,12 +1,12 @@
-import type { MonthlyData, SeasonKey, YearKey } from '@/lib/model';
+import { Model, SeasonUtils, YearUtils } from '@/lib/model';
 import { useSbSQ, type UseSbSQOptions } from '@/lib/react-query';
 
 import { monthlyQueryKeys, type MonthlyQueryKeys } from './queryKeys';
 
-export function useMonthlyListQuery<T = MonthlyData[]>(
-  yearKey: YearKey,
+export function useMonthlyListQuery<T = Model.MonthlyData[]>(
+  yearKey: YearUtils.Key,
   options?: UseSbSQOptions<
-    MonthlyData[],
+    Model.MonthlyData[],
     T,
     MonthlyQueryKeys['list']['queryKey']
   >
@@ -19,11 +19,11 @@ export function useMonthlyListQuery<T = MonthlyData[]>(
   return data;
 }
 
-export function useMonthlyListQueryBySeason<T = MonthlyData[]>(
-  yearKey: YearKey,
-  seasonKey: SeasonKey,
+export function useMonthlyListQueryBySeason<T = Model.MonthlyData[]>(
+  yearKey: YearUtils.Key,
+  seasonKey: SeasonUtils.Key,
   options?: UseSbSQOptions<
-    MonthlyData[],
+    Model.MonthlyData[],
     T,
     MonthlyQueryKeys['list']['_ctx']['seasonally']['queryKey']
   >
@@ -36,10 +36,10 @@ export function useMonthlyListQueryBySeason<T = MonthlyData[]>(
   return data;
 }
 
-export function useMonthlyQuery<T = MonthlyData>(
+export function useMonthlyQuery<T = Model.MonthlyData>(
   dataId: number,
   options?: UseSbSQOptions<
-    MonthlyData,
+    Model.MonthlyData,
     T,
     MonthlyQueryKeys['detail']['queryKey']
   >

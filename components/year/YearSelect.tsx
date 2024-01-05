@@ -1,5 +1,6 @@
 import { cn } from '@/lib/css';
-import { yearSchema, type YearKey } from '@/lib/model';
+import { useLocaleDictionary } from '@/lib/i18n';
+import { YearUtils } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -9,41 +10,44 @@ import {
 } from '@/components/ui/select';
 
 interface YearSelectProps {
-  value: YearKey;
-  onValueChange: (value: YearKey) => void;
+  value: YearUtils.Key;
+  onValueChange: (value: YearUtils.Key) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
 }
 
 function YearSelect(props: YearSelectProps) {
-  const {
-    value,
-    onValueChange,
-    hidden = false,
-    disabled = false,
-    className,
-  } = props;
+  const { value, onValueChange, hidden = false, disabled, className } = props;
 
-  const yearKeys = yearSchema.getAllKeys();
+  const {
+    locale,
+    dictionary: { settings },
+  } = useLocaleDictionary();
+
+  const yearKeys = YearUtils.schema.getAllKeys();
 
   const defaultYearKey = yearKeys.splice(
-    yearKeys.indexOf(yearSchema.defaultKey),
+    yearKeys.indexOf(YearUtils.schema.defaultKey),
     1
   )[0];
 
   return (
-    <Select value={value} disabled={disabled} onValueChange={onValueChange}>
+    <Select
+      value={value}
+      disabled={disabled ?? yearKeys.length < 2}
+      onValueChange={onValueChange}
+    >
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
-        <SelectValue placeholder="조회 연도 선택" />
+        <SelectValue placeholder={settings.form.year.placeholder} />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value={defaultYearKey}>
-          {yearSchema.display(defaultYearKey)}
+          {YearUtils.schema.display(defaultYearKey, 'short', locale)}
         </SelectItem>
         {yearKeys.reverse().map((yearKey) => (
           <SelectItem key={yearKey} value={yearKey}>
-            {yearSchema.display(yearKey)}
+            {YearUtils.schema.display(yearKey, 'short', locale)}
           </SelectItem>
         ))}
       </SelectContent>

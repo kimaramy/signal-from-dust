@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
-import { ModelSchema } from './base';
+import { MapSchema } from './base';
 import { LocaleSchema } from './locale';
+
+const weekSchemaName = 'week';
 
 const weekKeys = [
   'ALL',
@@ -9,6 +11,8 @@ const weekKeys = [
 ] as const;
 
 const weekKeySchema = z.enum(weekKeys);
+
+type WeekSchemaName = typeof weekSchemaName;
 
 type WeekKey = z.infer<typeof weekKeySchema>;
 
@@ -18,9 +22,9 @@ const weekMap = new Map<WeekKey, WeekValue>(
   weekKeys.map((weekKey, index) => [weekKey, index])
 );
 
-class WeekSchema extends ModelSchema<WeekKey, WeekValue> {
+class WeekSchema extends MapSchema<WeekSchemaName, WeekKey, WeekValue> {
   constructor() {
-    super(weekKeySchema, weekKeys[0], weekMap);
+    super(weekSchemaName, weekMap, weekKeySchema, weekKeys[0]);
   }
   protected getOrdinalName(weekValue: WeekValue) {
     const [firstWeekValue, lastWeekValue] = this.getValueRange();
@@ -57,4 +61,9 @@ class WeekSchema extends ModelSchema<WeekKey, WeekValue> {
 
 const weekSchema = new WeekSchema();
 
-export { weekSchema, type WeekKey, type WeekValue };
+export namespace WeekUtils {
+  export type Key = WeekKey;
+  export type Value = WeekValue;
+  export type SchemaName = WeekSchemaName;
+  export const schema = weekSchema;
+}

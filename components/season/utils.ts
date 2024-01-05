@@ -1,12 +1,13 @@
-import { seasonSchema } from '@/lib/model';
-import { parseUrlParam, type UrlParams } from '@/lib/router';
-import { QueryParamEnum } from '@/lib/utils';
+import { SeasonUtils } from '@/lib/model';
+import { parseUrlParam } from '@/lib/router';
 
-export const parseSeasonKey = (params?: UrlParams) => {
+export const parseSeasonKey = (
+  params?: Parameters<typeof parseUrlParam>[0]
+) => {
   const [parsedKey] = parseUrlParam(
     params,
-    QueryParamEnum.Season,
-    seasonSchema.defaultKey
+    SeasonUtils.schema.name,
+    SeasonUtils.schema.defaultKey
   );
-  return seasonSchema.upperCaseKey(parsedKey);
+  return SeasonUtils.schema.upperCaseKey(parsedKey);
 };

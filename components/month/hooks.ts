@@ -1,33 +1,29 @@
-'use client';
+import { MonthUtils } from '@/lib/model';
+import { useEnumUrlParam, useSetQueryParam, type URLPart } from '@/lib/router';
 
-import { useSearchParams } from 'next/navigation';
-
-import { monthSchema, type MonthKey } from '@/lib/model';
-import { useEnumUrlParam, useSetQueryParam } from '@/lib/router';
-import { QueryParamEnum } from '@/lib/utils';
-
-export function useMonthKey(initialKey?: MonthKey): MonthKey {
-  const lowerCasedKeys = monthSchema.mapKeys(monthSchema.lowerCaseKey);
-  const lowerCasedDefaultKey = monthSchema.lowerCaseKey(
-    initialKey ?? monthSchema.defaultKey
-  );
+export function useMonthKey(
+  part?: URLPart,
+  initialKey?: MonthUtils.Key
+): MonthUtils.Key {
   const [lowerCasedKey] = useEnumUrlParam(
-    QueryParamEnum.Month,
-    lowerCasedDefaultKey,
-    { enums: lowerCasedKeys, part: 'query' }
+    MonthUtils.schema.name,
+    MonthUtils.schema.lowerCaseKey(initialKey ?? MonthUtils.schema.defaultKey),
+    {
+      enums: MonthUtils.schema.mapKeys(MonthUtils.schema.lowerCaseKey),
+      part,
+    }
   );
-  return monthSchema.upperCaseKey(lowerCasedKey);
+  return MonthUtils.schema.upperCaseKey(lowerCasedKey);
 }
 
 export function useMonthValue() {
   const monthKey = useMonthKey();
-  return monthSchema.getValue(monthKey);
+  return MonthUtils.schema.getValue(monthKey);
 }
 
 export function useSetMonthKey() {
-  const setMonthKey = useSetQueryParam(useSearchParams(), QueryParamEnum.Month);
-  return function (monthKey: MonthKey) {
-    const lowerCasedKey = monthSchema.lowerCaseKey(monthKey);
-    return setMonthKey(lowerCasedKey);
+  const setMonthKey = useSetQueryParam(MonthUtils.schema.name);
+  return function (monthKey: MonthUtils.Key) {
+    return setMonthKey(MonthUtils.schema.lowerCaseKey(monthKey));
   };
 }

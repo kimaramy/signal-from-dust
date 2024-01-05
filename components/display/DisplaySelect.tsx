@@ -18,18 +18,16 @@ interface DisplaySelectProps {
 }
 
 function DisplaySelect(props: DisplaySelectProps) {
-  const {
-    value,
-    onValueChange,
-    hidden = false,
-    disabled = false,
-    className,
-  } = props;
+  const { value, onValueChange, hidden = false, disabled, className } = props;
 
   const displayKeys = displaySchema.getAllKeys();
 
   return (
-    <Select value={value} disabled={disabled} onValueChange={onValueChange}>
+    <Select
+      value={value}
+      disabled={disabled ?? displayKeys.length < 2}
+      onValueChange={onValueChange}
+    >
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
         <SelectValue placeholder="보기 방식 선택" />
       </SelectTrigger>

@@ -1,5 +1,6 @@
 import { cn } from '@/lib/css';
-import { weekdaySchema, type WeekdayKey } from '@/lib/model';
+import { useLocaleDictionary } from '@/lib/i18n';
+import { WeekdayUtils } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -9,39 +10,44 @@ import {
 } from '@/components/ui/select';
 
 interface WeekdaySelectProps {
-  value: WeekdayKey;
-  onValueChange: (value: WeekdayKey) => void;
+  value: WeekdayUtils.Key;
+  onValueChange: (value: WeekdayUtils.Key) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
 }
 
 function WeekdaySelect(props: WeekdaySelectProps) {
-  const {
-    value,
-    onValueChange,
-    hidden = false,
-    disabled = false,
-    className,
-  } = props;
+  const { value, onValueChange, hidden = false, disabled, className } = props;
 
-  const weekdayKeys = weekdaySchema.getAllKeys();
+  const {
+    locale,
+    dictionary: { settings },
+  } = useLocaleDictionary();
+
+  const weekdayKeys = WeekdayUtils.schema.getAllKeys();
 
   const defaultWeekdayKey = weekdayKeys.splice(
-    weekdayKeys.indexOf(weekdaySchema.defaultKey),
+    weekdayKeys.indexOf(WeekdayUtils.schema.defaultKey),
     1
   )[0];
 
   return (
-    <Select value={value} disabled={disabled} onValueChange={onValueChange}>
+    <Select
+      value={value}
+      disabled={disabled ?? weekdayKeys.length < 2}
+      onValueChange={onValueChange}
+    >
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
-        <SelectValue placeholder="조회 요일 선택" />
+        <SelectValue placeholder={settings.form.weekday.placeholder} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value={defaultWeekdayKey}>요일 전체</SelectItem>
+        <SelectItem value={defaultWeekdayKey}>
+          {WeekdayUtils.schema.display(defaultWeekdayKey, 'short', locale)}
+        </SelectItem>
         {weekdayKeys.map((weekdayKey) => (
           <SelectItem key={weekdayKey} value={weekdayKey}>
-            {weekdaySchema.display(weekdayKey)}
+            {WeekdayUtils.schema.display(weekdayKey, 'short', locale)}
           </SelectItem>
         ))}
       </SelectContent>

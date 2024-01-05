@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
-import { ModelSchema } from './base';
+import { MapSchema } from './base';
 import { LocaleSchema } from './locale';
+
+const yearSchemaName = 'year';
 
 const yearKeys = [
   'ALL',
@@ -16,6 +18,8 @@ const yearKeys = [
 ] as const;
 
 const yearKeySchema = z.enum(yearKeys);
+
+type YearSchemaName = typeof yearSchemaName;
 
 type YearKey = z.infer<typeof yearKeySchema>;
 
@@ -32,9 +36,9 @@ const yearMap = new Map<YearKey, YearValue>()
   .set('2021', 2021)
   .set('2022', 2022);
 
-class YearSchema extends ModelSchema<YearKey, YearValue> {
+class YearSchema extends MapSchema<YearSchemaName, YearKey, YearValue> {
   constructor() {
-    super(yearKeySchema, yearKeySchema.enum.ALL, yearMap);
+    super(yearSchemaName, yearMap, yearKeySchema, yearKeySchema.enum.ALL);
   }
   protected getYearName(
     yearValue: YearValue,
@@ -67,4 +71,9 @@ class YearSchema extends ModelSchema<YearKey, YearValue> {
 
 const yearSchema = new YearSchema();
 
-export { yearSchema, type YearKey, type YearValue };
+export namespace YearUtils {
+  export type Key = YearKey;
+  export type Value = YearValue;
+  export type SchemaName = YearSchemaName;
+  export const schema = yearSchema;
+}

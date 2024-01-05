@@ -4,10 +4,10 @@ import { seoConfig } from '@/lib/seo';
 
 export const baseMetadata: Metadata = {
   metadataBase: new URL(seoConfig.links.origin),
-  title: {
-    default: seoConfig.title,
-    template: `%s - ${seoConfig.title}`,
-  },
+  // title: {
+  //   default: seoConfig.title,
+  //   template: `%s - ${seoConfig.title}`,
+  // },
   description: seoConfig.description,
   keywords: seoConfig.keywords,
   authors: {
