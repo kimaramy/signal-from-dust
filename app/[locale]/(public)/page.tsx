@@ -12,8 +12,7 @@ import {
 } from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
 import Dataset from '@/components/Dataset';
-import DatasetDownloadButton from '@/components/DatasetDownloadButton';
-import Floating from '@/components/Floating';
+import DatasetControl from '@/components/DatasetControl';
 import { SettingsDialog } from '@/components/settings';
 
 const fetchCachedDataset = cache(fetchDataset);
@@ -45,18 +44,13 @@ async function DefaultDatasetPage(_: NextPageProps) {
 
   return (
     <>
+      <DatasetControl dataset={initialDataset} datasetKeys={datasetKeys} />
       <Dataset
         initialCollectionKey={CollectionUtils.schema.defaultKey}
         initialDataset={{
           [CollectionUtils.schema.defaultKey]: initialDataset,
         }}
       />
-      <Floating right={2} bottom={3}>
-        <DatasetDownloadButton
-          dataset={initialDataset}
-          datasetKeys={datasetKeys}
-        />
-      </Floating>
       <SettingsDialog />
     </>
   );

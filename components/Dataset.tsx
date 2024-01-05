@@ -13,7 +13,7 @@ import { useYearKey } from '@/components/year';
 
 import { useLocationKey } from './location/hooks';
 
-interface DatasetProps {
+export interface DatasetProps {
   initialCollectionKey: CollectionUtils.Key;
   initialDataset?: {
     [CollectionUtils.schema.keys.YEARLY]?: Model.YearlyData[];

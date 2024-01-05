@@ -7,12 +7,12 @@ import ThemeToggleButton from '@/components/ThemeToggleButton';
 
 function Menu() {
   return (
-    <>
+    <div className="flex items-center justify-center gap-2">
       <SettingsSheetTriggerButton />
       <IntroSheetTriggerButton />
       <ThemeToggleButton />
       <LocaleToggleButton />
-    </>
+    </div>
   );
 }
 

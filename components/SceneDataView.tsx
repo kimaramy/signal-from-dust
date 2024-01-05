@@ -36,7 +36,7 @@ function SceneDataView({
     sceneData.name as DataNameUtils.Key
   );
 
-  const title = [sceneData.dates.join(', '), sceneData.displayName].join(', ');
+  const title = [sceneData.displayName, sceneData.dates.join(', ')].join(', ');
 
   return (
     <div

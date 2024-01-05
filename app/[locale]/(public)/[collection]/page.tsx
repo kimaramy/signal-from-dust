@@ -6,8 +6,7 @@ import { i18n } from '@/lib/i18n';
 import { Schema } from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
 import Dataset from '@/components/Dataset';
-import DatasetDownloadButton from '@/components/DatasetDownloadButton';
-import Floating from '@/components/Floating';
+import DatasetControl from '@/components/DatasetControl';
 
 const fetchCachedDataset = cache(fetchDataset);
 
@@ -59,18 +58,13 @@ async function StaticDatasetPage({
 
   return (
     <>
+      <DatasetControl dataset={initialDataset} datasetKeys={datasetKeys} />
       <Dataset
         initialCollectionKey={collectionKey}
         initialDataset={{
           [collectionKey]: initialDataset,
         }}
       />
-      <Floating right={2} bottom={3}>
-        <DatasetDownloadButton
-          dataset={initialDataset}
-          datasetKeys={datasetKeys}
-        />
-      </Floating>
     </>
   );
 }

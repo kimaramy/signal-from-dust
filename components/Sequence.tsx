@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 
+import { cn } from '@/lib/css';
 import {
   CollectionUtils,
   DataNameUtils,
@@ -28,9 +29,10 @@ interface SequenceProps {
   id: string;
   scenes: SceneData[];
   displayKey: DisplayKey;
+  className?: string;
 }
 
-function Sequence({ id, scenes, displayKey }: SequenceProps) {
+function Sequence({ id, scenes, displayKey, className }: SequenceProps) {
   const ref = useRef<HTMLUListElement>(null);
 
   const values = scenes.map((scene) => scene.value ?? 0);
@@ -46,7 +48,7 @@ function Sequence({ id, scenes, displayKey }: SequenceProps) {
     <Grid
       id={id}
       ref={ref}
-      className="h-full"
+      className={cn('h-full', className)}
       items={scenes}
       itemKey={(scene) => SceneUtils.getSceneId(id, scene.id)}
       renderItem={(scene, index) => (
@@ -80,14 +82,14 @@ export class SceneUtils {
     return dataset.map(({ id, month, day, pm_large, pm_small }) => ({
       id,
       name: dataNameKey,
-      displayName: DataNameUtils.schema.display(dataNameKey),
+      displayName: DataNameUtils.schema.display(dataNameKey, locale),
       value:
         dataNameKey === 'PM_LARGE'
           ? pm_large
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: CollectionUtils.schema.display(collectionKey),
+      collection: CollectionUtils.schema.display(collectionKey, locale),
       dates: [
         DayUtils.schema.display(DayUtils.schema.getKeyByValue(day), locale),
         MonthUtils.schema.display(
@@ -110,14 +112,14 @@ export class SceneUtils {
     return dataset.map(({ id, month, weekday, pm_large, pm_small }) => ({
       id,
       name: dataNameKey,
-      displayName: DataNameUtils.schema.display(dataNameKey),
+      displayName: DataNameUtils.schema.display(dataNameKey, locale),
       value:
         dataNameKey === 'PM_LARGE'
           ? pm_large
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: CollectionUtils.schema.display(collectionKey),
+      collection: CollectionUtils.schema.display(collectionKey, locale),
       dates: [
         WeekdayUtils.schema.display(
           WeekdayUtils.schema.getKeyByValue(weekday),
@@ -144,14 +146,14 @@ export class SceneUtils {
     return dataset.map(({ id, year, week, pm_large, pm_small }) => ({
       id,
       name: dataNameKey,
-      displayName: DataNameUtils.schema.display(dataNameKey),
+      displayName: DataNameUtils.schema.display(dataNameKey, locale),
       value:
         dataNameKey === 'PM_LARGE'
           ? pm_large
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: CollectionUtils.schema.display(collectionKey),
+      collection: CollectionUtils.schema.display(collectionKey, locale),
       dates: [
         WeekUtils.schema.display(WeekUtils.schema.getKeyByValue(week), locale),
         YearUtils.schema.display(
@@ -174,14 +176,14 @@ export class SceneUtils {
     return dataset.map(({ id, year, month, pm_large, pm_small }) => ({
       id,
       name: dataNameKey,
-      displayName: DataNameUtils.schema.display(dataNameKey),
+      displayName: DataNameUtils.schema.display(dataNameKey, locale),
       value:
         dataNameKey === 'PM_LARGE'
           ? pm_large
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: CollectionUtils.schema.display(collectionKey),
+      collection: CollectionUtils.schema.display(collectionKey, locale),
       dates: [
         MonthUtils.schema.display(
           MonthUtils.schema.getKeyByValue(month),
@@ -208,14 +210,14 @@ export class SceneUtils {
     return dataset.map(({ id, year, pm_large, pm_small }) => ({
       id,
       name: dataNameKey,
-      displayName: DataNameUtils.schema.display(dataNameKey),
+      displayName: DataNameUtils.schema.display(dataNameKey, locale),
       value:
         dataNameKey === 'PM_LARGE'
           ? pm_large
           : dataNameKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: CollectionUtils.schema.display(collectionKey),
+      collection: CollectionUtils.schema.display(collectionKey, locale),
       dates: [
         YearUtils.schema.display(
           YearUtils.schema.getKeyByValue(year),
