@@ -1,7 +1,7 @@
 /* eslint-disable tailwindcss/migration-from-tailwind-2 */
 'use client';
 
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import { cn } from '@/lib/css';
 
@@ -9,29 +9,19 @@ export interface SpinnerProps {
   relative?: boolean;
 }
 
-export default function Spinner({ relative = false }: SpinnerProps) {
-  const documentBody = useRef<HTMLElement | null>(null);
-
-  useLayoutEffect(() => {
-    if (documentBody.current) {
-      documentBody.current.style.pointerEvents = 'none';
-    } else {
-      documentBody.current = document.body;
-    }
-
+function Spinner({ relative }: SpinnerProps) {
+  useEffect(() => {
+    document.body.style.pointerEvents = 'none';
     return () => {
-      if (documentBody.current) {
-        documentBody.current.style.pointerEvents = 'auto';
-      }
+      document.body.style.pointerEvents = 'auto';
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [documentBody.current]);
+  }, []);
 
   return (
     <div
       className={cn(
-        'pointer-events-none right-0 top-0 z-[999] flex h-full w-full items-center justify-center bg-background/80 backdrop-blur-sm',
-        relative ? 'absolute' : 'fixed'
+        'pointer-events-none right-0 top-0 z-[999] flex items-center justify-center bg-background/80 backdrop-blur-sm',
+        relative ? 'absolute h-full w-full' : 'fixed h-screen w-screen'
       )}
     >
       <div role="status">
@@ -56,3 +46,5 @@ export default function Spinner({ relative = false }: SpinnerProps) {
     </div>
   );
 }
+
+export default Spinner;

@@ -28,12 +28,15 @@ export function generateMetadata({
 }: StaticDatasetPageProps): Metadata {
   const collectionSchema = Schema.get('collection');
   const dataNameSchema = Schema.get('dataName');
-  const collectionKey = collectionSchema.upperCaseKey(collection);
-  const dataNameKey = dataNameSchema.defaultKey;
+  const locationSchema = Schema.get('location');
   return {
     title: [
-      dataNameSchema.display(dataNameKey, locale),
-      collectionSchema.display(collectionKey, locale),
+      dataNameSchema.display(dataNameSchema.defaultKey, locale),
+      collectionSchema.display(
+        collectionSchema.upperCaseKey(collection),
+        locale
+      ),
+      locationSchema.display(locationSchema.defaultKey, locale),
     ].join(', '),
   };
 }

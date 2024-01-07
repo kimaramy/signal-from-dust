@@ -6,6 +6,7 @@ import type { Locale } from '@/lib/i18n';
 import {
   CollectionUtils,
   DataNameUtils,
+  LocationUtils,
   MonthUtils,
   SeasonUtils,
   YearUtils,
@@ -21,10 +22,12 @@ export function generateMetadata({ params }: NextPageProps): Metadata {
   const locale = params?.locale as Locale;
   const dataNameSchema = DataNameUtils.schema;
   const collectionSchema = CollectionUtils.schema;
+  const locationSchema = LocationUtils.schema;
   return {
     title: [
       dataNameSchema.display(dataNameSchema.defaultKey, locale),
       collectionSchema.display(collectionSchema.defaultKey, locale),
+      locationSchema.display(locationSchema.defaultKey, locale),
     ].join(', '),
   };
 }

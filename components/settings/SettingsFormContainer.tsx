@@ -26,8 +26,10 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
   const handleSubmit = useCallback(
     (values: SettingsFormValues) => {
       if (values.mode === 'preset') {
-        const pathname = `/${toLowerCase(values.collectionKey)}` as TypedRoute;
-        return navigate(pathname, { method: 'push' });
+        return navigate(
+          `/${locale}/${toLowerCase(values.collectionKey)}` as TypedRoute,
+          { method: 'push' }
+        );
       }
 
       const map = new Map<SchemaName, string>()

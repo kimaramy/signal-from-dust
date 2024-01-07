@@ -3,12 +3,19 @@ import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
 import type { Locale } from '@/lib/i18n';
-import { DataNameUtils, MonthUtils, SeasonUtils, YearUtils } from '@/lib/model';
+import {
+  DataNameUtils,
+  LocationUtils,
+  MonthUtils,
+  SeasonUtils,
+  YearUtils,
+} from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
 import { parseCollectionKey } from '@/components/collection';
 import { parseDataNameKey } from '@/components/dataName';
 import Dataset from '@/components/Dataset';
 import DatasetControl from '@/components/DatasetControl';
+import { parseLocationKey } from '@/components/location';
 import { parseMonthKey } from '@/components/month';
 import { parseSeasonKey } from '@/components/season';
 import { parseYearKey } from '@/components/year';
@@ -24,6 +31,7 @@ export function generateMetadata({
   const yearKey = parseYearKey(searchParams);
   const seasonKey = parseSeasonKey(searchParams);
   const monthKey = parseMonthKey(searchParams);
+  const locationKey = parseLocationKey(searchParams);
   return {
     title: [
       DataNameUtils.schema.display(dataNameKey, locale),
@@ -31,6 +39,7 @@ export function generateMetadata({
         ? SeasonUtils.schema.display(seasonKey, locale)
         : MonthUtils.schema.display(monthKey, 'short', locale),
       YearUtils.schema.display(yearKey, 'short', locale),
+      LocationUtils.schema.display(locationKey, locale),
     ].join(', '),
   };
 }

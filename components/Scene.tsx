@@ -133,7 +133,7 @@ function Scene({
         >
           <HoverCardTrigger asChild>
             <div
-              style={{ width: `max(10rem, 12vw)` }}
+              style={{ width: `min(8rem, 12vw)` }}
               className={cn(
                 'peer flex h-full flex-none cursor-pointer flex-nowrap items-center justify-start hover:bg-accent'
               )}
@@ -160,7 +160,7 @@ function Scene({
                 )}
               </Button>
               <p className="flex-1 truncate font-mono text-xs">
-                {data.dates.join(', ')}
+                {data.dates[0]}
               </p>
             </div>
           </HoverCardTrigger>
