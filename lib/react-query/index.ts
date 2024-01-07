@@ -1,2 +1,2 @@
-export { default as getServerSideQueryClient } from './getServerSideQueryClient';
+export { default as getQueryClient } from './getQueryClient';
 export * from './supabase';
