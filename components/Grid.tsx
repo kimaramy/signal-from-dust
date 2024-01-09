@@ -21,7 +21,7 @@ function Grid<T>(
     <ul
       ref={ref}
       className={cn(
-        'grid h-auto min-h-screen w-full content-center items-center gap-2 overflow-y-scroll p-4 scrollbar-hide lg:p-6',
+        'grid h-auto min-h-screen w-full content-center items-center gap-2 overflow-y-scroll p-4 scrollbar-hide',
         className
       )}
       style={{

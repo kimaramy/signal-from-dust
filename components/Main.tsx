@@ -1,15 +1,13 @@
 import { cn } from '@/lib/css';
+import { SafeArea } from '@/components/ui/safe-area';
 
-type MainProps = React.HTMLAttributes<HTMLDivElement>;
+interface MainProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 function Main({ children, className, ...rest }: MainProps) {
   return (
-    <main
-      className={cn('h-full flex-1 scrollbar-hide 3xl:container', className)}
-      {...rest}
-    >
-      {children}
-    </main>
+    <SafeArea asChild className={cn('h-full flex-1 scrollbar-hide', className)}>
+      <main {...rest}>{children}</main>
+    </SafeArea>
   );
 }
 
