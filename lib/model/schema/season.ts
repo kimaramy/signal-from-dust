@@ -1,8 +1,6 @@
 import { z } from 'zod';
 
-import { toLowerCase } from '@/lib/utils';
-
-import { MapSchema } from './base';
+import { MapSchema, type MapValue } from './base';
 import { LocaleSchema } from './locale';
 import { MonthUtils } from './month';
 
@@ -16,10 +14,63 @@ type SeasonSchemaName = typeof seasonSchemaName;
 
 type SeasonKey = z.infer<typeof seasonKeySchema>;
 
-type SeasonValue = Lowercase<SeasonKey>;
+type SeasonValue = MapValue<SeasonKey> & {
+  monthRange: MonthUtils.Value[];
+};
+
+const seasonValues: ReadonlyArray<SeasonValue> = [
+  {
+    name: 'ALL',
+    monthRange: new Array(12).fill(0).map((_, i) => i + 1),
+    order: 0,
+    i18n: {
+      en: 'Every season',
+      ko: '사계절',
+    },
+  },
+  {
+    name: 'SPRING',
+    monthRange: [3, 4, 5],
+    order: 1,
+    i18n: {
+      en: 'Spring',
+      ko: '봄',
+    },
+  },
+  {
+    name: 'SUMMER',
+    monthRange: [6, 7, 8],
+    order: 2,
+    i18n: {
+      en: 'Summer',
+      ko: '여름',
+    },
+  },
+  {
+    name: 'FALL',
+    monthRange: [9, 10, 11],
+    order: 3,
+    i18n: {
+      en: 'Fall',
+      ko: '가을',
+    },
+  },
+  {
+    name: 'WINTER',
+    monthRange: [1, 2, 12],
+    order: 4,
+    i18n: {
+      en: 'Winter',
+      ko: '겨울',
+    },
+  },
+];
 
 const seasonMap = new Map<SeasonKey, SeasonValue>(
-  seasonKeys.map((seasonKey) => [seasonKey, toLowerCase(seasonKey)])
+  seasonKeys.map((seasonKey) => [
+    seasonKey,
+    seasonValues.find((seasonValue) => seasonValue.name === seasonKey)!,
+  ])
 );
 
 class SeasonSchema extends MapSchema<SeasonSchemaName, SeasonKey, SeasonValue> {
@@ -32,37 +83,10 @@ class SeasonSchema extends MapSchema<SeasonSchemaName, SeasonKey, SeasonValue> {
     );
   }
   display(seasonKey: SeasonKey, locale = LocaleSchema.defaultLocale) {
-    const isKorean = LocaleSchema.isKorean(locale);
-    switch (seasonKey) {
-      case 'ALL':
-        return isKorean ? '사계절' : 'Every season';
-      case 'SPRING':
-        return isKorean ? '봄' : 'Spring';
-      case 'SUMMER':
-        return isKorean ? '여름' : 'Summer';
-      case 'FALL':
-        return isKorean ? '가을' : 'Fall';
-      case 'WINTER':
-        return isKorean ? '겨울' : 'Winter';
-      default:
-        return this.parseKey(seasonKey) as never;
-    }
+    return this.getValue(seasonKey)['i18n'][locale];
   }
-  getMonthRange(seasonKey: SeasonKey): MonthUtils.Value[] {
-    switch (seasonKey) {
-      case 'ALL':
-        return new Array(12).fill(0).map((_, i) => i + 1);
-      case 'SPRING':
-        return [3, 4, 5];
-      case 'SUMMER':
-        return [6, 7, 8];
-      case 'FALL':
-        return [9, 10, 11];
-      case 'WINTER':
-        return [1, 2, 12];
-      default:
-        return this.parseKey(seasonKey) as never;
-    }
+  getMonthRange(seasonKey: SeasonKey) {
+    return this.getValue(seasonKey).monthRange;
   }
 }
 

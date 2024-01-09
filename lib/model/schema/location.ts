@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { MapSchema } from './base';
+import { MapSchema, type MapValue } from './base';
 import { LocaleSchema } from './locale';
 
 const locationSchemaName = 'location';
@@ -13,23 +13,17 @@ type LocationSchemaName = typeof locationSchemaName;
 
 type LocationKey = z.infer<typeof locationKeySchema>;
 
-type LocationValue = {
-  index: number;
-  name: LocationKey;
+type LocationValue = MapValue<LocationKey> & {
   latitude: string;
   longitude: string;
-  i18n: {
-    en: string;
-    ko: string;
-  };
 };
 
-const valueSet: LocationValue[] = [
+const locationValues: ReadonlyArray<LocationValue> = [
   {
-    index: 0,
     name: 'SEOUL',
     latitude: '37.564214',
     longitude: '127.001699',
+    order: 0,
     i18n: {
       en: 'Seoul',
       ko: '서울',
@@ -38,9 +32,9 @@ const valueSet: LocationValue[] = [
 ];
 
 const locationMap = new Map(
-  locationKeys.map((locationKey, index) => [
+  locationKeys.map((locationKey) => [
     locationKey,
-    valueSet.find((value) => value.index === index)!,
+    locationValues.find((value) => value.name === locationKey)!,
   ])
 );
 

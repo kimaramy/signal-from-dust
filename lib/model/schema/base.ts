@@ -2,12 +2,20 @@ import { z } from 'zod';
 
 import { toLowerCase, toUpperCase } from '@/lib/utils';
 
+import { type Locale } from './locale';
+
 const numbersSchema = z.array(z.number());
+
+export interface MapValue<TKey = string> {
+  name: TKey;
+  order: number;
+  i18n: Record<Locale, string>;
+}
 
 export class MapSchema<
   TName extends string = string,
   TKey extends string = string,
-  TValue extends number | string | object = number,
+  TValue extends string | number | object = MapValue,
 > {
   protected readonly keySchema: z.ZodEnum<[TKey, ...TKey[]]>;
   protected readonly map: Map<TKey, TValue>;

@@ -30,7 +30,7 @@ class WeekSchema extends MapSchema<WeekSchemaName, WeekKey, WeekValue> {
     const [firstWeekValue, lastWeekValue] = this.getValueRange();
     if (weekValue < firstWeekValue || weekValue > lastWeekValue) {
       throw new Error(
-        `day value ranges from ${firstWeekValue} to ${lastWeekValue}.`
+        `week value ranges from ${firstWeekValue} to ${lastWeekValue}.`
       );
     }
     switch (weekValue) {

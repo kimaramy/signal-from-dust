@@ -1,8 +1,6 @@
 import { z } from 'zod';
 
-import { toLowerCase } from '@/lib/utils';
-
-import { MapSchema } from './base';
+import { MapSchema, type MapValue } from './base';
 import { LocaleSchema } from './locale';
 
 const dataNameSchemaName = 'dataName';
@@ -15,10 +13,32 @@ type DataNameSchemaName = typeof dataNameSchemaName;
 
 type DataNameKey = z.infer<typeof dataNameKeySchema>;
 
-type DataNameValue = Lowercase<DataNameKey>;
+type DataNameValue = MapValue<DataNameKey>;
+
+const dataNameValues: ReadonlyArray<DataNameValue> = [
+  {
+    name: 'PM_LARGE',
+    order: 0,
+    i18n: {
+      en: 'PM10',
+      ko: '미세먼지',
+    },
+  },
+  {
+    name: 'PM_SMALL',
+    order: 1,
+    i18n: {
+      en: 'PM2.5',
+      ko: '초미세먼지',
+    },
+  },
+];
 
 const dataNameMap = new Map<DataNameKey, DataNameValue>(
-  dataNameKeys.map((dataNameKey) => [dataNameKey, toLowerCase(dataNameKey)])
+  dataNameKeys.map((dataNameKey) => [
+    dataNameKey,
+    dataNameValues.find((dataNameValue) => dataNameValue.name === dataNameKey)!,
+  ])
 );
 
 class DataNameSchema extends MapSchema<
@@ -35,15 +55,7 @@ class DataNameSchema extends MapSchema<
     );
   }
   display(dataNameKey: DataNameKey, locale = LocaleSchema.defaultLocale) {
-    const isKorean = LocaleSchema.isKorean(locale);
-    switch (dataNameKey) {
-      case 'PM_LARGE':
-        return isKorean ? '미세먼지' : 'PM10';
-      case 'PM_SMALL':
-        return isKorean ? '초미세먼지' : 'PM2.5';
-      default:
-        return this.parseKey(dataNameKey) as never;
-    }
+    return this.getValue(dataNameKey)['i18n'][locale];
   }
 }
 

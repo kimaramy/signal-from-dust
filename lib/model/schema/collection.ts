@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { stringUnionToArray, toLowerCase, toOrderedBy } from '@/lib/utils';
+import { stringUnionToArray, toOrderedBy } from '@/lib/utils';
 
 import { Model } from '../supabase';
-import { MapSchema } from './base';
+import { MapSchema, type MapValue } from './base';
 import { LocaleSchema } from './locale';
 
 const collectionSchemaName = 'collection';
@@ -12,7 +12,12 @@ type CollectionSchemaName = typeof collectionSchemaName;
 
 type CollectionKey = Uppercase<Model.TableKeys> | 'SEASONALLY';
 
-type CollectionValue = Lowercase<CollectionKey>;
+type CollectionValue = MapValue<CollectionKey> & {
+  dataCount: number;
+  pattern: {
+    i18n: MapValue['i18n'];
+  };
+};
 
 const collectionKeys = Object.freeze(
   toOrderedBy(
@@ -34,10 +39,105 @@ const collectionKeySchema = z.enum([
   ...collectionKeys.slice(1),
 ]);
 
+const collectionValues: ReadonlyArray<CollectionValue> = [
+  {
+    name: 'YEARLY',
+    dataCount: 8,
+    order: 0,
+    i18n: {
+      en: 'Yearly',
+      ko: '연도별',
+    },
+    pattern: {
+      i18n: {
+        en: 'Every year',
+        ko: '매년',
+      },
+    },
+  },
+  {
+    name: 'MONTHLY',
+    dataCount: 12,
+    order: 1,
+    i18n: {
+      en: 'Monthly',
+      ko: '월별',
+    },
+    pattern: {
+      i18n: {
+        en: 'Every month',
+        ko: '매달',
+      },
+    },
+  },
+  {
+    name: 'SEASONALLY',
+    dataCount: 3,
+    order: 2,
+    i18n: {
+      en: 'Seasonal',
+      ko: '계절별',
+    },
+    pattern: {
+      i18n: {
+        en: 'Every season',
+        ko: '사계절',
+      },
+    },
+  },
+  {
+    name: 'WEEKLY',
+    dataCount: 53,
+    order: 3,
+    i18n: {
+      en: 'Weekly',
+      ko: '주별',
+    },
+    pattern: {
+      i18n: {
+        en: 'Every week',
+        ko: '매주',
+      },
+    },
+  },
+  {
+    name: 'WEEKDAILY',
+    dataCount: 7,
+    order: 4,
+    i18n: {
+      en: 'Weekdaily',
+      ko: '요일별',
+    },
+    pattern: {
+      i18n: {
+        en: 'Every weekday',
+        ko: '요일마다',
+      },
+    },
+  },
+  {
+    name: 'DAILY',
+    dataCount: 31,
+    order: 5,
+    i18n: {
+      en: 'Daily',
+      ko: '일별',
+    },
+    pattern: {
+      i18n: {
+        en: 'Everyday',
+        ko: '매일',
+      },
+    },
+  },
+];
+
 const collectionMap = new Map<CollectionKey, CollectionValue>(
   collectionKeys.map((collectionKey) => [
     collectionKey,
-    toLowerCase(collectionKey),
+    collectionValues.find(
+      (collectionValue) => collectionValue.name === collectionKey
+    )!,
   ])
 );
 
@@ -57,79 +157,15 @@ class CollectionSchema extends MapSchema<
   display(
     collectionKey: CollectionKey,
     locale = LocaleSchema.defaultLocale,
-    version: 'sequential' | 'patterned' = 'sequential'
+    type: 'default' | 'patterned' = 'default'
   ) {
-    const isKorean = LocaleSchema.isKorean(locale);
-    switch (collectionKey) {
-      case 'YEARLY':
-        return isKorean
-          ? version === 'sequential'
-            ? '연도별'
-            : '매년'
-          : version === 'sequential'
-          ? 'Yearly'
-          : 'Every year';
-      case 'SEASONALLY':
-        return isKorean
-          ? version === 'sequential'
-            ? '계절별'
-            : '사계절마다'
-          : version === 'sequential'
-          ? 'Seasonal'
-          : 'Every Season';
-      case 'MONTHLY':
-        return isKorean
-          ? version === 'sequential'
-            ? '월별'
-            : '매달'
-          : version === 'sequential'
-          ? 'Monthly'
-          : 'Every month';
-      case 'WEEKLY':
-        return isKorean
-          ? version === 'sequential'
-            ? '주별'
-            : '매주'
-          : version === 'sequential'
-          ? 'Weekly'
-          : 'Every week';
-      case 'WEEKDAILY':
-        return isKorean
-          ? version === 'sequential'
-            ? '요일별'
-            : '요일마다'
-          : version === 'sequential'
-          ? 'Weekdaily'
-          : 'Every weekday';
-      case 'DAILY':
-        return isKorean
-          ? version === 'sequential'
-            ? '일별'
-            : '매일'
-          : version === 'sequential'
-          ? 'Daily'
-          : 'Everyday';
-      default:
-        return this.parseKey(collectionKey) as never;
+    if (type === 'patterned') {
+      return this.getValue(collectionKey)['pattern']['i18n'][locale];
     }
+    return this.getValue(collectionKey)['i18n'][locale];
   }
   getDataCount(collectionKey: CollectionKey) {
-    switch (collectionKey) {
-      case 'YEARLY':
-        return 8;
-      case 'SEASONALLY':
-        return 3;
-      case 'MONTHLY':
-        return 12;
-      case 'WEEKLY':
-        return 53;
-      case 'WEEKDAILY':
-        return 7;
-      case 'DAILY':
-        return 31;
-      default:
-        return this.parseKey(collectionKey) as never;
-    }
+    return this.getValue(collectionKey).dataCount;
   }
 }
 
