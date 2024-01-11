@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { MapSchema } from './base';
+import { RangedValueMapSchema } from './base';
 import { LocaleSchema } from './locale';
 
 const weekSchemaName = 'week';
@@ -22,7 +22,11 @@ const weekMap = new Map<WeekKey, WeekValue>(
   weekKeys.map((weekKey, index) => [weekKey, index])
 );
 
-class WeekSchema extends MapSchema<WeekSchemaName, WeekKey, WeekValue> {
+class WeekSchema extends RangedValueMapSchema<
+  WeekSchemaName,
+  WeekKey,
+  WeekValue
+> {
   constructor() {
     super(weekSchemaName, weekMap, weekKeySchema, weekKeys[0]);
   }

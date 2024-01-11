@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { MapSchema } from './base';
+import { RangedValueMapSchema } from './base';
 import { LocaleSchema } from './locale';
 
 const monthSchemaName = 'month';
@@ -44,7 +44,11 @@ const monthMap = new Map<MonthKey, MonthValue>()
   .set('NOV', 11)
   .set('DEC', 12);
 
-class MonthSchema extends MapSchema<MonthSchemaName, MonthKey, MonthValue> {
+class MonthSchema extends RangedValueMapSchema<
+  MonthSchemaName,
+  MonthKey,
+  MonthValue
+> {
   constructor() {
     super(monthSchemaName, monthMap, monthKeySchema, monthKeySchema.enum.ALL);
   }

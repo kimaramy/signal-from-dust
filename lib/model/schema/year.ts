@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { MapSchema } from './base';
+import { RangedValueMapSchema } from './base';
 import { LocaleSchema } from './locale';
 
 const yearSchemaName = 'year';
@@ -36,7 +36,11 @@ const yearMap = new Map<YearKey, YearValue>()
   .set('2021', 2021)
   .set('2022', 2022);
 
-class YearSchema extends MapSchema<YearSchemaName, YearKey, YearValue> {
+class YearSchema extends RangedValueMapSchema<
+  YearSchemaName,
+  YearKey,
+  YearValue
+> {
   constructor() {
     super(yearSchemaName, yearMap, yearKeySchema, yearKeySchema.enum.ALL);
   }

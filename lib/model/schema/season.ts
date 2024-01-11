@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { MapSchema, type MapValue } from './base';
+import { CustomValueMapSchema, type CustomValueTemplate } from './base';
 import { LocaleSchema } from './locale';
 import { MonthUtils } from './month';
 
@@ -14,7 +14,7 @@ type SeasonSchemaName = typeof seasonSchemaName;
 
 type SeasonKey = z.infer<typeof seasonKeySchema>;
 
-type SeasonValue = MapValue<SeasonKey> & {
+type SeasonValue = CustomValueTemplate<SeasonKey> & {
   monthRange: MonthUtils.Value[];
 };
 
@@ -73,7 +73,11 @@ const seasonMap = new Map<SeasonKey, SeasonValue>(
   ])
 );
 
-class SeasonSchema extends MapSchema<SeasonSchemaName, SeasonKey, SeasonValue> {
+class SeasonSchema extends CustomValueMapSchema<
+  SeasonSchemaName,
+  SeasonKey,
+  SeasonValue
+> {
   constructor() {
     super(
       seasonSchemaName,

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { MapSchema, type MapValue } from './base';
+import { CustomValueMapSchema, type CustomValueTemplate } from './base';
 import { LocaleSchema } from './locale';
 
 const dataNameSchemaName = 'dataName';
@@ -13,7 +13,7 @@ type DataNameSchemaName = typeof dataNameSchemaName;
 
 type DataNameKey = z.infer<typeof dataNameKeySchema>;
 
-type DataNameValue = MapValue<DataNameKey>;
+type DataNameValue = CustomValueTemplate<DataNameKey>;
 
 const dataNameValues: ReadonlyArray<DataNameValue> = [
   {
@@ -41,7 +41,7 @@ const dataNameMap = new Map<DataNameKey, DataNameValue>(
   ])
 );
 
-class DataNameSchema extends MapSchema<
+class DataNameSchema extends CustomValueMapSchema<
   DataNameSchemaName,
   DataNameKey,
   DataNameValue

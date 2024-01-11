@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { MapSchema } from './base';
+import { RangedValueMapSchema } from './base';
 import { LocaleSchema } from './locale';
 
 const weekdaySchemaName = 'weekday';
@@ -34,7 +34,7 @@ const weekdayMap = new Map<WeekdayKey, WeekdayValue>()
   .set('FRIDAY', 6)
   .set('SATURDAY', 7);
 
-class WeekdaySchema extends MapSchema<
+class WeekdaySchema extends RangedValueMapSchema<
   WeekdaySchemaName,
   WeekdayKey,
   WeekdayValue

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { MapSchema, type MapValue } from './base';
+import { CustomValueMapSchema, type CustomValueTemplate } from './base';
 import { LocaleSchema } from './locale';
 
 const locationSchemaName = 'location';
@@ -13,7 +13,7 @@ type LocationSchemaName = typeof locationSchemaName;
 
 type LocationKey = z.infer<typeof locationKeySchema>;
 
-type LocationValue = MapValue<LocationKey> & {
+type LocationValue = CustomValueTemplate<LocationKey> & {
   latitude: string;
   longitude: string;
 };
@@ -38,7 +38,7 @@ const locationMap = new Map(
   ])
 );
 
-class LocationSchema extends MapSchema<
+class LocationSchema extends CustomValueMapSchema<
   LocationSchemaName,
   LocationKey,
   LocationValue

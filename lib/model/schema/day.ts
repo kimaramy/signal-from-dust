@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { MapSchema } from './base';
+import { RangedValueMapSchema } from './base';
 import { LocaleSchema } from './locale';
 
 const daySchemaName = 'day';
@@ -24,7 +24,7 @@ const dayMap = new Map<DayKey, DayValue>(
   dayKeys.map((dayKey, index) => [dayKey, index])
 );
 
-class DaySchema extends MapSchema<DaySchemaName, DayKey, DayValue> {
+class DaySchema extends RangedValueMapSchema<DaySchemaName, DayKey, DayValue> {
   constructor() {
     super(daySchemaName, dayMap, dayKeySchema, dayKeys[0]);
   }

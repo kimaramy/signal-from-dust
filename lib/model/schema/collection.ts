@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { stringUnionToArray, toOrderedBy } from '@/lib/utils';
 
 import { Model } from '../supabase';
-import { MapSchema, type MapValue } from './base';
+import { CustomValueMapSchema, type CustomValueTemplate } from './base';
 import { LocaleSchema } from './locale';
 
 const collectionSchemaName = 'collection';
@@ -12,10 +12,10 @@ type CollectionSchemaName = typeof collectionSchemaName;
 
 type CollectionKey = Uppercase<Model.TableKeys> | 'SEASONALLY';
 
-type CollectionValue = MapValue<CollectionKey> & {
+type CollectionValue = CustomValueTemplate<CollectionKey> & {
   dataCount: number;
   pattern: {
-    i18n: MapValue['i18n'];
+    i18n: CustomValueTemplate['i18n'];
   };
 };
 
@@ -141,7 +141,7 @@ const collectionMap = new Map<CollectionKey, CollectionValue>(
   ])
 );
 
-class CollectionSchema extends MapSchema<
+class CollectionSchema extends CustomValueMapSchema<
   CollectionSchemaName,
   CollectionKey,
   CollectionValue
