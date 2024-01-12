@@ -12,9 +12,8 @@ import {
   YearUtils,
 } from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
-import Dataset from '@/components/Dataset';
-import DatasetControl from '@/components/DatasetControl';
-import { SettingsDialog } from '@/components/settings';
+import { Dataset, DatasetControl } from '@/components/dataset';
+import { SettingsDialog } from '@/components/settings/dialog';
 
 const fetchCachedDataset = cache(fetchDataset);
 

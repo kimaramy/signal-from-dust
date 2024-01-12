@@ -5,8 +5,7 @@ import { fetchDataset } from '@/domains';
 import { i18n } from '@/lib/i18n';
 import { Schema } from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
-import Dataset from '@/components/Dataset';
-import DatasetControl from '@/components/DatasetControl';
+import { Dataset, DatasetControl } from '@/components/dataset';
 
 const fetchCachedDataset = cache(fetchDataset);
 

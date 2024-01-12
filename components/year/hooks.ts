@@ -2,10 +2,10 @@
 
 import { useEffect } from 'react';
 import { useDistinctYearListQuery } from '@/domains';
-import { toast } from 'react-hot-toast';
 
 import { YearUtils } from '@/lib/model';
 import { useEnumUrlParam, useSetQueryParam, type URLPart } from '@/lib/router';
+import { toast } from '@/lib/toast';
 
 export function useYearKey(
   part?: URLPart,

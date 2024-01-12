@@ -4,8 +4,8 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import { useLocaleDictionary } from '@/lib/i18n';
-import { Button } from '@/components/ui/button';
-import { Icon } from '@/components/ui/icon';
+import { Icon } from '@/lib/icon';
+import { Button, type ButtonProps } from '@/components/ui/button';
 import { Sheet, SheetTrigger } from '@/components/ui/sheet';
 import {
   Tooltip,
@@ -13,18 +13,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import Spinner from '@/components/Spinner';
+import { Spinner } from '@/components/layout';
 
 const IntroSheetContent = dynamic(() => import('./IntroSheetContent'), {
   ssr: false,
   loading: () => <Spinner />,
 });
 
-interface IntroSheetTriggerButtonProps {
-  className?: string;
-}
+interface IntroSheetTriggerButtonProps extends ButtonProps {}
 
-function IntroSheetTriggerButton({ className }: IntroSheetTriggerButtonProps) {
+function IntroSheetTriggerButton(props: IntroSheetTriggerButtonProps) {
   const {
     dictionary: { intro },
   } = useLocaleDictionary();
@@ -41,7 +39,7 @@ function IntroSheetTriggerButton({ className }: IntroSheetTriggerButtonProps) {
               onOpenChange={() => setSheetOpen((isSheetOpen) => !isSheetOpen)}
             >
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className={className}>
+                <Button variant="ghost" size="icon" {...props}>
                   <Icon.HelpCircle aria-hidden className="h-4 w-4" />
                   <span className="sr-only">{intro.trigger_btn}</span>
                 </Button>

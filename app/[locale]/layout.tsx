@@ -2,15 +2,15 @@ import './globals.css';
 
 import { cn } from '@/lib/css';
 import { fontSans } from '@/lib/fonts';
+import { QueryClientProvider } from '@/lib/react-query';
 import {
   Progress,
   RouteChangeEventHandlers,
   type NextLayoutProps,
 } from '@/lib/router';
-import QueryClientProvider from '@/components/QueryClientProvider';
-import QueryErrorBoundary from '@/components/QueryErrorBoundary';
-import ThemeProvider from '@/components/ThemeProvider';
-import ToastProvider from '@/components/ToastProvider';
+import { ToastProvider } from '@/lib/toast';
+import { QueryErrorBoundary } from '@/components/error';
+import { ThemeProvider } from '@/components/theme';
 
 import AppIcons from './app-icons';
 import { baseMetadata } from './metadata';

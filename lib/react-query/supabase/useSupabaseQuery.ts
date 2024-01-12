@@ -4,7 +4,7 @@ import {
   type UseQueryOptions,
 } from '@tanstack/react-query';
 
-import type { PostgrestError } from './types';
+import type { PostgrestError } from '@/lib/model';
 
 /**
  * @alias UseSbQOptions

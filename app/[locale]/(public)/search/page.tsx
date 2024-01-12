@@ -13,8 +13,7 @@ import {
 import type { NextPageProps } from '@/lib/router';
 import { parseCollectionKey } from '@/components/collection';
 import { parseDataNameKey } from '@/components/dataName';
-import Dataset from '@/components/Dataset';
-import DatasetControl from '@/components/DatasetControl';
+import { Dataset, DatasetControl } from '@/components/dataset';
 import { parseLocationKey } from '@/components/location';
 import { parseMonthKey } from '@/components/month';
 import { parseSeasonKey } from '@/components/season';

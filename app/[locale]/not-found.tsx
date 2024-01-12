@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { DesktopOnly } from '@/lib/device';
 import { useLocaleDictionary } from '@/lib/i18n';
 import { Button } from '@/components/ui/button';
-import Main from '@/components/Main';
+import { Main } from '@/components/layout';
 
 export default function NotFound() {
   const { locale, dictionary } = useLocaleDictionary();

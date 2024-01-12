@@ -2,7 +2,7 @@
 
 import ErrorContainer, {
   type ErrorContainerProps,
-} from '@/components/ErrorContainer';
+} from '@/components/error/ErrorContainer';
 
 /**
  * TODO: 유저 친화적 에러 페이지로 디자인 변경

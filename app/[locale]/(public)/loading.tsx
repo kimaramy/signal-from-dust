@@ -3,7 +3,7 @@
 import { useSelectedLayoutSegment } from 'next/navigation';
 
 import { useCollectionKey } from '@/components/collection';
-import FakeDataset from '@/components/FakeDataset';
+import { FakeDataset } from '@/components/dataset';
 
 function Loading() {
   const segment = useSelectedLayoutSegment();

@@ -2,7 +2,7 @@
 
 import { createContext } from 'react';
 
-import type { SettingsMode } from './SettingsForm';
+import type { SettingsMode } from './form/SettingsForm';
 
 export const SettingsModeContext = createContext<SettingsMode | null>(null);
 

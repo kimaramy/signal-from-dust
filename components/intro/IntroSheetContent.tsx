@@ -1,10 +1,10 @@
 'use client';
 
 import { useLocaleDictionary } from '@/lib/i18n';
+import { Icon } from '@/lib/icon';
 import { Link } from '@/lib/router';
 import { seoConfig } from '@/lib/seo';
 import { Button } from '@/components/ui/button';
-import { Icon } from '@/components/ui/icon';
 import { Separator } from '@/components/ui/separator';
 import {
   SheetContent,

@@ -12,7 +12,7 @@ import {
 } from '@/lib/model';
 
 import { SettingsModeContext } from './context';
-import type { SettingsFormValues, SettingsMode } from './SettingsForm';
+import type { SettingsFormValues, SettingsMode } from './form/SettingsForm';
 
 function useSettingsModeContext() {
   const mode = useContext(SettingsModeContext);

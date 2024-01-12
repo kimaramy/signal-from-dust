@@ -2,10 +2,10 @@
 
 import ErrorContainer, {
   type ErrorContainerProps,
-} from '@/components/ErrorContainer';
+} from '@/components/error/ErrorContainer';
 
-function LocalError(props: ErrorContainerProps) {
+function Error(props: ErrorContainerProps) {
   return <ErrorContainer {...props} />;
 }
 
-export default LocalError;
+export default Error;
