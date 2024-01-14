@@ -1,6 +1,6 @@
 import { getDictionary, i18n, LocaleDictionaryProvider } from '@/lib/i18n';
 import { SoundFilter } from '@/components/bit';
-import Main from '@/components/layout/Main';
+import { Main } from '@/components/layout';
 
 type LayoutProps = {
   params: ReturnType<typeof generateStaticParams>[0];

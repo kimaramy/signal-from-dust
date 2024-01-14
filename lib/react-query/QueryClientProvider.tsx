@@ -10,15 +10,14 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { postgrestErrorSchema, type PostgrestError } from '@/lib/model';
+import { toast } from '@/lib/toast';
 
 type QueryClientProviderProps = {
   children: React.ReactNode;
-  onError?: (message: string) => void;
 };
 
 export default function QueryClientProvider({
   children,
-  onError,
 }: QueryClientProviderProps) {
   const [queryClient] = useState(
     new QueryClient({
@@ -49,7 +48,7 @@ export default function QueryClientProvider({
             errorMessage = `[${error.code}] ${error.message}`;
           }
 
-          onError?.(errorMessage);
+          toast.error(errorMessage);
         },
       }),
       mutationCache: new MutationCache({
@@ -72,7 +71,7 @@ export default function QueryClientProvider({
             errorMessage = `[${error.code}] ${error.message}`;
           }
 
-          onError?.(errorMessage);
+          toast.error(errorMessage);
         },
       }),
     })
