@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/css';
 
-const headerStyle = cva(
+const headerVariants = cva(
   'left-0 top-0 z-50 w-full border-b border-border dark:border-white/20',
   {
     variants: {
@@ -20,13 +20,13 @@ const headerStyle = cva(
 
 interface HeaderProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof headerStyle> {
+    VariantProps<typeof headerVariants> {
   position: 'sticky' | 'fixed';
 }
 
 function Header({ position, className, children, ...rest }: HeaderProps) {
   return (
-    <header className={cn(headerStyle({ position, className }))} {...rest}>
+    <header className={cn(headerVariants({ position, className }))} {...rest}>
       {children}
     </header>
   );

@@ -11,16 +11,7 @@ import {
   YearUtils,
 } from '@/lib/model';
 
-export interface SceneData {
-  id: number;
-  name: string;
-  displayName: string;
-  value: number | null;
-  collection: string;
-  dates: string[];
-  location: string;
-  rank: number | null;
-}
+import type { SceneData } from './context';
 
 export class SceneUtils {
   static getSceneId(listId: string | number, itemId: string | number) {

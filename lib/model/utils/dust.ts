@@ -2,29 +2,44 @@ import { DataNameUtils } from '../schema/dataName';
 
 const dustGrades = {
   NULL: {
-    en: 'Null',
-    ko: '미정',
+    grade: 'NULL',
     color: '#565656',
+    i18n: {
+      en: 'Null',
+      ko: '미정',
+    },
   },
   GOOD: {
-    en: 'Good',
-    ko: '좋음',
+    grade: 'GOOD',
     color: '#25ce7b',
+    i18n: {
+      en: 'Good',
+      ko: '좋음',
+    },
   },
   NORMAL: {
-    en: 'Normal',
-    ko: '보통',
+    grade: 'NORMAL',
     color: '#fdc741',
+    i18n: {
+      en: 'Normal',
+      ko: '보통',
+    },
   },
   BAD: {
-    en: 'Bad',
-    ko: '나쁨',
+    grade: 'BAD',
     color: '#ff6b01',
+    i18n: {
+      en: 'Bad',
+      ko: '나쁨',
+    },
   },
   WORST: {
-    en: 'Worst',
-    ko: '매우나쁨',
+    grade: 'WORST',
     color: '#fc4236',
+    i18n: {
+      en: 'Worst',
+      ko: '매우나쁨',
+    },
   },
 };
 

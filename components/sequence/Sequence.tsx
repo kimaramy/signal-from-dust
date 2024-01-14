@@ -6,9 +6,9 @@ import dynamic from 'next/dynamic';
 import { cn } from '@/lib/css';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Grid } from '@/components/layout';
-import { SceneUtils, type SceneData } from '@/components/scene/utils';
+import { SceneUtils, type SceneData } from '@/components/scene';
 
-const Scene = dynamic(() => import('@/components/scene/Scene'), {
+const Scene = dynamic(() => import('@/components/scene/components/Scene'), {
   loading: () => <Skeleton className="h-full w-full" />,
 });
 

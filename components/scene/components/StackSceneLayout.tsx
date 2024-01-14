@@ -1,17 +1,21 @@
+'use client';
+
 import React from 'react';
 
 import { cn } from '@/lib/css';
 
+import { useSceneContext } from '../hooks';
+
 interface StackSceneLayoutProps {
-  bits: string[];
   className?: string;
-  children: (bits: string[]) => React.ReactNode;
+  children: (control: { bits: string[] }) => React.ReactNode;
 }
 
 const StackSceneLayout = React.forwardRef<
   HTMLUListElement,
   StackSceneLayoutProps
->(function StackSceneLayout({ bits, className, children }, ref) {
+>(function StackSceneLayout({ className, children }, ref) {
+  const { bits } = useSceneContext();
   return (
     <ul
       ref={ref}
@@ -27,7 +31,7 @@ const StackSceneLayout = React.forwardRef<
         transformStyle: 'preserve-3d',
       }}
     >
-      {children(bits)}
+      {children({ bits })}
     </ul>
   );
 });

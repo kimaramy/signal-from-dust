@@ -24,12 +24,22 @@ interface BitProps {
   bit: string;
   bitId: string;
   bitIdx: number;
-  active?: boolean;
-  stacked?: boolean;
+  isActive?: boolean;
+  isStackedView?: boolean;
+  onMouseOver?: (bitIdx: number) => void;
+  onMouseOut?: (bitIdx: number) => void;
 }
 
 function Bit(props: BitProps) {
-  const { bit, bitId, bitIdx, active = false, stacked = false } = props;
+  const {
+    bit,
+    bitId,
+    bitIdx,
+    isActive = false,
+    isStackedView = false,
+    onMouseOver,
+    onMouseOut,
+  } = props;
 
   const $container = useRef<HTMLLIElement>(null);
   const $turbulence = useRef<SVGFETurbulenceElement | null>(null);
@@ -42,15 +52,15 @@ function Bit(props: BitProps) {
   const size = useMemo(() => {
     const width =
       bit === '0'
-        ? stacked
+        ? isStackedView
           ? 70
           : random(30, 40)
-        : stacked
+        : isStackedView
         ? 100
         : random(80, 100);
     const height = bit === '0' ? width * 0.8 : width;
-    return [width, height];
-  }, [bit, stacked]);
+    return { width, height };
+  }, [bit, isStackedView]);
 
   const [isEntering, setEntering] = useState(false);
 
@@ -102,10 +112,10 @@ function Bit(props: BitProps) {
         0
       );
     }
-  }, [isEntering, stacked]);
+  }, [isEntering, isStackedView]);
 
   const handleSoundPlay = () => {
-    if (active) return;
+    if (isActive) return;
     if (!isPlaying) {
       triggerSingleNote(Number(bit), bitIdx, () => setPlaying(false));
     }
@@ -114,15 +124,17 @@ function Bit(props: BitProps) {
 
   const handleMouseOver = useCallback(() => {
     setHovering(true);
-  }, []);
+    onMouseOver?.(bitIdx);
+  }, [onMouseOver, bitIdx]);
 
   const handleMouseOut = useCallback(() => {
     setHovering(false);
-  }, []);
+    onMouseOut?.(bitIdx);
+  }, [onMouseOut, bitIdx]);
 
   useUpdateEffect(() => {
-    setPlaying(active);
-  }, [active]);
+    setPlaying(isActive);
+  }, [isActive]);
 
   useEffect(() => {
     if (isPlaying) {
@@ -166,32 +178,30 @@ function Bit(props: BitProps) {
               bit === '0'
                 ? 'min-w-[60%] xl:min-w-[auto]'
                 : 'min-w-full xl:min-w-[auto]',
-              stacked &&
+              isStackedView &&
                 'mask-circle !left-1/2 !top-1/2 !-translate-x-1/2 !-translate-y-1/2'
             )}
             style={{
-              width: `${size[0]}%`,
-              height: stacked ? `${size[1]}%` : undefined,
+              width: `${size.width}%`,
+              height: isStackedView ? `${size.height}%` : undefined,
             }}
           >
             <div
               className={cn(
-                'grainy-to-left-darken dark:grainy-to-left-darken--dark w-2/5 flex-initial bg-blend-soft-light',
-                !stacked && 'hidden'
+                'dust-to-left--deep dark:dust-to-left--deep--invert w-2/5 flex-initial bg-blend-soft-light',
+                !isStackedView && 'hidden'
               )}
             ></div>
             <div
               className={cn(
-                'w-4 flex-none',
-                'grainy-to-left dark:grainy-to-left--dark',
-                stacked && 'rounded-full bg-blend-difference'
+                'dust-to-left dark:dust-to-left--invert w-4 flex-none',
+                isStackedView && 'rounded-full bg-blend-difference'
               )}
             ></div>
             <div
               className={cn(
-                'w-full flex-1',
-                'grainy-to-right dark:grainy-to-right--dark',
-                stacked && 'bg-blend-difference'
+                'dust-to-right dark:dust-to-right--invert w-full flex-1',
+                isStackedView && 'bg-blend-difference'
               )}
             ></div>
           </div>
@@ -204,6 +214,22 @@ function Bit(props: BitProps) {
           onClick={() => setHovering((isHovering) => !isHovering)}
         />
       )}
+      <style jsx>
+        {`
+          .mask-circle {
+            -webkit-mask-image: radial-gradient(
+              ellipse at center,
+              black 40%,
+              transparent 80%
+            );
+            mask-image: radial-gradient(
+              ellipse at center,
+              black 40%,
+              transparent 80%
+            );
+          }
+        `}
+      </style>
     </li>
   );
 }

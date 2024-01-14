@@ -13,6 +13,9 @@ const nextConfig = {
   experimental: {
     typedRoutes: true,
   },
+  images: {
+    domains: ['ygpfckjmxgbewxkislyq.supabase.co'],
+  },
 };
 
 export default withBundleAnalyzer(nextConfig);

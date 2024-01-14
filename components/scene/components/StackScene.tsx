@@ -2,21 +2,21 @@
 
 import { Bit, BitUtils } from '@/components/bit';
 
-import SceneRoot, { type SceneRootProps } from './SceneRoot';
+import type { SceneData } from '../context';
+import SceneRoot from './SceneRoot';
 import StackSceneLayout from './StackSceneLayout';
-import type { SceneData } from './utils';
 
-export interface StackSceneProps extends SceneRootProps {
+interface StackSceneProps {
   sceneId: string;
   sceneIdx: number;
   sceneData: SceneData;
 }
 
-function StackScene({ sceneId, sceneData, ...rest }: StackSceneProps) {
+function StackScene({ sceneId, sceneIdx, sceneData }: StackSceneProps) {
   return (
-    <SceneRoot id={sceneId} {...rest}>
-      <StackSceneLayout bits={BitUtils.toBits(sceneData.value)}>
-        {(bits) =>
+    <SceneRoot id={sceneId} sceneIdx={sceneIdx} sceneData={sceneData}>
+      <StackSceneLayout>
+        {({ bits }) =>
           bits.map((bit, bitIdx) => {
             const bitId = BitUtils.getBitId(sceneId, bitIdx);
             return (
@@ -25,7 +25,7 @@ function StackScene({ sceneId, sceneData, ...rest }: StackSceneProps) {
                 bit={bit}
                 bitId={bitId}
                 bitIdx={bitIdx}
-                stacked
+                isStackedView
               />
             );
           })
