@@ -4,7 +4,7 @@ import { Bit, BitUtils } from '@/components/bit';
 
 import type { SceneData } from '../context';
 import SceneRoot from './SceneRoot';
-import StackSceneLayout from './StackSceneLayout';
+import StackSceneBody from './StackSceneBody';
 
 interface StackSceneProps {
   sceneId: string;
@@ -15,7 +15,7 @@ interface StackSceneProps {
 function StackScene({ sceneId, sceneIdx, sceneData }: StackSceneProps) {
   return (
     <SceneRoot id={sceneId} sceneIdx={sceneIdx} sceneData={sceneData}>
-      <StackSceneLayout>
+      <StackSceneBody>
         {({ bits }) =>
           bits.map((bit, bitIdx) => {
             const bitId = BitUtils.getBitId(sceneId, bitIdx);
@@ -30,7 +30,7 @@ function StackScene({ sceneId, sceneIdx, sceneData }: StackSceneProps) {
             );
           })
         }
-      </StackSceneLayout>
+      </StackSceneBody>
     </SceneRoot>
   );
 }

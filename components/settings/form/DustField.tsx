@@ -7,11 +7,11 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form';
-import { DataNameSelect } from '@/components/dataName';
+import { DustSelect } from '@/components/dust';
 
 import { type SettingsFormValues } from './SettingsForm';
 
-function DataNameField() {
+function DustField() {
   const {
     dictionary: { settings },
   } = useLocaleDictionary();
@@ -24,14 +24,14 @@ function DataNameField() {
 
   return (
     <FormField
-      name="dataNameKey"
+      name="dustKey"
       control={control}
       render={({ field }) => {
         return (
           <FormItem>
-            <FormLabel>{settings.form.dataName.title}</FormLabel>
+            <FormLabel>{settings.form.dust.title}</FormLabel>
             <FormControl>
-              <DataNameSelect
+              <DustSelect
                 value={field.value}
                 disabled={isDisabled}
                 onValueChange={(value) => {
@@ -46,4 +46,4 @@ function DataNameField() {
   );
 }
 
-export default DataNameField;
+export default DustField;

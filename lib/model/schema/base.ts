@@ -4,10 +4,12 @@ import { toLowerCase, toUpperCase } from '@/lib/utils';
 
 import { type Locale } from './locale';
 
+export type I18n = Record<Locale, string>;
+
 export interface CustomValueTemplate<TKey = string> {
   name: TKey;
   order: number;
-  i18n: Record<Locale, string>;
+  i18n: I18n;
 }
 
 export class MapSchema<

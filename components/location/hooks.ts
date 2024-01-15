@@ -19,8 +19,8 @@ export function useLocationKey(
 }
 
 export function useSetLocationKey() {
-  const setDataNameKey = useSetQueryParam(LocationUtils.schema.name);
-  return function (dataNameKey: LocationUtils.Key) {
-    return setDataNameKey(LocationUtils.schema.lowerCaseKey(dataNameKey));
+  const setDustKey = useSetQueryParam(LocationUtils.schema.name);
+  return function (dustKey: LocationUtils.Key) {
+    return setDustKey(LocationUtils.schema.lowerCaseKey(dustKey));
   };
 }

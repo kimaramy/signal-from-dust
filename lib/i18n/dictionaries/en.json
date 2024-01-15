@@ -42,10 +42,10 @@
         "placeholder": "Select a location"
       },
       "collection": {
-        "title": "Group by",
-        "placeholder": "Select a group"
+        "title": "Collection",
+        "placeholder": "Select a collection"
       },
-      "dataName": {
+      "dust": {
         "title": "Data",
         "placeholder": "Select a data"
       },

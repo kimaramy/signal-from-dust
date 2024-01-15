@@ -45,7 +45,7 @@
         "title": "조회 유형",
         "placeholder": "조회 유형 선택"
       },
-      "dataName": {
+      "dust": {
         "title": "조회 데이터",
         "placeholder": "조회 데이터 선택"
       },

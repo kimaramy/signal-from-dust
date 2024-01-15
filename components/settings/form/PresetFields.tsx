@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { cn } from '@/lib/css';
 import { useMountEffect, useUpdateEffect } from '@/lib/hooks';
 import { useLocaleDictionary } from '@/lib/i18n';
-import { CollectionUtils, DataNameUtils } from '@/lib/model';
+import { CollectionUtils, DustUtils } from '@/lib/model';
 import { FormField } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
@@ -40,15 +40,15 @@ function PresetFields() {
       case 'ko':
         return [
           ' 나타나는',
-          DataNameUtils.schema
-            .display(defaultValues?.dataNameKey!, locale)
+          DustUtils.schema
+            .display(defaultValues?.dustKey!, locale)
             .concat('의 패턴'),
         ].join(' ');
       case 'en':
       default:
         return [
           'Pattern of',
-          DataNameUtils.schema.display(defaultValues?.dataNameKey!, locale),
+          DustUtils.schema.display(defaultValues?.dustKey!, locale),
           ',',
         ].join(' ');
     }

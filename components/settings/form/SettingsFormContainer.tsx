@@ -35,7 +35,7 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
       const map = new Map<SchemaName, string>()
         .set('location', values.locationKey)
         .set('collection', values.collectionKey)
-        .set('dataName', values.dataNameKey)
+        .set('dust', values.dustKey)
         .set('year', values.yearKey)
         .set('season', values.seasonKey)
         .set('month', values.monthKey);

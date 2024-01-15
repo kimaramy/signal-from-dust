@@ -26,11 +26,11 @@ export function generateMetadata({
   params: { collection, locale },
 }: StaticDatasetPageProps): Metadata {
   const collectionSchema = Schema.get('collection');
-  const dataNameSchema = Schema.get('dataName');
+  const dustSchema = Schema.get('dust');
   const locationSchema = Schema.get('location');
   return {
     title: [
-      dataNameSchema.display(dataNameSchema.defaultKey, locale),
+      dustSchema.display(dustSchema.defaultKey, locale),
       collectionSchema.display(
         collectionSchema.upperCaseKey(collection),
         locale

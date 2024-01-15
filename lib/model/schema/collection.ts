@@ -3,7 +3,11 @@ import { z } from 'zod';
 import { stringUnionToArray, toOrderedBy } from '@/lib/utils';
 
 import { Model } from '../supabase';
-import { CustomValueMapSchema, type CustomValueTemplate } from './base';
+import {
+  CustomValueMapSchema,
+  type CustomValueTemplate,
+  type I18n,
+} from './base';
 import { LocaleSchema } from './locale';
 
 const collectionSchemaName = 'collection';
@@ -15,7 +19,7 @@ type CollectionKey = Uppercase<Model.TableKeys> | 'SEASONALLY';
 type CollectionValue = CustomValueTemplate<CollectionKey> & {
   dataCount: number;
   pattern: {
-    i18n: CustomValueTemplate['i18n'];
+    i18n: I18n;
   };
 };
 

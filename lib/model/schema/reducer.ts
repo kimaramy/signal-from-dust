@@ -1,6 +1,6 @@
 import { CollectionUtils } from './collection';
-import { DataNameUtils } from './dataName';
 import { DayUtils } from './day';
+import { DustUtils } from './dust';
 import { LocaleSchema } from './locale';
 import { LocationUtils } from './location';
 import { MonthUtils } from './month';
@@ -13,7 +13,7 @@ const schemaMap = {
   locale: LocaleSchema,
   [LocationUtils.schema.name]: LocationUtils.schema,
   [CollectionUtils.schema.name]: CollectionUtils.schema,
-  [DataNameUtils.schema.name]: DataNameUtils.schema,
+  [DustUtils.schema.name]: DustUtils.schema,
   [DayUtils.schema.name]: DayUtils.schema,
   [MonthUtils.schema.name]: MonthUtils.schema,
   [SeasonUtils.schema.name]: SeasonUtils.schema,

@@ -1,22 +1,22 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 
 import { cn } from '@/lib/css';
 import { useLocaleDictionary } from '@/lib/i18n';
 import { Icon } from '@/lib/icon';
-import { DataNameUtils, DustUtils } from '@/lib/model';
+import { DustUtils } from '@/lib/model';
 import { Separator } from '@/components/ui/separator';
+import { DustThumbnail, type DustThumbnailName } from '@/components/dust';
 
 import { useActiveBitContext, useSceneContext } from '../hooks';
 
 function DustValueView() {
   const { sceneData } = useSceneContext();
 
-  const dustGrade = DustUtils.getGrade(
+  const dustGrade = DustUtils.schema.getGrade(
     sceneData.value ?? 0,
-    sceneData.name as DataNameUtils.Key
+    sceneData.name as DustUtils.Key
   );
 
   return (
@@ -27,7 +27,7 @@ function DustValueView() {
         borderColor: dustGrade.color,
       }}
     >
-      {sceneData.value}({DustUtils.unit})
+      {sceneData.value}({DustUtils.schema.unit})
     </p>
   );
 }
@@ -63,9 +63,9 @@ function SceneOverview() {
 
   const { sceneData } = useSceneContext();
 
-  const { grade } = DustUtils.getGrade(
+  const dustGrade = DustUtils.schema.getGrade(
     sceneData.value ?? 0,
-    sceneData.name as DataNameUtils.Key
+    sceneData.name as DustUtils.Key
   );
 
   const title = [sceneData.displayName, sceneData.dates.join(', ')].join(', ');
@@ -73,9 +73,9 @@ function SceneOverview() {
   return (
     <div className="flex h-auto items-center overflow-hidden">
       <div className="flex gap-4 rounded-md p-4">
-        <Image
-          src={`https://ygpfckjmxgbewxkislyq.supabase.co/storage/v1/object/public/imgs/${grade.toLowerCase()}-360x360.webp`}
-          alt={`Panoramic view of Seoul with ${grade.toLowerCase()} weather`}
+        <DustThumbnail
+          name={dustGrade.name.toLowerCase() as DustThumbnailName}
+          size="360"
           width={64}
           height={64}
           loading="lazy"

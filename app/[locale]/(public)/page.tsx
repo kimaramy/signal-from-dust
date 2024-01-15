@@ -5,7 +5,7 @@ import { fetchDataset } from '@/domains';
 import type { Locale } from '@/lib/i18n';
 import {
   CollectionUtils,
-  DataNameUtils,
+  DustUtils,
   LocationUtils,
   MonthUtils,
   SeasonUtils,
@@ -19,12 +19,12 @@ const fetchCachedDataset = cache(fetchDataset);
 
 export function generateMetadata({ params }: NextPageProps): Metadata {
   const locale = params?.locale as Locale;
-  const dataNameSchema = DataNameUtils.schema;
+  const dustSchema = DustUtils.schema;
   const collectionSchema = CollectionUtils.schema;
   const locationSchema = LocationUtils.schema;
   return {
     title: [
-      dataNameSchema.display(dataNameSchema.defaultKey, locale),
+      dustSchema.display(dustSchema.defaultKey, locale),
       collectionSchema.display(collectionSchema.defaultKey, locale),
       locationSchema.display(locationSchema.defaultKey, locale),
     ].join(', '),

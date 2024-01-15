@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import {
   CollectionUtils,
-  DataNameUtils,
+  DustUtils,
   LocationUtils,
   MonthUtils,
   SeasonUtils,
@@ -26,7 +26,7 @@ type SettingsMode = 'preset' | 'custom';
 interface SettingsFormValues {
   mode: SettingsMode;
   locationKey: LocationUtils.Key;
-  dataNameKey: DataNameUtils.Key;
+  dustKey: DustUtils.Key;
   collectionKey: CollectionUtils.Key;
   yearKey: YearUtils.Key;
   seasonKey: SeasonUtils.Key;

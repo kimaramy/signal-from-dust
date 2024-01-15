@@ -1,6 +1,6 @@
 import { cn } from '@/lib/css';
 import { useLocaleDictionary } from '@/lib/i18n';
-import { DataNameUtils } from '@/lib/model';
+import { DustUtils } from '@/lib/model';
 import {
   Select,
   SelectContent,
@@ -9,15 +9,15 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-interface DataNameSelectProps {
-  value: DataNameUtils.Key;
-  onValueChange: (value: DataNameUtils.Key) => void;
+interface DustSelectProps {
+  value: DustUtils.Key;
+  onValueChange: (value: DustUtils.Key) => void;
   hidden?: boolean;
   disabled?: boolean;
   className?: string;
 }
 
-function DataNameSelect(props: DataNameSelectProps) {
+function DustSelect(props: DustSelectProps) {
   const { value, onValueChange, hidden = false, disabled, className } = props;
 
   const {
@@ -25,21 +25,21 @@ function DataNameSelect(props: DataNameSelectProps) {
     dictionary: { settings },
   } = useLocaleDictionary();
 
-  const dataNameKeys = DataNameUtils.schema.getAllKeys();
+  const dustKeys = DustUtils.schema.getAllKeys();
 
   return (
     <Select
       value={value}
-      disabled={disabled ?? dataNameKeys.length < 2}
+      disabled={disabled ?? dustKeys.length < 2}
       onValueChange={onValueChange}
     >
       <SelectTrigger className={cn('min-w-40', hidden && 'hidden', className)}>
-        <SelectValue placeholder={settings.form.dataName.placeholder} />
+        <SelectValue placeholder={settings.form.dust.placeholder} />
       </SelectTrigger>
       <SelectContent>
-        {dataNameKeys.map((dataNameKey) => (
-          <SelectItem key={dataNameKey} value={dataNameKey}>
-            {DataNameUtils.schema.display(dataNameKey, locale)}
+        {dustKeys.map((dustKey) => (
+          <SelectItem key={dustKey} value={dustKey}>
+            {DustUtils.schema.display(dustKey, locale)}
           </SelectItem>
         ))}
       </SelectContent>
@@ -47,4 +47,4 @@ function DataNameSelect(props: DataNameSelectProps) {
   );
 }
 
-export default DataNameSelect;
+export default DustSelect;

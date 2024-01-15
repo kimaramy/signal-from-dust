@@ -1,7 +1,7 @@
 import {
   CollectionUtils,
-  DataNameUtils,
   DayUtils,
+  DustUtils,
   LocaleSchema,
   LocationUtils,
   Model,
@@ -20,21 +20,21 @@ export class SceneUtils {
   static getSceneLength(value: number) {
     return value.toString(2).length;
   }
-  static toDailyScenes(
+  static toDailySceneDataset(
     dataset: Model.DailyData[],
-    dataNameKey: DataNameUtils.Key,
+    dustKey: DustUtils.Key,
     collectionKey: CollectionUtils.Key,
     locationKey: LocationUtils.Key,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, month, day, pm_large, pm_small }) => ({
       id,
-      name: dataNameKey,
-      displayName: DataNameUtils.schema.display(dataNameKey, locale),
+      name: dustKey,
+      displayName: DustUtils.schema.display(dustKey, locale),
       value:
-        dataNameKey === 'PM_LARGE'
+        dustKey === 'PM_LARGE'
           ? pm_large
-          : dataNameKey === 'PM_SMALL'
+          : dustKey === 'PM_SMALL'
           ? pm_small
           : null,
       collection: CollectionUtils.schema.display(collectionKey, locale),
@@ -50,21 +50,21 @@ export class SceneUtils {
       rank: null,
     }));
   }
-  static toWeekDailyScenes(
+  static toWeekDailySceneDataset(
     dataset: Model.WeekDailyData[],
-    dataNameKey: DataNameUtils.Key,
+    dustKey: DustUtils.Key,
     collectionKey: CollectionUtils.Key,
     locationKey: LocationUtils.Key,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, month, weekday, pm_large, pm_small }) => ({
       id,
-      name: dataNameKey,
-      displayName: DataNameUtils.schema.display(dataNameKey, locale),
+      name: dustKey,
+      displayName: DustUtils.schema.display(dustKey, locale),
       value:
-        dataNameKey === 'PM_LARGE'
+        dustKey === 'PM_LARGE'
           ? pm_large
-          : dataNameKey === 'PM_SMALL'
+          : dustKey === 'PM_SMALL'
           ? pm_small
           : null,
       collection: CollectionUtils.schema.display(collectionKey, locale),
@@ -84,21 +84,21 @@ export class SceneUtils {
       rank: null,
     }));
   }
-  static toWeeklyScenes(
+  static toWeeklySceneDataset(
     dataset: Model.WeeklyData[],
-    dataNameKey: DataNameUtils.Key,
+    dustKey: DustUtils.Key,
     collectionKey: CollectionUtils.Key,
     locationKey: LocationUtils.Key,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, year, week, pm_large, pm_small }) => ({
       id,
-      name: dataNameKey,
-      displayName: DataNameUtils.schema.display(dataNameKey, locale),
+      name: dustKey,
+      displayName: DustUtils.schema.display(dustKey, locale),
       value:
-        dataNameKey === 'PM_LARGE'
+        dustKey === 'PM_LARGE'
           ? pm_large
-          : dataNameKey === 'PM_SMALL'
+          : dustKey === 'PM_SMALL'
           ? pm_small
           : null,
       collection: CollectionUtils.schema.display(collectionKey, locale),
@@ -114,21 +114,21 @@ export class SceneUtils {
       rank: null,
     }));
   }
-  static toMonthlyScenes(
+  static toMonthlySceneDataset(
     dataset: Model.MonthlyData[],
-    dataNameKey: DataNameUtils.Key,
+    dustKey: DustUtils.Key,
     collectionKey: CollectionUtils.Key,
     locationKey: LocationUtils.Key,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, year, month, pm_large, pm_small }) => ({
       id,
-      name: dataNameKey,
-      displayName: DataNameUtils.schema.display(dataNameKey, locale),
+      name: dustKey,
+      displayName: DustUtils.schema.display(dustKey, locale),
       value:
-        dataNameKey === 'PM_LARGE'
+        dustKey === 'PM_LARGE'
           ? pm_large
-          : dataNameKey === 'PM_SMALL'
+          : dustKey === 'PM_SMALL'
           ? pm_small
           : null,
       collection: CollectionUtils.schema.display(collectionKey, locale),
@@ -148,21 +148,21 @@ export class SceneUtils {
       rank: null,
     }));
   }
-  static toYearlyScenes(
+  static toYearlySceneDataset(
     dataset: Model.YearlyData[],
-    dataNameKey: DataNameUtils.Key,
+    dustKey: DustUtils.Key,
     collectionKey: CollectionUtils.Key,
     locationKey: LocationUtils.Key,
     locale = LocaleSchema.defaultLocale
   ): SceneData[] {
     return dataset.map(({ id, year, pm_large, pm_small }) => ({
       id,
-      name: dataNameKey,
-      displayName: DataNameUtils.schema.display(dataNameKey, locale),
+      name: dustKey,
+      displayName: DustUtils.schema.display(dustKey, locale),
       value:
-        dataNameKey === 'PM_LARGE'
+        dustKey === 'PM_LARGE'
           ? pm_large
-          : dataNameKey === 'PM_SMALL'
+          : dustKey === 'PM_SMALL'
           ? pm_small
           : null,
       collection: CollectionUtils.schema.display(collectionKey, locale),

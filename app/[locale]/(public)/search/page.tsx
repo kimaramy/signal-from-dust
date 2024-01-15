@@ -4,7 +4,7 @@ import { fetchDataset } from '@/domains';
 
 import type { Locale } from '@/lib/i18n';
 import {
-  DataNameUtils,
+  DustUtils,
   LocationUtils,
   MonthUtils,
   SeasonUtils,
@@ -12,8 +12,8 @@ import {
 } from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
 import { parseCollectionKey } from '@/components/collection';
-import { parseDataNameKey } from '@/components/dataName';
 import { Dataset, DatasetControl } from '@/components/dataset';
+import { parseDustKey } from '@/components/dust';
 import { parseLocationKey } from '@/components/location';
 import { parseMonthKey } from '@/components/month';
 import { parseSeasonKey } from '@/components/season';
@@ -26,14 +26,14 @@ export function generateMetadata({
   searchParams,
 }: NextPageProps): Metadata {
   const locale = params?.locale as Locale;
-  const dataNameKey = parseDataNameKey(searchParams);
+  const dustKey = parseDustKey(searchParams);
   const yearKey = parseYearKey(searchParams);
   const seasonKey = parseSeasonKey(searchParams);
   const monthKey = parseMonthKey(searchParams);
   const locationKey = parseLocationKey(searchParams);
   return {
     title: [
-      DataNameUtils.schema.display(dataNameKey, locale),
+      DustUtils.schema.display(dustKey, locale),
       seasonKey !== SeasonUtils.schema.defaultKey
         ? SeasonUtils.schema.display(seasonKey, locale)
         : MonthUtils.schema.display(monthKey, 'short', locale),
