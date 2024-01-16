@@ -15,13 +15,13 @@ function ToastProvider() {
       toastOptions={{
         // Define default options
         duration: 5000,
-        className: 'bg-white text-gray-700',
+        className: 'bg-white text-gray-700 text-sm',
         // Default options for specific status
         success: {
-          icon: <Icon.CheckCircle className="h-5 w-5 text-green-700" />,
+          icon: <Icon.CheckCircle className="h-4 w-4" />,
         },
         error: {
-          icon: <Icon.AlertCircle className="h-5 w-5 text-red-700" />,
+          icon: <Icon.AlertCircle className="h-4 w-4 text-destructive" />,
         },
       }}
     />

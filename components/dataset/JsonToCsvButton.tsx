@@ -3,6 +3,7 @@
 import React, { useCallback, useState } from 'react';
 import { Parser, type ParserOptions } from '@json2csv/plainjs';
 
+import { cn } from '@/lib/css';
 import { Icon } from '@/lib/icon';
 import { Link } from '@/lib/router';
 import { toast } from '@/lib/toast';
@@ -12,13 +13,17 @@ interface JsonToCsvButtonProps<TData extends object = object>
   extends Omit<ButtonProps, 'onClick'> {
   json: TData[];
   fileName: `${string}.csv`;
+  label: string;
   parserOptions?: ParserOptions<TData>;
+  iconClassName?: string;
 }
 
 function JsonToCsvButton<TData extends object = object>({
   json,
   fileName,
+  label,
   parserOptions,
+  iconClassName,
   ...rest
 }: JsonToCsvButtonProps<TData>) {
   const [fileURL, setFileURL] = useState('#');
@@ -42,8 +47,8 @@ function JsonToCsvButton<TData extends object = object>({
   return (
     <Button variant="ghost" size="icon" asChild {...rest}>
       <Link href={fileURL} download={fileName} onClick={handleClick}>
-        <Icon.Download aria-hidden className="h-4 w-4" />
-        <span className="sr-only">Download this dataset</span>
+        <Icon.Download aria-hidden className={cn('h-4 w-4', iconClassName)} />
+        <span className="sr-only">{label}</span>
       </Link>
     </Button>
   );

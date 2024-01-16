@@ -44,7 +44,7 @@ function Scene({ sceneId, sceneIdx, sceneData, sceneLength }: SceneProps) {
               onClick={() => setPlaying(!isPlaying)}
             />
             <p className="flex-1 truncate font-mono text-xs">
-              {sceneData.dates[0]}
+              {sceneData.display.dates[0]}
             </p>
           </div>
         )}

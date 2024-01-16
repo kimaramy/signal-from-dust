@@ -7,7 +7,7 @@ import { useLocaleDictionary } from '@/lib/i18n';
 import { Icon } from '@/lib/icon';
 import { DustUtils } from '@/lib/model';
 import { Separator } from '@/components/ui/separator';
-import { DustThumbnail, type DustThumbnailName } from '@/components/dust';
+import { DustThumbnail } from '@/components/dust';
 
 import { useActiveBitContext, useSceneContext } from '../hooks';
 
@@ -16,7 +16,7 @@ function DustValueView() {
 
   const dustGrade = DustUtils.schema.getGrade(
     sceneData.value ?? 0,
-    sceneData.name as DustUtils.Key
+    sceneData._ctx.dustKey
   );
 
   return (
@@ -65,17 +65,20 @@ function SceneOverview() {
 
   const dustGrade = DustUtils.schema.getGrade(
     sceneData.value ?? 0,
-    sceneData.name as DustUtils.Key
+    sceneData._ctx.dustKey
   );
 
-  const title = [sceneData.displayName, sceneData.dates.join(', ')].join(', ');
+  const title = [
+    sceneData.display.dust,
+    sceneData.display.dates.join(', '),
+  ].join(', ');
 
   return (
     <div className="flex h-auto items-center overflow-hidden">
       <div className="flex gap-4 rounded-md p-4">
         <DustThumbnail
-          name={dustGrade.name.toLowerCase() as DustThumbnailName}
-          size="360"
+          dustGrade={dustGrade.name}
+          fileSize="360x360"
           width={64}
           height={64}
           loading="lazy"
@@ -86,11 +89,11 @@ function SceneOverview() {
           <h4 className="pl-px text-xs tracking-tight text-muted-foreground">
             {locale === 'en' ? 'Source' : '데이터'} :{' '}
             {[
-              `${sceneData.collection} ${sceneData.displayName} ${
+              `${sceneData.display.collection} ${sceneData.display.dust} ${
                 locale === 'en' ? 'Average' : '평균'
               }`,
               `${locale === 'en' ? `2015~2022` : `2015~2022년`}`,
-              sceneData.location,
+              sceneData.display.location,
             ].join(', ')}
           </h4>
         </div>

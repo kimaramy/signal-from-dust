@@ -1,14 +1,21 @@
 import React, { createContext } from 'react';
 
+import { DustUtils, type Locale } from '@/lib/model';
+
 interface SceneData {
   id: number;
-  name: string;
-  displayName: string;
   value: number | null;
-  collection: string;
-  dates: string[];
-  location: string;
   rank: number | null;
+  display: {
+    dust: string;
+    collection: string;
+    location: string;
+    dates: string[];
+  };
+  _ctx: {
+    locale: Locale;
+    dustKey: DustUtils.Key;
+  };
 }
 
 type ActiveBitIdx = number | null;

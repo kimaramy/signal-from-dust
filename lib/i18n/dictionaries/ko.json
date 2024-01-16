@@ -1,9 +1,23 @@
 {
   "theme": {
-    "trigger_btn": "테마 변경"
+    "btn": "테마 변경"
   },
   "locale": {
-    "trigger_btn": "언어 변경"
+    "btn": {
+      "en": "In English",
+      "ko": "한국어"
+    }
+  },
+  "share": {
+    "btn": "링크 공유",
+    "message": {
+      "unsupported": "클립보드 API를 지원하지 않는 브라우저입니다",
+      "success": "복사됨",
+      "fail": "복사 실패"
+    }
+  },
+  "dataset": {
+    "download_btn": "데이터 받기"
   },
   "intro": {
     "content": {
@@ -14,7 +28,7 @@
       "author": "김하람",
       "year": 2023
     },
-    "trigger_btn": "프로젝트 설명"
+    "btn": "프로젝트 설명"
   },
   "not_found": {
     "title": "페이지를 찾을 수 없습니다",
@@ -25,7 +39,7 @@
     "ok_btn": "재시도"
   },
   "settings": {
-    "trigger_btn": "데이터 변경",
+    "btn": "데이터 변경",
     "dialog": {
       "title": "데이터 선택",
       "ok_btn": "시작"

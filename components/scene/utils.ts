@@ -29,25 +29,30 @@ export class SceneUtils {
   ): SceneData[] {
     return dataset.map(({ id, month, day, pm_large, pm_small }) => ({
       id,
-      name: dustKey,
-      displayName: DustUtils.schema.display(dustKey, locale),
       value:
         dustKey === 'PM_LARGE'
           ? pm_large
           : dustKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: CollectionUtils.schema.display(collectionKey, locale),
-      dates: [
-        DayUtils.schema.display(DayUtils.schema.getKeyByValue(day), locale),
-        MonthUtils.schema.display(
-          MonthUtils.schema.getKeyByValue(month),
-          'short',
-          locale
-        ),
-      ],
-      location: LocationUtils.schema.display(locationKey, locale),
       rank: null,
+      display: {
+        dust: DustUtils.schema.display(dustKey, locale),
+        collection: CollectionUtils.schema.display(collectionKey, locale),
+        location: LocationUtils.schema.display(locationKey, locale),
+        dates: [
+          DayUtils.schema.display(DayUtils.schema.getKeyByValue(day), locale),
+          MonthUtils.schema.display(
+            MonthUtils.schema.getKeyByValue(month),
+            'short',
+            locale
+          ),
+        ],
+      },
+      _ctx: {
+        locale,
+        dustKey,
+      },
     }));
   }
   static toWeekDailySceneDataset(
@@ -59,29 +64,34 @@ export class SceneUtils {
   ): SceneData[] {
     return dataset.map(({ id, month, weekday, pm_large, pm_small }) => ({
       id,
-      name: dustKey,
-      displayName: DustUtils.schema.display(dustKey, locale),
       value:
         dustKey === 'PM_LARGE'
           ? pm_large
           : dustKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: CollectionUtils.schema.display(collectionKey, locale),
-      dates: [
-        WeekdayUtils.schema.display(
-          WeekdayUtils.schema.getKeyByValue(weekday),
-          'long',
-          locale
-        ),
-        MonthUtils.schema.display(
-          MonthUtils.schema.getKeyByValue(month),
-          'short',
-          locale
-        ),
-      ],
-      location: LocationUtils.schema.display(locationKey, locale),
       rank: null,
+      display: {
+        dust: DustUtils.schema.display(dustKey, locale),
+        collection: CollectionUtils.schema.display(collectionKey, locale),
+        location: LocationUtils.schema.display(locationKey, locale),
+        dates: [
+          WeekdayUtils.schema.display(
+            WeekdayUtils.schema.getKeyByValue(weekday),
+            'long',
+            locale
+          ),
+          MonthUtils.schema.display(
+            MonthUtils.schema.getKeyByValue(month),
+            'short',
+            locale
+          ),
+        ],
+      },
+      _ctx: {
+        locale,
+        dustKey,
+      },
     }));
   }
   static toWeeklySceneDataset(
@@ -93,25 +103,33 @@ export class SceneUtils {
   ): SceneData[] {
     return dataset.map(({ id, year, week, pm_large, pm_small }) => ({
       id,
-      name: dustKey,
-      displayName: DustUtils.schema.display(dustKey, locale),
       value:
         dustKey === 'PM_LARGE'
           ? pm_large
           : dustKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: CollectionUtils.schema.display(collectionKey, locale),
-      dates: [
-        WeekUtils.schema.display(WeekUtils.schema.getKeyByValue(week), locale),
-        YearUtils.schema.display(
-          YearUtils.schema.getKeyByValue(year),
-          'short',
-          locale
-        ),
-      ],
-      location: LocationUtils.schema.display(locationKey, locale),
       rank: null,
+      display: {
+        dust: DustUtils.schema.display(dustKey, locale),
+        collection: CollectionUtils.schema.display(collectionKey, locale),
+        location: LocationUtils.schema.display(locationKey, locale),
+        dates: [
+          WeekUtils.schema.display(
+            WeekUtils.schema.getKeyByValue(week),
+            locale
+          ),
+          YearUtils.schema.display(
+            YearUtils.schema.getKeyByValue(year),
+            'short',
+            locale
+          ),
+        ],
+      },
+      _ctx: {
+        locale,
+        dustKey,
+      },
     }));
   }
   static toMonthlySceneDataset(
@@ -123,29 +141,34 @@ export class SceneUtils {
   ): SceneData[] {
     return dataset.map(({ id, year, month, pm_large, pm_small }) => ({
       id,
-      name: dustKey,
-      displayName: DustUtils.schema.display(dustKey, locale),
       value:
         dustKey === 'PM_LARGE'
           ? pm_large
           : dustKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: CollectionUtils.schema.display(collectionKey, locale),
-      dates: [
-        MonthUtils.schema.display(
-          MonthUtils.schema.getKeyByValue(month),
-          'long',
-          locale
-        ),
-        YearUtils.schema.display(
-          YearUtils.schema.getKeyByValue(year),
-          'short',
-          locale
-        ),
-      ],
-      location: LocationUtils.schema.display(locationKey, locale),
       rank: null,
+      display: {
+        dust: DustUtils.schema.display(dustKey, locale),
+        collection: CollectionUtils.schema.display(collectionKey, locale),
+        location: LocationUtils.schema.display(locationKey, locale),
+        dates: [
+          MonthUtils.schema.display(
+            MonthUtils.schema.getKeyByValue(month),
+            'long',
+            locale
+          ),
+          YearUtils.schema.display(
+            YearUtils.schema.getKeyByValue(year),
+            'short',
+            locale
+          ),
+        ],
+      },
+      _ctx: {
+        locale,
+        dustKey,
+      },
     }));
   }
   static toYearlySceneDataset(
@@ -157,24 +180,29 @@ export class SceneUtils {
   ): SceneData[] {
     return dataset.map(({ id, year, pm_large, pm_small }) => ({
       id,
-      name: dustKey,
-      displayName: DustUtils.schema.display(dustKey, locale),
       value:
         dustKey === 'PM_LARGE'
           ? pm_large
           : dustKey === 'PM_SMALL'
           ? pm_small
           : null,
-      collection: CollectionUtils.schema.display(collectionKey, locale),
-      dates: [
-        YearUtils.schema.display(
-          YearUtils.schema.getKeyByValue(year),
-          'short',
-          locale
-        ),
-      ],
-      location: LocationUtils.schema.display(locationKey, locale),
       rank: null,
+      display: {
+        dust: DustUtils.schema.display(dustKey, locale),
+        collection: CollectionUtils.schema.display(collectionKey, locale),
+        location: LocationUtils.schema.display(locationKey, locale),
+        dates: [
+          YearUtils.schema.display(
+            YearUtils.schema.getKeyByValue(year),
+            'short',
+            locale
+          ),
+        ],
+      },
+      _ctx: {
+        locale,
+        dustKey,
+      },
     }));
   }
 }

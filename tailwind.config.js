@@ -77,6 +77,7 @@ module.exports = {
       },
       minWidth: {
         ...defaultTheme.spacing,
+        ...defaultTheme.screens,
         '1/5': '20%',
         '1/4': '25%',
         '1/3': '33.333%',

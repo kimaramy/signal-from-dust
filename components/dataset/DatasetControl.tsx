@@ -2,7 +2,9 @@
 
 import { useTitle } from '@/lib/hooks';
 import { CollectionUtils } from '@/lib/model';
+import { ButtonGroup } from '@/components/ui/group';
 import { SafeArea } from '@/components/ui/safe-area';
+import { URLCopyButton } from '@/components/clipboard';
 import { DatasetDownloadButton } from '@/components/dataset';
 import { Header, Menu } from '@/components/layout';
 
@@ -19,10 +21,18 @@ function DatasetControl({ dataset, datasetKeys }: DatasetControlProps) {
 
   return (
     <Header position={isDailyOrWeekly ? 'sticky' : 'fixed'}>
-      <SafeArea className="flex justify-between py-4 md:px-4">
-        <div className="flex gap-3">
-          <h1 className="text-2xl font-bold">{title}</h1>
-          <DatasetDownloadButton dataset={dataset} datasetKeys={datasetKeys} />
+      <SafeArea className="flex justify-between p-4">
+        <div className="flex items-center gap-6 xl:gap-8">
+          <h1 className="text-lg font-bold md:text-xl xl:text-2xl">{title}</h1>
+          <ButtonGroup
+            items={[
+              <DatasetDownloadButton
+                dataset={dataset}
+                datasetKeys={datasetKeys}
+              />,
+              <URLCopyButton />,
+            ]}
+          />
         </div>
         <Menu />
       </SafeArea>

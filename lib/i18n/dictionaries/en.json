@@ -1,9 +1,23 @@
 {
   "theme": {
-    "trigger_btn": "Toggle theme"
+    "btn": "Toggle theme"
   },
   "locale": {
-    "trigger_btn": "Toggle language"
+    "btn": {
+      "en": "영어로 변경",
+      "ko": "In Korean"
+    }
+  },
+  "share": {
+    "btn": "Share link",
+    "message": {
+      "unsupported": "This browser does not support Clipboard API",
+      "success": "Copied",
+      "fail": "Copy failed"
+    }
+  },
+  "dataset": {
+    "download_btn": "Download dataset"
   },
   "intro": {
     "content": {
@@ -14,7 +28,7 @@
       "author": "Haram Kim",
       "year": 2023
     },
-    "trigger_btn": "About project"
+    "btn": "About the project"
   },
   "not_found": {
     "title": "Page not found",
@@ -25,7 +39,7 @@
     "ok_btn": "Retry"
   },
   "settings": {
-    "trigger_btn": "Change data",
+    "btn": "Change dataset",
     "dialog": {
       "title": "Select data",
       "ok_btn": "Start"

@@ -28,7 +28,7 @@ function Sequence({ sequenceId, sceneDataset, className }: SequenceProps) {
     <Grid
       id={sequenceId}
       ref={ref}
-      className={cn('h-full', className)}
+      className={cn('min-w-md h-full overflow-auto', className)}
       items={sceneDataset}
       itemKey={(sceneData) => SceneUtils.getSceneId(sequenceId, sceneData.id)}
       renderItem={(sceneData, sceneDataIdx) => (

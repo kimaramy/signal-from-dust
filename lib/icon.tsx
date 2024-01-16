@@ -10,6 +10,7 @@ import {
   HelpCircle,
   Home,
   Languages,
+  Link,
   Moon,
   Pause,
   Play,
@@ -32,6 +33,8 @@ const Icon = Object.freeze({
   Download,
   HelpCircle,
   Home,
+  Languages,
+  Link,
   Moon,
   Pause,
   Play,
@@ -40,7 +43,6 @@ const Icon = Object.freeze({
   X,
   ZoomIn,
   ZoomOut,
-  Languages,
   Github,
 });
 

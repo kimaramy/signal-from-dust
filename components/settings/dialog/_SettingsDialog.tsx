@@ -42,8 +42,13 @@ function SettingsDialog() {
     <Dialog open={isOpen} onOpenChange={() => setOpen((isOpen) => !isOpen)}>
       <DialogContent className="flex aspect-auto min-h-[480px] min-w-[768px] gap-0 overflow-hidden p-0 md:w-full">
         <section className="relative isolate w-1/2 flex-none">
-          <DustThumbnail name="bad" size="540" fill className="object-cover" />
-          <div className="absolute left-0 top-0 h-full w-full bg-primary/50 mix-blend-multiply dark:bg-secondary/50"></div>
+          <DustThumbnail
+            dustGrade="BAD"
+            fileSize="540x540"
+            fill
+            className="object-cover"
+          />
+          <div className="absolute left-0 top-0 h-full w-full bg-primary/20 mix-blend-multiply dark:bg-secondary/60 dark:mix-blend-multiply"></div>
           <div className="z-5 absolute left-0 top-0 flex h-full w-full items-center justify-center">
             <Link
               href={`/${locale}`}
