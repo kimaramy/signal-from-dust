@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 
-import { isMobile } from '@/lib/device';
+// import { isMobile } from '@/lib/device';
 import { i18n } from '@/lib/i18n';
 
 function getLocale(request: NextRequest): string | undefined {
@@ -45,10 +45,13 @@ export function middleware(request: NextRequest) {
   const locale = getLocale(request);
   const userAgent = getUserAgent(request);
 
-  if (isMobile(userAgent ?? '') && !url.pathname.startsWith('/unsupported')) {
-    url.pathname = `/${locale}/unsupported`; // will be redirected to '/not-found' if not found
-    return NextResponse.redirect(url);
-  }
+  // if (
+  //   isMobile(userAgent ?? '') &&
+  //   !url.pathname.startsWith(`/${locale}/unsupported`)
+  // ) {
+  //   url.pathname = `/${locale}/unsupported`; // will be redirected to '/not-found' if not found
+  //   return NextResponse.redirect(url);
+  // }
 
   // Check if there is any supported locale in the pathname
   const pathnameIsMissingLocale = i18n.locales.every(
