@@ -7,10 +7,11 @@ interface SceneData {
   value: number | null;
   rank: number | null;
   display: {
-    dust: string;
     collection: string;
+    yearRange: string;
+    dust: string;
     location: string;
-    dates: string[];
+    dates: [string, ...string[]];
   };
   _ctx: {
     locale: Locale;

@@ -39,6 +39,7 @@
     "class-variance-authority": "^0.4.0",
     "clsx": "^1.2.1",
     "gsap": "^3.12.2",
+    "intl-messageformat": "^10.5.10",
     "lodash-es": "^4.17.21",
     "lucide-react": "^0.287.0",
     "mobile-detect": "^1.4.5",

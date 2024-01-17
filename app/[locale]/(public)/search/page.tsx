@@ -2,7 +2,7 @@ import { cache } from 'react';
 import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
-import type { Locale } from '@/lib/i18n';
+import { getDictionary, IntlMessageFormat, type Locale } from '@/lib/i18n';
 import {
   DustUtils,
   LocationUtils,
@@ -21,39 +21,42 @@ import { parseYearKey } from '@/components/year';
 
 const fetchCachedDataset = cache(fetchDataset);
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
   searchParams,
-}: NextPageProps): Metadata {
+}: NextPageProps): Promise<Metadata> {
   const locale = params?.locale as Locale;
+
+  const dictionary = await getDictionary(locale);
+
   const dustKey = parseDustKey(searchParams);
   const yearKey = parseYearKey(searchParams);
   const seasonKey = parseSeasonKey(searchParams);
   const monthKey = parseMonthKey(searchParams);
   const locationKey = parseLocationKey(searchParams);
-  return {
-    title: [
-      DustUtils.schema.display(dustKey, locale),
-      seasonKey !== SeasonUtils.schema.defaultKey
-        ? SeasonUtils.schema.display(seasonKey, locale)
-        : MonthUtils.schema.display(monthKey, 'short', locale),
-      YearUtils.schema.display(yearKey, 'short', locale),
-      LocationUtils.schema.display(locationKey, locale),
-    ].join(', '),
-  };
+
+  const location = LocationUtils.schema.display(locationKey, locale);
+  const dust = DustUtils.schema.display(dustKey, locale);
+  const monthOrSeason =
+    seasonKey !== SeasonUtils.schema.defaultKey
+      ? SeasonUtils.schema.display(seasonKey, locale)
+      : MonthUtils.schema.display(monthKey, 'short', locale);
+  const year = YearUtils.schema.display(yearKey, 'short', locale);
+
+  const title = new IntlMessageFormat(dictionary.title.search_page).format({
+    location,
+    dust,
+    monthOrSeason,
+    year,
+  }) as string;
+
+  return { title };
 }
-
-export const dynamicParams = false;
-
-export const revalidate = false;
 
 async function DynamicDatasetPage({ searchParams }: NextPageProps) {
   const collectionKey = parseCollectionKey(searchParams);
-
   const yearKey = parseYearKey(searchParams);
-
   const monthKey = parseMonthKey(searchParams);
-
   const seasonKey = parseSeasonKey(searchParams);
 
   const datasetKeys = [collectionKey, yearKey, monthKey, seasonKey] as const;
@@ -70,5 +73,9 @@ async function DynamicDatasetPage({ searchParams }: NextPageProps) {
     </>
   );
 }
+
+export const dynamicParams = false;
+
+export const revalidate = false;
 
 export default DynamicDatasetPage;

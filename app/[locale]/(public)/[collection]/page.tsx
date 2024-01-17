@@ -2,8 +2,15 @@ import { cache } from 'react';
 import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
-import { i18n } from '@/lib/i18n';
-import { Schema } from '@/lib/model';
+import { getDictionary, i18n, IntlMessageFormat } from '@/lib/i18n';
+import {
+  CollectionUtils,
+  DustUtils,
+  LocationUtils,
+  MonthUtils,
+  SeasonUtils,
+  YearUtils,
+} from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
 import { Dataset, DatasetControl } from '@/components/dataset';
 
@@ -14,46 +21,50 @@ type StaticDatasetPageProps = NextPageProps<
 >;
 
 export function generateStaticParams() {
-  const collectionSchema = Schema.get('collection');
-  return collectionSchema
-    .mapKeys(collectionSchema.lowerCaseKey)
+  return CollectionUtils.schema
+    .mapKeys(CollectionUtils.schema.lowerCaseKey)
     .flatMap((collection) =>
       i18n.locales.map((locale) => ({ locale, collection }))
     );
 }
 
-export function generateMetadata({
-  params: { collection, locale },
-}: StaticDatasetPageProps): Metadata {
-  const collectionSchema = Schema.get('collection');
-  const dustSchema = Schema.get('dust');
-  const locationSchema = Schema.get('location');
-  return {
-    title: [
-      dustSchema.display(dustSchema.defaultKey, locale),
-      collectionSchema.display(
-        collectionSchema.upperCaseKey(collection),
-        locale
-      ),
-      locationSchema.display(locationSchema.defaultKey, locale),
-    ].join(', '),
-  };
+export async function generateMetadata({
+  params,
+}: StaticDatasetPageProps): Promise<Metadata> {
+  const dictionary = await getDictionary(params.locale);
+
+  const collection = CollectionUtils.schema.display(
+    CollectionUtils.schema.upperCaseKey(params.collection),
+    params.locale
+  );
+  const location = LocationUtils.schema.display(
+    LocationUtils.schema.defaultKey,
+    params.locale
+  );
+  const dust = DustUtils.schema.display(
+    DustUtils.schema.defaultKey,
+    params.locale
+  );
+
+  const title = new IntlMessageFormat(dictionary.title.collection_page).format({
+    collection,
+    location,
+    dust,
+  }) as string;
+
+  return { title };
 }
-
-export const dynamicParams = false;
-
-export const revalidate = false;
 
 async function StaticDatasetPage({
   params: { collection },
 }: StaticDatasetPageProps) {
-  const collectionKey = Schema.get('collection').upperCaseKey(collection);
+  const collectionKey = CollectionUtils.schema.upperCaseKey(collection);
 
   const datasetKeys = [
     collectionKey,
-    Schema.get('year').defaultKey,
-    Schema.get('month').defaultKey,
-    Schema.get('season').defaultKey,
+    YearUtils.schema.defaultKey,
+    MonthUtils.schema.defaultKey,
+    SeasonUtils.schema.defaultKey,
   ] as const;
 
   const initialDataset = await fetchCachedDataset(...datasetKeys);
@@ -70,5 +81,9 @@ async function StaticDatasetPage({
     </>
   );
 }
+
+export const dynamicParams = false;
+
+export const revalidate = false;
 
 export default StaticDatasetPage;

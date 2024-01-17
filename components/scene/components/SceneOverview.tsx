@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { cn } from '@/lib/css';
-import { useLocaleDictionary } from '@/lib/i18n';
+import { IntlMessageFormat, useLocaleDictionary } from '@/lib/i18n';
 import { Icon } from '@/lib/icon';
 import { DustUtils } from '@/lib/model';
-import { Separator } from '@/components/ui/separator';
 import { DustThumbnail } from '@/components/dust';
 
 import { useActiveBitContext, useSceneContext } from '../hooks';
@@ -59,7 +58,9 @@ function BitsView() {
 }
 
 function SceneOverview() {
-  const { locale } = useLocaleDictionary();
+  const {
+    dictionary: { dataset },
+  } = useLocaleDictionary();
 
   const { sceneData } = useSceneContext();
 
@@ -72,6 +73,18 @@ function SceneOverview() {
     sceneData.display.dust,
     sceneData.display.dates.join(', '),
   ].join(', ');
+
+  const source = useMemo(() => {
+    const { prefix, description } = dataset;
+    const { collection, dust, yearRange, location } = sceneData.display;
+    const source = new IntlMessageFormat(dataset.source).format({
+      collection,
+      dust,
+      yearRange,
+      location,
+    });
+    return { prefix, source, description };
+  }, [dataset, sceneData]);
 
   return (
     <div className="flex h-auto items-center overflow-hidden">
@@ -87,27 +100,17 @@ function SceneOverview() {
         <div className="flex flex-col justify-center space-y-0.5">
           <h3 className="text-lg font-bold text-foreground">{title}</h3>
           <h4 className="pl-px text-xs tracking-tight text-muted-foreground">
-            {locale === 'en' ? 'Source' : '데이터'} :{' '}
-            {[
-              `${sceneData.display.collection} ${sceneData.display.dust} ${
-                locale === 'en' ? 'Average' : '평균'
-              }`,
-              `${locale === 'en' ? `2015~2022` : `2015~2022년`}`,
-              sceneData.display.location,
-            ].join(', ')}
+            {[source.prefix, source.source].join(' : ')}
           </h4>
         </div>
       </div>
-      <Separator orientation="vertical" className="mx-1" />
       <div className="flex h-full flex-col justify-center p-4">
         <h4 className="pb-2 text-sm tracking-tight text-muted-foreground">
-          {locale === 'en'
-            ? 'This is the result of a binary signal output of the measurement'
-            : '측정 수치를 2진 신호로 출력한 결과입니다'}
+          {source.description}
         </h4>
         <div className="flex items-center gap-2">
           <DustValueView />
-          <Icon.ArrowRight className="h-4 w-4" />
+          <Icon.ArrowRight aria-hidden className="h-4 w-4" />
           <BitsView />
         </div>
       </div>

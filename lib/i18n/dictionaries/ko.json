@@ -1,4 +1,16 @@
 {
+  "title": {
+    "collection_page": "{location}의 {collection} {dust}",
+    "search_page": "{location}의 {dust}, {monthOrSeason}, {year}"
+  },
+  "not_found": {
+    "title": "페이지를 찾을 수 없습니다",
+    "ok_btn": "홈으로"
+  },
+  "error": {
+    "title": "데이터를 로드하는 도중 문제가 발생했습니다",
+    "ok_btn": "재시도"
+  },
   "theme": {
     "btn": "테마 변경"
   },
@@ -17,6 +29,9 @@
     }
   },
   "dataset": {
+    "prefix": "데이터",
+    "source": "{collection} {dust} 평균, {yearRange}년, {location}",
+    "description": "측정 수치를 2진 신호로 출력한 결과입니다",
     "download_btn": "데이터 받기"
   },
   "intro": {
@@ -29,14 +44,6 @@
       "year": 2023
     },
     "btn": "프로젝트 설명"
-  },
-  "not_found": {
-    "title": "페이지를 찾을 수 없습니다",
-    "ok_btn": "홈으로"
-  },
-  "error": {
-    "title": "데이터를 로드하는 도중 문제가 발생했습니다",
-    "ok_btn": "재시도"
   },
   "settings": {
     "btn": "데이터 변경",

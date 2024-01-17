@@ -1,4 +1,16 @@
 {
+  "title": {
+    "collection_page": "{collection} {dust} in {location}",
+    "search_page": "{dust} in {location}, {monthOrSeason}, {year}"
+  },
+  "not_found": {
+    "title": "Page not found",
+    "ok_btn": "Home"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "ok_btn": "Retry"
+  },
   "theme": {
     "btn": "Toggle theme"
   },
@@ -17,6 +29,9 @@
     }
   },
   "dataset": {
+    "prefix": "Source",
+    "source": "{collection} {dust} Average, {yearRange}, {location}",
+    "description": "This is the result of a binary signal output of the measurement",
     "download_btn": "Download dataset"
   },
   "intro": {
@@ -29,14 +44,6 @@
       "year": 2023
     },
     "btn": "About the project"
-  },
-  "not_found": {
-    "title": "Page not found",
-    "ok_btn": "Home"
-  },
-  "error": {
-    "title": "Something went wrong",
-    "ok_btn": "Retry"
   },
   "settings": {
     "btn": "Change dataset",

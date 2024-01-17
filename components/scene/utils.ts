@@ -37,8 +37,9 @@ export class SceneUtils {
           : null,
       rank: null,
       display: {
-        dust: DustUtils.schema.display(dustKey, locale),
         collection: CollectionUtils.schema.display(collectionKey, locale),
+        yearRange: YearUtils.schema.getValueRange().join('~'),
+        dust: DustUtils.schema.display(dustKey, locale),
         location: LocationUtils.schema.display(locationKey, locale),
         dates: [
           DayUtils.schema.display(DayUtils.schema.getKeyByValue(day), locale),
@@ -72,8 +73,9 @@ export class SceneUtils {
           : null,
       rank: null,
       display: {
-        dust: DustUtils.schema.display(dustKey, locale),
         collection: CollectionUtils.schema.display(collectionKey, locale),
+        yearRange: YearUtils.schema.getValueRange().join('~'),
+        dust: DustUtils.schema.display(dustKey, locale),
         location: LocationUtils.schema.display(locationKey, locale),
         dates: [
           WeekdayUtils.schema.display(
@@ -111,8 +113,9 @@ export class SceneUtils {
           : null,
       rank: null,
       display: {
-        dust: DustUtils.schema.display(dustKey, locale),
         collection: CollectionUtils.schema.display(collectionKey, locale),
+        yearRange: YearUtils.schema.getValueRange().join('~'),
+        dust: DustUtils.schema.display(dustKey, locale),
         location: LocationUtils.schema.display(locationKey, locale),
         dates: [
           WeekUtils.schema.display(
@@ -149,8 +152,9 @@ export class SceneUtils {
           : null,
       rank: null,
       display: {
-        dust: DustUtils.schema.display(dustKey, locale),
         collection: CollectionUtils.schema.display(collectionKey, locale),
+        yearRange: YearUtils.schema.getValueRange().join('~'),
+        dust: DustUtils.schema.display(dustKey, locale),
         location: LocationUtils.schema.display(locationKey, locale),
         dates: [
           MonthUtils.schema.display(
@@ -188,8 +192,9 @@ export class SceneUtils {
           : null,
       rank: null,
       display: {
-        dust: DustUtils.schema.display(dustKey, locale),
         collection: CollectionUtils.schema.display(collectionKey, locale),
+        yearRange: YearUtils.schema.getValueRange().join('~'),
+        dust: DustUtils.schema.display(dustKey, locale),
         location: LocationUtils.schema.display(locationKey, locale),
         dates: [
           YearUtils.schema.display(
