@@ -1,10 +1,10 @@
 {
-  "name": "sound-of-dust",
+  "name": "signal-from-dust",
   "description": "Signals and patterns found from PM10 and PM2.5 data.",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "private": true,
   "author": "kimaramy <fed.haram@gmail.com> (https://github.com/kimaramy)",
-  "homepage": "https://github.com/kimaramy/sound-of-dust",
+  "homepage": "https://github.com/kimaramy/signal-from-dust",
   "scripts": {
     "dev": "next dev",
     "build": "ANALYZE=true next build",

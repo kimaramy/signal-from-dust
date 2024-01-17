@@ -1,4 +1,4 @@
-# Sound Of Dust
+# Signal from Dust
 
 ## 개요
 

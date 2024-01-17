@@ -13,12 +13,12 @@ export const seoConfig = {
   ],
   author: 'Haram Kim',
   links: {
-    origin: 'https://sound-of-dust.vercel.app',
+    origin: 'https://signal-from-dust.vercel.app',
     ogImage:
       'https://ygpfckjmxgbewxkislyq.supabase.co/storage/v1/object/public/imgs/og.webp',
-    github: 'https://github.com/kimaramy/sound-of-dust',
-    repository: 'https://github.com/kimaramy/sound-of-dust',
-    docs: 'https://github.com/kimaramy/sound-of-dust/blob/master/README.md',
+    github: 'https://github.com/kimaramy/signal-from-dust',
+    repository: 'https://github.com/kimaramy/signal-from-dust',
+    docs: 'https://github.com/kimaramy/signal-from-dust/blob/master/README.md',
   },
 };
 
