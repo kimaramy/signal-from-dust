@@ -1,10 +1,25 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/css';
 import { Grid } from '@/components/layout';
 import { Scene, SceneUtils, type SceneData } from '@/components/scene';
+
+function useActiveScene() {
+  const [activeSceneIdx, setActiveSceneIdx] = useState<number | null>(null);
+
+  const checkOtherSceneActive = useCallback(
+    (targetSceneIdx: number) => {
+      const isAnySceneActive = activeSceneIdx !== null;
+      const isTargetSceneActive = targetSceneIdx !== activeSceneIdx;
+      return isAnySceneActive && isTargetSceneActive;
+    },
+    [activeSceneIdx]
+  );
+
+  return { activeSceneIdx, setActiveSceneIdx, checkOtherSceneActive };
+}
 
 interface SequenceProps {
   sequenceId: string;
@@ -17,6 +32,9 @@ function Sequence({ sequenceId, sceneDataset, className }: SequenceProps) {
 
   const values = sceneDataset.map((sceneData) => sceneData.value ?? 0);
 
+  const { activeSceneIdx, setActiveSceneIdx, checkOtherSceneActive } =
+    useActiveScene();
+
   useEffect(() => {
     window?.scrollTo({
       top: 0,
@@ -28,15 +46,19 @@ function Sequence({ sequenceId, sceneDataset, className }: SequenceProps) {
     <Grid
       id={sequenceId}
       ref={ref}
-      className={cn('min-w-md h-full overflow-auto', className)}
+      className={cn('h-full min-w-md overflow-auto', className)}
       items={sceneDataset}
       itemKey={(sceneData) => SceneUtils.getSceneId(sequenceId, sceneData.id)}
-      renderItem={(sceneData, sceneDataIdx) => (
+      renderItem={(sceneData, sceneIdx) => (
         <Scene
           sceneId={SceneUtils.getSceneId(sequenceId, sceneData.id)}
-          sceneIdx={sceneDataIdx}
+          sceneIdx={sceneIdx}
           sceneData={sceneData}
           sceneLength={SceneUtils.getSceneLength(Math.max(...values))}
+          isActive={activeSceneIdx === sceneIdx}
+          isDisabled={checkOtherSceneActive(sceneIdx)}
+          onPlay={(sceneIdx) => setActiveSceneIdx(sceneIdx)}
+          onStop={() => setActiveSceneIdx(null)}
         />
       )}
     />

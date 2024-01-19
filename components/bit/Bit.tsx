@@ -11,8 +11,7 @@ import { Power0, TimelineLite } from 'gsap';
 import { random } from 'lodash-es';
 
 import { cn } from '@/lib/css';
-import { useUpdateEffect } from '@/lib/hooks';
-import { triggerSingleNote } from '@/components/sound';
+import { Instrument } from '@/lib/tone';
 
 import BitOverlay from './BitOverlay';
 import { SOUND_FILTER_ID } from './SoundFilter';
@@ -20,11 +19,15 @@ import { SOUND_FILTER_ID } from './SoundFilter';
 const turbulenceValue = { val: 0.000001 };
 const turbulenceValueX = { val: 0.000001 };
 
-interface BitProps {
+interface BitProps
+  extends Omit<
+    React.HTMLAttributes<HTMLDivElement>,
+    'onMouseOver' | 'onMouseOut'
+  > {
   bit: string;
   bitId: string;
   bitIdx: number;
-  isActive?: boolean;
+  isSceneActive?: boolean;
   isStackedView?: boolean;
   onMouseOver?: (bitIdx: number) => void;
   onMouseOut?: (bitIdx: number) => void;
@@ -35,19 +38,23 @@ function Bit(props: BitProps) {
     bit,
     bitId,
     bitIdx,
-    isActive = false,
+    isSceneActive = false,
     isStackedView = false,
     onMouseOver,
     onMouseOut,
   } = props;
 
-  const $container = useRef<HTMLLIElement>(null);
-  const $turbulence = useRef<SVGFETurbulenceElement | null>(null);
+  const toneDurations = { short: '16n', long: '4n' };
 
-  const timelineOne = useRef<TimelineLite | null>(null);
-  const timelineTwo = useRef<TimelineLite | null>(null);
-
-  const [isHovering, setHovering] = useState(false);
+  const activeTime =
+    (parseInt(
+      bit === '0'
+        ? `${parseInt(toneDurations.long, 10) * 2}`
+        : toneDurations.short,
+      10
+    ) /
+      4) *
+    250;
 
   const size = useMemo(() => {
     const width =
@@ -62,9 +69,17 @@ function Bit(props: BitProps) {
     return { width, height };
   }, [bit, isStackedView]);
 
+  const $container = useRef<HTMLDivElement>(null);
+  const $turbulence = useRef<SVGFETurbulenceElement | null>(null);
+
+  const timelineOne = useRef<TimelineLite | null>(null);
+  const timelineTwo = useRef<TimelineLite | null>(null);
+
+  const [isHovering, setHovering] = useState(false);
+
   const [isEntering, setEntering] = useState(false);
 
-  const [isPlaying, setPlaying] = useState(false);
+  const [isBitActive, setBitActive] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(
@@ -115,11 +130,18 @@ function Bit(props: BitProps) {
   }, [isEntering, isStackedView]);
 
   const handleSoundPlay = () => {
-    if (isActive) return;
-    if (!isPlaying) {
-      triggerSingleNote(Number(bit), bitIdx, () => setPlaying(false));
+    if (isSceneActive) return;
+    if (!isBitActive) {
+      if (bit === '0') {
+        Instrument.createClap().triggerAttackRelease(toneDurations.short);
+      } else {
+        Instrument.createKick().triggerAttackRelease('D1', toneDurations.long);
+      }
+      setTimeout(() => {
+        setBitActive(false);
+      }, activeTime);
     }
-    setPlaying(true);
+    setBitActive(true);
   };
 
   const handleMouseOver = useCallback(() => {
@@ -132,12 +154,12 @@ function Bit(props: BitProps) {
     onMouseOut?.(bitIdx);
   }, [onMouseOut, bitIdx]);
 
-  useUpdateEffect(() => {
-    setPlaying(isActive);
-  }, [isActive]);
+  useEffect(() => {
+    setBitActive(isSceneActive);
+  }, [isSceneActive]);
 
   useEffect(() => {
-    if (isPlaying) {
+    if (isBitActive) {
       timelineOne.current?.play();
       (
         $container.current as HTMLElement
@@ -156,15 +178,15 @@ function Bit(props: BitProps) {
       timelineTwo.current.to(turbulenceValueX, 0.1, { val: 0.000001 }, 0);
       ($container.current as HTMLElement).style.filter = 'none';
     }
-  }, [isPlaying]);
+  }, [isBitActive]);
 
   return (
-    <li
+    <div
       id={bitId}
       ref={$container}
       className={cn(
-        'z-5 relative isolate flex h-full origin-left rounded-md',
-        isPlaying && 'pointer-events-none'
+        'relative isolate flex h-full origin-left rounded-md',
+        isBitActive && 'pointer-events-none'
       )}
       onClick={handleSoundPlay}
       onMouseOver={handleMouseOver}
@@ -208,12 +230,10 @@ function Bit(props: BitProps) {
           <div className="absolute left-0 top-0 z-10 h-full w-full bg-body mix-blend-multiply dark:mix-blend-screen"></div>
         </>
       ) : null}
-      {isHovering && (
-        <BitOverlay
-          className="z-10"
-          onClick={() => setHovering((isHovering) => !isHovering)}
-        />
-      )}
+      <BitOverlay
+        className={cn('z-10', isHovering ? 'visible' : 'invisible')}
+        onClick={() => setHovering((isHovering) => !isHovering)}
+      />
       <style jsx>
         {`
           .mask-circle {
@@ -230,7 +250,7 @@ function Bit(props: BitProps) {
           }
         `}
       </style>
-    </li>
+    </div>
   );
 }
 

@@ -16,8 +16,8 @@
   },
   "locale": {
     "btn": {
-      "en": "In English",
-      "ko": "한국어"
+      "en": "English",
+      "ko": "Korean"
     }
   },
   "share": {
@@ -29,7 +29,7 @@
     }
   },
   "dataset": {
-    "prefix": "데이터",
+    "label": "데이터",
     "source": "{collection} {dust} 평균, {yearRange}년, {location}",
     "description": "측정 수치를 2진 신호로 출력한 결과입니다",
     "download_btn": "데이터 받기"

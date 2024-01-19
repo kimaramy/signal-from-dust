@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/css';
 
 const headerVariants = cva(
-  'left-0 top-0 z-50 w-screen border-b border-border dark:border-primary/20',
+  'left-0 top-0 z-50 w-full border-b border-border dark:border-primary/20',
   {
     variants: {
       position: {

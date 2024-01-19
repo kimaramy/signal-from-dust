@@ -4,11 +4,12 @@ import React from 'react';
 
 import { cn } from '@/lib/css';
 
+import type { SceneContextValue } from '../context';
 import { useSceneContext } from '../hooks';
 
 interface StackSceneBodyProps {
   className?: string;
-  children: (control: { bits: string[] }) => React.ReactNode;
+  children: (context: Pick<SceneContextValue, 'bits'>) => React.ReactNode;
 }
 
 const StackSceneBody = React.forwardRef<HTMLUListElement, StackSceneBodyProps>(
@@ -19,7 +20,7 @@ const StackSceneBody = React.forwardRef<HTMLUListElement, StackSceneBodyProps>(
         ref={ref}
         style={{
           gridTemplateColumns: bits
-            ?.map((bit) => (bit === '0' ? '1fr' : '1.5fr'))
+            ?.map((bit) => (bit.value === '0' ? '1fr' : '1.5fr'))
             .join(' '),
           transform: `rotateX(70deg) rotateZ(40deg) translateZ(0em) scaleX(1.15) scaleY(1.35)`,
           transformStyle: 'preserve-3d',

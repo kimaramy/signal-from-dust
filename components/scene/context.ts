@@ -19,20 +19,21 @@ interface SceneData {
   };
 }
 
-type ActiveBitIdx = number | null;
+type Bit = { idx: number; value: string; isActive: boolean };
 
 interface SceneContextValue {
   sceneIdx: number;
   sceneData: SceneData;
-  bits: string[];
+  bits: Bit[];
+  setBits: React.Dispatch<React.SetStateAction<Bit[]>>;
+  resetBits: () => void;
+  getActiveBit: () => Bit | null;
+  setActiveBit: (bitIdx: number) => void;
 }
 
-interface ScenePlayerContextValue {
-  isPlaying: boolean;
-  setPlaying: React.Dispatch<React.SetStateAction<boolean>>;
-}
+type ActiveBitIdx = number | null;
 
-interface ActiveBitContextValue {
+interface BitContextValue {
   activeBitIdx: ActiveBitIdx;
   setActiveBitIdx: React.Dispatch<React.SetStateAction<ActiveBitIdx>>;
   resetActiveBitIdx: () => void;
@@ -40,17 +41,13 @@ interface ActiveBitContextValue {
 
 const SceneContext = createContext<SceneContextValue | null>(null);
 
-const ScenePlayerContext = createContext<ScenePlayerContextValue | null>(null);
-
-const ActiveBitContext = createContext<ActiveBitContextValue | null>(null);
+const BitContext = createContext<BitContextValue | null>(null);
 
 export {
   SceneContext,
-  ScenePlayerContext,
-  ActiveBitContext,
+  BitContext,
   type SceneData,
-  type ActiveBitIdx,
   type SceneContextValue,
-  type ScenePlayerContextValue,
-  type ActiveBitContextValue,
+  type BitContextValue,
+  type ActiveBitIdx,
 };

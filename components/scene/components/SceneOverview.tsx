@@ -8,7 +8,7 @@ import { Icon } from '@/lib/icon';
 import { DustUtils } from '@/lib/model';
 import { DustThumbnail } from '@/components/dust';
 
-import { useActiveBitContext, useSceneContext } from '../hooks';
+import { useBitContext, useSceneContext } from '../hooks';
 
 function DustValueView() {
   const { sceneData } = useSceneContext();
@@ -32,24 +32,27 @@ function DustValueView() {
 }
 
 function BitsView() {
-  const { bits } = useSceneContext();
+  const sceneContext = useSceneContext();
 
-  const { activeBitIdx } = useActiveBitContext();
+  const bitContext = useBitContext();
+
+  const _activeBitIdx =
+    sceneContext.getActiveBit()?.idx ?? bitContext.activeBitIdx;
 
   return (
     <p className="inline-block divide-x divide-ring border border-ring font-mono text-base font-semibold tracking-wider text-accent-foreground dark:divide-white dark:border-white">
-      {bits.map((bit, bitIdx) => {
-        const isActiveBit = bitIdx === activeBitIdx;
+      {sceneContext.bits.map((bit) => {
+        const isActiveBit = bit.idx === _activeBitIdx;
         return (
           <span
-            key={`${bit}-${bitIdx}`}
+            key={`${bit.idx}`}
             className={cn(
               'inline-flex items-center justify-center px-2 py-0.5',
               isActiveBit &&
                 'bg-ring dark:bg-primary dark:text-primary-foreground'
             )}
           >
-            {bit}
+            {bit.value}
           </span>
         );
       })}
@@ -69,21 +72,17 @@ function SceneOverview() {
     sceneData._ctx.dustKey
   );
 
-  const title = [
-    sceneData.display.dust,
-    sceneData.display.dates.join(', '),
-  ].join(', ');
-
   const source = useMemo(() => {
-    const { prefix, description } = dataset;
-    const { collection, dust, yearRange, location } = sceneData.display;
+    const { label, description } = dataset;
+    const { collection, dust, yearRange, location, dates } = sceneData.display;
+    const name = [dust, dates.join(', ')].join(', ');
     const source = new IntlMessageFormat(dataset.source).format({
       collection,
       dust,
       yearRange,
       location,
     });
-    return { prefix, source, description };
+    return { label, name, source, description };
   }, [dataset, sceneData]);
 
   return (
@@ -98,9 +97,9 @@ function SceneOverview() {
           className="rounded object-cover"
         />
         <div className="flex flex-col justify-center space-y-0.5">
-          <h3 className="text-lg font-bold text-foreground">{title}</h3>
+          <h3 className="text-lg font-bold text-foreground">{source.name}</h3>
           <h4 className="pl-px text-xs tracking-tight text-muted-foreground">
-            {[source.prefix, source.source].join(' : ')}
+            {[source.label, source.source].join(' : ')}
           </h4>
         </div>
       </div>

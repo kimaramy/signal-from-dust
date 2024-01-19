@@ -22,7 +22,7 @@ function StackScene({ sceneId, sceneIdx, sceneData }: StackSceneProps) {
             return (
               <Bit
                 key={bitId}
-                bit={bit}
+                bit={bit.value}
                 bitId={bitId}
                 bitIdx={bitIdx}
                 isStackedView

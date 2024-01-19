@@ -1,5 +1,6 @@
 'use client';
 
+import { useTitle } from '@/lib/hooks';
 import { useLocaleDictionary } from '@/lib/i18n';
 import { type ButtonProps } from '@/components/ui/button';
 import {
@@ -13,16 +14,16 @@ import JsonToCsvButton, { getParserOptions } from './JsonToCsvButton';
 
 interface DatasetDownloadButtonProps extends ButtonProps {
   dataset: object[];
-  datasetKeys: ReadonlyArray<string>;
   iconClassName?: string;
 }
 
 function DatasetDownloadButton({
   dataset,
-  datasetKeys,
   iconClassName,
   ...rest
 }: DatasetDownloadButtonProps) {
+  const title = useTitle();
+
   const { dictionary } = useLocaleDictionary();
 
   const label = dictionary.dataset.download_btn;
@@ -35,7 +36,7 @@ function DatasetDownloadButton({
         <TooltipTrigger>
           <JsonToCsvButton
             json={dataset}
-            fileName={`${datasetKeys.join('_')}.csv`}
+            fileName={`${title.replace(/\s/g, '_')}.csv`}
             label={label}
             parserOptions={getParserOptions(selectedFields)}
             iconClassName={iconClassName}

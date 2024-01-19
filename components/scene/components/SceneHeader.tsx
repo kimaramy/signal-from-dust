@@ -4,17 +4,19 @@ import React from 'react';
 
 import { cn } from '@/lib/css';
 
-import type { ScenePlayerContextValue } from '../context';
-import { useScenePlayerContext } from '../hooks';
+import type { SceneContextValue } from '../context';
+import { useSceneContext } from '../hooks';
+
+export type SceneHeaderContext = Pick<SceneContextValue, 'bits'>;
 
 interface SceneHeaderProps {
   className?: string;
-  children: (control: ScenePlayerContextValue) => React.ReactNode;
+  children: (context: SceneHeaderContext) => React.ReactNode;
 }
 
 const SceneHeader = React.forwardRef<HTMLDivElement, SceneHeaderProps>(
   function SceneHeader({ className, children }, ref) {
-    const { isPlaying, setPlaying } = useScenePlayerContext();
+    const { bits } = useSceneContext();
 
     return (
       <div
@@ -22,7 +24,7 @@ const SceneHeader = React.forwardRef<HTMLDivElement, SceneHeaderProps>(
         style={{ width: `min(8rem, 12vw)` }}
         className={cn('h-full flex-none', className)}
       >
-        {children({ isPlaying, setPlaying })}
+        {children({ bits })}
       </div>
     );
   }

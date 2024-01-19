@@ -11,16 +11,17 @@ interface PlayerButtonProps extends ButtonProps {
 function PlayerButton({ isPlaying, className, ...rest }: PlayerButtonProps) {
   return (
     <Button
-      variant="ghost"
+      variant={isPlaying ? 'default' : 'ghost'}
       size="icon"
       className={cn('h-9 w-9', className)}
       {...rest}
     >
       {isPlaying ? (
-        <Icon.Pause aria-label="Pause" className="h-3.5 w-3.5" />
+        <Icon.Pause aria-hidden className="h-4 w-4" />
       ) : (
-        <Icon.Play aria-label="Play" className="h-3.5 w-3.5" />
+        <Icon.Play aria-hidden className="h-4 w-4" />
       )}
+      <span className="sr-only">{isPlaying ? 'Pause' : 'Play'}</span>
     </Button>
   );
 }

@@ -26,10 +26,7 @@ function DatasetControl({ dataset, datasetKeys }: DatasetControlProps) {
           <h1 className="text-lg font-bold md:text-xl xl:text-2xl">{title}</h1>
           <ButtonGroup
             items={[
-              <DatasetDownloadButton
-                dataset={dataset}
-                datasetKeys={datasetKeys}
-              />,
+              <DatasetDownloadButton dataset={dataset} />,
               <URLCopyButton />,
             ]}
           />

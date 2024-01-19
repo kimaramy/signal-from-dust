@@ -1,35 +1,25 @@
 import { useContext } from 'react';
 
-import { ActiveBitContext, SceneContext, ScenePlayerContext } from './context';
+import { BitContext, SceneContext } from './context';
 
 function useSceneContext() {
   const sceneContext = useContext(SceneContext);
   if (!sceneContext) {
     throw new Error(
-      `useSceneContext must be called within the SceneContext.Provider`
+      `useSceneContext must be called within a SceneContext.Provider`
     );
   }
   return sceneContext;
 }
 
-function useScenePlayerContext() {
-  const scenePlayerContext = useContext(ScenePlayerContext);
-  if (!scenePlayerContext) {
+function useBitContext() {
+  const bitContext = useContext(BitContext);
+  if (!bitContext) {
     throw new Error(
-      `useScenePlayerContext must be called within the ScenePlayerContext.Provider`
+      `useBitContext must be called within a BitContext.Provider`
     );
   }
-  return scenePlayerContext;
+  return bitContext;
 }
 
-function useActiveBitContext() {
-  const activeBitContext = useContext(ActiveBitContext);
-  if (!activeBitContext) {
-    throw new Error(
-      `useActiveBitContext must be called within the ActiveBitContext.Provider`
-    );
-  }
-  return activeBitContext;
-}
-
-export { useSceneContext, useScenePlayerContext, useActiveBitContext };
+export { useSceneContext, useBitContext };

@@ -1,7 +1,7 @@
 {
   "title": {
-    "collection_page": "{collection} {dust} in {location}",
-    "search_page": "{dust} in {location}, {monthOrSeason}, {year}"
+    "collection_page": "{collection} dust in {location}",
+    "search_page": "Dust in {location}, {monthOrSeason}, {year}"
   },
   "not_found": {
     "title": "Page not found",
@@ -16,8 +16,8 @@
   },
   "locale": {
     "btn": {
-      "en": "영어로 변경",
-      "ko": "In Korean"
+      "en": "English",
+      "ko": "Korean"
     }
   },
   "share": {
@@ -29,7 +29,7 @@
     }
   },
   "dataset": {
-    "prefix": "Source",
+    "label": "Source",
     "source": "{collection} {dust} Average, {yearRange}, {location}",
     "description": "This is the result of a binary signal output of the measurement",
     "download_btn": "Download dataset"
