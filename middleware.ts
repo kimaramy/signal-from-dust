@@ -35,15 +35,17 @@ export function middleware(request: NextRequest) {
   if (
     [
       '/manifest.json',
-      '/favicon.ico',
+      '/favicon',
+      '/apple-icon',
+      '/android-icon',
       // Your other files in `public`
     ].includes(url.pathname)
   ) {
     return;
   }
 
-  const locale = getLocale(request);
-  const userAgent = getUserAgent(request);
+  // const locale = getLocale(request);
+  // const userAgent = getUserAgent(request);
 
   // if (
   //   isMobile(userAgent ?? '') &&
