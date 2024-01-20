@@ -18,7 +18,7 @@ function CustomSettingsFields() {
   const isHidden = mode !== 'custom';
 
   return (
-    <section className={cn('space-y-4', isHidden && 'hidden')}>
+    <section className={cn('space-y-3', isHidden && 'hidden')}>
       <div className="flex justify-between gap-2">
         <LocationField />
         <DustField />

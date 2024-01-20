@@ -8,7 +8,7 @@ import { ThemeToggleButton } from '@/components/theme';
 
 function Menu() {
   return (
-    <nav className="hidden md:block">
+    <nav className="hidden lg:block">
       <ButtonGroup
         items={[
           <SettingsSheetTriggerButton />,

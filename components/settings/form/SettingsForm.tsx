@@ -17,7 +17,8 @@ import { Separator } from '@/components/ui/separator';
 import CustomSettingsFields from './CustomSettingsFields';
 import ModeField from './ModeField';
 import PresetFields from './PresetFields';
-import SettingsFormResetButton from './SettingsFormResetButton';
+
+// import SettingsFormResetButton from './SettingsFormResetButton';
 
 const SETTINGS_FORM_ID = 'settings-form';
 
@@ -58,14 +59,14 @@ function SettingsForm({
       <Form {...settingsForm}>
         <form
           id={SETTINGS_FORM_ID}
-          className="space-y-5 py-4"
+          className="space-y-4 py-4"
           noValidate
           autoComplete="off"
           onSubmit={settingsForm.handleSubmit(onSubmit)}
         >
           <div className="flex justify-between gap-2">
             <ModeField />
-            <SettingsFormResetButton />
+            {/* <SettingsFormResetButton /> */}
           </div>
           <Separator />
           <PresetFields />

@@ -5,7 +5,7 @@ import ErrorContainer, {
 } from '@/components/error/ErrorContainer';
 
 function Error(props: ErrorContainerProps) {
-  return <ErrorContainer {...props} />;
+  return <ErrorContainer className="min-h-screen" {...props} />;
 }
 
 export default Error;
