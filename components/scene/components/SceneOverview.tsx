@@ -61,9 +61,7 @@ function BitsView() {
 }
 
 function SceneOverview() {
-  const {
-    dictionary: { dataset },
-  } = useLocaleDictionary();
+  const { dictionary } = useLocaleDictionary();
 
   const { sceneData } = useSceneContext();
 
@@ -73,17 +71,34 @@ function SceneOverview() {
   );
 
   const source = useMemo(() => {
-    const { label, description } = dataset;
+    const { label, description } = dictionary.dataset;
     const { collection, dust, yearRange, location, dates } = sceneData.display;
-    const name = [dust, dates.join(', ')].join(', ');
-    const source = new IntlMessageFormat(dataset.source).format({
-      collection,
-      dust,
-      yearRange,
-      location,
-    });
-    return { label, name, source, description };
-  }, [dataset, sceneData]);
+    const { collectionKey } = sceneData._ctx;
+
+    const title =
+      collectionKey === 'YEARLY'
+        ? new IntlMessageFormat(dictionary.dataset.year_title).format({
+            dust,
+            year: dates[0],
+          })
+        : new IntlMessageFormat(dictionary.dataset.title).format({
+            dust,
+            primaryDate: dates[0],
+            secondaryDate: dates[1],
+          });
+
+    const labelledSource = [
+      label,
+      new IntlMessageFormat(dictionary.dataset.source).format({
+        collection,
+        dust,
+        yearRange,
+        location,
+      }),
+    ].join(' : ');
+
+    return { labelledSource, title, description };
+  }, [dictionary, sceneData]);
 
   return (
     <div className="flex h-auto items-center overflow-hidden">
@@ -97,16 +112,18 @@ function SceneOverview() {
           className="rounded object-cover"
         />
         <div className="flex flex-col justify-center space-y-0.5">
-          <h3 className="text-lg font-bold text-foreground">{source.name}</h3>
+          <h3 className="text-lg font-bold tracking-tight text-foreground">
+            {source.title}
+          </h3>
           <h4 className="pl-px text-xs tracking-tight text-muted-foreground">
-            {[source.label, source.source].join(' : ')}
+            {source.labelledSource}
           </h4>
         </div>
       </div>
       <div className="flex h-full flex-col justify-center p-4">
-        <h4 className="pb-2 text-sm tracking-tight text-muted-foreground">
+        <p className="pb-2 text-sm tracking-tight text-muted-foreground">
           {source.description}
-        </h4>
+        </p>
         <div className="flex items-center gap-2">
           <DustValueView />
           <Icon.ArrowRight aria-hidden className="h-4 w-4" />

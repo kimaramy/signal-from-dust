@@ -1,6 +1,6 @@
 import React, { createContext } from 'react';
 
-import { DustUtils, type Locale } from '@/lib/model';
+import { CollectionUtils, DustUtils, type Locale } from '@/lib/model';
 
 interface SceneData {
   id: number;
@@ -11,10 +11,15 @@ interface SceneData {
     yearRange: string;
     dust: string;
     location: string;
+    year?: string;
+    month?: string;
+    season?: string;
+    week?: string;
     dates: [string, ...string[]];
   };
   _ctx: {
     locale: Locale;
+    collectionKey: CollectionUtils.Key;
     dustKey: DustUtils.Key;
   };
 }

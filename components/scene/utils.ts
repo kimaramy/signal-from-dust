@@ -52,6 +52,7 @@ export class SceneUtils {
       },
       _ctx: {
         locale,
+        collectionKey,
         dustKey,
       },
     }));
@@ -92,6 +93,7 @@ export class SceneUtils {
       },
       _ctx: {
         locale,
+        collectionKey,
         dustKey,
       },
     }));
@@ -131,6 +133,7 @@ export class SceneUtils {
       },
       _ctx: {
         locale,
+        collectionKey,
         dustKey,
       },
     }));
@@ -171,6 +174,7 @@ export class SceneUtils {
       },
       _ctx: {
         locale,
+        collectionKey,
         dustKey,
       },
     }));
@@ -206,6 +210,7 @@ export class SceneUtils {
       },
       _ctx: {
         locale,
+        collectionKey,
         dustKey,
       },
     }));

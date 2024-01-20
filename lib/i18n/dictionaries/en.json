@@ -31,6 +31,8 @@
   "dataset": {
     "label": "Source",
     "source": "{collection} {dust} Average, {yearRange}, {location}",
+    "year_title": "{dust} in {year}",
+    "title": "{dust} on {primaryDate} of {secondaryDate}",
     "description": "This is the result of a binary signal output of the measurement",
     "download_btn": "Download dataset"
   },
