@@ -8,12 +8,14 @@ import { URLCopyButton } from '@/components/clipboard';
 import { DatasetDownloadButton } from '@/components/dataset';
 import { Header, Menu } from '@/components/layout';
 
-interface DatasetControlProps {
-  datasetKeys: Readonly<[CollectionUtils.Key, ...string[]]>;
+import type { DatasetKeys } from './types';
+
+interface DatasetHeaderProps {
   dataset: object[];
+  datasetKeys: DatasetKeys;
 }
 
-function DatasetControl({ dataset, datasetKeys }: DatasetControlProps) {
+function DatasetHeader({ dataset, datasetKeys }: DatasetHeaderProps) {
   const title = useTitle();
 
   const isDailyOrWeekly =
@@ -22,11 +24,16 @@ function DatasetControl({ dataset, datasetKeys }: DatasetControlProps) {
   return (
     <Header position={isDailyOrWeekly ? 'sticky' : 'fixed'}>
       <SafeArea className="flex justify-between p-4">
-        <div className="flex items-center gap-6 xl:gap-8">
-          <h1 className="text-lg font-bold md:text-xl xl:text-2xl">{title}</h1>
+        <div className="flex w-full items-center gap-6 xl:gap-8">
+          <h1 className="max-w-1/2 truncate text-xl font-bold lg:text-2xl">
+            {title}
+          </h1>
           <ButtonGroup
             items={[
-              <DatasetDownloadButton dataset={dataset} />,
+              <DatasetDownloadButton
+                dataset={dataset}
+                fileName={`${title.replace(/\s/g, '_')}.csv`}
+              />,
               <URLCopyButton />,
             ]}
           />
@@ -37,4 +44,4 @@ function DatasetControl({ dataset, datasetKeys }: DatasetControlProps) {
   );
 }
 
-export default DatasetControl;
+export default DatasetHeader;

@@ -9,10 +9,12 @@ import { Link } from '@/lib/router';
 import { toast } from '@/lib/toast';
 import { Button, type ButtonProps } from '@/components/ui/button';
 
+type CsvFileName = `${string}.csv`;
+
 interface JsonToCsvButtonProps<TData extends object = object>
   extends Omit<ButtonProps, 'onClick'> {
   json: TData[];
-  fileName: `${string}.csv`;
+  fileName: CsvFileName;
   label: string;
   parserOptions?: ParserOptions<TData>;
   iconClassName?: string;
@@ -64,5 +66,7 @@ const getParserOptions = (selectedFields?: string[]): ParserOptions => {
 };
 
 export { getParserOptions };
+
+export type { CsvFileName };
 
 export default JsonToCsvButton;

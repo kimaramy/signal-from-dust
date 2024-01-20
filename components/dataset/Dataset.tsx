@@ -7,7 +7,7 @@ import { CollectionUtils, Model } from '@/lib/model';
 import { useDustKey } from '@/components/dust';
 import { useLocationKey } from '@/components/location';
 import { useMonthKey } from '@/components/month';
-import { SceneUtils } from '@/components/scene/utils';
+import { SceneUtils } from '@/components/scene';
 import { useSeasonKey } from '@/components/season';
 import { Sequence } from '@/components/sequence';
 import { useYearKey } from '@/components/year';
@@ -137,17 +137,17 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
     }
   })();
 
-  const sequenceId = [
+  const sceneDatasetId = [
     initialCollectionKey,
     dustKey,
     yearKey,
-    seasonKey,
     monthKey,
+    seasonKey,
   ].join(',');
 
   if (!sceneDataset) return null;
 
-  return <Sequence sequenceId={sequenceId} sceneDataset={sceneDataset} />;
+  return <Sequence sequenceId={sceneDatasetId} sceneDataset={sceneDataset} />;
 }
 
 export default Dataset;

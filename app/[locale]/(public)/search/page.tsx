@@ -12,7 +12,7 @@ import {
 } from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
 import { parseCollectionKey } from '@/components/collection';
-import { Dataset, DatasetControl } from '@/components/dataset';
+import { Dataset, DatasetHeader } from '@/components/dataset';
 import { parseDustKey } from '@/components/dust';
 import { parseLocationKey } from '@/components/location';
 import { parseMonthKey } from '@/components/month';
@@ -65,7 +65,7 @@ async function DynamicDatasetPage({ searchParams }: NextPageProps) {
 
   return (
     <>
-      <DatasetControl dataset={initialDataset} datasetKeys={datasetKeys} />
+      <DatasetHeader dataset={initialDataset} datasetKeys={datasetKeys} />
       <Dataset
         initialCollectionKey={collectionKey}
         initialDataset={{ [collectionKey]: initialDataset }}
