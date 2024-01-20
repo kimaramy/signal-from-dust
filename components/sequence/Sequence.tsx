@@ -1,25 +1,12 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { cn } from '@/lib/css';
 import { Grid } from '@/components/layout';
 import { Scene, SceneUtils, type SceneData } from '@/components/scene';
 
-function useActiveScene() {
-  const [activeSceneIdx, setActiveSceneIdx] = useState<number | null>(null);
-
-  const checkOtherSceneActive = useCallback(
-    (targetSceneIdx: number) => {
-      const isAnySceneActive = activeSceneIdx !== null;
-      const isTargetSceneActive = targetSceneIdx !== activeSceneIdx;
-      return isAnySceneActive && isTargetSceneActive;
-    },
-    [activeSceneIdx]
-  );
-
-  return { activeSceneIdx, setActiveSceneIdx, checkOtherSceneActive };
-}
+import { useActiveScene } from './Sequence.hooks';
 
 interface SequenceProps {
   sequenceId: string;
@@ -32,8 +19,12 @@ function Sequence({ sequenceId, sceneDataset, className }: SequenceProps) {
 
   const values = sceneDataset.map((sceneData) => sceneData.value ?? 0);
 
-  const { activeSceneIdx, setActiveSceneIdx, checkOtherSceneActive } =
-    useActiveScene();
+  const {
+    activeSceneIdx,
+    setActiveSceneIdx,
+    resetActiveSceneIdx,
+    validateOtherSceneActive,
+  } = useActiveScene();
 
   useEffect(() => {
     window?.scrollTo({
@@ -56,9 +47,9 @@ function Sequence({ sequenceId, sceneDataset, className }: SequenceProps) {
           sceneData={sceneData}
           sceneLength={SceneUtils.getSceneLength(Math.max(...values))}
           isActive={activeSceneIdx === sceneIdx}
-          isDisabled={checkOtherSceneActive(sceneIdx)}
-          onPlay={(sceneIdx) => setActiveSceneIdx(sceneIdx)}
-          onStop={() => setActiveSceneIdx(null)}
+          isDisabled={validateOtherSceneActive(sceneIdx)}
+          onPlay={setActiveSceneIdx}
+          onStop={resetActiveSceneIdx}
         />
       )}
     />

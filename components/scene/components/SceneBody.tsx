@@ -22,39 +22,57 @@ interface SceneBodyProps
 }
 
 const SceneBody = React.forwardRef<HTMLUListElement, SceneBodyProps>(
-  function SceneBody(
-    { columns, intervalSecond, isPlaying = false, className, children },
-    ref
-  ) {
+  function SceneBody(props, ref) {
+    const {
+      columns,
+      intervalSecond,
+      isPlaying = false,
+      className,
+      children,
+    } = props;
+
     const { bits, getActiveBit, setBits, setActiveBit, resetBits } =
       useSceneContext();
 
     const { activeBitIdx, setActiveBitIdx, resetActiveBitIdx } =
       useBitContext();
 
+    // Do not add bits to deps cause it'll not trigger single interval context
     useEffect(() => {
       let interval: NodeJS.Timer;
 
       let _activeBitIdx = 0;
 
       if (isPlaying) {
-        interval = setInterval(() => {
-          // console.log(_activeBitIdx);
-          setBits((bits) =>
-            bits.reduce(
-              (accum, bit) => {
-                if (bit.idx === _activeBitIdx % bits.length) {
-                  accum.push({ ...bit, isActive: true });
-                } else {
-                  accum.push({ ...bit, isActive: false });
-                }
-                return accum;
-              },
-              [] as typeof bits
-            )
-          );
+        // console.log(`ready: ${_activeBitIdx}`);
+        if (_activeBitIdx === 0) {
+          // console.log(`init_start: ${_activeBitIdx}`);
+          const initialBits = [
+            { ...bits[0], isActive: true },
+            ...bits.slice(1),
+          ] as typeof bits;
+          setBits(initialBits);
           _activeBitIdx++;
+          // console.log(`init_end: ${_activeBitIdx}`);
+        }
+        interval = setInterval(() => {
+          // console.log(`interval_start: ${_activeBitIdx}`);
+          const newBits = bits.reduce(
+            (accum, bit) => {
+              if (bit.idx === _activeBitIdx % bits.length) {
+                accum.push({ ...bit, isActive: true });
+              } else {
+                accum.push({ ...bit, isActive: false });
+              }
+              return accum;
+            },
+            [] as typeof bits
+          );
+          setBits(newBits);
+          _activeBitIdx++;
+          // console.log(`interval_end: ${_activeBitIdx}`);
         }, intervalSecond * 1000);
+        // console.log(`finished: ${_activeBitIdx}`);
       } else {
         resetBits();
       }
