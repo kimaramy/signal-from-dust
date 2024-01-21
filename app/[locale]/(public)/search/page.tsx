@@ -21,10 +21,7 @@ import { parseYearKey } from '@/components/year';
 
 const fetchCachedDataset = cache(fetchDataset);
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}: NextPageProps): Promise<Metadata> {
+async function getPageTitle({ params, searchParams }: NextPageProps) {
   const locale = params?.locale as Locale;
 
   const dictionary = await getDictionary(locale);
@@ -50,10 +47,19 @@ export async function generateMetadata({
     year,
   }) as string;
 
+  return title;
+}
+
+export async function generateMetadata(
+  props: NextPageProps
+): Promise<Metadata> {
+  const title = await getPageTitle(props);
   return { title };
 }
 
-async function DynamicDatasetPage({ searchParams }: NextPageProps) {
+async function Page({ params, searchParams }: NextPageProps) {
+  const title = await getPageTitle({ params, searchParams });
+
   const collectionKey = parseCollectionKey(searchParams);
   const yearKey = parseYearKey(searchParams);
   const monthKey = parseMonthKey(searchParams);
@@ -63,9 +69,17 @@ async function DynamicDatasetPage({ searchParams }: NextPageProps) {
 
   const initialDataset = await fetchCachedDataset(...datasetKeys);
 
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`search_page: %d`, initialDataset.length);
+  }
+
   return (
     <>
-      <DatasetHeader dataset={initialDataset} datasetKeys={datasetKeys} />
+      <DatasetHeader
+        title={title}
+        dataset={initialDataset}
+        datasetKeys={datasetKeys}
+      />
       <Dataset
         initialCollectionKey={collectionKey}
         initialDataset={{ [collectionKey]: initialDataset }}
@@ -78,4 +92,4 @@ export const dynamicParams = false;
 
 export const revalidate = false;
 
-export default DynamicDatasetPage;
+export default Page;

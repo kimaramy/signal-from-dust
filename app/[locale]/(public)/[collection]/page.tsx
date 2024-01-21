@@ -16,21 +16,7 @@ import { Dataset, DatasetHeader } from '@/components/dataset';
 
 const fetchCachedDataset = cache(fetchDataset);
 
-type StaticDatasetPageProps = NextPageProps<
-  ReturnType<typeof generateStaticParams>[0]
->;
-
-export function generateStaticParams() {
-  return CollectionUtils.schema
-    .mapKeys(CollectionUtils.schema.lowerCaseKey)
-    .flatMap((collection) =>
-      i18n.locales.map((locale) => ({ locale, collection }))
-    );
-}
-
-export async function generateMetadata({
-  params,
-}: StaticDatasetPageProps): Promise<Metadata> {
+async function getPageTitle({ params }: Pick<PageProps, 'params'>) {
   const dictionary = await getDictionary(params.locale);
 
   const collection = CollectionUtils.schema.display(
@@ -52,13 +38,30 @@ export async function generateMetadata({
     dust,
   }) as string;
 
+  return title;
+}
+
+type PageProps = NextPageProps<ReturnType<typeof generateStaticParams>[0]>;
+
+export function generateStaticParams() {
+  return CollectionUtils.schema
+    .mapKeys(CollectionUtils.schema.lowerCaseKey)
+    .flatMap((collection) =>
+      i18n.locales.map((locale) => ({ locale, collection }))
+    );
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const title = await getPageTitle({ params });
   return { title };
 }
 
-async function StaticDatasetPage({
-  params: { collection },
-}: StaticDatasetPageProps) {
-  const collectionKey = CollectionUtils.schema.upperCaseKey(collection);
+async function Page({ params }: PageProps) {
+  const title = await getPageTitle({ params });
+
+  const collectionKey = CollectionUtils.schema.upperCaseKey(params.collection);
 
   const datasetKeys = [
     collectionKey,
@@ -69,9 +72,17 @@ async function StaticDatasetPage({
 
   const initialDataset = await fetchCachedDataset(...datasetKeys);
 
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`collection_page: %d`, initialDataset.length);
+  }
+
   return (
     <>
-      <DatasetHeader dataset={initialDataset} datasetKeys={datasetKeys} />
+      <DatasetHeader
+        title={title}
+        dataset={initialDataset}
+        datasetKeys={datasetKeys}
+      />
       <Dataset
         initialCollectionKey={collectionKey}
         initialDataset={{
@@ -86,4 +97,4 @@ export const dynamicParams = false;
 
 export const revalidate = false;
 
-export default StaticDatasetPage;
+export default Page;

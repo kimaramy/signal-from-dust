@@ -1,6 +1,3 @@
-'use client';
-
-import { useTitle } from '@/lib/hooks';
 import { CollectionUtils } from '@/lib/model';
 import { ButtonGroup } from '@/components/ui/group';
 import { SafeArea } from '@/components/ui/safe-area';
@@ -11,13 +8,12 @@ import { Header, Menu } from '@/components/layout';
 import type { DatasetKeys } from './types';
 
 interface DatasetHeaderProps {
+  title: string;
   dataset: object[];
   datasetKeys: DatasetKeys;
 }
 
-function DatasetHeader({ dataset, datasetKeys }: DatasetHeaderProps) {
-  const title = useTitle();
-
+function DatasetHeader({ title, dataset, datasetKeys }: DatasetHeaderProps) {
   const isDailyOrWeekly =
     CollectionUtils.schema.getDataCount(datasetKeys[0]) > 30;
 
