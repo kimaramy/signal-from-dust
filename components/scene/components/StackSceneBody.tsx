@@ -7,16 +7,18 @@ import { cn } from '@/lib/css';
 import type { SceneContextValue } from '../context';
 import { useSceneContext } from '../hooks';
 
+export type StackSceneBodyContext = Pick<SceneContextValue, 'bits'>;
+
 interface StackSceneBodyProps {
   className?: string;
-  children: (context: Pick<SceneContextValue, 'bits'>) => React.ReactNode;
+  children: (context: StackSceneBodyContext) => React.ReactNode;
 }
 
-const StackSceneBody = React.forwardRef<HTMLUListElement, StackSceneBodyProps>(
+const StackSceneBody = React.forwardRef<HTMLOListElement, StackSceneBodyProps>(
   function StackSceneBody({ className, children }, ref) {
     const { bits } = useSceneContext();
     return (
-      <ul
+      <ol
         ref={ref}
         style={{
           gridTemplateColumns: bits
@@ -26,12 +28,12 @@ const StackSceneBody = React.forwardRef<HTMLUListElement, StackSceneBodyProps>(
           transformStyle: 'preserve-3d',
         }}
         className={cn(
-          'relative grid h-full w-full flex-1 cursor-pointer gap-1 rounded-md bg-fixed p-1',
+          'relative grid h-full w-full flex-1 cursor-pointer list-none gap-1 rounded-md bg-fixed p-1',
           className
         )}
       >
         {children({ bits })}
-      </ul>
+      </ol>
     );
   }
 );

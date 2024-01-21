@@ -15,7 +15,7 @@ import type { SceneData } from './context';
 
 export class SceneUtils {
   static getSceneId(listId: string | number, itemId: string | number) {
-    return [listId, itemId].join(',');
+    return [listId, itemId].join('-');
   }
   static getSceneLength(value: number) {
     return value.toString(2).length;

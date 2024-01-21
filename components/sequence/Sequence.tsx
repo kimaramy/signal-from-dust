@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 import { cn } from '@/lib/css';
-import { Grid } from '@/components/layout';
 import { Scene, SceneUtils, type SceneData } from '@/components/scene';
 
 import { useActiveScene } from './Sequence.hooks';
@@ -15,8 +14,6 @@ interface SequenceProps {
 }
 
 function Sequence({ sequenceId, sceneDataset, className }: SequenceProps) {
-  const ref = useRef<HTMLUListElement>(null);
-
   const values = sceneDataset.map((sceneData) => sceneData.value ?? 0);
 
   const {
@@ -34,25 +31,33 @@ function Sequence({ sequenceId, sceneDataset, className }: SequenceProps) {
   }, [sceneDataset]);
 
   return (
-    <Grid
+    <article
       id={sequenceId}
-      ref={ref}
-      className={cn('h-full min-w-md overflow-auto', className)}
-      items={sceneDataset}
-      itemKey={(sceneData) => SceneUtils.getSceneId(sequenceId, sceneData.id)}
-      renderItem={(sceneData, sceneIdx) => (
-        <Scene
-          sceneId={SceneUtils.getSceneId(sequenceId, sceneData.id)}
-          sceneIdx={sceneIdx}
-          sceneData={sceneData}
-          sceneLength={SceneUtils.getSceneLength(Math.max(...values))}
-          isActive={activeSceneIdx === sceneIdx}
-          isDisabled={validateOtherSceneActive(sceneIdx)}
-          onPlay={setActiveSceneIdx}
-          onStop={resetActiveSceneIdx}
-        />
+      className={cn(
+        'grid h-full min-h-screen w-full min-w-md content-center items-center gap-2 overflow-auto overflow-y-scroll p-4 scrollbar-hide',
+        className
       )}
-    />
+      style={{
+        gridTemplateRows: `repeat(${sceneDataset.length}, 2.25rem)`,
+      }}
+    >
+      {sceneDataset.map((sceneData, sceneIdx) => {
+        const sceneId = SceneUtils.getSceneId(sequenceId, sceneData.id);
+        return (
+          <Scene
+            key={sceneId}
+            sceneId={sceneId}
+            sceneIdx={sceneIdx}
+            sceneData={sceneData}
+            sceneLength={SceneUtils.getSceneLength(Math.max(...values))}
+            isActive={activeSceneIdx === sceneIdx}
+            isDisabled={validateOtherSceneActive(sceneIdx)}
+            onPlay={setActiveSceneIdx}
+            onStop={resetActiveSceneIdx}
+          />
+        );
+      })}
+    </article>
   );
 }
 

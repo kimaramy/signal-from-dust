@@ -48,7 +48,7 @@ function Scene({
   const [claps, setClaps] = useState<Tone.Sequence | null>(null);
   const [kicks, setKicks] = useState<Tone.Sequence | null>(null);
 
-  const handlePlayer = useCallback(
+  const handleScenePlay = useCallback(
     async ({ bits }: SceneHeaderContext) => {
       await Tone.start();
       if (!isPlaying && Tone.Transport.state !== 'started') {
@@ -98,20 +98,18 @@ function Scene({
       onMouseOver={() => setHovering(true)}
       onMouseOut={() => setHovering(false)}
     >
-      <SceneHeader>
+      <SceneHeader className="flex flex-row-reverse items-center gap-2">
         {({ bits }) => (
-          <div className="flex items-center gap-2">
+          <>
+            <h2 className="flex-1 truncate font-mono text-xs">
+              {sceneData.display.dates[0]}
+            </h2>
             <PlayerButton
               isPlaying={isPlaying}
               className="flex-none"
-              onClick={() => {
-                handlePlayer({ bits });
-              }}
+              onClick={() => handleScenePlay({ bits })}
             />
-            <p className="flex-1 truncate font-mono text-xs">
-              {sceneData.display.dates[0]}
-            </p>
-          </div>
+          </>
         )}
       </SceneHeader>
 
@@ -123,18 +121,19 @@ function Scene({
             intervalSecond={bitDurationAsSecond}
             className="group-hover:ring-1"
           >
-            {({ bits, setActiveBitIdx, resetActiveBitIdx }) =>
-              bits.map((bit) => {
+            {(sceneContext, bitContext) =>
+              sceneContext.bits.map((bit) => {
                 const bitId = BitUtils.getBitId(sceneId, bit.idx);
                 return (
                   <li key={bitId} className="relative h-full">
                     <Bit
+                      view="2d"
                       bitId={bitId}
                       bitIdx={bit.idx}
                       bit={bit.value}
-                      isSceneActive={isPlaying}
-                      onMouseOver={(bitIdx) => setActiveBitIdx(bitIdx)}
-                      onMouseOut={() => resetActiveBitIdx()}
+                      isActive={isPlaying}
+                      onHover={(bitIdx) => bitContext.setActiveBitIdx(bitIdx)}
+                      onBlur={(_bitIdx) => bitContext.resetActiveBitIdx()}
                     />
                     <BitOverlay
                       className={cn(bit.isActive ? 'visible' : 'invisible')}

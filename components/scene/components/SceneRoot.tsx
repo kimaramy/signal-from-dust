@@ -87,7 +87,7 @@ const SceneRoot = React.forwardRef<HTMLDivElement, SceneRootProps>(
         <BitContext.Provider
           value={{ activeBitIdx, setActiveBitIdx, resetActiveBitIdx }}
         >
-          <div
+          <section
             ref={ref}
             className={cn(
               'relative flex h-full items-center gap-6 rounded-md',
@@ -98,7 +98,7 @@ const SceneRoot = React.forwardRef<HTMLDivElement, SceneRootProps>(
             {...rest}
           >
             {children}
-          </div>
+          </section>
         </BitContext.Provider>
       </SceneContext.Provider>
     );

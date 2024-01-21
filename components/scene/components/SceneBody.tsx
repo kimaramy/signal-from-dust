@@ -7,21 +7,20 @@ import { cn } from '@/lib/css';
 import type { BitContextValue, SceneContextValue } from '../context';
 import { useBitContext, useSceneContext } from '../hooks';
 
-export type SceneBodyContext = Omit<
-  SceneContextValue,
-  'sceneIdx' | 'sceneData'
-> &
-  BitContextValue;
+export type SceneBodyContexts = [
+  sceneContext: SceneContextValue,
+  bitContext: BitContextValue,
+];
 
-interface SceneBodyProps
-  extends Omit<React.HTMLAttributes<HTMLUListElement>, 'children'> {
+interface SceneBodyProps {
   columns: number;
   isPlaying: boolean;
   intervalSecond: number;
-  children: (context: SceneBodyContext) => React.ReactNode;
+  className?: string;
+  children: (...contexts: SceneBodyContexts) => React.ReactNode;
 }
 
-const SceneBody = React.forwardRef<HTMLUListElement, SceneBodyProps>(
+const SceneBody = React.forwardRef<HTMLOListElement, SceneBodyProps>(
   function SceneBody(props, ref) {
     const {
       columns,
@@ -31,11 +30,9 @@ const SceneBody = React.forwardRef<HTMLUListElement, SceneBodyProps>(
       children,
     } = props;
 
-    const { bits, getActiveBit, setBits, setActiveBit, resetBits } =
-      useSceneContext();
+    const sceneContext = useSceneContext();
 
-    const { activeBitIdx, setActiveBitIdx, resetActiveBitIdx } =
-      useBitContext();
+    const bitContext = useBitContext();
 
     // Do not add bits to deps cause it'll not trigger single interval context
     useEffect(() => {
@@ -48,33 +45,34 @@ const SceneBody = React.forwardRef<HTMLUListElement, SceneBodyProps>(
         if (_activeBitIdx === 0) {
           // console.log(`init_start: ${_activeBitIdx}`);
           const initialBits = [
-            { ...bits[0], isActive: true },
-            ...bits.slice(1),
-          ] as typeof bits;
-          setBits(initialBits);
+            { ...sceneContext.bits[0], isActive: true },
+            ...sceneContext.bits.slice(1),
+          ] as typeof sceneContext.bits;
+          sceneContext.setBits(initialBits);
           _activeBitIdx++;
           // console.log(`init_end: ${_activeBitIdx}`);
         }
         interval = setInterval(() => {
           // console.log(`interval_start: ${_activeBitIdx}`);
-          const newBits = bits.reduce(
+          const loopLength = sceneContext.bits.length;
+          const newBits = sceneContext.bits.reduce(
             (accum, bit) => {
-              if (bit.idx === _activeBitIdx % bits.length) {
+              if (bit.idx === _activeBitIdx % loopLength) {
                 accum.push({ ...bit, isActive: true });
               } else {
                 accum.push({ ...bit, isActive: false });
               }
               return accum;
             },
-            [] as typeof bits
+            [] as typeof sceneContext.bits
           );
-          setBits(newBits);
+          sceneContext.setBits(newBits);
           _activeBitIdx++;
           // console.log(`interval_end: ${_activeBitIdx}`);
         }, intervalSecond * 1000);
         // console.log(`finished: ${_activeBitIdx}`);
       } else {
-        resetBits();
+        sceneContext.resetBits();
       }
       return () => {
         clearInterval(interval);
@@ -83,27 +81,18 @@ const SceneBody = React.forwardRef<HTMLUListElement, SceneBodyProps>(
     }, [isPlaying, intervalSecond]);
 
     return (
-      <ul
+      <ol
         ref={ref}
         style={{
           gridTemplateColumns: `repeat(${columns}, 1fr)`,
         }}
         className={cn(
-          'relative grid h-full w-full flex-1 gap-1 rounded-md bg-fixed p-1',
+          'relative grid h-full w-full flex-1 list-none gap-1 rounded-md bg-fixed  p-1',
           className
         )}
       >
-        {children({
-          bits,
-          setBits,
-          resetBits,
-          getActiveBit,
-          setActiveBit,
-          activeBitIdx,
-          setActiveBitIdx,
-          resetActiveBitIdx,
-        })}
-      </ul>
+        {children(sceneContext, bitContext)}
+      </ol>
     );
   }
 );

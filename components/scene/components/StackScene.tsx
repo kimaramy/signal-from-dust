@@ -20,13 +20,9 @@ function StackScene({ sceneId, sceneIdx, sceneData }: StackSceneProps) {
           bits.map((bit, bitIdx) => {
             const bitId = BitUtils.getBitId(sceneId, bitIdx);
             return (
-              <Bit
-                key={bitId}
-                bit={bit.value}
-                bitId={bitId}
-                bitIdx={bitIdx}
-                isStackedView
-              />
+              <li key={bitId} className="h-full">
+                <Bit view="3d" bit={bit.value} bitId={bitId} bitIdx={bitIdx} />
+              </li>
             );
           })
         }

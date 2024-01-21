@@ -4,6 +4,7 @@ import * as Domains from '@/domains';
 
 import { useLocaleDictionary } from '@/lib/i18n';
 import { CollectionUtils, Model } from '@/lib/model';
+import { toLowerCase } from '@/lib/utils';
 import { useDustKey } from '@/components/dust';
 import { useLocationKey } from '@/components/location';
 import { useMonthKey } from '@/components/month';
@@ -143,7 +144,9 @@ function Dataset({ initialCollectionKey, initialDataset }: DatasetProps) {
     yearKey,
     monthKey,
     seasonKey,
-  ].join(',');
+  ]
+    .map((key) => toLowerCase(key))
+    .join('-');
 
   if (!sceneDataset) return null;
 
