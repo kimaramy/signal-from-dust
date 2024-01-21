@@ -5,8 +5,11 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { postgrestErrorSchema, type PostgrestError } from '@/lib/model';
 
-import ErrorContainer from './ErrorContainer';
+import AppErrorBoundary from './AppErrorBoundary';
 
+/**
+ * error.tsx 파일에 세그먼트(페이지)에서 발생한 리액트 쿼리 에러를 위임하지 않고 내부 컴포넌트에서 사용할 경우 사용
+ */
 function QueryErrorBoundary({ children }: { children: React.ReactNode }) {
   return (
     <QueryErrorResetBoundary>
@@ -24,8 +27,9 @@ function QueryErrorBoundary({ children }: { children: React.ReactNode }) {
                 const { code, message } = error as PostgrestError;
                 serializedError = `[${code}] ${message}}`;
               }
+
               return (
-                <ErrorContainer
+                <AppErrorBoundary
                   error={serializedError}
                   reset={resetErrorBoundary}
                 />

@@ -9,7 +9,6 @@ import {
   type NextLayoutProps,
 } from '@/lib/router';
 import { ToastProvider } from '@/lib/toast';
-import { QueryErrorBoundary } from '@/components/error';
 import { ThemeProvider } from '@/components/theme';
 
 import AppIcons from './app-icons';
@@ -38,14 +37,12 @@ function RootLayout({ children }: NextLayoutProps) {
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryClientProvider>
-            <QueryErrorBoundary>
-              <div
-                id="root-layout"
-                className="relative flex min-h-screen flex-col"
-              >
-                {children}
-              </div>
-            </QueryErrorBoundary>
+            <div
+              id="root-layout"
+              className="relative flex min-h-screen flex-col"
+            >
+              {children}
+            </div>
             <ToastProvider />
           </QueryClientProvider>
         </ThemeProvider>

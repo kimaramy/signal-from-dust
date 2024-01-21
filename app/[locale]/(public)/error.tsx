@@ -1,11 +1,21 @@
 'use client';
 
-import ErrorContainer, {
-  type ErrorContainerProps,
-} from '@/components/error/ErrorContainer';
+import { QueryErrorResetBoundary } from '@tanstack/react-query';
 
-function Error(props: ErrorContainerProps) {
-  return <ErrorContainer className="min-h-screen" {...props} />;
+import { AppErrorBoundary, type AppError } from '@/components/error';
+
+function Error(props: AppError) {
+  return (
+    <QueryErrorResetBoundary>
+      {({ reset: resetQuery }) => (
+        <AppErrorBoundary
+          className="min-h-screen"
+          resetQuery={resetQuery}
+          {...props}
+        />
+      )}
+    </QueryErrorResetBoundary>
+  );
 }
 
 export default Error;
