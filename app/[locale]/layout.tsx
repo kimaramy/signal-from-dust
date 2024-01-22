@@ -11,7 +11,6 @@ import {
 import { ToastProvider } from '@/lib/toast';
 import { ThemeProvider } from '@/components/theme';
 
-import AppIcons from './app-icons';
 import { baseMetadata } from './metadata';
 
 export const metadata = baseMetadata;
@@ -27,7 +26,6 @@ function RootLayout({ children }: NextLayoutProps) {
           crossOrigin="anonymous"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable-dynamic-subset.css"
         />
-        <AppIcons />
       </head>
       <body
         className={cn(
