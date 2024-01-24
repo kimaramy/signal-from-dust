@@ -7,7 +7,7 @@ import type { Dictionary } from './dictionary';
 import { getSafeLocale, type Locale } from './i18n';
 
 interface LocaleDictionaryProviderProps {
-  locale?: Locale;
+  locale: Locale;
   dictionary: Dictionary;
   children: React.ReactNode;
 }

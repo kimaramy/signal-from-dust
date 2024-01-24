@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-import { getSystemLocale, i18n } from '@/lib/i18n';
+import { getServerSideLocale, i18n } from '@/lib/i18n';
 
 export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone(); // https://nextjs.org/docs/messages/middleware-relative-urls
@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
 
   // Redirect if there is no locale
   if (pathnameIsMissingLocale) {
-    const locale = getSystemLocale(request);
+    const locale = getServerSideLocale(request);
     // e.g. If incoming request is '/weekly', the new URL is now '/ko/weekly'
     url.pathname = `/${locale}${url.pathname.startsWith('/') ? '' : '/'}${
       url.pathname
