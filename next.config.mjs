@@ -14,7 +14,13 @@ const nextConfig = {
     typedRoutes: true,
   },
   images: {
-    domains: ['ygpfckjmxgbewxkislyq.supabase.co'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ygpfckjmxgbewxkislyq.supabase.co',
+        pathname: '/storage/**',
+      },
+    ],
   },
 };
 

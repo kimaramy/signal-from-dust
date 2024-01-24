@@ -1,7 +1,10 @@
-import './globals.css';
+import '../globals.css';
+
+import type { Metadata } from 'next';
 
 import { cn } from '@/lib/css';
 import { fontSans } from '@/lib/fonts';
+import { getDictionary, i18n, LocaleDictionaryProvider } from '@/lib/i18n';
 import { QueryClientProvider } from '@/lib/react-query';
 import {
   Progress,
@@ -11,13 +14,27 @@ import {
 import { ToastProvider } from '@/lib/toast';
 import { ThemeProvider } from '@/components/theme';
 
-import { baseMetadata } from './metadata';
+import { getBaseMetadata } from '../metadata';
 
-export const metadata = baseMetadata;
+type LayoutProps = NextLayoutProps & {
+  params: ReturnType<typeof generateStaticParams>[0];
+};
 
-function RootLayout({ children }: NextLayoutProps) {
+export function generateStaticParams() {
+  return i18n.locales.map((locale) => ({ locale }));
+}
+
+export function generateMetadata({
+  params: { locale },
+}: LayoutProps): Metadata {
+  return getBaseMetadata(locale, locale === 'en' ? 'ko' : 'en');
+}
+
+async function Layout({ params, children }: LayoutProps) {
+  const dictionary = await getDictionary(params.locale);
+
   return (
-    <html suppressHydrationWarning>
+    <html lang={params.locale} suppressHydrationWarning>
       <head>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <link rel="preconnect" href="https://cdn.jsdelivr.net" />
@@ -35,13 +52,18 @@ function RootLayout({ children }: NextLayoutProps) {
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryClientProvider>
-            <div
-              id="root-layout"
-              className="relative flex min-h-screen flex-col"
+            <LocaleDictionaryProvider
+              locale={params.locale}
+              dictionary={dictionary}
             >
-              {children}
-            </div>
-            <ToastProvider />
+              <div
+                id="root-layout"
+                className="relative flex min-h-screen flex-col"
+              >
+                {children}
+              </div>
+              <ToastProvider />
+            </LocaleDictionaryProvider>
           </QueryClientProvider>
         </ThemeProvider>
         <RouteChangeEventHandlers progressComponent={<Progress />} />
@@ -50,4 +72,4 @@ function RootLayout({ children }: NextLayoutProps) {
   );
 }
 
-export default RootLayout;
+export default Layout;
