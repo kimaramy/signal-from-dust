@@ -12,7 +12,7 @@ import {
 } from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
 import { parseCollectionKey } from '@/components/collection';
-import { Dataset, DatasetHeader } from '@/components/dataset';
+import { Dataset } from '@/components/dataset';
 import { parseDustKey } from '@/components/dust';
 import { parseLocationKey } from '@/components/location';
 import { parseMonthKey } from '@/components/month';
@@ -75,13 +75,11 @@ async function Page({ params, searchParams }: NextPageProps) {
   }
 
   return (
-    <>
-      <DatasetHeader title={title} dataset={initialDataset} />
-      <Dataset
-        initialCollectionKey={collectionKey}
-        initialDataset={{ [collectionKey]: initialDataset }}
-      />
-    </>
+    <Dataset
+      title={title}
+      initialCollectionKey={collectionKey}
+      initialDataset={initialDataset}
+    />
   );
 }
 

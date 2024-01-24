@@ -12,7 +12,7 @@ import {
   YearUtils,
 } from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
-import { Dataset, DatasetHeader } from '@/components/dataset';
+import { Dataset } from '@/components/dataset';
 import { SettingsDialog } from '@/components/settings/dialog';
 
 const fetchCachedDataset = cache(fetchDataset);
@@ -68,12 +68,10 @@ async function Page(props: NextPageProps) {
 
   return (
     <>
-      <DatasetHeader title={title} dataset={initialDataset} />
       <Dataset
+        title={title}
         initialCollectionKey={CollectionUtils.schema.defaultKey}
-        initialDataset={{
-          [CollectionUtils.schema.defaultKey]: initialDataset,
-        }}
+        initialDataset={initialDataset}
       />
       <SettingsDialog />
     </>

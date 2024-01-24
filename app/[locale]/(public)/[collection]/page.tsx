@@ -12,7 +12,7 @@ import {
   YearUtils,
 } from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
-import { Dataset, DatasetHeader } from '@/components/dataset';
+import { Dataset } from '@/components/dataset';
 
 const fetchCachedDataset = cache(fetchDataset);
 
@@ -78,15 +78,11 @@ async function Page({ params }: PageProps) {
   }
 
   return (
-    <>
-      <DatasetHeader title={title} dataset={initialDataset} />
-      <Dataset
-        initialCollectionKey={collectionKey}
-        initialDataset={{
-          [collectionKey]: initialDataset,
-        }}
-      />
-    </>
+    <Dataset
+      title={title}
+      initialCollectionKey={collectionKey}
+      initialDataset={initialDataset}
+    />
   );
 }
 
