@@ -16,7 +16,7 @@ import { Dataset, DatasetHeader } from '@/components/dataset';
 
 const fetchCachedDataset = cache(fetchDataset);
 
-async function getPageTitle({ params }: Pick<PageProps, 'params'>) {
+async function _generateMetadata({ params }: Pick<PageProps, 'params'>) {
   const dictionary = await getDictionary(params.locale);
 
   const collection = CollectionUtils.schema.display(
@@ -38,7 +38,9 @@ async function getPageTitle({ params }: Pick<PageProps, 'params'>) {
     dust,
   }) as string;
 
-  return title;
+  const description = dictionary.intro.content.subtitle;
+
+  return { title, description } satisfies Metadata;
 }
 
 type PageProps = NextPageProps<ReturnType<typeof generateStaticParams>[0]>;
@@ -54,12 +56,11 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const title = await getPageTitle({ params });
-  return { title };
+  return await _generateMetadata({ params });
 }
 
 async function Page({ params }: PageProps) {
-  const title = await getPageTitle({ params });
+  const { title } = await _generateMetadata({ params });
 
   const collectionKey = CollectionUtils.schema.upperCaseKey(params.collection);
 
@@ -78,11 +79,7 @@ async function Page({ params }: PageProps) {
 
   return (
     <>
-      <DatasetHeader
-        title={title}
-        dataset={initialDataset}
-        datasetKeys={datasetKeys}
-      />
+      <DatasetHeader title={title} dataset={initialDataset} />
       <Dataset
         initialCollectionKey={collectionKey}
         initialDataset={{

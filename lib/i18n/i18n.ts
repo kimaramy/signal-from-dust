@@ -4,3 +4,6 @@ export const i18n = {
 } as const;
 
 export type Locale = (typeof i18n)['locales'][number];
+
+export const getSafeLocale = (locale?: Locale) =>
+  locale && i18n.locales.includes(locale) ? locale : i18n.defaultLocale; // to avoid runtime error

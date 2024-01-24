@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-import { seoConfig } from '@/lib/seo';
+import metadata from '@/lib/metadata.json';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/admin/', '/dashboard/'],
     },
-    sitemap: [`${seoConfig.links.origin}/sitemap.xml`],
+    sitemap: [`${metadata.domain}/sitemap.xml`],
   };
 }

@@ -1,7 +1,13 @@
 'use client';
 
+import { useCallback } from 'react';
+
 import { cn } from '@/lib/css';
-import { useLocaleDictionary, useLocaleSwitchedURL } from '@/lib/i18n';
+import {
+  useLocaleDictionary,
+  useLocaleSwitchedURL,
+  type Locale,
+} from '@/lib/i18n';
 import { Icon } from '@/lib/icon';
 import { Link } from '@/lib/router';
 import { Button, type ButtonProps } from '@/components/ui/button';
@@ -22,9 +28,14 @@ function LocaleToggleButton({
 }: LocaleToggleButtonProps) {
   const { locale, dictionary } = useLocaleDictionary();
 
-  const localeSwitchedURL = useLocaleSwitchedURL(locale);
+  const localeSwitcher = useCallback(
+    (locale: Locale) => (locale === 'en' ? 'ko' : 'en'),
+    []
+  );
 
-  const switchedLocale = locale === 'en' ? 'ko' : 'en';
+  const switchedLocale = localeSwitcher(locale);
+
+  const localeSwitchedURL = useLocaleSwitchedURL(locale, localeSwitcher);
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -32,7 +43,10 @@ function LocaleToggleButton({
         <TooltipTrigger asChild>
           <Button asChild variant="ghost" size="icon" {...rest}>
             <Link href={localeSwitchedURL}>
-              <Icon.Languages className={cn('h-4 w-4', iconClassName)} />
+              <Icon.Languages
+                aria-hidden
+                className={cn('h-4 w-4', iconClassName)}
+              />
               <span className="sr-only">
                 {dictionary.locale.btn[switchedLocale]}
               </span>

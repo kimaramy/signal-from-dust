@@ -33,12 +33,16 @@ function ThemeToggleButton({ iconClassName, ...rest }: ThemeToggleButtonProps) {
             {...rest}
           >
             <Icon.Sun
+              aria-hidden
               className={cn(
                 'hidden h-[1.375rem] w-[1.1rem] dark:block',
                 iconClassName
               )}
             />
-            <Icon.Moon className={cn('h-4 w-4 dark:hidden', iconClassName)} />
+            <Icon.Moon
+              aria-hidden
+              className={cn('h-4 w-4 dark:hidden', iconClassName)}
+            />
             <span className="sr-only">{dictionary.theme.btn}</span>
           </Button>
         </TooltipTrigger>

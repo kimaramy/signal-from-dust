@@ -5,7 +5,7 @@ import { AppErrorBoundary, type AppError } from '@/components/error';
 /**
  * TODO: 유저 친화적 에러 페이지로 디자인 변경
  */
-export default function GlobalError(props: AppError) {
+function GlobalError(props: AppError) {
   return (
     <html>
       <body>
@@ -14,3 +14,5 @@ export default function GlobalError(props: AppError) {
     </html>
   );
 }
+
+export default GlobalError;

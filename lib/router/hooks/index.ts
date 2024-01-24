@@ -7,6 +7,7 @@ export { default as usePlainUrlParam } from './usePlainUrlParam';
 export * from './useSetUrlParam';
 
 export { default as useNavigate } from './useNavigate';
+export { default as useHref } from './useHref';
 export { default as useUrlParam } from './useUrlParam';
 export {
   parseUrlParam,

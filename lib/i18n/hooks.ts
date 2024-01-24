@@ -16,16 +16,19 @@ function useLocaleDictionary() {
   return localeDictionary;
 }
 
-function useLocaleSwitchedURL(locale: Locale) {
+function useLocaleSwitchedURL(
+  locale: Locale,
+  switchFn: (locale: Locale) => Locale
+) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const localeSwitchedURL = useMemo(() => {
     if (!pathname) return '/';
     const segments = pathname.split('/');
-    segments[1] = locale === 'en' ? 'ko' : 'en';
+    segments[1] = switchFn(locale); // e.g. locale === 'en' ? 'ko' : 'en';
     return `${segments.join('/')}?${searchParams.toString()}`;
-  }, [pathname, searchParams, locale]);
+  }, [pathname, searchParams, switchFn, locale]);
 
   return localeSwitchedURL;
 }

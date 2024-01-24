@@ -1,0 +1,24 @@
+{
+  "title": "Signal from dust",
+  "description": "Signals and patterns found from PM10 and PM2.5 data",
+  "keywords": [
+    "PM10",
+    "PM2.5",
+    "dust",
+    "air pollution",
+    "data visualization",
+    "data sonification",
+    "data art",
+    "interative art"
+  ],
+  "author": {
+    "name": "Haram Kim",
+    "url": "https://github.com/kimaramy"
+  },
+  "domain": "https://signal-from-dust.earth",
+  "link": {
+    "og_image": "https://ygpfckjmxgbewxkislyq.supabase.co/storage/v1/object/public/imgs/og.webp",
+    "repo": "https://github.com/kimaramy/signal-from-dust",
+    "docs": "https://github.com/kimaramy/signal-from-dust/blob/master/README.md"
+  }
+}

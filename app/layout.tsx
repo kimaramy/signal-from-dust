@@ -29,7 +29,7 @@ function RootLayout({ children }: NextLayoutProps) {
       </head>
       <body
         className={cn(
-          'min-h-screen bg-body font-sans antialiased scrollbar-hide',
+          'min-h-screen bg-background font-sans antialiased scrollbar-hide',
           fontSans.variable
         )}
       >

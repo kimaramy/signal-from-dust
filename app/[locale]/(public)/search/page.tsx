@@ -21,7 +21,7 @@ import { parseYearKey } from '@/components/year';
 
 const fetchCachedDataset = cache(fetchDataset);
 
-async function getPageTitle({ params, searchParams }: NextPageProps) {
+async function _generateMetadata({ params, searchParams }: NextPageProps) {
   const locale = params?.locale as Locale;
 
   const dictionary = await getDictionary(locale);
@@ -47,18 +47,19 @@ async function getPageTitle({ params, searchParams }: NextPageProps) {
     year,
   }) as string;
 
-  return title;
+  const description = dictionary.intro.content.subtitle;
+
+  return { title, description } satisfies Metadata;
 }
 
 export async function generateMetadata(
   props: NextPageProps
 ): Promise<Metadata> {
-  const title = await getPageTitle(props);
-  return { title };
+  return await _generateMetadata(props);
 }
 
 async function Page({ params, searchParams }: NextPageProps) {
-  const title = await getPageTitle({ params, searchParams });
+  const { title } = await _generateMetadata({ params, searchParams });
 
   const collectionKey = parseCollectionKey(searchParams);
   const yearKey = parseYearKey(searchParams);
@@ -75,11 +76,7 @@ async function Page({ params, searchParams }: NextPageProps) {
 
   return (
     <>
-      <DatasetHeader
-        title={title}
-        dataset={initialDataset}
-        datasetKeys={datasetKeys}
-      />
+      <DatasetHeader title={title} dataset={initialDataset} />
       <Dataset
         initialCollectionKey={collectionKey}
         initialDataset={{ [collectionKey]: initialDataset }}

@@ -2,8 +2,8 @@
 
 import { useLocaleDictionary } from '@/lib/i18n';
 import { Icon } from '@/lib/icon';
+import metadata from '@/lib/metadata.json';
 import { Link } from '@/lib/router';
-import { seoConfig } from '@/lib/seo';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -43,7 +43,7 @@ function IntroSheetContent() {
           </ul>
           <div>
             <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
-              <Link href={seoConfig.links.github} target="_blank">
+              <Link href={metadata.link.repo} target="_blank">
                 <Icon.Github aria-hidden className="h-4 w-4" />
                 <span className="sr-only">Gitub</span>
               </Link>
