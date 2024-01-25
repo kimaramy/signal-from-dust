@@ -21,7 +21,7 @@ const SceneHeader = React.forwardRef<HTMLDivElement, SceneHeaderProps>(
     return (
       <header
         ref={ref}
-        style={{ width: `min(8rem, 12vw)` }}
+        style={{ width: `min(7.5rem, 12vw)` }}
         className={cn('h-full flex-none', className)}
       >
         {children({ bits })}

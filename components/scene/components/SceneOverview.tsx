@@ -6,9 +6,10 @@ import { cn } from '@/lib/css';
 import { IntlMessageFormat, useLocaleDictionary } from '@/lib/i18n';
 import { Icon } from '@/lib/icon';
 import { DustUtils } from '@/lib/model';
+import { useBitContext } from '@/components/bit';
 import { DustThumbnail } from '@/components/dust';
 
-import { useBitContext, useSceneContext } from '../hooks';
+import { useSceneContext } from '../hooks';
 
 function DustValueView() {
   const { sceneData } = useSceneContext();
@@ -37,25 +38,27 @@ function BitsView() {
   const bitContext = useBitContext();
 
   const _activeBitIdx =
-    sceneContext.getActiveBit()?.idx ?? bitContext.activeBitIdx;
+    sceneContext.getActiveBit()?.id ?? bitContext.selectedBitIdx;
 
   return (
     <p className="inline-block divide-x divide-ring border border-ring font-mono text-base font-semibold tracking-wider text-accent-foreground dark:divide-white dark:border-white">
-      {sceneContext.bits.map((bit) => {
-        const isActiveBit = bit.idx === _activeBitIdx;
-        return (
-          <span
-            key={`${bit.idx}`}
-            className={cn(
-              'inline-flex items-center justify-center px-2 py-0.5',
-              isActiveBit &&
-                'bg-ring dark:bg-primary dark:text-primary-foreground'
-            )}
-          >
-            {bit.value}
-          </span>
-        );
-      })}
+      {sceneContext.bits
+        .filter((bit) => !bit.isVacant)
+        .map((bit, bitIdx) => {
+          const isActiveBit = bitIdx === _activeBitIdx;
+          return (
+            <span
+              key={`${bitIdx}`}
+              className={cn(
+                'inline-flex items-center justify-center px-2 py-0.5',
+                isActiveBit &&
+                  'bg-ring dark:bg-primary dark:text-primary-foreground'
+              )}
+            >
+              {bit.value}
+            </span>
+          );
+        })}
     </p>
   );
 }

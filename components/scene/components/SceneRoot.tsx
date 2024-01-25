@@ -5,16 +5,12 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { cn } from '@/lib/css';
 import { BitUtils } from '@/components/bit';
 
-import {
-  BitContext,
-  SceneContext,
-  type ActiveBitIdx,
-  type SceneData,
-} from '../context';
+import { SceneContext, type SceneData } from '../context';
 
 export interface SceneRootProps extends React.HTMLAttributes<HTMLDivElement> {
   sceneIdx: number;
   sceneData: SceneData;
+  sceneLength: number;
   isActive?: boolean;
   isDisabled?: boolean;
 }
@@ -24,6 +20,7 @@ const SceneRoot = React.forwardRef<HTMLDivElement, SceneRootProps>(
     const {
       sceneIdx,
       sceneData,
+      sceneLength,
       isActive = false,
       isDisabled = false,
       className,
@@ -33,12 +30,15 @@ const SceneRoot = React.forwardRef<HTMLDivElement, SceneRootProps>(
 
     const initialBits = useMemo(
       () =>
-        BitUtils.toBits(sceneData.value).map((value, idx) => ({
-          idx,
-          value,
-          isActive: false,
-        })),
-      [sceneData.value]
+        BitUtils.toBitValuesWithVacancies(sceneData.value, sceneLength).map(
+          (value, idx) => ({
+            id: idx,
+            value,
+            isVacant: value === '-1',
+            isActive: false,
+          })
+        ),
+      [sceneData.value, sceneLength]
     );
 
     const initialActiveBit = null;
@@ -56,7 +56,7 @@ const SceneRoot = React.forwardRef<HTMLDivElement, SceneRootProps>(
       setBits((bits) =>
         bits.reduce(
           (accum, bit) => {
-            if (bit.idx === targetBitIdx) {
+            if (bit.id === targetBitIdx) {
               accum.push({ ...bit, isActive: true });
             } else {
               accum.push({ ...bit, isActive: false });
@@ -67,10 +67,6 @@ const SceneRoot = React.forwardRef<HTMLDivElement, SceneRootProps>(
         )
       );
     }, []);
-
-    const [activeBitIdx, setActiveBitIdx] = useState<ActiveBitIdx>(null);
-
-    const resetActiveBitIdx = useCallback(() => setActiveBitIdx(null), []);
 
     return (
       <SceneContext.Provider
@@ -84,22 +80,18 @@ const SceneRoot = React.forwardRef<HTMLDivElement, SceneRootProps>(
           setActiveBit,
         }}
       >
-        <BitContext.Provider
-          value={{ activeBitIdx, setActiveBitIdx, resetActiveBitIdx }}
+        <section
+          ref={ref}
+          className={cn(
+            'relative flex h-full items-center gap-6 rounded-md',
+            isActive && 'z-20',
+            isDisabled && 'pointer-events-none opacity-50',
+            className
+          )}
+          {...rest}
         >
-          <section
-            ref={ref}
-            className={cn(
-              'relative flex h-full items-center gap-6 rounded-md',
-              isActive && 'z-20',
-              isDisabled && 'pointer-events-none opacity-50',
-              className
-            )}
-            {...rest}
-          >
-            {children}
-          </section>
-        </BitContext.Provider>
+          {children}
+        </section>
       </SceneContext.Provider>
     );
   }

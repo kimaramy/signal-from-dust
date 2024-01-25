@@ -13,13 +13,13 @@ import { random } from 'lodash-es';
 import { cn } from '@/lib/css';
 import { Instrument } from '@/lib/tone';
 
+import { bitNoiseId } from './BitNoise';
 import BitOverlay from './BitOverlay';
-import { SOUND_FILTER_ID } from './SoundFilter';
 
 const turbulenceValue = { val: 0.000001 };
 const turbulenceValueX = { val: 0.000001 };
 
-interface BitProps
+interface BitViewProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onBlur'> {
   view: '2d' | '3d';
   bit: string;
@@ -30,8 +30,17 @@ interface BitProps
   onBlur?: (bitIdx: number) => void;
 }
 
-function Bit(props: BitProps) {
-  const { bit, bitId, bitIdx, view, isActive = false, onHover, onBlur } = props;
+function BitView(props: BitViewProps) {
+  const {
+    bit,
+    bitId,
+    bitIdx,
+    view,
+    isActive = false,
+    onHover,
+    onBlur,
+    className,
+  } = props;
 
   const is3DView = view === '3d';
 
@@ -88,7 +97,7 @@ function Bit(props: BitProps) {
   useEffect(() => {
     if (isEntering) {
       turbulenceRef.current = document.querySelectorAll(
-        `#${SOUND_FILTER_ID} feTurbulence`
+        `#${bitNoiseId} feTurbulence`
       )[0] as SVGFETurbulenceElement;
       timelineOne.current = new TimelineLite({
         paused: true,
@@ -152,7 +161,7 @@ function Bit(props: BitProps) {
   useEffect(() => {
     if (_isActive) {
       timelineOne.current?.play();
-      (bitRef.current as HTMLElement).style.filter = `url(#${SOUND_FILTER_ID})`;
+      (bitRef.current as HTMLElement).style.filter = `url(#${bitNoiseId})`;
     } else {
       timelineOne.current?.pause();
       timelineTwo.current = new TimelineLite({
@@ -175,7 +184,8 @@ function Bit(props: BitProps) {
       ref={bitRef}
       className={cn(
         'relative isolate flex h-full origin-left rounded-md',
-        _isActive && 'pointer-events-none'
+        _isActive && 'pointer-events-none',
+        className
       )}
       onClick={handleBitPlay}
       onMouseOver={handleMouseOver}
@@ -185,7 +195,7 @@ function Bit(props: BitProps) {
         <>
           <div
             className={cn(
-              'sound-filter flex w-full duration-500 ease-out animate-in fade-in zoom-in slide-in-from-left',
+              'bit-noise flex w-full duration-500 ease-out animate-in fade-in zoom-in slide-in-from-left',
               bit === '0'
                 ? 'min-w-[60%] xl:min-w-[auto]'
                 : 'min-w-full xl:min-w-[auto]',
@@ -243,4 +253,4 @@ function Bit(props: BitProps) {
   );
 }
 
-export default Bit;
+export default BitView;

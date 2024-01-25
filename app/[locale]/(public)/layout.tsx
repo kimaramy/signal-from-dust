@@ -1,5 +1,5 @@
 import { NextLayoutProps } from '@/lib/router';
-import { SoundFilter } from '@/components/bit';
+import { BitNoise } from '@/components/bit';
 import { Main } from '@/components/layout';
 
 type LayoutProps = NextLayoutProps & {
@@ -10,7 +10,7 @@ function Layout({ params, children, modal }: LayoutProps) {
   return (
     <>
       <Main id={`[${params.locale}]-layout`} className="bg-body">
-        <SoundFilter />
+        <BitNoise />
         {children}
       </Main>
       {modal}

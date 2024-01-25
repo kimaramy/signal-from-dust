@@ -1,20 +1,20 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { cn } from '@/lib/css';
-import { Instrument, Tone } from '@/lib/tone';
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
-import { Bit, BitOverlay, BitUtils } from '@/components/bit';
+import { Bit, BitUtils } from '@/components/bit';
 
 import type { SceneData } from '../context';
 import PlayerButton from './PlayerButton';
+import { useScenePlayer } from './Scene.hooks';
 import SceneBody from './SceneBody';
-import SceneHeader, { type SceneHeaderContext } from './SceneHeader';
+import SceneHeader from './SceneHeader';
 import SceneOverview from './SceneOverview';
 import SceneRoot from './SceneRoot';
 
@@ -39,59 +39,20 @@ function Scene({
   onPlay,
   onStop,
 }: SceneProps) {
-  const [bitDurationAsSecond] = useState(0.5);
-
-  const [isHovering, setHovering] = useState(false);
-
-  const [isPlaying, setPlaying] = useState(false);
-
-  const [claps, setClaps] = useState<Tone.Sequence | null>(null);
-  const [kicks, setKicks] = useState<Tone.Sequence | null>(null);
-
-  const handleScenePlay = useCallback(
-    async ({ bits }: SceneHeaderContext) => {
-      await Tone.start();
-      if (!isPlaying && Tone.Transport.state !== 'started') {
-        const claps = new Tone.Sequence(
-          (time) => {
-            Instrument.createClap().triggerAttackRelease(time);
-          },
-          bits.map((bit) => (bit.value === '0' ? '0' : null)),
-          bitDurationAsSecond
-        ).start(0);
-        const kicks = new Tone.Sequence(
-          (time) => {
-            Instrument.createKick().triggerAttackRelease('D1', time);
-          },
-          bits.map((bit) => (bit.value === '1' ? '1' : null)),
-          bitDurationAsSecond
-        ).start(0);
-        setClaps(claps);
-        setKicks(kicks);
-        Tone.Transport.start();
-      } else {
-        claps?.stop();
-        kicks?.stop();
-        Tone.Transport.stop();
-      }
-      setPlaying(!isPlaying);
-    },
-    [isPlaying, claps, kicks, bitDurationAsSecond]
+  const { isPlaying, bitDurationAsSecond, handleScenePlayer } = useScenePlayer(
+    sceneIdx,
+    onPlay,
+    onStop
   );
 
-  useEffect(() => {
-    if (isPlaying && Tone.Transport.state === 'started') {
-      onPlay(sceneIdx);
-    } else {
-      onStop();
-    }
-  }, [isPlaying]);
+  const [isHovering, setHovering] = useState(false);
 
   return (
     <SceneRoot
       id={sceneId}
       sceneIdx={sceneIdx}
       sceneData={sceneData}
+      sceneLength={sceneLength}
       isActive={isActive}
       isDisabled={isDisabled}
       className="group"
@@ -107,52 +68,65 @@ function Scene({
             <PlayerButton
               isPlaying={isPlaying}
               className="flex-none"
-              onClick={() => handleScenePlay({ bits })}
+              onClick={() => handleScenePlayer({ bits })}
             />
           </>
         )}
       </SceneHeader>
 
-      <HoverCard openDelay={0} closeDelay={0} open={isHovering}>
-        <HoverCardTrigger asChild>
-          <SceneBody
-            columns={sceneLength}
-            isPlaying={isPlaying}
-            intervalSecond={bitDurationAsSecond}
-            className="group-hover:ring-1"
-          >
-            {(sceneContext, bitContext) =>
-              sceneContext.bits.map((bit) => {
-                const bitId = BitUtils.getBitId(sceneId, bit.idx);
-                return (
-                  <li key={bitId} className="relative h-full">
-                    <Bit
-                      view="2d"
-                      bitId={bitId}
-                      bitIdx={bit.idx}
-                      bit={bit.value}
-                      isActive={isPlaying}
-                      onHover={(bitIdx) => bitContext.setActiveBitIdx(bitIdx)}
-                      onBlur={(_bitIdx) => bitContext.resetActiveBitIdx()}
-                    />
-                    <BitOverlay
-                      className={cn(bit.isActive ? 'visible' : 'invisible')}
-                    />
-                  </li>
-                );
-              })
-            }
-          </SceneBody>
-        </HoverCardTrigger>
+      <Bit.Provider>
+        <HoverCard openDelay={0} closeDelay={0} open={isHovering}>
+          <HoverCardTrigger asChild>
+            <SceneBody
+              columns={sceneLength}
+              isPlaying={isPlaying}
+              intervalSecond={bitDurationAsSecond}
+              className="group-hover:ring-1"
+            >
+              {(sceneContext) => (
+                <Bit.Consumer>
+                  {(bitContext) =>
+                    sceneContext.bits.map((bit, bitIdx) => {
+                      const bitId = BitUtils.getBitId(sceneId, bitIdx);
+                      return (
+                        <li key={bitId} className="relative h-full">
+                          <Bit.View
+                            view="2d"
+                            bitId={bitId}
+                            bitIdx={bitIdx}
+                            bit={bit.value}
+                            isActive={isPlaying}
+                            onHover={(bitIdx) =>
+                              bitContext.setSelectedBitIdx(bitIdx)
+                            }
+                            onBlur={(_bitIdx) =>
+                              bitContext.resetSelectedBitIdx()
+                            }
+                            className={cn(bit.isVacant && 'hidden')}
+                          />
+                          <Bit.Overlay
+                            className={cn(
+                              bit.isActive ? 'visible' : 'invisible'
+                            )}
+                          />
+                        </li>
+                      );
+                    })
+                  }
+                </Bit.Consumer>
+              )}
+            </SceneBody>
+          </HoverCardTrigger>
 
-        <HoverCardContent
-          sideOffset={10}
-          align="start"
-          className="w-auto min-w-80 bg-muted p-1 text-muted-foreground"
-        >
-          <SceneOverview />
-        </HoverCardContent>
-      </HoverCard>
+          <HoverCardContent
+            sideOffset={10}
+            align="start"
+            className="w-auto min-w-80 bg-muted p-1 text-muted-foreground"
+          >
+            <SceneOverview />
+          </HoverCardContent>
+        </HoverCard>
+      </Bit.Provider>
     </SceneRoot>
   );
 }

@@ -1,17 +1,20 @@
 'use client';
 
-const SOUND_FILTER_ID = 'sound-filter';
+import React from 'react';
 
-function SoundFilter() {
+export const bitNoiseId = 'bit-noise';
+
+const BitNoise = React.memo(function BitNoise() {
   return (
     <>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
         className="invisible absolute h-px w-px"
+        aria-hidden
       >
         <defs>
-          <filter id={SOUND_FILTER_ID}>
+          <filter id={bitNoiseId}>
             <feTurbulence
               type="fractalNoise"
               baseFrequency="0.000001"
@@ -31,7 +34,7 @@ function SoundFilter() {
       </svg>
       <style global jsx>
         {`
-          .sound-filter {
+          .bit-noise {
             transform: translateZ(50%);
             width: 95%;
             height: 95%;
@@ -46,7 +49,6 @@ function SoundFilter() {
       </style>
     </>
   );
-}
-export { SOUND_FILTER_ID };
+});
 
-export default SoundFilter;
+export default BitNoise;

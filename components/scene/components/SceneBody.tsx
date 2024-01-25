@@ -4,20 +4,15 @@ import React, { useEffect } from 'react';
 
 import { cn } from '@/lib/css';
 
-import type { BitContextValue, SceneContextValue } from '../context';
-import { useBitContext, useSceneContext } from '../hooks';
-
-export type SceneBodyContexts = [
-  sceneContext: SceneContextValue,
-  bitContext: BitContextValue,
-];
+import type { SceneContextValue } from '../context';
+import { useSceneContext } from '../hooks';
 
 interface SceneBodyProps {
   columns: number;
   isPlaying: boolean;
   intervalSecond: number;
   className?: string;
-  children: (...contexts: SceneBodyContexts) => React.ReactNode;
+  children: (context: SceneContextValue) => React.ReactNode;
 }
 
 const SceneBody = React.forwardRef<HTMLOListElement, SceneBodyProps>(
@@ -31,8 +26,6 @@ const SceneBody = React.forwardRef<HTMLOListElement, SceneBodyProps>(
     } = props;
 
     const sceneContext = useSceneContext();
-
-    const bitContext = useBitContext();
 
     // Do not add bits to deps cause it'll not trigger single interval context
     useEffect(() => {
@@ -56,8 +49,8 @@ const SceneBody = React.forwardRef<HTMLOListElement, SceneBodyProps>(
           // console.log(`interval_start: ${_activeBitIdx}`);
           const loopLength = sceneContext.bits.length;
           const newBits = sceneContext.bits.reduce(
-            (accum, bit) => {
-              if (bit.idx === _activeBitIdx % loopLength) {
+            (accum, bit, bitIdx) => {
+              if (bitIdx === _activeBitIdx % loopLength) {
                 accum.push({ ...bit, isActive: true });
               } else {
                 accum.push({ ...bit, isActive: false });
@@ -91,7 +84,7 @@ const SceneBody = React.forwardRef<HTMLOListElement, SceneBodyProps>(
           className
         )}
       >
-        {children(sceneContext, bitContext)}
+        {children(sceneContext)}
       </ol>
     );
   }

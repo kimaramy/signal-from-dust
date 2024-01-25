@@ -1,5 +1,6 @@
 export * from './utils';
+export * from './context';
+export * from './hooks';
 
-export { default as SoundFilter } from './SoundFilter';
-export { default as Bit } from './Bit';
-export { default as BitOverlay } from './BitOverlay';
+export { default as BitNoise } from './components/BitNoise';
+export { default as Bit } from './components/Bit';

@@ -1,6 +1,7 @@
 import React, { createContext } from 'react';
 
 import { CollectionUtils, DustUtils, type Locale } from '@/lib/model';
+import type { BitData } from '@/components/bit';
 
 interface SceneData {
   id: number;
@@ -24,35 +25,16 @@ interface SceneData {
   };
 }
 
-type Bit = { idx: number; value: string; isActive: boolean };
-
 interface SceneContextValue {
   sceneIdx: number;
   sceneData: SceneData;
-  bits: Bit[];
-  setBits: React.Dispatch<React.SetStateAction<Bit[]>>;
+  bits: BitData[];
+  setBits: React.Dispatch<React.SetStateAction<BitData[]>>;
   resetBits: () => void;
-  getActiveBit: () => Bit | null;
+  getActiveBit: () => BitData | null;
   setActiveBit: (bitIdx: number) => void;
-}
-
-type ActiveBitIdx = number | null;
-
-interface BitContextValue {
-  activeBitIdx: ActiveBitIdx;
-  setActiveBitIdx: React.Dispatch<React.SetStateAction<ActiveBitIdx>>;
-  resetActiveBitIdx: () => void;
 }
 
 const SceneContext = createContext<SceneContextValue | null>(null);
 
-const BitContext = createContext<BitContextValue | null>(null);
-
-export {
-  SceneContext,
-  BitContext,
-  type SceneData,
-  type SceneContextValue,
-  type BitContextValue,
-  type ActiveBitIdx,
-};
+export { SceneContext, type SceneData, type SceneContextValue };
