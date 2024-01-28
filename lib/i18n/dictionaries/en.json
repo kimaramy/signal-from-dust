@@ -1,7 +1,8 @@
 {
   "title": {
     "collection_page": "{collection} dust in {location}",
-    "search_page": "Dust in {location}, {monthOrSeason}, {year}"
+    "search_page": "Dust in {location}, {monthOrSeason}, {year}",
+    "realtime_page": "Realtime dust in {location}"
   },
   "not_found": {
     "title": "Page not found",
@@ -30,10 +31,12 @@
   },
   "dataset": {
     "label": "Source",
-    "source": "{collection} {dust} Average, {yearRange}, {location}",
-    "year_title": "{dust} in {year}",
     "title": "{dust} on {primaryDate} of {secondaryDate}",
-    "description": "This is the result of a binary signal output of the measurement",
+    "year_title": "{dust} in {year}",
+    "realtime_title": "Realtime {dust} in {location}",
+    "description": "Outputs the measurement as a binary signal.",
+    "source": "{collection} {dust} Average, {yearRange}, {location}",
+    "realtime_source": "Average air pollution data, realtime, {location}",
     "download_btn": "Download dataset"
   },
   "intro": {
@@ -60,6 +63,7 @@
     "form": {
       "preset_title": "Presets",
       "custom_title": "Customs",
+      "realtime_title": "Realtime",
       "location": {
         "title": "Location",
         "placeholder": "Select a location"

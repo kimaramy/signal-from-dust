@@ -4,7 +4,11 @@ import type { Metadata } from 'next';
 
 import { cn } from '@/lib/css';
 import { fontSans } from '@/lib/fonts';
-import { getDictionary, i18n, LocaleDictionaryProvider } from '@/lib/i18n';
+import {
+  getDictionary,
+  LocaleDictionaryProvider,
+  type Locale,
+} from '@/lib/i18n';
 import { QueryClientProvider } from '@/lib/react-query';
 import {
   Progress,
@@ -16,22 +20,15 @@ import { ThemeProvider } from '@/components/theme';
 
 import { getBaseMetadata } from '../metadata';
 
-type LayoutProps = NextLayoutProps & {
-  params: ReturnType<typeof generateStaticParams>[0];
-};
-
-export function generateStaticParams() {
-  return i18n.locales.map((locale) => ({ locale }));
-}
-
-export function generateMetadata({
-  params: { locale },
-}: LayoutProps): Metadata {
+export function generateMetadata({ params }: NextLayoutProps): Metadata {
+  const locale = params?.locale as Locale;
   return getBaseMetadata(locale, locale === 'en' ? 'ko' : 'en');
 }
 
-async function Layout({ params, children }: LayoutProps) {
-  const dictionary = await getDictionary(params.locale);
+async function Layout({ params, children }: NextLayoutProps) {
+  const locale = params?.locale as Locale;
+
+  const dictionary = await getDictionary(locale);
 
   return (
     <html lang={params.locale} suppressHydrationWarning>
@@ -52,10 +49,7 @@ async function Layout({ params, children }: LayoutProps) {
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryClientProvider>
-            <LocaleDictionaryProvider
-              locale={params.locale}
-              dictionary={dictionary}
-            >
+            <LocaleDictionaryProvider locale={locale} dictionary={dictionary}>
               <div
                 id="root-layout"
                 className="relative flex min-h-screen flex-col"

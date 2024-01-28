@@ -95,6 +95,7 @@ function BitView(props: BitViewProps) {
   }, [bitIdx]);
 
   useEffect(() => {
+    if (is3DView) return;
     if (isEntering) {
       turbulenceRef.current = document.querySelectorAll(
         `#${bitNoiseId} feTurbulence`
@@ -159,6 +160,7 @@ function BitView(props: BitViewProps) {
   }, [isActive]);
 
   useEffect(() => {
+    if (is3DView) return;
     if (_isActive) {
       timelineOne.current?.play();
       (bitRef.current as HTMLElement).style.filter = `url(#${bitNoiseId})`;
@@ -176,7 +178,7 @@ function BitView(props: BitViewProps) {
       timelineTwo.current.to(turbulenceValueX, 0.1, { val: 0.000001 }, 0);
       (bitRef.current as HTMLElement).style.filter = 'none';
     }
-  }, [_isActive]);
+  }, [_isActive, is3DView]);
 
   return (
     <div
@@ -226,11 +228,20 @@ function BitView(props: BitViewProps) {
               )}
             ></div>
           </div>
-          <div className="absolute left-0 top-0 z-10 h-full w-full bg-body mix-blend-multiply dark:mix-blend-screen"></div>
+          <div
+            className={cn(
+              'absolute left-0 top-0 z-10 h-full w-full bg-body mix-blend-multiply',
+              is3DView ? 'dark:mix-blend-saturation' : 'dark:mix-blend-screen'
+            )}
+          ></div>
         </>
       ) : null}
       <BitOverlay
-        className={cn('z-10', _isHovering ? 'visible' : 'invisible')}
+        className={cn(
+          'z-20',
+          _isHovering ? 'visible' : 'invisible',
+          is3DView && 'hidden'
+        )}
         onClick={() => _setHovering((isHovering) => !isHovering)}
       />
       <style jsx>

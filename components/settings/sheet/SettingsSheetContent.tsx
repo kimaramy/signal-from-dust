@@ -28,7 +28,7 @@ function SettingsSheetContent() {
         </SettingsModeContext.Provider>
       </section>
       <SheetFooter className="absolute bottom-0 left-0 w-full p-6">
-        <SheetClose className="w-full">
+        <SheetClose className="w-full" asChild>
           <SettingsFormSubmitButton label={settings.sheet.ok_btn} />
         </SheetClose>
       </SheetFooter>

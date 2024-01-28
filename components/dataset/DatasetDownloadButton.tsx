@@ -30,7 +30,10 @@ function DatasetDownloadButton({
 
   const label = dictionary.dataset.download_btn;
 
-  const selectedFields = Object.keys(dataset[0]);
+  const selectedFields =
+    dataset.length > 0 && Object.keys(dataset[0]).length > 0
+      ? Object.keys(dataset[0])
+      : undefined;
 
   return (
     <TooltipProvider delayDuration={0}>

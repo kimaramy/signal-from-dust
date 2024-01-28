@@ -96,7 +96,7 @@
   .dust-to-left--invert {
     background: radial-gradient(farthest-corner at right, #565656, transparent),
       url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    filter: contrast(350%) brightness(300%) invert(100%);
+    filter: contrast(300%) brightness(350%) invert(100%);
   }
   .dust-to-left--deep {
     background: radial-gradient(farthest-corner at right, #565656, transparent),
@@ -106,7 +106,7 @@
   .dust-to-left--deep--invert {
     background: radial-gradient(farthest-corner at right, #565656, transparent),
       url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    filter: contrast(500%) brightness(300%) invert(100%);
+    filter: contrast(450%) brightness(350%) invert(100%);
   }
   .dust-to-right {
     background: radial-gradient(farthest-corner at left, #565656, transparent),
@@ -116,6 +116,6 @@
   .dust-to-right--invert {
     background: radial-gradient(farthest-corner at left, #565656, transparent),
       url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    filter: contrast(350%) brightness(300%) invert(100%);
+    filter: contrast(300%) brightness(350%) invert(100%);
   }
 }

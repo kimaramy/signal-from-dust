@@ -20,6 +20,47 @@ export class SceneUtils {
   static getSceneLength(value: number) {
     return value.toString(2).length;
   }
+  static toRealtimeSceneDataset<T>({
+    dataset,
+    locationKey,
+    dustKey,
+    locale,
+    getPMLarge,
+    getPMSmall,
+  }: {
+    dataset: T[];
+    dustKey: DustUtils.Key;
+    locationKey: LocationUtils.Key;
+    locale: typeof LocaleSchema.defaultLocale;
+    getPMLarge: (data: T) => number;
+    getPMSmall: (data: T) => number;
+  }): SceneData[] {
+    return dataset.map((data, idx) => ({
+      id: idx,
+      value: dustKey === 'PM_LARGE' ? getPMLarge(data) : getPMSmall(data),
+      display: {
+        dust: DustUtils.schema.display(dustKey, locale),
+        location: LocationUtils.schema.display(locationKey, locale),
+        dates: [
+          new Date().toLocaleString(locale, {
+            year: 'numeric', // 연
+            month: 'long', // 월
+            day: 'numeric', // 일
+            weekday: 'short', // 요일,
+            hour12: true,
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+          }),
+        ],
+        ...[],
+      },
+      _ctx: {
+        locale,
+        dustKey,
+      },
+    }));
+  }
   static toDailySceneDataset(
     dataset: Model.DailyData[],
     dustKey: DustUtils.Key,

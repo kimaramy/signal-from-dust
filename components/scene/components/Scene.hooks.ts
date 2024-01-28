@@ -4,13 +4,19 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { Instrument, Tone } from '@/lib/tone';
 
-import type { SceneHeaderContext } from './SceneHeader';
+import type { SceneHeadContext } from './SceneHead';
 
-export function useScenePlayer(
-  sceneIdx: number,
-  onPlay: (sceneIdx: number) => void,
-  onStop: () => void
-) {
+export type UseScenePlayerParams = {
+  sceneIdx: number;
+  onPlay?: (sceneIdx: number) => void;
+  onStop?: () => void;
+};
+
+export function useScenePlayer({
+  sceneIdx,
+  onPlay,
+  onStop,
+}: UseScenePlayerParams) {
   const [bitDurationAsSecond] = useState(0.5);
 
   const [isPlaying, setPlaying] = useState(false);
@@ -19,8 +25,8 @@ export function useScenePlayer(
   const [kicks, setKicks] = useState<Tone.Sequence | null>(null);
   const [cymbals, setCymbals] = useState<Tone.Sequence | null>(null);
 
-  const handleScenePlayer = useCallback(
-    async ({ bits }: SceneHeaderContext) => {
+  const handlePlayer = useCallback(
+    async ({ bits }: SceneHeadContext) => {
       // console.log({ bits });
       await Tone.start();
       if (!isPlaying && Tone.Transport.state !== 'started') {
@@ -62,16 +68,16 @@ export function useScenePlayer(
 
   useEffect(() => {
     if (isPlaying && Tone.Transport.state === 'started') {
-      onPlay(sceneIdx);
+      onPlay?.(sceneIdx);
     } else {
-      onStop();
+      onStop?.();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sceneIdx, isPlaying]);
 
   return {
-    isPlaying,
     bitDurationAsSecond,
-    handleScenePlayer,
+    isPlaying,
+    handlePlayer,
   };
 }

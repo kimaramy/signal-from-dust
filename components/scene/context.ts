@@ -6,12 +6,12 @@ import type { BitData } from '@/components/bit';
 interface SceneData {
   id: number;
   value: number | null;
-  rank: number | null;
+  rank?: number | null;
   display: {
-    collection: string;
-    yearRange: string;
-    dust: string;
     location: string;
+    dust: string;
+    collection?: string;
+    yearRange?: string;
     year?: string;
     month?: string;
     season?: string;
@@ -20,8 +20,8 @@ interface SceneData {
   };
   _ctx: {
     locale: Locale;
-    collectionKey: CollectionUtils.Key;
     dustKey: DustUtils.Key;
+    collectionKey?: CollectionUtils.Key;
   };
 }
 

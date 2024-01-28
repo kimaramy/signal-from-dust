@@ -17,12 +17,13 @@ import { Separator } from '@/components/ui/separator';
 import CustomSettingsFields from './CustomSettingsFields';
 import ModeField from './ModeField';
 import PresetFields from './PresetFields';
+import RealtimeSettingsFields from './RealtimeSettingsFields';
 
 // import SettingsFormResetButton from './SettingsFormResetButton';
 
 const SETTINGS_FORM_ID = 'settings-form';
 
-type SettingsMode = 'preset' | 'custom';
+type SettingsMode = 'preset' | 'custom' | 'realtime';
 
 interface SettingsFormValues {
   mode: SettingsMode;
@@ -71,6 +72,7 @@ function SettingsForm({
           <Separator />
           <PresetFields />
           <CustomSettingsFields />
+          <RealtimeSettingsFields />
         </form>
       </Form>
 

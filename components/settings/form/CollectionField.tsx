@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/form';
 import { CollectionSelect } from '@/components/collection';
 
-import { type SettingsFormValues } from '../form/SettingsForm';
+import type { SettingsFormValues } from '../form/SettingsForm';
 
 function CollectionField() {
   const {

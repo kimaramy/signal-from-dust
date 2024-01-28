@@ -32,6 +32,18 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
         );
       }
 
+      if (values.mode === 'realtime') {
+        const map = new Map<SchemaName, string>()
+          .set('location', values.locationKey.toLowerCase())
+          .set('dust', values.dustKey.toLowerCase());
+
+        const search = setQueryParams(map, { stringify: true });
+
+        return navigate(`/${locale}/realtime${search}` as TypedRoute, {
+          method: 'push',
+        });
+      }
+
       const map = new Map<SchemaName, string>()
         .set('location', values.locationKey)
         .set('collection', values.collectionKey)

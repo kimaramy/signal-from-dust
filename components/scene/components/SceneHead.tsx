@@ -7,21 +7,21 @@ import { cn } from '@/lib/css';
 import type { SceneContextValue } from '../context';
 import { useSceneContext } from '../hooks';
 
-export type SceneHeaderContext = Pick<SceneContextValue, 'bits'>;
+export type SceneHeadContext = Pick<SceneContextValue, 'bits'>;
 
-interface SceneHeaderProps {
+interface SceneHeadProps {
   className?: string;
-  children: (context: SceneHeaderContext) => React.ReactNode;
+  children: (context: SceneHeadContext) => React.ReactNode;
 }
 
-const SceneHeader = React.forwardRef<HTMLDivElement, SceneHeaderProps>(
-  function SceneHeader({ className, children }, ref) {
+const SceneHead = React.forwardRef<HTMLDivElement, SceneHeadProps>(
+  function SceneHead({ className, children }, ref) {
     const { bits } = useSceneContext();
 
     return (
       <header
         ref={ref}
-        style={{ width: `min(7.5rem, 12vw)` }}
+        style={{ width: `min(8rem, 12vw)` }}
         className={cn('h-full flex-none', className)}
       >
         {children({ bits })}
@@ -30,4 +30,4 @@ const SceneHeader = React.forwardRef<HTMLDivElement, SceneHeaderProps>(
   }
 );
 
-export default SceneHeader;
+export default SceneHead;

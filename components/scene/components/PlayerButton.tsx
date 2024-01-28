@@ -6,9 +6,15 @@ import { Button, ButtonProps } from '@/components/ui/button';
 
 interface PlayerButtonProps extends ButtonProps {
   isPlaying: boolean;
+  iconClassName?: string;
 }
 
-function PlayerButton({ isPlaying, className, ...rest }: PlayerButtonProps) {
+function PlayerButton({
+  isPlaying,
+  iconClassName,
+  className,
+  ...rest
+}: PlayerButtonProps) {
   return (
     <Button
       variant={isPlaying ? 'default' : 'ghost'}
@@ -17,9 +23,9 @@ function PlayerButton({ isPlaying, className, ...rest }: PlayerButtonProps) {
       {...rest}
     >
       {isPlaying ? (
-        <Icon.Pause aria-hidden className="h-4 w-4" />
+        <Icon.Pause aria-hidden className={cn('h-4 w-4', iconClassName)} />
       ) : (
-        <Icon.Play aria-hidden className="h-4 w-4" />
+        <Icon.Play aria-hidden className={cn('h-4 w-4', iconClassName)} />
       )}
       <span className="sr-only">{isPlaying ? 'Pause' : 'Play'}</span>
     </Button>

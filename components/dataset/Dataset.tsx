@@ -21,10 +21,9 @@ function Dataset({
   const [isHeaderSticky, setHeaderSticky] = useState(false);
 
   const handleBodyRef = useCallback((el: HTMLDivElement | null) => {
+    // 데이터 출력 영역의 높이가 뷰포트보다 커질 경우 스크롤이 발생하며, 이때 헤더 영역의 position을 sticky로 지정한다.
     if (el !== null) {
-      // 뷰포트보다 바디(데이터 출력 영역)의 높이가 커질 경우. 즉, 스크롤이 발생하면 헤더 영역의 position을 sticky로 지정한다.
-      const overflowsViewport = el.scrollHeight > window.screen.height;
-      setHeaderSticky(overflowsViewport);
+      setHeaderSticky(el.scrollHeight > window.screen.height);
     }
   }, []);
 
@@ -38,9 +37,7 @@ function Dataset({
       <DatasetBody
         ref={handleBodyRef}
         initialCollectionKey={initialCollectionKey}
-        initialDataset={{
-          [initialCollectionKey]: initialDataset,
-        }}
+        initialDataset={{ [initialCollectionKey]: initialDataset }}
       />
     </>
   );

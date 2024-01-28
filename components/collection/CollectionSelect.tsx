@@ -25,7 +25,11 @@ function CollectionSelect(props: CollectionSelectProps) {
     dictionary: { settings },
   } = useLocaleDictionary();
 
-  const collectionKeys = CollectionUtils.schema.getAllKeys();
+  const collectionKeys = CollectionUtils.schema
+    .getAllKeys()
+    .filter(
+      (collectionKey) => !CollectionUtils.schema.checkDisabled(collectionKey)
+    );
 
   return (
     <Select

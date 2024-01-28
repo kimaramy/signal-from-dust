@@ -1,1 +1,3 @@
-export { default as Sequence } from './Sequence';
+export * from './chunks';
+
+export { default as Sequence } from './components/Sequence';

@@ -2,5 +2,5 @@ export * from './utils';
 export * from './context';
 export * from './hooks';
 
-export { default as Scene } from './components/Scene';
-export { default as StackScene } from './components/StackScene';
+export { default as SceneView } from './components/SceneView';
+export { default as SceneScreenView } from './components/SceneScreenView';

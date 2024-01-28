@@ -24,12 +24,19 @@ interface HeaderProps
   position: 'sticky' | 'fixed';
 }
 
-function Header({ position, className, children, ...rest }: HeaderProps) {
+const Header = React.forwardRef<HTMLDivElement, HeaderProps>(function Header(
+  { position, className, children, ...rest },
+  ref
+) {
   return (
-    <header className={cn(headerVariants({ position, className }))} {...rest}>
+    <header
+      ref={ref}
+      className={cn(headerVariants({ position, className }))}
+      {...rest}
+    >
       {children}
     </header>
   );
-}
+});
 
 export default Header;

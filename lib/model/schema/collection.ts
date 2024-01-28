@@ -14,11 +14,12 @@ const collectionSchemaName = 'collection';
 
 type CollectionSchemaName = typeof collectionSchemaName;
 
-type CollectionKey = Uppercase<Model.TableKeys> | 'SEASONALLY';
+type CollectionKey = Uppercase<Model.TableKeys> | 'SEASONALLY' | 'REALTIME';
 
 type CollectionValue = CustomValueTemplate<CollectionKey> & {
   dataCount: number;
-  pattern: {
+  disabled: boolean;
+  pattern?: {
     i18n: I18n;
   };
 };
@@ -31,9 +32,18 @@ const collectionKeys = Object.freeze(
       'MONTHLY',
       'WEEKLY',
       'WEEKDAILY',
-      'DAILY'
+      'DAILY',
+      'REALTIME'
     ),
-    ['YEARLY', 'SEASONALLY', 'MONTHLY', 'WEEKLY', 'WEEKDAILY', 'DAILY']
+    [
+      'YEARLY',
+      'SEASONALLY',
+      'MONTHLY',
+      'WEEKLY',
+      'WEEKDAILY',
+      'DAILY',
+      'REALTIME',
+    ]
   )
 );
 
@@ -46,8 +56,9 @@ const collectionKeySchema = z.enum([
 const collectionValues: ReadonlyArray<CollectionValue> = [
   {
     name: 'YEARLY',
-    dataCount: 8,
     order: 0,
+    dataCount: 8,
+    disabled: false,
     i18n: {
       en: 'Yearly',
       ko: '연도별',
@@ -61,8 +72,9 @@ const collectionValues: ReadonlyArray<CollectionValue> = [
   },
   {
     name: 'MONTHLY',
-    dataCount: 12,
     order: 1,
+    dataCount: 12,
+    disabled: false,
     i18n: {
       en: 'Monthly',
       ko: '월별',
@@ -76,8 +88,9 @@ const collectionValues: ReadonlyArray<CollectionValue> = [
   },
   {
     name: 'SEASONALLY',
-    dataCount: 3,
     order: 2,
+    dataCount: 3,
+    disabled: false,
     i18n: {
       en: 'Seasonal',
       ko: '계절별',
@@ -91,8 +104,9 @@ const collectionValues: ReadonlyArray<CollectionValue> = [
   },
   {
     name: 'WEEKLY',
-    dataCount: 53,
     order: 3,
+    dataCount: 53,
+    disabled: false,
     i18n: {
       en: 'Weekly',
       ko: '주별',
@@ -106,8 +120,9 @@ const collectionValues: ReadonlyArray<CollectionValue> = [
   },
   {
     name: 'WEEKDAILY',
-    dataCount: 7,
     order: 4,
+    dataCount: 7,
+    disabled: false,
     i18n: {
       en: 'Weekdaily',
       ko: '요일별',
@@ -121,8 +136,9 @@ const collectionValues: ReadonlyArray<CollectionValue> = [
   },
   {
     name: 'DAILY',
-    dataCount: 31,
     order: 5,
+    dataCount: 31,
+    disabled: false,
     i18n: {
       en: 'Daily',
       ko: '일별',
@@ -131,6 +147,22 @@ const collectionValues: ReadonlyArray<CollectionValue> = [
       i18n: {
         en: 'Everyday',
         ko: '매일',
+      },
+    },
+  },
+  {
+    name: 'REALTIME',
+    order: 6,
+    dataCount: 1,
+    disabled: true,
+    i18n: {
+      en: 'Realtime',
+      ko: '실시간',
+    },
+    pattern: {
+      i18n: {
+        en: 'Now',
+        ko: '현재',
       },
     },
   },
@@ -164,12 +196,15 @@ class CollectionSchema extends CustomValueMapSchema<
     type: 'default' | 'patterned' = 'default'
   ) {
     if (type === 'patterned') {
-      return this.getValue(collectionKey)['pattern']['i18n'][locale];
+      return this.getValue(collectionKey).pattern?.i18n[locale] ?? 'NULL';
     }
-    return this.getValue(collectionKey)['i18n'][locale];
+    return this.getValue(collectionKey).i18n[locale];
   }
   getDataCount(collectionKey: CollectionKey) {
     return this.getValue(collectionKey).dataCount;
+  }
+  checkDisabled(collectionKey: CollectionKey) {
+    return this.getValue(collectionKey).disabled;
   }
 }
 

@@ -6,10 +6,10 @@ type LayoutProps = NextLayoutProps & {
   modal: React.ReactNode;
 };
 
-function Layout({ params, children, modal }: LayoutProps) {
+function Layout({ children, modal }: LayoutProps) {
   return (
     <>
-      <Main id={`[${params.locale}]-layout`} className="bg-body">
+      <Main className="bg-body">
         <BitNoise />
         {children}
       </Main>

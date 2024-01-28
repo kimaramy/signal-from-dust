@@ -3,6 +3,7 @@
 import React, { createContext } from 'react';
 
 type BitValue = '1' | '0';
+
 type VacantBitValue = '-1';
 
 type BitData = {

@@ -9,7 +9,7 @@ import DustField from './DustField';
 import LocationField from './LocationField';
 import MonthField from './MonthField';
 import SeasonField from './SeasonField';
-import { type SettingsFormValues } from './SettingsForm';
+import type { SettingsFormValues } from './SettingsForm';
 import YearField from './YearField';
 
 function CustomSettingsFields() {
