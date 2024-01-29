@@ -8,7 +8,7 @@ interface BitConsumerProps {
 }
 
 function BitConsumer({ children }: BitConsumerProps) {
-  const bitsContext = useBitContext();
+  const bitsContext = useBitContext({ strict: true });
   return <>{children(bitsContext)}</>;
 }
 
