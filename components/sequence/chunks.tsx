@@ -2,13 +2,23 @@ import dynamic from 'next/dynamic';
 
 import { Spinner } from '@/components/layout';
 
-export const ScreenSequence = dynamic(
-  () =>
-    import(
-      './components/_ScreenSequence' /* webpackChunkName: "ScreenSequence" */
-    ),
+export const RealtimeSequence = dynamic(
+  () => import('./components/_RealtimeSequence'),
   {
     ssr: false,
     loading: () => <Spinner />,
   }
 );
+
+// export const MobileSequence = dynamic(
+//   () => impor./components/MobileSequencence'),
+//   {
+//     ssr: false,
+//     loading: () => <Spinner />,
+//   }
+// );
+
+// export const Sequence = dynamic(() => import('./components/Sequence'), {
+//   ssr: false,
+//   loading: () => <Spinner />,
+// });

@@ -8,11 +8,11 @@ import { toLowerCase } from '@/lib/utils';
 import { useDustKey } from '@/components/dust';
 import { useLocationKey } from '@/components/location';
 import { SceneUtils } from '@/components/scene';
-import { ScreenSequence } from '@/components/sequence';
+import { RealtimeSequence } from '@/components/sequence';
 
 interface RealtimeDatasetBodyProps {
   initialDataset: RealtimeData[];
-  revalidate: () => void;
+  revalidate: () => Promise<void>;
 }
 
 function RealtimeDatasetBody({
@@ -25,23 +25,23 @@ function RealtimeDatasetBody({
 
   const dustKey = useDustKey('query');
 
-  const realtimeSceneDataset = SceneUtils.toRealtimeSceneDataset<RealtimeData>({
+  const sceneDataset = SceneUtils.toRealtimeSceneDataset<RealtimeData>({
     dataset: initialDataset ?? [],
     dustKey,
     locationKey,
     locale,
-    getPMLarge: (data) => data.PM10,
-    getPMSmall: (data) => data.PM25,
+    setValue: (data, dustKey) =>
+      dustKey === 'PM_LARGE' ? data.PM10 : data.PM25,
   });
 
-  const realtimeSceneDatasetId = [locationKey, dustKey]
+  const sceneDatasetId = [locationKey, dustKey]
     .map((key) => toLowerCase(key))
     .join('-');
 
   return (
-    <ScreenSequence
-      sequenceId={realtimeSceneDatasetId}
-      sceneDataset={realtimeSceneDataset}
+    <RealtimeSequence
+      id={sceneDatasetId}
+      sceneDataset={sceneDataset}
       revalidate={revalidate}
     />
   );

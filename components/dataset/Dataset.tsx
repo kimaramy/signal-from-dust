@@ -2,19 +2,17 @@
 
 import React, { useCallback, useState } from 'react';
 
-import { CollectionUtils } from '@/lib/model';
-
-import DatasetBody from './DatasetBody';
+import DatasetBody, { type DatasetBodyProps } from './DatasetBody';
 import DatasetHeader from './DatasetHeader';
 
-interface DatasetProps {
+interface DatasetProps extends Omit<DatasetBodyProps, 'initialDataset'> {
   title: string;
-  initialCollectionKey: CollectionUtils.Key;
   initialDataset: object[];
 }
 
 function Dataset({
   title,
+  version = 'v1',
   initialCollectionKey,
   initialDataset,
 }: DatasetProps) {
@@ -23,6 +21,7 @@ function Dataset({
   const handleBodyRef = useCallback((el: HTMLDivElement | null) => {
     // 데이터 출력 영역의 높이가 뷰포트보다 커질 경우 스크롤이 발생하며, 이때 헤더 영역의 position을 sticky로 지정한다.
     if (el !== null) {
+      // console.log(el.getBoundingClientRect());
       setHeaderSticky(el.scrollHeight > window.screen.height);
     }
   }, []);
@@ -36,6 +35,7 @@ function Dataset({
       />
       <DatasetBody
         ref={handleBodyRef}
+        version={version}
         initialCollectionKey={initialCollectionKey}
         initialDataset={{ [initialCollectionKey]: initialDataset }}
       />

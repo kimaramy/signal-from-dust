@@ -25,19 +25,17 @@ export class SceneUtils {
     locationKey,
     dustKey,
     locale,
-    getPMLarge,
-    getPMSmall,
+    setValue,
   }: {
     dataset: T[];
     dustKey: DustUtils.Key;
     locationKey: LocationUtils.Key;
     locale: typeof LocaleSchema.defaultLocale;
-    getPMLarge: (data: T) => number;
-    getPMSmall: (data: T) => number;
+    setValue: (data: T, dustKey: DustUtils.Key) => number;
   }): SceneData[] {
     return dataset.map((data, idx) => ({
       id: idx,
-      value: dustKey === 'PM_LARGE' ? getPMLarge(data) : getPMSmall(data),
+      value: setValue(data, dustKey),
       display: {
         dust: DustUtils.schema.display(dustKey, locale),
         location: LocationUtils.schema.display(locationKey, locale),

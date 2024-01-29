@@ -8,7 +8,7 @@ import RealtimeDatasetBody from './RealtimeDatasetBody';
 interface RealtimeDatasetProps {
   title: string;
   initialDataset: object[];
-  revalidate: () => void;
+  revalidate: () => Promise<void>;
 }
 
 function RealtimeDataset({

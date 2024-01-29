@@ -77,6 +77,7 @@ async function Page({ params, searchParams }: NextPageProps) {
   return (
     <Dataset
       title={title}
+      version="v1"
       initialCollectionKey={collectionKey}
       initialDataset={initialDataset}
     />

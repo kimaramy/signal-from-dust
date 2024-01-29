@@ -11,48 +11,50 @@ import {
 import { Bit, BitUtils } from '@/components/bit';
 
 import type { SceneData } from '../context';
-import PlayerButton from './PlayerButton';
+import { PlayerButton } from './PlayerButton';
 import Scene from './Scene';
 
-interface SceneViewProps {
+export interface SceneItemViewProps {
   sceneId: string;
   sceneIdx: number;
   sceneData: SceneData;
   sceneLength: number;
   sceneTitle: React.ReactNode | ((sceneData: SceneData) => React.ReactNode);
-  sceneDescription:
+  sceneSubtitle: React.ReactNode | ((sceneData: SceneData) => React.ReactNode);
+  sceneDescription?:
     | React.ReactNode
     | ((sceneData: SceneData) => React.ReactNode);
-  sceneSource: React.ReactNode | ((sceneData: SceneData) => React.ReactNode);
   isActive: boolean;
   isDisabled: boolean;
   onPlay: (sceneIdx: number) => void;
   onStop: () => void;
 }
 
-function SceneView({
+function SceneItemView({
   sceneId,
   sceneIdx,
   sceneData,
   sceneLength,
   sceneTitle,
+  sceneSubtitle,
   sceneDescription,
-  sceneSource,
   isActive,
   isDisabled,
   onPlay,
   onStop,
-}: SceneViewProps) {
+}: SceneItemViewProps) {
   const _sceneTitle =
     typeof sceneTitle === 'function' ? sceneTitle(sceneData) : sceneTitle;
+
+  const _sceneSubtitle =
+    typeof sceneSubtitle === 'function'
+      ? sceneSubtitle(sceneData)
+      : sceneSubtitle;
 
   const _sceneDescription =
     typeof sceneDescription === 'function'
       ? sceneDescription(sceneData)
       : sceneDescription;
-
-  const _sceneSource =
-    typeof sceneSource === 'function' ? sceneSource(sceneData) : sceneSource;
 
   const [isHovering, setHovering] = useState(false);
 
@@ -74,13 +76,9 @@ function SceneView({
             <Scene.Head className="flex flex-row-reverse items-center gap-2">
               {({ bits }) => (
                 <>
-                  {typeof _sceneTitle === 'string' ? (
-                    <h2 className="flex-1 truncate font-mono text-xs">
-                      {sceneData.display.dates[0]}
-                    </h2>
-                  ) : (
-                    _sceneTitle
-                  )}
+                  <span className="flex-1 truncate font-mono text-xs">
+                    {sceneData.display.dates[0]}
+                  </span>
                   <PlayerButton
                     isPlaying={isPlaying}
                     className="flex-none"
@@ -94,6 +92,7 @@ function SceneView({
               <HoverCard openDelay={0} closeDelay={0} open={isHovering}>
                 <HoverCardTrigger asChild>
                   <Scene.Body
+                    view="listitem"
                     columns={sceneLength}
                     isPlaying={isPlaying}
                     intervalSecond={bitDurationAsSecond}
@@ -137,14 +136,21 @@ function SceneView({
                 <HoverCardContent
                   sideOffset={10}
                   align="start"
-                  className="w-auto min-w-80 bg-muted p-1 text-muted-foreground"
+                  className="w-auto min-w-80 bg-muted p-2 text-muted-foreground"
                 >
-                  <Scene.Overview
-                    title={_sceneTitle}
-                    description={_sceneDescription}
-                    labelledSource={_sceneSource}
-                    isPlayerHidden
-                  />
+                  <Scene.Overview>
+                    <Scene.Card
+                      className="p-2"
+                      title={_sceneTitle}
+                      subtitle={_sceneSubtitle}
+                      isPlayerHidden
+                      onPlay={handlePlayer}
+                    />
+                    <div className="space-y-2 p-2">
+                      <Scene.Description>{_sceneDescription}</Scene.Description>
+                      <Scene.Value />
+                    </div>
+                  </Scene.Overview>
                 </HoverCardContent>
               </HoverCard>
             </Bit.Provider>
@@ -155,4 +161,4 @@ function SceneView({
   );
 }
 
-export default SceneView;
+export default SceneItemView;

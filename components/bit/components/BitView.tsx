@@ -131,7 +131,7 @@ function BitView(props: BitViewProps) {
   }, [isEntering, is3DView]);
 
   const handleBitPlay = () => {
-    if (isActive) return;
+    if (isActive || is3DView) return;
     if (!_isActive) {
       if (bit === '0') {
         Instrument.createClap().triggerAttackRelease(toneDurations.short);

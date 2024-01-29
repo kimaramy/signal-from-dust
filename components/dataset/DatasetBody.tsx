@@ -11,10 +11,11 @@ import { useLocationKey } from '@/components/location';
 import { useMonthKey } from '@/components/month';
 import { SceneUtils } from '@/components/scene';
 import { useSeasonKey } from '@/components/season';
-import { Sequence } from '@/components/sequence';
+import { Sequence, Sequence2 } from '@/components/sequence';
 import { useYearKey } from '@/components/year';
 
-interface DatasetBodyProps {
+export interface DatasetBodyProps {
+  version: 'v1' | 'v2';
   initialCollectionKey: CollectionUtils.Key;
   initialDataset?: {
     [CollectionUtils.schema.keys.YEARLY]?: Model.YearlyData[];
@@ -27,7 +28,7 @@ interface DatasetBodyProps {
 }
 
 const DatasetBody = React.forwardRef<HTMLDivElement, DatasetBodyProps>(
-  function DatasetBody({ initialCollectionKey, initialDataset }, ref) {
+  function DatasetBody({ version, initialCollectionKey, initialDataset }, ref) {
     const { locale } = useLocaleDictionary();
 
     const locationKey = useLocationKey('query');
@@ -152,12 +153,10 @@ const DatasetBody = React.forwardRef<HTMLDivElement, DatasetBodyProps>(
 
     if (!sceneDataset) return null;
 
-    return (
-      <Sequence
-        ref={ref}
-        sequenceId={sceneDatasetId}
-        sceneDataset={sceneDataset}
-      />
+    return version === 'v2' ? (
+      <Sequence2 ref={ref} id={sceneDatasetId} sceneDataset={sceneDataset} />
+    ) : (
+      <Sequence ref={ref} id={sceneDatasetId} sceneDataset={sceneDataset} />
     );
   }
 );

@@ -9,7 +9,6 @@ import { Bit, BitUtils } from '@/components/bit';
 
 import type { SceneData } from '../context';
 import Scene from './Scene';
-import SceneOverview from './SceneOverview';
 
 interface SceneScreenViewProps {
   sceneId: string;
@@ -17,10 +16,10 @@ interface SceneScreenViewProps {
   sceneData: SceneData;
   sceneLength: number;
   sceneTitle: React.ReactNode | ((sceneData: SceneData) => React.ReactNode);
+  sceneSubtitle: React.ReactNode | ((sceneData: SceneData) => React.ReactNode);
   sceneDescription:
     | React.ReactNode
     | ((sceneData: SceneData) => React.ReactNode);
-  sceneSource: React.ReactNode | ((sceneData: SceneData) => React.ReactNode);
   revalidate?: () => void;
   onPlay?: (sceneIdx: number) => void;
   onStop?: () => void;
@@ -32,8 +31,8 @@ function SceneScreenView({
   sceneData,
   sceneLength,
   sceneTitle,
+  sceneSubtitle,
   sceneDescription,
-  sceneSource,
   revalidate,
   onPlay,
   onStop,
@@ -41,13 +40,15 @@ function SceneScreenView({
   const _sceneTitle =
     typeof sceneTitle === 'function' ? sceneTitle(sceneData) : sceneTitle;
 
+  const _sceneSubtitle =
+    typeof sceneSubtitle === 'function'
+      ? sceneSubtitle(sceneData)
+      : sceneSubtitle;
+
   const _sceneDescription =
     typeof sceneDescription === 'function'
       ? sceneDescription(sceneData)
       : sceneDescription;
-
-  const _sceneSource =
-    typeof sceneSource === 'function' ? sceneSource(sceneData) : sceneSource;
 
   const [offsetY, setOffsetY] = useState<`${string}px` | undefined>(undefined);
 
@@ -68,7 +69,7 @@ function SceneScreenView({
       className="overflow-hidden"
       style={{ height: `calc(100vh - ${offsetY})` }}
     >
-      <header className="absolute left-0 top-0 z-10 flex h-auto w-full justify-end p-4">
+      <header className="absolute left-0 top-0 z-10 flex h-auto w-screen min-w-lg justify-end p-4">
         <div className="flex items-center gap-1 rounded-md bg-primary/10 py-1 pl-1 pr-4 text-muted-foreground">
           <Button variant="ghost" size="icon" onClick={() => revalidate?.()}>
             <Icon.RefreshCcw aria-hidden className="h-3.5 w-3.5" />
@@ -81,7 +82,9 @@ function SceneScreenView({
       <Scene.Player sceneIdx={sceneIdx} onPlay={onPlay} onStop={onStop}>
         {({ isPlaying, handlePlayer, bitDurationAsSecond }) => (
           <Bit.Provider>
-            <Scene.Screen
+            <Scene.Body
+              view="screen"
+              columns={sceneLength}
               isPlaying={isPlaying}
               intervalSecond={bitDurationAsSecond}
             >
@@ -99,12 +102,6 @@ function SceneScreenView({
                             bit={bit.value}
                             isActive={isPlaying}
                             className={cn(bit.isVacant && 'hidden')}
-                            // onHover={(bitIdx) => {
-                            //   bitContext.setSelectedBitIdx(bitIdx);
-                            // }}
-                            // onBlur={(_bitIdx) => {
-                            //   bitContext.resetSelectedBitIdx();
-                            // }}
                           />
                           <Bit.Overlay
                             className={cn(
@@ -117,18 +114,23 @@ function SceneScreenView({
                   }
                 </Bit.Consumer>
               )}
-            </Scene.Screen>
+            </Scene.Body>
 
-            <footer className="absolute bottom-0 left-0 z-10 flex h-auto w-full gap-4 p-10">
-              <div className="w-auto min-w-80 rounded-md bg-primary/10 p-1">
-                <SceneOverview
-                  title={_sceneTitle}
-                  description={_sceneDescription}
-                  labelledSource={_sceneSource}
-                  isPlayerHidden={false}
-                  isPlaying={isPlaying}
-                  onPlayerButtonClick={({ bits }) => handlePlayer({ bits })}
-                />
+            <footer className="absolute bottom-0 left-0 z-10 flex h-auto w-screen min-w-lg gap-4 p-10">
+              <div className="w-auto min-w-80 rounded-md bg-primary/10 p-2">
+                <Scene.Overview>
+                  <Scene.Card
+                    className="p-2"
+                    title={_sceneTitle}
+                    subtitle={_sceneSubtitle}
+                    isPlaying={isPlaying}
+                    onPlay={handlePlayer}
+                  />
+                  <div className="space-y-2 p-2">
+                    <Scene.Description>{_sceneDescription}</Scene.Description>
+                    <Scene.Value />
+                  </div>
+                </Scene.Overview>
               </div>
             </footer>
           </Bit.Provider>

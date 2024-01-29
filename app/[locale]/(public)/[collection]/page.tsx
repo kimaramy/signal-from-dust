@@ -79,6 +79,7 @@ async function Page({ params }: PageProps) {
 
   return (
     <Dataset
+      version="v1"
       title={title}
       initialCollectionKey={collectionKey}
       initialDataset={initialDataset}

@@ -4,18 +4,13 @@ import React, { useCallback, useEffect } from 'react';
 
 import { cn } from '@/lib/css';
 import { IntlMessageFormat, useLocaleDictionary } from '@/lib/i18n';
-import { SceneItemView, SceneUtils, type SceneData } from '@/components/scene';
+import { SceneCardView, SceneUtils, type SceneData } from '@/components/scene';
 
+import type { SequenceProps } from './Sequence';
 import { useActiveScene } from './Sequence.hooks';
 
-export interface SequenceProps {
-  id: string;
-  sceneDataset: SceneData[];
-  className?: string;
-}
-
-const Sequence = React.forwardRef<HTMLDivElement, SequenceProps>(
-  function Sequence({ id, sceneDataset, className }, ref) {
+const Sequence2 = React.forwardRef<HTMLDivElement, SequenceProps>(
+  function Sequence2({ id, sceneDataset, className }, ref) {
     const values = sceneDataset.map((sceneData) => sceneData.value ?? 0);
 
     const { dictionary } = useLocaleDictionary();
@@ -75,17 +70,14 @@ const Sequence = React.forwardRef<HTMLDivElement, SequenceProps>(
         id={id}
         ref={ref}
         className={cn(
-          'grid h-full min-h-screen w-full min-w-lg content-center items-center gap-2 overflow-auto p-4 scrollbar-hide lg:overflow-x-hidden',
+          'grid h-full min-h-screen w-full min-w-[280px] grid-cols-1 content-center items-center gap-2 overflow-auto p-4 scrollbar-hide md:grid-cols-2 md:gap-3 lg:grid-cols-3 lg:overflow-x-hidden',
           className
         )}
-        style={{
-          gridTemplateRows: `repeat(${sceneDataset.length}, 2.25rem)`,
-        }}
       >
         {sceneDataset.map((sceneData, sceneIdx) => {
           const sceneId = SceneUtils.getSceneId(id, sceneData.id);
           return (
-            <SceneItemView
+            <SceneCardView
               key={sceneId}
               sceneId={sceneId}
               sceneIdx={sceneIdx}
@@ -93,7 +85,6 @@ const Sequence = React.forwardRef<HTMLDivElement, SequenceProps>(
               sceneLength={SceneUtils.getSceneLength(Math.max(...values))}
               sceneTitle={handleSceneTitle}
               sceneSubtitle={handleSceneSubtitle}
-              sceneDescription={dictionary.dataset.description}
               isActive={activeSceneIdx === sceneIdx}
               isDisabled={validateOtherSceneActive(sceneIdx)}
               onPlay={setActiveSceneIdx}
@@ -106,4 +97,4 @@ const Sequence = React.forwardRef<HTMLDivElement, SequenceProps>(
   }
 );
 
-export default Sequence;
+export default Sequence2;
