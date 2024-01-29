@@ -1,7 +1,7 @@
 export async function fetchRealtimeDataset() {
   const serviceName = 'ListAvgOfSeoulAirQualityService';
   const response = await fetch(
-    `http://openapi.seoul.go.kr:8088/${process.env.SEOUL_OPENAPI_TOKEN}/json/${serviceName}/1/5/`,
+    `http://openapi.seoul.go.kr:8088/${process.env.NEXT_PUBLIC_SEOUL_OPENAPI_TOKEN}/json/${serviceName}/1/5/`,
     {
       next: {
         revalidate: 3600,
