@@ -36,7 +36,7 @@
     "realtime_title": "Realtime {dust} in {location}",
     "description": "Outputs the measurement as a binary signal.",
     "source": "{collection} {dust} Average, {yearRange}, {location}",
-    "realtime_source": "Average air pollution data, realtime, {location}",
+    "realtime_source": "Average Air Quality, Realtime, {location}",
     "download_btn": "Download dataset"
   },
   "intro": {
