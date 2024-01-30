@@ -10,6 +10,23 @@ import { parseLocationKey } from '@/components/location';
 
 import { revalidateRealtimeDataset } from './actions';
 
+function _parseHeader() {
+  const _headers = headers(); // only for dynamic runtime
+
+  const middlewareOrigin = _headers.get('x-origin');
+
+  const pageProtocol =
+    _headers.get('x-forwarded-proto') ??
+    (process.env.NODE_ENV === 'development' ? 'http' : 'https');
+  const pageHost = _headers.get('host');
+  const pagePath = _headers.get('next-url');
+  const pageOrigin = `${pageProtocol}://${pageHost}${pagePath}`;
+
+  console.log({ middlewareOrigin, pageProtocol, pageHost, pagePath });
+
+  return { origin: middlewareOrigin ?? pageOrigin };
+}
+
 function _fetchRealtimeDataset(origin: string | null) {
   return new Promise<object[]>((resolve, reject) => {
     fetch(`${origin}/api/realtime`)
@@ -49,9 +66,9 @@ export async function generateMetadata(
 async function Page({ params, searchParams }: NextPageProps) {
   const { title } = await _generateMetadata({ params, searchParams });
 
-  const _headers = headers(); // only for dynamic runtime
+  const { origin } = _parseHeader();
 
-  const realtimeDataset = await _fetchRealtimeDataset(_headers.get('x-origin'));
+  const realtimeDataset = await _fetchRealtimeDataset(origin);
 
   if (process.env.NODE_ENV === 'development') {
     console.log(`realtime_page: %s`, JSON.stringify(realtimeDataset));

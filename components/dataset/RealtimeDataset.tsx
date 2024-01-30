@@ -1,9 +1,9 @@
 'use client';
 
-// import { useEffect, useState } from 'react';
-import { type RealtimeData } from '@/domains';
+import { useEffect, useState } from 'react';
+import { fetchRealtimeDataset, type RealtimeData } from '@/domains';
 
-// import { Spinner } from '@/components/layout';
+import { Spinner } from '@/components/layout';
 
 import DatasetHeader from './DatasetHeader';
 import RealtimeDatasetBody from './RealtimeDatasetBody';
@@ -19,29 +19,29 @@ function RealtimeDataset({
   initialDataset = [],
   revalidate,
 }: RealtimeDatasetProps) {
-  // const [dataset, setDataset] = useState(initialDataset as RealtimeData[]);
+  const [dataset, setDataset] = useState(initialDataset as RealtimeData[]);
 
-  // const isLoading = dataset.length === 0;
+  const isLoading = dataset.length === 0;
 
-  // useEffect(() => {
-  //   const abortController = new AbortController();
+  useEffect(() => {
+    const abortController = new AbortController();
 
-  //   if (dataset.length === 0) {
-  //     fetchSeoulAirQualityDataset({ abortSignal: abortController.signal })
-  //       .then((dataset) => {
-  //         setDataset(dataset);
-  //         console.log('success');
-  //       })
-  //       .catch((error) => {
-  //         console.error(JSON.stringify(error, null, 2));
-  //         throw error; // This will activate the closest `error.ts` Error Boundary
-  //       });
-  //   }
+    if (dataset.length === 0) {
+      fetchRealtimeDataset({ signal: abortController.signal })
+        .then((dataset) => {
+          setDataset(dataset);
+          console.log('success');
+        })
+        .catch((error) => {
+          console.error(JSON.stringify(error, null, 2));
+          throw error; // This will activate the closest `error.ts` Error Boundary
+        });
+    }
 
-  //   return () => {
-  //     abortController.abort();
-  //   };
-  // }, [dataset]);
+    return () => {
+      abortController.abort();
+    };
+  }, [dataset]);
 
   return (
     <>
@@ -50,7 +50,7 @@ function RealtimeDataset({
         initialDataset={initialDataset as RealtimeData[]}
         revalidate={revalidate}
       />
-      {/* {isLoading && <Spinner />} */}
+      {isLoading && <Spinner />}
     </>
   );
 }
