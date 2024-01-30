@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { fetchRealtimeDataset } from '@/domains/';
 
 import { getDictionary, IntlMessageFormat, type Locale } from '@/lib/i18n';
 import { DustUtils, LocationUtils } from '@/lib/model';
@@ -8,7 +7,16 @@ import { RealtimeDataset } from '@/components/dataset';
 import { parseDustKey } from '@/components/dust';
 import { parseLocationKey } from '@/components/location';
 
-import { revalidateRealtimeData } from './actions';
+import { revalidateRealtimeDataset } from './actions';
+
+function fetchRealtimeDataset() {
+  return new Promise<object[]>((resolve, reject) => {
+    fetch(`${process.env.NEXT_PUBLIC_URL}/api/realtime`)
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch((error) => reject(error));
+  });
+}
 
 async function _generateMetadata({ params, searchParams }: NextPageProps) {
   const locale = params?.locale as Locale;
@@ -40,23 +48,19 @@ export async function generateMetadata(
 async function Page({ params, searchParams }: NextPageProps) {
   const { title } = await _generateMetadata({ params, searchParams });
 
-  const initialDataset = await fetchRealtimeDataset();
+  const realtimeDataset = await fetchRealtimeDataset();
 
   if (process.env.NODE_ENV === 'development') {
-    console.log(`realtime_page: %d`, initialDataset?.length ?? 0);
+    console.log(`realtime_page: %s`, JSON.stringify(realtimeDataset));
   }
 
   return (
     <RealtimeDataset
       title={title}
-      initialDataset={initialDataset}
-      revalidate={revalidateRealtimeData}
+      initialDataset={realtimeDataset}
+      revalidate={revalidateRealtimeDataset}
     />
   );
 }
-
-export const dynamicParams = false;
-
-export const revalidate = false;
 
 export default Page;
