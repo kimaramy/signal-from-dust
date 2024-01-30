@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { fetchRealtimeDataset } from '@/domains';
 
 import { getDictionary, IntlMessageFormat, type Locale } from '@/lib/i18n';
 import { DustUtils, LocationUtils } from '@/lib/model';
@@ -9,14 +10,14 @@ import { parseLocationKey } from '@/components/location';
 
 import { revalidateRealtimeDataset } from './actions';
 
-function fetchRealtimeDataset() {
-  return new Promise<object[]>((resolve, reject) => {
-    fetch(`${process.env.NEXT_PUBLIC_URL}/api/realtime`)
-      .then((response) => response.json())
-      .then((data) => resolve(data))
-      .catch((error) => reject(error));
-  });
-}
+// function fetchRealtimeDataset() {
+//   return new Promise<object[]>((resolve, reject) => {
+//     fetch(`${process.env.NEXT_PUBLIC_URL}/api/realtime`)
+//       .then((response) => response.json())
+//       .then((data) => resolve(data))
+//       .catch((error) => reject(error));
+//   });
+// }
 
 async function _generateMetadata({ params, searchParams }: NextPageProps) {
   const locale = params?.locale as Locale;

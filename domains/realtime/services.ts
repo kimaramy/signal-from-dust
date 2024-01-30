@@ -32,14 +32,17 @@ function composeSeoulAirQualityServiceEndpoint() {
 // }
 
 export async function fetchRealtimeDataset() {
-  const { endpoint, serviceName } = composeSeoulAirQualityServiceEndpoint();
+  const { serviceName } = composeSeoulAirQualityServiceEndpoint();
   try {
-    const response = await fetch(endpoint, {
-      next: {
-        revalidate: 3600,
-        tags: [realtimeDatasetRevalidateTag],
-      },
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/api/seoulAirQuality`,
+      {
+        next: {
+          revalidate: 3600,
+          tags: [realtimeDatasetRevalidateTag],
+        },
+      }
+    );
     if (!response.ok) {
       throw new Error('Failed to fetch data'); // This will activate the closest `error.ts` Error Boundary
     }
