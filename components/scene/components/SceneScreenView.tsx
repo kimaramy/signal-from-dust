@@ -120,13 +120,12 @@ function SceneScreenView({
               <div className="w-auto min-w-80 rounded-md bg-primary/10 p-2">
                 <Scene.Overview>
                   <Scene.Card
-                    className="p-2"
                     title={_sceneTitle}
                     subtitle={_sceneSubtitle}
                     isPlaying={isPlaying}
                     onPlay={handlePlayer}
                   />
-                  <div className="space-y-2 p-2">
+                  <div className="space-y-2 py-2 pl-4 pr-2">
                     <Scene.Description>{_sceneDescription}</Scene.Description>
                     <Scene.Value />
                   </div>

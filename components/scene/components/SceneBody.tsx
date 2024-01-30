@@ -7,7 +7,6 @@ import { cn } from '@/lib/css';
 
 import type { SceneContextValue } from '../context';
 import { useSceneContext } from '../hooks';
-import { useScenePlayerEffect } from './Scene.hooks';
 
 const sceneBodyVariants = cva(
   'relative grid h-full w-full list-none bg-fixed p-1',
@@ -34,14 +33,7 @@ interface SceneBodyProps extends VariantProps<typeof sceneBodyVariants> {
 
 const SceneBody = React.forwardRef<HTMLOListElement, SceneBodyProps>(
   function SceneBody(props, ref) {
-    const {
-      view = 'listitem',
-      columns = 8,
-      isPlaying = false,
-      intervalSecond = 0.5,
-      className,
-      children,
-    } = props;
+    const { view = 'listitem', columns = 8, className, children } = props;
 
     const sceneContext = useSceneContext();
 
@@ -62,8 +54,6 @@ const SceneBody = React.forwardRef<HTMLOListElement, SceneBodyProps>(
           : {},
       [view, columns, sceneContext.bits]
     );
-
-    useScenePlayerEffect({ sceneContext, isPlaying, intervalSecond });
 
     return (
       <ol

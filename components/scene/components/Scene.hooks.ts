@@ -50,6 +50,9 @@ export function useScenePlayer({
           bits.map((bit) => (bit.value === '-1' ? '-1' : null)),
           bitDurationAsSecond
         ).start(0);
+        // _claps.loop = 3;
+        // _kicks.loop = 3;
+        // _cymbals.loop = 3;
         setClaps(_claps);
         setKicks(_kicks);
         setCymbals(_cymbals);

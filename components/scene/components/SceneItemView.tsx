@@ -140,13 +140,12 @@ function SceneItemView({
                 >
                   <Scene.Overview>
                     <Scene.Card
-                      className="p-2"
                       title={_sceneTitle}
                       subtitle={_sceneSubtitle}
                       isPlayerHidden
                       onPlay={handlePlayer}
                     />
-                    <div className="space-y-2 p-2">
+                    <div className="space-y-2 py-2 pl-4 pr-2">
                       <Scene.Description>{_sceneDescription}</Scene.Description>
                       <Scene.Value />
                     </div>

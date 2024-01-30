@@ -37,8 +37,7 @@ function SceneCardView({
       <Scene.Player sceneIdx={sceneIdx} onPlay={onPlay} onStop={onStop}>
         {({ isPlaying, handlePlayer }) => (
           <Scene.Card
-            className="w-full rounded-md bg-primary/10 p-2"
-            isolated
+            variant="isolated"
             title={_sceneTitle}
             subtitle={_sceneSubtitle}
             isPlaying={isPlaying}

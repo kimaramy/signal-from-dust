@@ -1,5 +1,7 @@
 'use client';
 
+import { cva, type VariantProps } from 'class-variance-authority';
+
 import { cn } from '@/lib/css';
 import { DustUtils } from '@/lib/model';
 import type { BitData } from '@/components/bit';
@@ -9,12 +11,23 @@ import { useSceneContext } from '../hooks';
 import { PlayerOverlayButton } from './PlayerButton';
 import { SceneSubtitle, SceneTitle } from './SceneTypography';
 
-interface SceneCardProps {
+const sceneCardVariants = cva('group flex flex-nowrap items-center gap-3 p-2', {
+  variants: {
+    variant: {
+      isolated:
+        'w-full cursor-pointer rounded-md bg-primary/10 hover:backdrop-hue-rotate-90 dark:hover:backdrop-grayscale',
+    },
+  },
+  defaultVariants: {
+    variant: undefined,
+  },
+});
+
+interface SceneCardProps extends VariantProps<typeof sceneCardVariants> {
   title: React.ReactNode;
   subtitle: React.ReactNode;
   isPlayerHidden?: boolean;
   isPlaying?: boolean;
-  isolated?: boolean;
   className?: string;
   onPlay?: (sceneContext: { bits: BitData[] }) => void;
 }
@@ -25,7 +38,7 @@ function SceneCard(props: SceneCardProps) {
     subtitle,
     isPlayerHidden = false,
     isPlaying = false,
-    isolated = false,
+    variant,
     className,
     onPlay,
   } = props;
@@ -38,14 +51,7 @@ function SceneCard(props: SceneCardProps) {
   );
 
   return (
-    <div
-      className={cn(
-        'group flex flex-nowrap items-center gap-4',
-        isolated &&
-          'cursor-pointer hover:backdrop-hue-rotate-90 dark:hover:backdrop-grayscale',
-        className
-      )}
-    >
+    <div className={cn(sceneCardVariants({ variant, className }))}>
       {/* thumbnail */}
       <div className="relative z-0 aspect-square w-12 flex-none overflow-hidden rounded md:w-16">
         <DustThumbnail dustGrade={dustGrade.name} fileSize="360x360" fill />
