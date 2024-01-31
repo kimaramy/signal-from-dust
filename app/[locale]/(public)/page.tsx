@@ -80,7 +80,6 @@ async function Page(props: PageProps) {
   return (
     <>
       <Dataset
-        version="v1"
         title={title}
         initialCollectionKey={CollectionUtils.schema.defaultKey}
         initialDataset={initialDataset}

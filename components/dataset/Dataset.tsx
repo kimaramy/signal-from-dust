@@ -2,6 +2,8 @@
 
 import React, { useCallback, useState } from 'react';
 
+import { LayoutProvider } from '@/components/layout';
+
 import DatasetBody, { type DatasetBodyProps } from './DatasetBody';
 import DatasetHeader from './DatasetHeader';
 
@@ -12,7 +14,6 @@ interface DatasetProps extends Omit<DatasetBodyProps, 'initialDataset'> {
 
 function Dataset({
   title,
-  version = 'v1',
   initialCollectionKey,
   initialDataset,
 }: DatasetProps) {
@@ -27,7 +28,7 @@ function Dataset({
   }, []);
 
   return (
-    <>
+    <LayoutProvider>
       <DatasetHeader
         title={title}
         dataset={initialDataset}
@@ -35,11 +36,10 @@ function Dataset({
       />
       <DatasetBody
         ref={handleBodyRef}
-        version={version}
         initialCollectionKey={initialCollectionKey}
         initialDataset={{ [initialCollectionKey]: initialDataset }}
       />
-    </>
+    </LayoutProvider>
   );
 }
 

@@ -7,6 +7,7 @@ import { useLocaleDictionary } from '@/lib/i18n';
 import { CollectionUtils, Model } from '@/lib/model';
 import { toLowerCase } from '@/lib/utils';
 import { useDustKey } from '@/components/dust';
+import { LayoutConsumer } from '@/components/layout';
 import { useLocationKey } from '@/components/location';
 import { useMonthKey } from '@/components/month';
 import { SceneUtils } from '@/components/scene';
@@ -15,7 +16,6 @@ import { Sequence, Sequence2 } from '@/components/sequence';
 import { useYearKey } from '@/components/year';
 
 export interface DatasetBodyProps {
-  version: 'v1' | 'v2';
   initialCollectionKey: CollectionUtils.Key;
   initialDataset?: {
     [CollectionUtils.schema.keys.YEARLY]?: Model.YearlyData[];
@@ -28,7 +28,7 @@ export interface DatasetBodyProps {
 }
 
 const DatasetBody = React.forwardRef<HTMLDivElement, DatasetBodyProps>(
-  function DatasetBody({ version, initialCollectionKey, initialDataset }, ref) {
+  function DatasetBody({ initialCollectionKey, initialDataset }, ref) {
     const { locale } = useLocaleDictionary();
 
     const locationKey = useLocationKey('query');
@@ -153,10 +153,30 @@ const DatasetBody = React.forwardRef<HTMLDivElement, DatasetBodyProps>(
 
     if (!sceneDataset) return null;
 
-    return version === 'v2' ? (
-      <Sequence2 ref={ref} id={sceneDatasetId} sceneDataset={sceneDataset} />
-    ) : (
-      <Sequence ref={ref} id={sceneDatasetId} sceneDataset={sceneDataset} />
+    return (
+      <LayoutConsumer>
+        {(layoutContext) => {
+          switch (layoutContext.key) {
+            case 'GRID':
+              return (
+                <Sequence2
+                  ref={ref}
+                  id={sceneDatasetId}
+                  sceneDataset={sceneDataset}
+                />
+              );
+            case 'LIST':
+            default:
+              return (
+                <Sequence
+                  ref={ref}
+                  id={sceneDatasetId}
+                  sceneDataset={sceneDataset}
+                />
+              );
+          }
+        }}
+      </LayoutConsumer>
     );
   }
 );

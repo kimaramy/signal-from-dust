@@ -21,17 +21,17 @@ import { parseYearKey } from '@/components/year';
 
 const fetchCachedDataset = cache(fetchDataset);
 
-async function _generateMetadata({ params, searchParams }: NextPageProps) {
+export async function generateMetadata({
+  params,
+  searchParams,
+}: NextPageProps) {
   const locale = params?.locale as Locale;
-
   const dictionary = await getDictionary(locale);
-
   const dustKey = parseDustKey(searchParams);
   const yearKey = parseYearKey(searchParams);
   const seasonKey = parseSeasonKey(searchParams);
   const monthKey = parseMonthKey(searchParams);
   const locationKey = parseLocationKey(searchParams);
-
   const location = LocationUtils.schema.display(locationKey, locale);
   const dust = DustUtils.schema.display(dustKey, locale);
   const monthOrSeason =
@@ -39,27 +39,18 @@ async function _generateMetadata({ params, searchParams }: NextPageProps) {
       ? SeasonUtils.schema.display(seasonKey, locale)
       : MonthUtils.schema.display(monthKey, 'short', locale);
   const year = YearUtils.schema.display(yearKey, 'short', locale);
-
   const title = new IntlMessageFormat(dictionary.title.search_page).format({
     location,
     dust,
     monthOrSeason,
     year,
   }) as string;
-
   const description = dictionary.intro.content.subtitle;
-
   return { title, description } satisfies Metadata;
 }
 
-export async function generateMetadata(
-  props: NextPageProps
-): Promise<Metadata> {
-  return await _generateMetadata(props);
-}
-
 async function Page({ params, searchParams }: NextPageProps) {
-  const { title } = await _generateMetadata({ params, searchParams });
+  const { title } = await generateMetadata({ params, searchParams });
 
   const collectionKey = parseCollectionKey(searchParams);
   const yearKey = parseYearKey(searchParams);
@@ -77,7 +68,6 @@ async function Page({ params, searchParams }: NextPageProps) {
   return (
     <Dataset
       title={title}
-      version="v1"
       initialCollectionKey={collectionKey}
       initialDataset={initialDataset}
     />
