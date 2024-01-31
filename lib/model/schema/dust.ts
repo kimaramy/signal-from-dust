@@ -1,10 +1,6 @@
 import { z } from 'zod';
 
-import {
-  CustomValueMapSchema,
-  type CustomValueTemplate,
-  type I18n,
-} from './base';
+import { CustomValueMapSchema, type CustomValueTemplate } from './base';
 import { LocaleSchema } from './locale';
 
 const dustSchemaName = 'dust';

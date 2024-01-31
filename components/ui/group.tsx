@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 interface ButtonGroupProps extends React.HTMLAttributes<HTMLUListElement> {
   items: React.ReactNode[];
@@ -7,7 +7,7 @@ interface ButtonGroupProps extends React.HTMLAttributes<HTMLUListElement> {
 function ButtonGroup({ items, ...rest }: ButtonGroupProps) {
   return (
     <ul
-      className="flex divide-x divide-primary/20 overflow-hidden rounded-md border border-primary/20"
+      className="flex max-h-9 items-center divide-x divide-primary/20 overflow-hidden rounded-md border border-primary/20 shadow-sm"
       {...rest}
     >
       {items.filter(Boolean).map((item, idx) => (

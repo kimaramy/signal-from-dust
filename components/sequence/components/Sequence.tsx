@@ -75,7 +75,7 @@ const Sequence = React.forwardRef<HTMLDivElement, SequenceProps>(
         id={id}
         ref={ref}
         className={cn(
-          'grid h-full min-h-screen w-full min-w-lg content-center items-center gap-2 overflow-auto p-4 scrollbar-hide lg:overflow-x-hidden',
+          'grid h-full min-h-screen w-full min-w-md content-center items-center gap-2 overflow-auto p-4 scrollbar-hide lg:overflow-x-hidden',
           className
         )}
         style={{

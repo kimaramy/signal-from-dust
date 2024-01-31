@@ -59,7 +59,7 @@ const RealtimeSequence = React.forwardRef<
       id={id}
       ref={ref}
       className={cn(
-        'h-auto w-full min-w-lg overflow-auto scrollbar-hide lg:overflow-x-hidden',
+        'h-auto w-full min-w-md overflow-scroll scrollbar-hide',
         className
       )}
     >
