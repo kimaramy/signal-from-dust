@@ -1,12 +1,12 @@
 export function fetchRealtimeDataset(options?: { signal?: AbortSignal }) {
   const serviceName = 'ListAvgOfSeoulAirQualityService';
-  const serviceURL = `${process.env.SEOUL_OPENAPI_URL}/${process.env.SEOUL_OPENAPI_KEY}/json/${serviceName}/1/5/`;
+  const serviceURL = `${process.env.NEXT_PUBLIC_SEOUL_OPENAPI_URL}/${process.env.NEXT_PUBLIC_SEOUL_OPENAPI_KEY}/json/${serviceName}/1/5/`;
 
   return new Promise<RealtimeData[]>((resolve, reject) => {
     fetch(serviceURL, {
       signal: options?.signal,
       next: {
-        revalidate: 3600,
+        revalidate: 60 * 30, // every 30 minutes
         tags: [realtimeDatasetRevalidateTag],
       },
     })
