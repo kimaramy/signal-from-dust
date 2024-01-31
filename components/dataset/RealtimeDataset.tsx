@@ -5,32 +5,33 @@ import { fetchRealtimeDataset, type RealtimeData } from '@/domains';
 
 import { Spinner } from '@/components/layout';
 
-import DatasetHeader from './DatasetHeader';
 import RealtimeDatasetBody from './RealtimeDatasetBody';
+import RealtimeDatasetHeader from './RealtimeDatasetHeader';
 
 interface RealtimeDatasetProps {
   title: string;
-  initialDataset?: object[];
+  initialDataset: RealtimeData[];
   revalidate: () => Promise<void>;
 }
 
 function RealtimeDataset({
   title,
-  initialDataset = [],
+  initialDataset,
   revalidate,
 }: RealtimeDatasetProps) {
-  const [dataset, setDataset] = useState(initialDataset as RealtimeData[]);
+  const [dataset, setDataset] = useState(initialDataset);
 
   const isLoading = dataset.length === 0;
 
   useEffect(() => {
-    const abortController = new AbortController();
+    let abortController: AbortController | null = null;
 
     if (dataset.length === 0) {
+      abortController = new AbortController();
       fetchRealtimeDataset({ signal: abortController.signal })
         .then((dataset) => {
           setDataset(dataset);
-          console.log('success');
+          console.info('realtime data fetch success on client');
         })
         .catch((error) => {
           console.error(JSON.stringify(error, null, 2));
@@ -39,17 +40,14 @@ function RealtimeDataset({
     }
 
     return () => {
-      abortController.abort();
+      abortController?.abort();
     };
   }, [dataset]);
 
   return (
     <>
-      <DatasetHeader title={title} dataset={initialDataset} isSticky />
-      <RealtimeDatasetBody
-        initialDataset={initialDataset as RealtimeData[]}
-        revalidate={revalidate}
-      />
+      <RealtimeDatasetHeader title={title} dataset={dataset} isSticky />
+      <RealtimeDatasetBody initialDataset={dataset} revalidate={revalidate} />
       {isLoading && <Spinner />}
     </>
   );

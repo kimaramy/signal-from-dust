@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { fetchRealtimeDataset } from '@/domains';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(_request: Request) {
   try {
     const initialDataset = await fetchRealtimeDataset();
