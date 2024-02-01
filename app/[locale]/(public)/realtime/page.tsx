@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { headers } from 'next/headers';
-import type { RealtimeData } from '@/domains';
+// import { headers } from 'next/headers';
+import { fetchRealtimeDataset } from '@/domains/realtime';
 
-import { parseHeader } from '@/lib/headers';
+// import { parseHeader } from '@/lib/headers';
 import { getDictionary, IntlMessageFormat, type Locale } from '@/lib/i18n';
 import { DustUtils, LocationUtils } from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
@@ -10,10 +10,7 @@ import { RealtimeDataset } from '@/components/dataset';
 import { parseDustKey } from '@/components/dust';
 import { parseLocationKey } from '@/components/location';
 
-import {
-  fetchRealtimeDatasetOnServer,
-  revalidateRealtimeDataset,
-} from './actions';
+import { revalidateRealtimeDataset } from './actions';
 
 export async function generateMetadata({
   params,
@@ -36,10 +33,9 @@ export async function generateMetadata({
 async function Page({ params, searchParams }: NextPageProps) {
   const { title } = await generateMetadata({ params, searchParams });
 
-  const { origin } = parseHeader(headers()); // only runs in dynamic runtime
+  // const { origin } = parseHeader(headers()); // only runs in dynamic runtime
 
-  const realtimeDataset =
-    await fetchRealtimeDatasetOnServer<RealtimeData>(origin);
+  const realtimeDataset = await fetchRealtimeDataset();
 
   if (process.env.NODE_ENV === 'development') {
     console.log(`realtime_page: %d`, realtimeDataset.length);
@@ -54,6 +50,10 @@ async function Page({ params, searchParams }: NextPageProps) {
   );
 }
 
-export const dynamic = 'force-dynamic';
+// export const fetchCache = 'only-no-store';
+
+// export const revalidate = 0; // Specifying 0 implies that this layout or page should never be static.
+
+export const dynamic = 'force-dynamic'; // This disables all caching of fetches and always revalidates.
 
 export default Page;
