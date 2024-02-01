@@ -71,7 +71,7 @@ function SceneItemView({
       onMouseOut={() => setHovering(false)}
     >
       <Scene.Player sceneIdx={sceneIdx} onPlay={onPlay} onStop={onStop}>
-        {({ isPlaying, handlePlayer, bitDurationAsSecond }) => (
+        {({ isPlaying, handlePlayer }) => (
           <>
             <Scene.Head className="flex flex-row-reverse items-center gap-2">
               {({ bits }) => (
@@ -94,8 +94,6 @@ function SceneItemView({
                   <Scene.Body
                     view="listitem"
                     columns={sceneLength}
-                    isPlaying={isPlaying}
-                    intervalSecond={bitDurationAsSecond}
                     className="group-hover:ring-1"
                   >
                     {(sceneContext) => (

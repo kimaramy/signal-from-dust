@@ -1,8 +1,12 @@
-import { useContext } from 'react';
+import { useCallback, useContext, useState } from 'react';
 
 import { useEnumUrlParam, useSetQueryParam, type URLPart } from '@/lib/router';
 
-import { LayoutContext, LayoutContextError } from './context';
+import {
+  LayoutContext,
+  LayoutContextError,
+  type LayoutContextValue,
+} from './context';
 import { LayoutUtils } from './schema';
 
 export function useLayoutKey(
@@ -27,6 +31,15 @@ export function useSetLayoutKey() {
   return function (layoutKey: LayoutUtils.Key) {
     return setLayoutKey(LayoutUtils.schema.lowerCaseKey(layoutKey));
   };
+}
+
+export function useLayoutState(
+  initialKey: LayoutUtils.Key
+): LayoutContextValue {
+  const [key, _setKey] = useState(initialKey);
+  const value = LayoutUtils.schema.getValue(key);
+  const setKey = useCallback((key: LayoutUtils.Key) => _setKey(key), []);
+  return { key, value, setKey };
 }
 
 export function useLayoutContext() {

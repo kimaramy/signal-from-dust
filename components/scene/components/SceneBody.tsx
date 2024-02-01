@@ -25,8 +25,6 @@ const sceneBodyVariants = cva(
 
 interface SceneBodyProps extends VariantProps<typeof sceneBodyVariants> {
   columns?: number;
-  isPlaying?: boolean;
-  intervalSecond?: number;
   className?: string;
   children: (context: SceneContextValue) => React.ReactNode;
 }

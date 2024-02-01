@@ -9,7 +9,7 @@ type LayoutProps = NextLayoutProps & {
 function Layout({ children, modal }: LayoutProps) {
   return (
     <>
-      <Main className="bg-body">
+      <Main>
         <BitNoise />
         {children}
       </Main>
