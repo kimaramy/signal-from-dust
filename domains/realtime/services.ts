@@ -13,7 +13,7 @@ export async function fetchRealtimeDatasetViaRoute<TData = RealtimeData>(
   return new Promise<TData[]>((resolve, reject) => {
     fetch(`${origin}/api/realtime`, {
       method: 'GET',
-      cache: 'no-cache',
+      cache: 'no-store',
       ...fetchOptions,
     })
       .then((response) => response.json())
@@ -22,14 +22,14 @@ export async function fetchRealtimeDatasetViaRoute<TData = RealtimeData>(
   });
 }
 
-export function fetchRealtimeDataset(
+export async function fetchRealtimeDataset(
   fetchOptions?: Omit<RequestInit, 'method' | 'cache'>
 ) {
   const serviceName = 'ListAvgOfSeoulAirQualityService';
   const serviceURL = `${process.env.NEXT_PUBLIC_SEOUL_OPENAPI_URL}/${process.env.NEXT_PUBLIC_SEOUL_OPENAPI_KEY}/json/${serviceName}/1/5/`;
 
-  return new Promise<RealtimeData[]>((resolve, reject) => {
-    fetch(serviceURL, {
+  try {
+    const response = await fetch(serviceURL, {
       method: 'GET',
       cache: 'no-store', // disable cache
       next: {
@@ -37,22 +37,25 @@ export function fetchRealtimeDataset(
         tags: [realtimeDatasetRevalidateTag],
       },
       ...fetchOptions,
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error('Failed to fetch data');
-        return response.json();
-      })
-      .then((body) => {
-        const isSuccess = body[serviceName]['RESULT']['CODE'] === 'INFO-000';
-        const dataset = body[serviceName]['row'] as RealtimeData[];
-        if (!isSuccess) throw new Error(JSON.stringify(body, null, 2));
-        return resolve(dataset);
-      })
-      .catch((error) => {
-        console.log(JSON.stringify(error, null, 2));
-        reject(error); // This rejection should activate the closest `error.tsx` Error Boundary
-      });
-  });
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    const body = await response.json();
+    const isSuccess = body[serviceName]['RESULT']['CODE'] === 'INFO-000';
+    if (!isSuccess) {
+      throw new Error(
+        `Request failed: ${JSON.stringify(body[serviceName]['RESULT']['CODE'])}`
+      );
+    }
+    const dataset = body[serviceName]['row'] as RealtimeData[];
+    return dataset;
+  } catch (error) {
+    console.log(JSON.stringify(error, null, 2));
+    throw new Error(
+      error instanceof Error ? error.message : JSON.stringify(error, null, 2)
+    );
+  }
 }
 
 export const realtimeDatasetRevalidateTag = 'realtime';

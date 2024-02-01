@@ -31,12 +31,10 @@ export async function generateMetadata({
 async function Page({ params, searchParams }: NextPageProps) {
   const { title } = await generateMetadata({ params, searchParams });
 
-  // const { origin } = parseHeader(headers()); // only runs in dynamic runtime
-
   const realtimeDataset = await fetchRealtimeDataset();
 
   if (process.env.NODE_ENV === 'development') {
-    console.log(`realtime_page: %d`, realtimeDataset.length);
+    console.log(`today_page: %d`, realtimeDataset.length);
   }
 
   return (

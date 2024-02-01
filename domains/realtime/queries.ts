@@ -19,7 +19,7 @@ export function useRealtimeListQuery(initialDataset: RealtimeData[]) {
       })
         .then((dataset) => {
           setDataset(dataset);
-          console.info('realtime data fetch success on client');
+          console.log('realtime data fetch success on client');
         })
         .catch((error) => {
           console.error(JSON.stringify(error, null, 2));
