@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
+
 // import { headers } from 'next/headers';
-import { fetchRealtimeDataset } from '@/domains/realtime';
+// import { fetchRealtimeDataset } from '@/domains/realtime';
 
 // import { parseHeader } from '@/lib/headers';
 import { getDictionary, IntlMessageFormat, type Locale } from '@/lib/i18n';
@@ -35,16 +36,16 @@ async function Page({ params, searchParams }: NextPageProps) {
 
   // const { origin } = parseHeader(headers()); // only runs in dynamic runtime
 
-  const realtimeDataset = await fetchRealtimeDataset();
+  // const realtimeDataset = await fetchRealtimeDataset();
 
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`realtime_page: %d`, realtimeDataset.length);
-  }
+  // if (process.env.NODE_ENV === 'development') {
+  //   console.log(`realtime_page: %d`, realtimeDataset.length);
+  // }
 
   return (
     <RealtimeDataset
       title={title}
-      initialDataset={realtimeDataset}
+      initialDataset={[]}
       revalidate={revalidateRealtimeDataset}
     />
   );

@@ -74,8 +74,8 @@ async function Page({ params, searchParams }: NextPageProps) {
   );
 }
 
-export const dynamicParams = false;
+export const dynamic = 'auto';
 
-export const revalidate = false;
+export const revalidate = false; // This is the default and changes the fetch cache to indefinitely cache anything that uses force-cache or is fetched before a dynamic Hook/fetch
 
 export default Page;
