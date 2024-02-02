@@ -20,7 +20,9 @@ function parseOrigin(headers: Headers) {
    */
   const protocol =
     headers.get('x-forwarded-proto') ??
-    headers.get('host')?.includes('localhost')
+    new RegExp(['localhost', '127.0.0.1'].join('|')).test(
+      headers.get('host') ?? ''
+    )
       ? 'http'
       : 'https';
   const host = headers.get('host'); // 'host' includes port

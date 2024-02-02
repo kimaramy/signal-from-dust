@@ -87,13 +87,13 @@ export function useScenePlayer({
 export interface UseScenePlayerEffectParams {
   sceneContext: SceneContextValue;
   isPlaying: boolean;
-  intervalSecond: number;
+  bitDurationAsSecond: number;
 }
 
 export function useScenePlayerEffect({
   sceneContext,
   isPlaying,
-  intervalSecond,
+  bitDurationAsSecond,
 }: UseScenePlayerEffectParams) {
   // Do not add bits to deps cause it'll not trigger single interval context
   useEffect(() => {
@@ -130,7 +130,7 @@ export function useScenePlayerEffect({
         sceneContext.setBits(newBits);
         _activeBitIdx++;
         // console.log(`interval_end: ${_activeBitIdx}`);
-      }, intervalSecond * 1000);
+      }, bitDurationAsSecond * 1000);
       // console.log(`finished: ${_activeBitIdx}`);
     } else {
       sceneContext.resetBits();
@@ -139,5 +139,5 @@ export function useScenePlayerEffect({
       clearInterval(interval);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPlaying, intervalSecond]);
+  }, [isPlaying, bitDurationAsSecond]);
 }

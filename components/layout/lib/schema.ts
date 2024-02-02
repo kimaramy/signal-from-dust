@@ -27,7 +27,7 @@ const layoutValues: ReadonlyArray<LayoutValue> = [
     disabled: false,
     i18n: {
       en: 'Detail',
-      ko: '자세히보기',
+      ko: '자세히',
     },
   },
   {
@@ -36,7 +36,7 @@ const layoutValues: ReadonlyArray<LayoutValue> = [
     disabled: false,
     i18n: {
       en: 'Short',
-      ko: '간략히보기',
+      ko: '간략히',
     },
   },
   {
@@ -45,7 +45,7 @@ const layoutValues: ReadonlyArray<LayoutValue> = [
     disabled: true,
     i18n: {
       en: 'Screen',
-      ko: '전체화면보기',
+      ko: '전체화면',
     },
   },
 ];

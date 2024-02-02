@@ -10,21 +10,22 @@ import {
 } from './Scene.hooks';
 
 interface ScenePlayerProps extends UseScenePlayerParams {
-  children: (scenePlayer: ReturnType<typeof useScenePlayer>) => React.ReactNode;
+  children: (
+    scenePlayer: Pick<
+      ReturnType<typeof useScenePlayer>,
+      'isPlaying' | 'handlePlayer'
+    >
+  ) => React.ReactNode;
 }
 
 function ScenePlayer({ children, ...rest }: ScenePlayerProps) {
   const sceneContext = useSceneContext();
 
-  const scenePlayer = useScenePlayer(rest);
+  const { isPlaying, bitDurationAsSecond, handlePlayer } = useScenePlayer(rest);
 
-  useScenePlayerEffect({
-    sceneContext,
-    isPlaying: scenePlayer.isPlaying,
-    intervalSecond: scenePlayer.bitDurationAsSecond,
-  });
+  useScenePlayerEffect({ sceneContext, isPlaying, bitDurationAsSecond });
 
-  return <>{children(scenePlayer)}</>;
+  return <>{children({ isPlaying, handlePlayer })}</>;
 }
 
 export default ScenePlayer;

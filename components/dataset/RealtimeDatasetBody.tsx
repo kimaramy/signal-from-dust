@@ -26,7 +26,7 @@ function RealtimeDatasetBody({
   const dustKey = useDustKey('query');
 
   const sceneDataset = SceneUtils.toRealtimeSceneDataset<RealtimeData>({
-    dataset: initialDataset ?? [],
+    dataset: initialDataset,
     dustKey,
     locationKey,
     locale,

@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { fetchRealtimeDataset, type RealtimeData } from '@/domains';
+import { useRealtimeListQuery, type RealtimeData } from '@/domains';
 
 import { Spinner } from '@/components/layout';
 
@@ -19,30 +18,10 @@ function RealtimeDataset({
   initialDataset,
   revalidate,
 }: RealtimeDatasetProps) {
-  const [dataset, setDataset] = useState(initialDataset);
-
-  const isLoading = dataset.length === 0;
-
-  useEffect(() => {
-    let abortController: AbortController | null = null;
-
-    if (dataset.length === 0) {
-      abortController = new AbortController();
-      fetchRealtimeDataset({ signal: abortController.signal })
-        .then((dataset) => {
-          setDataset(dataset);
-          console.info('realtime data fetch success on client');
-        })
-        .catch((error) => {
-          console.error(JSON.stringify(error, null, 2));
-          throw error; // This will activate the closest `error.ts` Error Boundary
-        });
-    }
-
-    return () => {
-      abortController?.abort();
-    };
-  }, [dataset]);
+  const { dataset, isLoading } = useRealtimeListQuery({
+    initialDataset,
+    enabled: initialDataset.length === 0,
+  });
 
   return (
     <>

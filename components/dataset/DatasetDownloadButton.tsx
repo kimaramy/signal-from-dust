@@ -14,6 +14,10 @@ import JsonToCsvButton, {
   type CsvFileName,
 } from './JsonToCsvButton';
 
+export function generateDownloadFileName(text: string): CsvFileName {
+  return `${text.replace(/\s/g, '_')}.csv`;
+}
+
 interface DatasetDownloadButtonProps extends ButtonProps {
   dataset: object[];
   fileName: CsvFileName;

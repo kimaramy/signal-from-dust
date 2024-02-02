@@ -69,7 +69,7 @@ function SceneScreenView({
       className="overflow-hidden"
       style={{ height: `calc(100vh - ${offsetY})` }}
     >
-      <header className="absolute left-0 top-0 z-10 flex h-auto w-screen min-w-md justify-end p-4">
+      <header className="absolute left-0 top-0 z-10 flex h-auto w-full min-w-md justify-end p-4">
         <div className="flex items-center gap-1 rounded-md bg-primary/10 py-1 pl-1 pr-4 text-muted-foreground">
           <Button variant="ghost" size="icon" onClick={() => revalidate?.()}>
             <Icon.RefreshCcw aria-hidden className="h-3.5 w-3.5" />
@@ -80,14 +80,9 @@ function SceneScreenView({
       </header>
 
       <Scene.Player sceneIdx={sceneIdx} onPlay={onPlay} onStop={onStop}>
-        {({ isPlaying, handlePlayer, bitDurationAsSecond }) => (
+        {({ isPlaying, handlePlayer }) => (
           <Bit.Provider>
-            <Scene.Body
-              view="screen"
-              columns={sceneLength}
-              isPlaying={isPlaying}
-              intervalSecond={bitDurationAsSecond}
-            >
+            <Scene.Body view="screen" columns={sceneLength}>
               {(sceneContext) => (
                 <Bit.Consumer>
                   {(_bitContext) =>
@@ -116,7 +111,7 @@ function SceneScreenView({
               )}
             </Scene.Body>
 
-            <footer className="absolute bottom-0 left-0 z-10 flex h-auto w-screen min-w-md gap-4 p-10">
+            <footer className="absolute bottom-0 left-0 z-10 flex h-auto w-full min-w-md gap-4 p-10">
               <div className="w-auto min-w-80 rounded-md bg-primary/10 p-2">
                 <Scene.Overview>
                   <Scene.Card
