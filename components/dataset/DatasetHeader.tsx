@@ -11,7 +11,9 @@ import {
   Menu,
 } from '@/components/layout';
 
-import DatasetDownloadButton from './DatasetDownloadButton';
+import DatasetDownloadButton, {
+  generateDownloadFileName,
+} from './DatasetDownloadButton';
 
 export interface DatasetHeaderProps {
   title: string;
@@ -38,7 +40,7 @@ const DatasetHeader = React.forwardRef<HTMLDivElement, DatasetHeaderProps>(
                 items={[
                   <DatasetDownloadButton
                     dataset={dataset}
-                    fileName={`${title.replace(/\s/g, '_')}.csv`}
+                    fileName={generateDownloadFileName(title)}
                   />,
                   <URLCopyButton />,
                 ]}

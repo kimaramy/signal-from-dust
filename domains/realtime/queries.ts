@@ -4,7 +4,21 @@ import { useEffect, useState } from 'react';
 
 import { fetchRealtimeDatasetViaRoute, type RealtimeData } from './services';
 
-export function useRealtimeListQuery(initialDataset: RealtimeData[]) {
+interface UseRealtimeListQueryOptions {
+  initialDataset?: RealtimeData[];
+  enabled?: boolean;
+}
+
+export function useRealtimeListQuery(options?: UseRealtimeListQueryOptions) {
+  const initialOptions = {
+    initialDataset: [],
+    enabled: true,
+  } satisfies typeof options;
+
+  const initialDataset =
+    options?.initialDataset ?? initialOptions.initialDataset;
+  const enabled = options?.enabled ?? initialOptions.enabled;
+
   const [dataset, setDataset] = useState(initialDataset);
 
   const isLoading = dataset.length === 0;
@@ -12,14 +26,14 @@ export function useRealtimeListQuery(initialDataset: RealtimeData[]) {
   useEffect(() => {
     let abortController: AbortController | null = null;
 
-    if (dataset.length === 0) {
+    if (enabled) {
       abortController = new AbortController();
-      fetchRealtimeDatasetViaRoute(window.location.origin, {
+      fetchRealtimeDatasetViaRoute<RealtimeData>(window.location.origin, {
         signal: abortController.signal,
       })
         .then((dataset) => {
           setDataset(dataset);
-          console.log('realtime data fetch success on client');
+          console.log('Realtime dataset fetch success on client');
         })
         .catch((error) => {
           console.error(JSON.stringify(error, null, 2));
@@ -30,7 +44,7 @@ export function useRealtimeListQuery(initialDataset: RealtimeData[]) {
     return () => {
       abortController?.abort();
     };
-  }, [dataset]);
+  }, [enabled]);
 
   return { dataset, isLoading };
 }

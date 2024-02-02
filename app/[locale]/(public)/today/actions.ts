@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidateTag } from 'next/cache';
-import { realtimeDatasetRevalidateTag } from '@/domains';
+import { realtimeDatasetRevalidateTag } from '@/domains/realtime';
 
 export async function revalidateRealtimeDataset() {
   if (process.env.NODE_ENV === 'development') {

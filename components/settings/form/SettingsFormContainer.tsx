@@ -39,7 +39,7 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
 
         const search = setQueryParams(map, { stringify: true });
 
-        return navigate(`/${locale}/realtime${search}` as TypedRoute, {
+        return navigate(`/${locale}/today${search}` as TypedRoute, {
           method: 'push',
         });
       }

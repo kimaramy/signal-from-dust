@@ -18,7 +18,10 @@ function RealtimeDataset({
   initialDataset,
   revalidate,
 }: RealtimeDatasetProps) {
-  const { dataset, isLoading } = useRealtimeListQuery(initialDataset);
+  const { dataset, isLoading } = useRealtimeListQuery({
+    initialDataset,
+    enabled: initialDataset.length === 0,
+  });
 
   return (
     <>

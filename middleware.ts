@@ -6,15 +6,13 @@ import { getServerSideLocale, i18n } from '@/lib/i18n';
 export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone(); // https://nextjs.org/docs/messages/middleware-relative-urls
 
-  // console.log(`[middleware] url: ${JSON.stringify(url, null, 2)}`);
-
   const headers = new Headers(request.headers);
 
-  headers.forEach((value, key) => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`[middleware] ${key}: ${value}`);
-    }
-  });
+  // if (process.env.NODE_ENV === 'development') {
+  //   headers.forEach((value, key) => {
+  //     console.log(`[middleware] ${key}: ${value}`);
+  //   });
+  // }
 
   headers.set(`x-origin`, url.origin);
 

@@ -31,7 +31,7 @@ export async function generateMetadata({
 async function Page({ params, searchParams }: NextPageProps) {
   const { title } = await generateMetadata({ params, searchParams });
 
-  const realtimeDataset = await fetchRealtimeDataset();
+  const realtimeDataset = await fetchRealtimeDataset('SeoulAirQuality');
 
   if (process.env.NODE_ENV === 'development') {
     console.log(`today_page: %d`, realtimeDataset.length);

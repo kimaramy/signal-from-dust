@@ -16,9 +16,18 @@ import { Dataset } from '@/components/dataset';
 
 const fetchCachedDataset = cache(fetchDataset);
 
-async function _generateMetadata({ params }: Pick<PageProps, 'params'>) {
-  const dictionary = await getDictionary(params.locale);
+type PageProps = NextPageProps<ReturnType<typeof generateStaticParams>[0]>;
 
+export function generateStaticParams() {
+  return CollectionUtils.schema
+    .mapKeys(CollectionUtils.schema.lowerCaseKey)
+    .flatMap((collection) =>
+      i18n.locales.map((locale) => ({ locale, collection }))
+    );
+}
+
+export async function generateMetadata({ params }: Pick<PageProps, 'params'>) {
+  const dictionary = await getDictionary(params.locale);
   const collection = CollectionUtils.schema.display(
     CollectionUtils.schema.upperCaseKey(params.collection),
     params.locale
@@ -31,36 +40,17 @@ async function _generateMetadata({ params }: Pick<PageProps, 'params'>) {
     DustUtils.schema.defaultKey,
     params.locale
   );
-
   const title = new IntlMessageFormat(dictionary.title.collection_page).format({
     collection,
     location,
     dust,
   }) as string;
-
   const description = dictionary.intro.content.subtitle;
-
   return { title, description } satisfies Metadata;
 }
 
-type PageProps = NextPageProps<ReturnType<typeof generateStaticParams>[0]>;
-
-export function generateStaticParams() {
-  return CollectionUtils.schema
-    .mapKeys(CollectionUtils.schema.lowerCaseKey)
-    .flatMap((collection) =>
-      i18n.locales.map((locale) => ({ locale, collection }))
-    );
-}
-
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
-  return await _generateMetadata({ params });
-}
-
 async function Page({ params }: PageProps) {
-  const { title } = await _generateMetadata({ params });
+  const { title } = await generateMetadata({ params });
 
   const collectionKey = CollectionUtils.schema.upperCaseKey(params.collection);
 
