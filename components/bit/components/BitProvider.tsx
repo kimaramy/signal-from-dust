@@ -1,25 +1,15 @@
 'use client';
 
-import { useCallback, useState } from 'react';
-
-import { BitContext, type SelectedBitIdx } from '../context';
+import { BitContext } from '../context';
+import { useBitState } from '../hooks';
 
 interface BitProviderProps {
   children: React.ReactNode;
 }
 
 function BitProvider({ children }: BitProviderProps) {
-  const [selectedBitIdx, setSelectedBitIdx] = useState<SelectedBitIdx>(null);
-
-  const resetSelectedBitIdx = useCallback(() => setSelectedBitIdx(null), []);
-
-  return (
-    <BitContext.Provider
-      value={{ selectedBitIdx, setSelectedBitIdx, resetSelectedBitIdx }}
-    >
-      {children}
-    </BitContext.Provider>
-  );
+  const bitState = useBitState();
+  return <BitContext.Provider value={bitState}>{children}</BitContext.Provider>;
 }
 
 export default BitProvider;

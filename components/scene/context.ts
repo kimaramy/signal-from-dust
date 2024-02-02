@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import { createContext } from 'react';
 
 import { CollectionUtils, DustUtils, type Locale } from '@/lib/model';
 import type { BitData } from '@/components/bit';
@@ -29,7 +29,7 @@ interface SceneContextValue {
   sceneIdx: number;
   sceneData: SceneData;
   bits: BitData[];
-  setBits: React.Dispatch<React.SetStateAction<BitData[]>>;
+  setBits: (bits: BitData[]) => void;
   resetBits: () => void;
   getActiveBit: () => BitData | null;
   setActiveBit: (bitIdx: number) => void;
@@ -37,4 +37,12 @@ interface SceneContextValue {
 
 const SceneContext = createContext<SceneContextValue | null>(null);
 
-export { SceneContext, type SceneData, type SceneContextValue };
+const SceneContextError = (caller: string) =>
+  new Error(`${caller} must be called within a SceneContext.Provider`);
+
+export {
+  SceneContext,
+  SceneContextError,
+  type SceneData,
+  type SceneContextValue,
+};
