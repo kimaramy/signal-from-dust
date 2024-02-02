@@ -52,9 +52,8 @@ function SceneScreenView({
 
   const [offsetY, setOffsetY] = useState<`${string}px` | undefined>(undefined);
 
-  const handleRootRef = useCallback((el: HTMLDivElement | null) => {
+  const handleRef = useCallback((el: HTMLDivElement | null) => {
     if (el !== null) {
-      // console.log(el.getBoundingClientRect());
       setOffsetY(`${el.getBoundingClientRect().top}px`);
     }
   }, []);
@@ -62,11 +61,10 @@ function SceneScreenView({
   return (
     <Scene.Root
       id={sceneId}
-      ref={handleRootRef}
+      ref={handleRef}
       sceneIdx={sceneIdx}
       sceneData={sceneData}
       sceneLength={sceneLength}
-      className="overflow-hidden"
       style={{ height: `calc(100vh - ${offsetY})` }}
     >
       <header className="absolute left-0 top-0 z-10 flex h-auto w-full min-w-md justify-end p-4">

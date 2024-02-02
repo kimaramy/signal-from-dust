@@ -34,9 +34,7 @@ function RealtimeDatasetBody({
       dustKey === 'PM_LARGE' ? data.PM10 : data.PM25,
   });
 
-  const sceneDatasetId = [locationKey, dustKey]
-    .map((key) => toLowerCase(key))
-    .join('-');
+  const sceneDatasetId = [locationKey, dustKey].map(toLowerCase).join('-');
 
   return (
     <RealtimeSequence

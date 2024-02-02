@@ -5,7 +5,13 @@ interface MainProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 function Main({ children, className, ...rest }: MainProps) {
   return (
-    <SafeArea asChild className={cn('h-full flex-1 scrollbar-hide', className)}>
+    <SafeArea
+      asChild
+      className={cn(
+        'h-full flex-1 !px-0 scrollbar-hide 3xl:border-x',
+        className
+      )}
+    >
       <main {...rest}>{children}</main>
     </SafeArea>
   );

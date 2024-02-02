@@ -28,7 +28,7 @@ export interface DatasetBodyProps {
 }
 
 const DatasetBody = React.forwardRef<HTMLDivElement, DatasetBodyProps>(
-  function DatasetBody({ initialCollectionKey, initialDataset }, ref) {
+  function DatasetBody({ initialCollectionKey, initialDataset }, _ref) {
     const { locale } = useLocaleDictionary();
 
     const locationKey = useLocationKey('query');
@@ -159,20 +159,12 @@ const DatasetBody = React.forwardRef<HTMLDivElement, DatasetBodyProps>(
           switch (layoutContext.key) {
             case 'GRID':
               return (
-                <Sequence2
-                  ref={ref}
-                  id={sceneDatasetId}
-                  sceneDataset={sceneDataset}
-                />
+                <Sequence2 id={sceneDatasetId} sceneDataset={sceneDataset} />
               );
             case 'LIST':
             default:
               return (
-                <Sequence
-                  ref={ref}
-                  id={sceneDatasetId}
-                  sceneDataset={sceneDataset}
-                />
+                <Sequence id={sceneDatasetId} sceneDataset={sceneDataset} />
               );
           }
         }}

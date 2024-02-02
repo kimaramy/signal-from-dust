@@ -27,8 +27,8 @@ function CollectionSelect(props: CollectionSelectProps) {
 
   const collectionKeys = CollectionUtils.schema
     .getAllKeys()
-    .filter(
-      (collectionKey) => !CollectionUtils.schema.checkDisabled(collectionKey)
+    .filter((collectionKey) =>
+      CollectionUtils.schema.checkEnabled(collectionKey)
     );
 
   return (

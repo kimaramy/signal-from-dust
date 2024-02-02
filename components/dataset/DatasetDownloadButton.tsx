@@ -14,19 +14,19 @@ import JsonToCsvButton, {
   type CsvFileName,
 } from './JsonToCsvButton';
 
-export function generateDownloadFileName(text: string): CsvFileName {
+function generateDownloadFileName(text: string): CsvFileName {
   return `${text.replace(/\s/g, '_')}.csv`;
 }
 
 interface DatasetDownloadButtonProps extends ButtonProps {
   dataset: object[];
-  fileName: CsvFileName;
+  datasetName: string;
   iconClassName?: string;
 }
 
 function DatasetDownloadButton({
   dataset,
-  fileName,
+  datasetName,
   iconClassName,
   ...rest
 }: DatasetDownloadButtonProps) {
@@ -45,7 +45,7 @@ function DatasetDownloadButton({
         <TooltipTrigger>
           <JsonToCsvButton
             json={dataset}
-            fileName={fileName}
+            fileName={generateDownloadFileName(datasetName)}
             label={label}
             parserOptions={getParserOptions(selectedFields)}
             iconClassName={iconClassName}

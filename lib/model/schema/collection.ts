@@ -203,8 +203,8 @@ class CollectionSchema extends CustomValueMapSchema<
   getDataCount(collectionKey: CollectionKey) {
     return this.getValue(collectionKey).dataCount;
   }
-  checkDisabled(collectionKey: CollectionKey) {
-    return this.getValue(collectionKey).disabled;
+  checkEnabled(collectionKey: CollectionKey) {
+    return this.getValue(collectionKey).disabled === false;
   }
 }
 

@@ -108,9 +108,8 @@ function PresetFields() {
             >
               {CollectionUtils.schema
                 .getAllKeys()
-                .filter(
-                  (collectionKey) =>
-                    !CollectionUtils.schema.checkDisabled(collectionKey)
+                .filter((collectionKey) =>
+                  CollectionUtils.schema.checkEnabled(collectionKey)
                 )
                 .reverse()
                 .map((collectionKey) => {

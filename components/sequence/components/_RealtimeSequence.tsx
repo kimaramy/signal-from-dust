@@ -16,10 +16,7 @@ interface RealtimeSequenceProps extends SequenceProps {
   revalidate: () => Promise<void>;
 }
 
-const RealtimeSequence = React.forwardRef<
-  HTMLDivElement,
-  RealtimeSequenceProps
->(function RealtimeSequence(props, ref) {
+function RealtimeSequence(props: RealtimeSequenceProps) {
   const { id, sceneDataset, revalidate, className } = props;
 
   const values = sceneDataset.map((sceneData) => sceneData.value ?? 0);
@@ -57,7 +54,6 @@ const RealtimeSequence = React.forwardRef<
   return (
     <article
       id={id}
-      ref={ref}
       className={cn(
         'h-auto w-full min-w-md overflow-scroll scrollbar-hide',
         className
@@ -81,6 +77,6 @@ const RealtimeSequence = React.forwardRef<
       })}
     </article>
   );
-});
+}
 
 export default RealtimeSequence;
