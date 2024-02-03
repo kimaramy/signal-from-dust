@@ -4,7 +4,7 @@ import Negotiator from 'negotiator';
 
 import { i18n } from './i18n';
 
-export function getServerSideLocale(request: NextRequest): string | undefined {
+export function parseLocaleOnServer(request: NextRequest) {
   // Negotiator expects plain object so we need to transform headers
   const negotiatorHeaders: Record<string, string> = {};
 
@@ -23,6 +23,6 @@ export function getServerSideLocale(request: NextRequest): string | undefined {
   return locale;
 }
 
-export function getClientSideLocale() {
+export function parseLocaleOnClient() {
   return navigator.language || navigator.languages[0];
 }

@@ -6,7 +6,7 @@ import {
   LayoutContext,
   LayoutContextError,
   type LayoutContextValue,
-} from './lib/context';
+} from '../lib/context';
 
 function LayoutConsumer({ children }: ConsumerProps<LayoutContextValue>) {
   return (

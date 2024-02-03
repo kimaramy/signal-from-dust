@@ -1,15 +1,20 @@
 'use client';
 
-import type { BitContextValue } from '../context';
-import { useBitContext } from '../hooks';
+import type { ConsumerProps } from 'react';
 
-interface BitConsumerProps {
-  children: (bitContext: BitContextValue) => React.ReactNode;
-}
+import { BitContext, BitContextError, type BitContextValue } from '../context';
 
-function BitConsumer({ children }: BitConsumerProps) {
-  const bitsContext = useBitContext({ strict: true });
-  return <>{children(bitsContext)}</>;
+function BitConsumer({ children }: ConsumerProps<BitContextValue>) {
+  return (
+    <BitContext.Consumer>
+      {(bitContext) => {
+        if (!bitContext) {
+          throw BitContextError(BitConsumer.name);
+        }
+        return children(bitContext);
+      }}
+    </BitContext.Consumer>
+  );
 }
 
 export default BitConsumer;

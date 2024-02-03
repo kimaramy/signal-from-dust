@@ -6,8 +6,8 @@ import { useSceneContext } from '../hooks';
 import {
   useScenePlayer,
   useScenePlayerEffect,
-  UseScenePlayerParams,
-} from './Scene.hooks';
+  type UseScenePlayerParams,
+} from './ScenePlayer.hooks';
 
 interface ScenePlayerProps extends UseScenePlayerParams {
   children: (

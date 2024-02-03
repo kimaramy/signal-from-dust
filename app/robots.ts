@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-import metadata from '@/lib/metadata.json';
+import project from '@/lib/project.json';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/admin/', '/dashboard/'],
     },
-    sitemap: [`${metadata.domain}/sitemap.xml`],
+    sitemap: [`${project.domain}/sitemap.xml`],
   };
 }

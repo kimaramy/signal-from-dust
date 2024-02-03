@@ -1,35 +1,38 @@
 import type { Metadata } from 'next';
 
 import type { Locale } from '@/lib/i18n';
-import metadata from '@/lib/metadata.json';
+import project from '@/lib/project.json';
 
 export const getBaseMetadata = (locale: Locale, altLocale: Locale) =>
   ({
-    metadataBase: new URL(metadata.domain),
-    title: metadata.title,
+    metadataBase: new URL(project.domain),
+    title: project.title,
     // title: {
     //   default: metadata.title,
     //   template: `%s | ${metadata.title}`,
     // },
-    description: metadata.description,
-    keywords: metadata.keywords,
+    description: project.description,
+    keywords: project.keywords,
     authors: {
-      name: metadata.author.name,
-      url: metadata.author.url,
+      name: project.author.name,
+      url: project.author.url,
     },
     alternates: {
-      canonical: metadata.domain,
+      canonical: project.domain,
       languages: {
-        en: `${metadata.domain}/en`,
-        ko: `${metadata.domain}/ko`,
+        en: `${project.domain}/en`,
+        ko: `${project.domain}/ko`,
       },
     },
     openGraph: {
       type: 'website',
-      siteName: metadata.title,
+      siteName: project.title,
+      title: project.title,
+      description: project.description,
+      url: project.domain,
       images: {
-        url: metadata.link.og_image,
-        alt: metadata.title,
+        url: project.link.og_image,
+        alt: project.title,
         width: 1200,
         height: 630,
       },
@@ -39,7 +42,7 @@ export const getBaseMetadata = (locale: Locale, altLocale: Locale) =>
     twitter: {
       site: 'Data Visualization',
       card: 'summary_large_image',
-      creator: metadata.author.name,
+      creator: project.author.name,
     },
     viewport: {
       initialScale: 1.0,

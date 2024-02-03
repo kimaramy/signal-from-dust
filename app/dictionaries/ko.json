@@ -24,7 +24,7 @@
   "share": {
     "btn": "링크 공유",
     "message": {
-      "unsupported": "클립보드 API를 지원하지 않는 브라우저입니다",
+      "unsupported": "클립보드를 지원하지 않는 브라우저입니다",
       "success": "복사됨",
       "fail": "복사 실패"
     }

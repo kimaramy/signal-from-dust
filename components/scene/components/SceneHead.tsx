@@ -7,7 +7,7 @@ import { cn } from '@/lib/css';
 import type { SceneContextValue } from '../context';
 import { useSceneContext } from '../hooks';
 
-export type SceneHeadContext = Pick<SceneContextValue, 'bits'>;
+type SceneHeadContext = Pick<SceneContextValue, 'bits'>;
 
 interface SceneHeadProps {
   className?: string;

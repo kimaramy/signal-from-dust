@@ -1,5 +1,5 @@
 export * from './types';
 
-export { default as Dataset } from './Dataset';
-export { default as RealtimeDataset } from './RealtimeDataset';
-export { default as FakeDataset } from './FakeDataset';
+export { default as Dataset } from './components/Dataset';
+export { default as RealtimeDataset } from './components/RealtimeDataset';
+export { default as FakeDataset } from './components/FakeDataset';

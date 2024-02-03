@@ -1,6 +1,6 @@
-import { NextLayoutProps } from '@/lib/router';
+import type { NextLayoutProps } from '@/lib/router';
+import { SafeArea } from '@/components/ui/safe-area';
 import { BitNoise } from '@/components/bit';
-import { Main } from '@/components/layout';
 
 type LayoutProps = NextLayoutProps & {
   modal: React.ReactNode;
@@ -9,10 +9,10 @@ type LayoutProps = NextLayoutProps & {
 function Layout({ children, modal }: LayoutProps) {
   return (
     <>
-      <Main>
-        <BitNoise />
-        {children}
-      </Main>
+      <SafeArea asChild className="h-full flex-1 3xl:border-x 3xl:px-0">
+        <main>{children}</main>
+      </SafeArea>
+      <BitNoise />
       {modal}
     </>
   );

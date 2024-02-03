@@ -10,4 +10,13 @@ type LocaleDictionaryContextValue = { dictionary: Dictionary; locale: Locale };
 const LocaleDictionaryContext =
   createContext<LocaleDictionaryContextValue | null>(null);
 
-export { LocaleDictionaryContext };
+const LocaleDictionaryContextError = (caller: string) =>
+  new Error(
+    `${caller} must be called within a LocaleDictionaryContext.Provider`
+  );
+
+export {
+  LocaleDictionaryContext,
+  LocaleDictionaryContextError,
+  type LocaleDictionaryContextValue,
+};

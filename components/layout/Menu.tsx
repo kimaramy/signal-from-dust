@@ -1,12 +1,14 @@
 'use client';
 
+import React from 'react';
+
 import { ButtonGroup } from '@/components/ui/group';
 import { IntroSheetTriggerButton } from '@/components/intro';
 import { LocaleToggleButton } from '@/components/locale';
 import { SettingsSheetTriggerButton } from '@/components/settings/sheet';
 import { ThemeToggleButton } from '@/components/theme';
 
-function Menu() {
+const Menu = React.memo(function Menu() {
   return (
     <nav className="hidden md:block">
       <ButtonGroup
@@ -19,6 +21,6 @@ function Menu() {
       />
     </nav>
   );
-}
+});
 
 export default Menu;

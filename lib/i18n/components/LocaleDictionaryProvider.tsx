@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-import { LocaleDictionaryContext } from './context';
-import type { Dictionary } from './dictionary';
-import { getSafeLocale, type Locale } from './i18n';
+import { LocaleDictionaryContext } from '../context';
+import type { Dictionary } from '../dictionary';
+import { getSafeLocale, type Locale } from '../i18n';
 
 interface LocaleDictionaryProviderProps {
   locale?: Locale;
@@ -26,4 +26,4 @@ function LocaleDictionaryProvider({
   );
 }
 
-export { LocaleDictionaryProvider };
+export default LocaleDictionaryProvider;

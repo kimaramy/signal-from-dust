@@ -1,6 +1,7 @@
 'use client';
 
 import { LayoutProvider } from '@/components/layout';
+import { useLayoutKey } from '@/components/layout/lib/hooks';
 
 import DatasetBody, { type DatasetBodyProps } from './DatasetBody';
 import DatasetHeader from './DatasetHeader';
@@ -15,8 +16,10 @@ function Dataset({
   initialCollectionKey,
   initialDataset,
 }: DatasetProps) {
+  const layoutKey = useLayoutKey('query');
+
   return (
-    <LayoutProvider>
+    <LayoutProvider initialLayoutKey={layoutKey}>
       <DatasetHeader title={title} dataset={initialDataset} isSticky />
       <DatasetBody
         initialCollectionKey={initialCollectionKey}

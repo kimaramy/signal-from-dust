@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { Instrument, Tone } from '@/lib/tone';
 
 import type { SceneContextValue } from '../context';
-import type { SceneHeadContext } from './SceneHead';
 
 export type UseScenePlayerParams = {
   sceneIdx: number;
@@ -25,7 +24,7 @@ export function useScenePlayer({
   const [cymbals, setCymbals] = useState<Tone.Sequence | null>(null);
 
   const handlePlayer = useCallback(
-    async ({ bits }: SceneHeadContext) => {
+    async ({ bits }: Pick<SceneContextValue, 'bits'>) => {
       // console.log({ bits });
       await Tone.start();
       if (!isPlaying && Tone.Transport.state !== 'started') {

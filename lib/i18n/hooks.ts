@@ -3,15 +3,16 @@
 import { useContext, useMemo } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import { LocaleDictionaryContext } from './context';
+import {
+  LocaleDictionaryContext,
+  LocaleDictionaryContextError,
+} from './context';
 import { Locale } from './i18n';
 
 function useLocaleDictionary() {
   const localeDictionary = useContext(LocaleDictionaryContext);
-  if (localeDictionary === null) {
-    throw new Error(
-      `useLocaleDictionary must be called within the LocaleDictionaryContextProvider`
-    );
+  if (!localeDictionary) {
+    throw LocaleDictionaryContextError(useLocaleDictionary.name);
   }
   return localeDictionary;
 }

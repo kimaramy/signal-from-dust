@@ -28,4 +28,4 @@ function ToastProvider() {
   );
 }
 
-export { ToastProvider };
+export default ToastProvider;

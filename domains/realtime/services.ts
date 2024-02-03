@@ -33,8 +33,8 @@ export async function fetchRealtimeDataset(
 /**
  * @param origin
  * local or deployed(e.g. production) next.js server origin(\<scheme>://\<hostname>:\<port>)
- * - origin should be window.location.origin on client
- * - origin should be request origin which is parsed from header(Header API) on server
+ * - it could be window.location.origin on client
+ * - it could be request origin which is parsed from header(Header API) on server
  * @returns fetched dataset(array) or empty array
  */
 export async function fetchRealtimeDatasetViaRoute<TData = RealtimeData>(
@@ -42,6 +42,7 @@ export async function fetchRealtimeDatasetViaRoute<TData = RealtimeData>(
   routeFetchOptions?: Omit<RequestInit, 'method'>
 ) {
   if (origin === null) return [] as TData[];
+
   return new Promise<TData[]>((resolve, reject) => {
     fetch(`${origin}/api/realtime`, {
       method: 'GET',

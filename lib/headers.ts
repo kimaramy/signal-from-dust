@@ -34,7 +34,8 @@ function parseOrigin(headers: Headers) {
 function parseHeader(headers: Headers) {
   const cachedOrigin = parseCachedOrigin(headers);
   const origin = parseOrigin(headers);
-  console.log({ cachedOrigin, origin });
+  process.env.NODE_ENV === 'development' &&
+    console.log({ cachedOrigin, origin });
   return { origin: cachedOrigin ?? origin };
 }
 

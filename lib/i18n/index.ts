@@ -1,8 +1,10 @@
+export { IntlMessageFormat } from 'intl-messageformat';
+
 export * from './dictionary';
-export * from './negotiator';
+export * from './parser';
 export * from './i18n';
-export * from './provider';
 export * from './context';
 export * from './hooks';
 
-export { IntlMessageFormat } from 'intl-messageformat';
+export { default as LocaleDictionaryProvider } from './components/LocaleDictionaryProvider';
+export { default as LocaleDictionaryConsumer } from './components/LocaleDictionaryConsumer';
