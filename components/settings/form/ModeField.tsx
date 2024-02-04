@@ -1,5 +1,6 @@
 import { useFormContext } from 'react-hook-form';
 
+import { DesktopOnly } from '@/lib/device';
 import { useLocaleDictionary } from '@/lib/i18n';
 import { Icon } from '@/lib/icon';
 import { FormField } from '@/components/ui/form';
@@ -38,20 +39,22 @@ function ModeField() {
                 {settings.form.custom_title}
               </Label>
             </div>
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="realtime" id="r3" />
-              <div className="flex items-center gap-1">
-                <Label htmlFor="r3" className="cursor-pointer">
-                  {settings.form.realtime_title}
-                </Label>
-                <div className="rounded-full bg-accent p-1">
-                  <Icon.FlaskConical
-                    aria-hidden
-                    className="h-3.5 w-3.5 text-accent-foreground"
-                  />
+            <DesktopOnly>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="realtime" id="r3" />
+                <div className="flex items-center gap-1">
+                  <Label htmlFor="r3" className="cursor-pointer">
+                    {settings.form.realtime_title}
+                  </Label>
+                  <div className="rounded-full bg-accent p-1">
+                    <Icon.FlaskConical
+                      aria-hidden
+                      className="h-3.5 w-3.5 text-accent-foreground"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            </DesktopOnly>
           </RadioGroup>
         );
       }}

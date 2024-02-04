@@ -31,7 +31,7 @@ function RealtimeDatasetBody({
     locationKey,
     locale,
     setValue: (data, dustKey) =>
-      dustKey === 'PM_LARGE' ? data.PM10 : data.PM25,
+      dustKey === 'PM_LARGE' ? data.pm_large : data.pm_small,
   });
 
   const sceneDatasetId = [locationKey, dustKey].map(toLowerCase).join('-');

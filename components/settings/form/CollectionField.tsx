@@ -11,7 +11,7 @@ import { CollectionSelect } from '@/components/collection';
 
 import type { SettingsFormValues } from '../form/SettingsForm';
 
-function CollectionField() {
+function CollectionField(props: React.HTMLAttributes<HTMLDivElement>) {
   const {
     dictionary: { settings },
   } = useLocaleDictionary();
@@ -28,7 +28,7 @@ function CollectionField() {
       control={control}
       render={({ field }) => {
         return (
-          <FormItem>
+          <FormItem {...props}>
             <FormLabel>{settings.form.collection.title}</FormLabel>
             <FormControl>
               <CollectionSelect

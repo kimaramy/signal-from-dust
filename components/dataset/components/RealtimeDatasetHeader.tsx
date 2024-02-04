@@ -11,13 +11,9 @@ import type { DatasetHeaderProps } from './DatasetHeader';
 const RealtimeDatasetHeader = React.forwardRef<
   HTMLDivElement,
   DatasetHeaderProps
->(function RealtimeDatasetHeader({ title, dataset, isSticky, className }, ref) {
+>(function RealtimeDatasetHeader({ title, dataset, className }, ref) {
   return (
-    <Header
-      ref={ref}
-      position={isSticky ? 'sticky' : 'fixed'}
-      className={className}
-    >
+    <Header ref={ref} className={className}>
       <SafeArea className="flex justify-between p-4">
         <div className="flex w-full items-center gap-6 xl:gap-8">
           <h1 className="max-w-2/3 truncate text-xl font-bold lg:text-2xl">

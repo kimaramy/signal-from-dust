@@ -1,13 +1,13 @@
 'use client';
 
-import { useMobile } from '../hooks';
+import { useMobileDetect } from '../hooks';
 
 interface DesktopOnlyProps {
   children: React.ReactNode;
 }
 
 function DesktopOnly({ children }: DesktopOnlyProps) {
-  const isMobile = useMobile();
+  const isMobile = useMobileDetect();
 
   if (isMobile) return null;
 

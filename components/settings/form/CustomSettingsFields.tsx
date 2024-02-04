@@ -19,17 +19,17 @@ function CustomSettingsFields() {
 
   return (
     <section className={cn('space-y-3', isHidden && 'hidden')}>
-      <div className="flex justify-between gap-2">
-        <LocationField />
-        <DustField />
+      <div className="flex flex-wrap gap-4 sm:flex-nowrap">
+        <LocationField className="w-1/2 flex-1 sm:flex-initial" />
+        <DustField className="w-1/2 flex-1 sm:flex-initial" />
       </div>
-      <div className="flex justify-between gap-2">
-        <CollectionField />
+      <div className="flex flex-wrap gap-4 sm:flex-nowrap">
+        <CollectionField className="w-1/2 flex-1 sm:flex-initial" />
       </div>
-      <div className="flex justify-between gap-2">
-        <SeasonField />
-        <YearField />
-        <MonthField />
+      <div className="flex flex-wrap gap-4 sm:flex-nowrap">
+        <SeasonField className="w-1/2 flex-1 sm:flex-initial" />
+        <YearField className="w-1/2 flex-1 sm:flex-initial" />
+        <MonthField className="w-1/2 flex-1 sm:flex-initial" />
       </div>
     </section>
   );

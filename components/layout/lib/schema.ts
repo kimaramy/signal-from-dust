@@ -8,7 +8,7 @@ import {
 
 const layoutSchemaName = 'layout';
 
-const layoutKeys = ['LIST', 'GRID', 'SCREEN'] as const;
+const layoutKeys = ['DETAIL', 'SHORT', 'FULL'] as const;
 
 const layoutKeySchema = z.enum(layoutKeys);
 
@@ -22,7 +22,7 @@ type LayoutValue = CustomValueTemplate<LayoutKey> & {
 
 const layoutValues: ReadonlyArray<LayoutValue> = [
   {
-    name: 'LIST',
+    name: 'DETAIL',
     order: 0,
     disabled: false,
     i18n: {
@@ -31,7 +31,7 @@ const layoutValues: ReadonlyArray<LayoutValue> = [
     },
   },
   {
-    name: 'GRID',
+    name: 'SHORT',
     order: 1,
     disabled: false,
     i18n: {
@@ -40,7 +40,7 @@ const layoutValues: ReadonlyArray<LayoutValue> = [
     },
   },
   {
-    name: 'SCREEN',
+    name: 'FULL',
     order: 0,
     disabled: true,
     i18n: {
@@ -67,7 +67,7 @@ class LayoutSchema extends CustomValueMapSchema<
       layoutSchemaName,
       layoutMap,
       layoutKeySchema,
-      layoutKeySchema.enum.LIST
+      layoutKeySchema.enum.DETAIL
     );
   }
   display(layoutKey: LayoutKey, locale = LocaleSchema.defaultLocale) {

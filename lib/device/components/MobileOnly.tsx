@@ -1,13 +1,13 @@
 'use client';
 
-import { useMobile } from '../hooks';
+import { useMobileDetect } from '../hooks';
 
 interface MobileOnlyProps {
   children: React.ReactNode;
 }
 
 function MobileOnly({ children }: MobileOnlyProps) {
-  const isMobile = useMobile();
+  const isMobile = useMobileDetect();
 
   if (!isMobile) return null;
 

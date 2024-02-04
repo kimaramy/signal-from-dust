@@ -15,9 +15,9 @@ function RealtimeSettingsFields() {
 
   return (
     <section className={cn('space-y-3', isHidden && 'hidden')}>
-      <div className="flex justify-between gap-2">
-        <LocationField />
-        <DustField />
+      <div className="flex gap-4">
+        <LocationField className="w-1/2 flex-auto" />
+        <DustField className="w-1/2 flex-auto" />
       </div>
     </section>
   );

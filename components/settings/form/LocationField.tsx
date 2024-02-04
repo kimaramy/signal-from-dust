@@ -11,7 +11,7 @@ import { LocationSelect } from '@/components/location';
 
 import { SettingsFormValues } from './SettingsForm';
 
-function LocationField() {
+function LocationField(props: React.HTMLAttributes<HTMLDivElement>) {
   const { control } = useFormContext<SettingsFormValues>();
 
   const {
@@ -23,7 +23,7 @@ function LocationField() {
       name="locationKey"
       control={control}
       render={({ field }) => (
-        <FormItem>
+        <FormItem {...props}>
           <FormLabel>{settings.form.location.title}</FormLabel>
           <FormControl>
             <LocationSelect

@@ -40,8 +40,8 @@ function SettingsDialog() {
 
   return (
     <Dialog open={isOpen} onOpenChange={() => setOpen((isOpen) => !isOpen)}>
-      <DialogContent className="flex aspect-auto min-h-[480px] min-w-[768px] gap-0 overflow-hidden p-0 md:w-full">
-        <section className="relative isolate w-1/2 flex-none">
+      <DialogContent className="flex min-h-screen w-screen gap-0 overflow-hidden p-0 md:min-h-[480px] lg:aspect-auto lg:max-w-screen-md">
+        <section className="relative isolate hidden w-1/2 flex-none lg:block">
           <DustThumbnail
             dustGrade="BAD"
             fileSize="540x540"
@@ -59,7 +59,7 @@ function SettingsDialog() {
             </Link>
           </div>
         </section>
-        <section className="flex w-1/2 flex-col justify-between p-6">
+        <section className="flex w-full flex-col justify-between p-6 lg:w-1/2">
           <div>
             <DialogHeader>
               <DialogTitle>{settings.dialog.title}</DialogTitle>

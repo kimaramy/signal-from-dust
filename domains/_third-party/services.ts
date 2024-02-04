@@ -1,7 +1,7 @@
 /**
  * e.g. { GRADE: '나쁨', IDEX_MVL: '209', POLLUTANT: 'PM-2.5', NITROGEN: 0.028, OZONE: 0.037, CARBON: 0.7, SULFUROUS: 0.004, PM10: 83, PM25: 63 }
  */
-export interface SeoulAirQualityData {
+interface SeoulAirQualityRawData {
   GRADE: string;
   IDEX_MVL: string;
   POLLUTANT: string;
@@ -11,6 +11,11 @@ export interface SeoulAirQualityData {
   SULFUROUS: number;
   PM10: number;
   PM25: number;
+}
+
+export interface SeoulAirQualityData {
+  pm_large: number;
+  pm_small: number;
 }
 
 export class SeoulAirQualityService {
@@ -29,11 +34,15 @@ export class SeoulAirQualityService {
       }
       const body = await response.json();
       const code = body[serviceName]['RESULT']['CODE'];
-      const dataset = body[serviceName]['row'] as SeoulAirQualityData[];
+      const rawDataset = body[serviceName]['row'] as SeoulAirQualityRawData[];
       const isSuccess = code === 'INFO-000';
       if (!isSuccess) {
         throw new Error(`Request failed: ${JSON.stringify(code)}`);
       }
+      const dataset = rawDataset.map<SeoulAirQualityData>(({ PM10, PM25 }) => ({
+        pm_large: PM10,
+        pm_small: PM25,
+      }));
       return dataset;
     } catch (error) {
       // console.error(JSON.stringify(error, null, 2));

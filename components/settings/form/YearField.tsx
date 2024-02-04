@@ -12,7 +12,7 @@ import { YearSelect } from '@/components/year';
 
 import { type SettingsFormValues } from './SettingsForm';
 
-function YearField() {
+function YearField(props: React.HTMLAttributes<HTMLDivElement>) {
   const {
     dictionary: { settings },
   } = useLocaleDictionary();
@@ -40,7 +40,7 @@ function YearField() {
       control={control}
       render={({ field }) => {
         return (
-          <FormItem hidden={!isVisible}>
+          <FormItem hidden={!isVisible} {...props}>
             <FormLabel>{settings.form.year.title}</FormLabel>
             <FormControl>
               <YearSelect

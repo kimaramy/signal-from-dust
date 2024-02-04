@@ -11,7 +11,7 @@ import { DustSelect } from '@/components/dust';
 
 import { type SettingsFormValues } from './SettingsForm';
 
-function DustField() {
+function DustField(props: React.HTMLAttributes<HTMLDivElement>) {
   const {
     dictionary: { settings },
   } = useLocaleDictionary();
@@ -28,7 +28,7 @@ function DustField() {
       control={control}
       render={({ field }) => {
         return (
-          <FormItem>
+          <FormItem {...props}>
             <FormLabel>{settings.form.dust.title}</FormLabel>
             <FormControl>
               <DustSelect

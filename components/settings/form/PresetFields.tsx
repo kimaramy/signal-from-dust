@@ -117,7 +117,7 @@ function PresetFields() {
                     <label
                       key={collectionKey}
                       className={cn(
-                        'relative flex w-full cursor-pointer items-center justify-between rounded-md border px-3 py-2 shadow-sm',
+                        'relative flex h-9 w-full cursor-pointer items-center justify-between rounded-md border px-3 py-2 shadow-sm',
                         field.value === collectionKey &&
                           'bg-accent/50 shadow-inner'
                       )}
