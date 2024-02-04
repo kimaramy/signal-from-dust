@@ -21,10 +21,10 @@ function Dataset({
 }: DatasetProps) {
   const isMobile = useMobileDetect({ userAgent });
 
-  const layoutKey: LayoutUtils.Key = isMobile ? 'SHORT' : 'DETAIL';
+  const initialLayoutKey = LayoutUtils.schema.getKeyByDevice(isMobile);
 
   return (
-    <LayoutProvider key={layoutKey} initialLayoutKey={layoutKey}>
+    <LayoutProvider key={initialLayoutKey} initialLayoutKey={initialLayoutKey}>
       <DatasetHeader title={title} dataset={initialDataset} />
       <DatasetBody
         initialCollectionKey={initialCollectionKey}

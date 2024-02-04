@@ -102,7 +102,7 @@ function PresetFields() {
         render={({ field }) => {
           return (
             <RadioGroup
-              className="grid grid-cols-2 gap-2"
+              className="grid grid-cols-1 gap-2 sm:grid-cols-2"
               value={field.value}
               onValueChange={handleValueChange}
             >

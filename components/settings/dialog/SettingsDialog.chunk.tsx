@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 
 import { useLocaleDictionary } from '@/lib/i18n';
 import {
@@ -22,17 +21,21 @@ import { SettingsFormContainer, SettingsFormSubmitButton } from '../form';
  */
 function SettingsDialog() {
   const {
-    locale,
     dictionary: { intro, settings },
   } = useLocaleDictionary();
 
   const [isOpen, setOpen] = useState(false);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setOpen(true);
-    }, 1000);
-
+    let timeout: NodeJS.Timeout;
+    const onceOpenedKey = 'settingsDialogOpend';
+    const onceOpened = sessionStorage.getItem(onceOpenedKey) === '1';
+    if (!onceOpened) {
+      timeout = setTimeout(() => {
+        setOpen(true);
+        sessionStorage.setItem(onceOpenedKey, '1');
+      }, 1500);
+    }
     return () => {
       clearTimeout(timeout);
     };
@@ -40,7 +43,7 @@ function SettingsDialog() {
 
   return (
     <Dialog open={isOpen} onOpenChange={() => setOpen((isOpen) => !isOpen)}>
-      <DialogContent className="flex min-h-screen w-screen gap-0 overflow-hidden p-0 md:min-h-[480px] lg:aspect-auto lg:max-w-screen-md">
+      <DialogContent className="flex min-h-screen w-screen max-w-full gap-0 overflow-hidden p-0 md:min-h-[480px] lg:aspect-auto lg:max-w-screen-md">
         <section className="relative isolate hidden w-1/2 flex-none lg:block">
           <DustThumbnail
             dustGrade="BAD"
@@ -51,12 +54,9 @@ function SettingsDialog() {
           />
           <div className="absolute left-0 top-0 h-full w-full bg-primary/20 mix-blend-multiply dark:bg-secondary/60 dark:mix-blend-multiply"></div>
           <div className="z-5 absolute left-0 top-0 flex h-full w-full items-center justify-center">
-            <Link
-              href={`/${locale}`}
-              className="inline-block font-bold uppercase text-white"
-            >
+            <span className="font-bold uppercase text-white">
               {intro.content.title}
-            </Link>
+            </span>
           </div>
         </section>
         <section className="flex w-full flex-col justify-between p-6 lg:w-1/2">
@@ -66,7 +66,7 @@ function SettingsDialog() {
             </DialogHeader>
             <section className="py-4">
               <SettingsModeContext.Provider value="preset">
-                <SettingsFormContainer devTool={false} />
+                <SettingsFormContainer useDevTool={false} />
               </SettingsModeContext.Provider>
             </section>
           </div>

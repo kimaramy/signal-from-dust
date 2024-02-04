@@ -40,7 +40,7 @@ function ModeField() {
               </Label>
             </div>
             <DesktopOnly>
-              <div className="flex items-center gap-2">
+              <div className="hidden items-center gap-2 lg:flex">
                 <RadioGroupItem value="realtime" id="r3" />
                 <div className="flex items-center gap-1">
                   <Label htmlFor="r3" className="cursor-pointer">

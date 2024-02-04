@@ -40,13 +40,13 @@ type SettingsFormSubmitHandler = SubmitHandler<SettingsFormValues>;
 interface SettingsFormProps {
   defaultValues: SettingsFormValues;
   onSubmit: SettingsFormSubmitHandler;
-  devTool?: boolean;
+  useDevTool?: boolean;
 }
 
 function SettingsForm({
   defaultValues,
   onSubmit,
-  devTool = false,
+  useDevTool = false,
 }: SettingsFormProps) {
   const settingsForm = useForm<SettingsFormValues>({
     mode: 'onSubmit',
@@ -76,7 +76,7 @@ function SettingsForm({
         </form>
       </Form>
 
-      {devTool && <DevTool control={settingsForm.control} />}
+      {useDevTool && <DevTool control={settingsForm.control} />}
     </>
   );
 }

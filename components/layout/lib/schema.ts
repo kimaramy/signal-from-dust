@@ -22,17 +22,8 @@ type LayoutValue = CustomValueTemplate<LayoutKey> & {
 
 const layoutValues: ReadonlyArray<LayoutValue> = [
   {
-    name: 'DETAIL',
-    order: 0,
-    disabled: false,
-    i18n: {
-      en: 'Detail',
-      ko: '자세히',
-    },
-  },
-  {
     name: 'SHORT',
-    order: 1,
+    order: 0,
     disabled: false,
     i18n: {
       en: 'Short',
@@ -40,8 +31,17 @@ const layoutValues: ReadonlyArray<LayoutValue> = [
     },
   },
   {
+    name: 'DETAIL',
+    order: 1,
+    disabled: false,
+    i18n: {
+      en: 'Detail',
+      ko: '자세히',
+    },
+  },
+  {
     name: 'FULL',
-    order: 0,
+    order: 2,
     disabled: true,
     i18n: {
       en: 'Screen',
@@ -67,7 +67,7 @@ class LayoutSchema extends CustomValueMapSchema<
       layoutSchemaName,
       layoutMap,
       layoutKeySchema,
-      layoutKeySchema.enum.DETAIL
+      layoutKeySchema.enum.SHORT
     );
   }
   display(layoutKey: LayoutKey, locale = LocaleSchema.defaultLocale) {
@@ -75,6 +75,10 @@ class LayoutSchema extends CustomValueMapSchema<
   }
   checkEnabled(layoutKey: LayoutKey) {
     return this.getValue(layoutKey).disabled === false;
+  }
+  getKeyByDevice(isMobile: boolean) {
+    if (isMobile) return this.keys.SHORT;
+    return this.keys.DETAIL;
   }
 }
 

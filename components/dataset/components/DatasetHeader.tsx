@@ -5,13 +5,14 @@ import React from 'react';
 import { cn } from '@/lib/css';
 import { DesktopOnly } from '@/lib/device';
 import { useLocaleDictionary } from '@/lib/i18n';
-import { CollectionUtils } from '@/lib/model';
 import { GivenRoutesOnly } from '@/lib/router';
+import { toLowerCase } from '@/lib/utils';
 import { ButtonGroup } from '@/components/ui/group';
 import { SafeArea } from '@/components/ui/safe-area';
 import { URLCopyButton } from '@/components/clipboard';
 import { useCollectionKey } from '@/components/collection';
-import { LayoutConsumer, LayoutSelect, Menu } from '@/components/layout';
+import { LayoutConsumer, LayoutSelect } from '@/components/layout';
+import { Menu } from '@/components/navigation';
 
 import DatasetDownloadButton from './DatasetDownloadButton';
 
@@ -27,9 +28,6 @@ const DatasetHeader = React.forwardRef<HTMLDivElement, DatasetHeaderProps>(
 
     const collectionKey = useCollectionKey('path');
 
-    const lowerCasedCollectionKey =
-      CollectionUtils.schema.lowerCaseKey(collectionKey);
-
     return (
       <header
         ref={ref}
@@ -40,8 +38,8 @@ const DatasetHeader = React.forwardRef<HTMLDivElement, DatasetHeaderProps>(
         {...rest}
       >
         <SafeArea className="flex justify-between gap-2 p-4">
-          <div className="flex w-full items-center gap-6 xl:gap-8">
-            <h1 className="truncate text-xl font-bold tracking-tight md:max-w-2/3 lg:text-2xl">
+          <div className="flex w-full items-center gap-6 overflow-hidden xl:gap-8">
+            <h1 className="truncate text-lg font-bold tracking-tight sm:text-xl md:max-w-2/3 lg:text-2xl">
               {title}
             </h1>
             <div className="hidden items-center gap-3 md:flex">
@@ -58,9 +56,9 @@ const DatasetHeader = React.forwardRef<HTMLDivElement, DatasetHeaderProps>(
                 <GivenRoutesOnly
                   pathnames={[
                     `/${locale}`,
-                    `/${locale}/${lowerCasedCollectionKey}`,
+                    `/${locale}/${collectionKey}`,
                     `/${locale}/search`,
-                  ]}
+                  ].map(toLowerCase)}
                 >
                   <LayoutConsumer>
                     {(layoutContext) => (

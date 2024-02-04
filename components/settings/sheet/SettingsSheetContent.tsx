@@ -19,12 +19,12 @@ function SettingsSheetContent() {
 
   return (
     <SheetContent>
-      <SheetHeader>
+      <SheetHeader className="text-left">
         <SheetTitle>{settings.sheet.title}</SheetTitle>
       </SheetHeader>
       <section className="pt-6">
         <SettingsModeContext.Provider value="custom">
-          <SettingsFormContainer devTool />
+          <SettingsFormContainer useDevTool />
         </SettingsModeContext.Provider>
       </section>
       <SheetFooter className="absolute bottom-0 left-0 w-full p-6">
