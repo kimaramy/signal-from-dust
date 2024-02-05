@@ -6,11 +6,7 @@ import {
 
 import type { PostgrestError } from '@/lib/model';
 
-/**
- * @alias UseSbIQOptions
- * @description Abbreviation of UseSupabaseInfiniteQueryOptions
- */
-type UseSupabaseInfiniteQueryOptions<
+export type UseSupabaseInfiniteQueryOptions<
   TQueryFnData = unknown,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey,
@@ -22,17 +18,10 @@ type UseSupabaseInfiniteQueryOptions<
   TQueryKey
 >;
 
-/**
- * @alias useSbIQ
- * @description Abbreviation of useSupabaseInfiniteQuery
- */
-function useSupabaseInfiniteQuery<
+export function useSupabaseInfiniteQuery<
   TQueryFnData = unknown,
   TData = TQueryFnData,
   TQueryKey extends QueryKey = QueryKey,
 >(options: UseSupabaseInfiniteQueryOptions<TQueryFnData, TData, TQueryKey>) {
   return useInfiniteQuery(options);
 }
-
-export { useSupabaseInfiniteQuery as useSbIQ };
-export type { UseSupabaseInfiniteQueryOptions as UseSbIQOptions };

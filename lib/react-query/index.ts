@@ -1,4 +1,4 @@
-export * from './supabase';
+export * from './hooks';
 export * from './utils';
 
-export { default as QueryClientProvider } from './components/QueryClientProvider';
+export { default as SupabaseQueryClientProvider } from './components/SupabaseQueryClientProvider';

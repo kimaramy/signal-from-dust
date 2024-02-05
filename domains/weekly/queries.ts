@@ -1,17 +1,20 @@
 import { Model, YearUtils } from '@/lib/model';
-import { useSbSQ, type UseSbSQOptions } from '@/lib/react-query';
+import {
+  useSupabaseSuspenseQuery,
+  type UseSupabaseSuspenseQueryOptions,
+} from '@/lib/react-query';
 
 import { weeklyQueryKeys, type WeeklyQueryKeys } from './queryKeys';
 
 export function useWeeklyListQuery<T = Model.WeeklyData[]>(
   yearKey: YearUtils.Key,
-  options?: UseSbSQOptions<
+  options?: UseSupabaseSuspenseQueryOptions<
     Model.WeeklyData[],
     T,
     WeeklyQueryKeys['list']['queryKey']
   >
 ) {
-  const { data } = useSbSQ({
+  const { data } = useSupabaseSuspenseQuery({
     ...weeklyQueryKeys.list(yearKey),
     staleTime: Infinity,
     ...options,
@@ -21,13 +24,13 @@ export function useWeeklyListQuery<T = Model.WeeklyData[]>(
 
 export function useWeeklyQuery<T = Model.WeeklyData>(
   dataId: number,
-  options?: UseSbSQOptions<
+  options?: UseSupabaseSuspenseQueryOptions<
     Model.WeeklyData,
     T,
     WeeklyQueryKeys['detail']['queryKey']
   >
 ) {
-  const { data } = useSbSQ({
+  const { data } = useSupabaseSuspenseQuery({
     ...weeklyQueryKeys.detail(dataId),
     staleTime: Infinity,
     ...options,

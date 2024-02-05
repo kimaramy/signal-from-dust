@@ -9,7 +9,7 @@ import {
   LocaleDictionaryProvider,
   type Locale,
 } from '@/lib/i18n';
-import { QueryClientProvider } from '@/lib/react-query';
+import { SupabaseQueryClientProvider } from '@/lib/react-query';
 import {
   Progress,
   RouteChangeEventHandlers,
@@ -48,7 +48,7 @@ async function Layout({ params, children }: NextLayoutProps) {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <QueryClientProvider>
+          <SupabaseQueryClientProvider>
             <LocaleDictionaryProvider locale={locale} dictionary={dictionary}>
               <div
                 id="root-layout"
@@ -58,7 +58,7 @@ async function Layout({ params, children }: NextLayoutProps) {
               </div>
               <ToastProvider />
             </LocaleDictionaryProvider>
-          </QueryClientProvider>
+          </SupabaseQueryClientProvider>
         </ThemeProvider>
         <RouteChangeEventHandlers progressComponent={<Progress />} />
       </body>
