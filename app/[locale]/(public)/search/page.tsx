@@ -1,7 +1,9 @@
 import { cache } from 'react';
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import { fetchDataset } from '@/domains';
 
+import { parseHeader } from '@/lib/headers';
 import { getDictionary, IntlMessageFormat, type Locale } from '@/lib/i18n';
 import {
   DustUtils,
@@ -61,6 +63,8 @@ async function Page({ params, searchParams }: NextPageProps) {
 
   const initialDataset = await fetchCachedDataset(...datasetKeys);
 
+  const { userAgent } = parseHeader(headers());
+
   if (process.env.NODE_ENV === 'development') {
     console.log(`search_page: %d`, initialDataset.length);
   }
@@ -70,6 +74,7 @@ async function Page({ params, searchParams }: NextPageProps) {
       title={title}
       initialCollectionKey={collectionKey}
       initialDataset={initialDataset}
+      userAgent={userAgent}
     />
   );
 }

@@ -2,6 +2,7 @@ import { cache } from 'react';
 import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
+import { DesktopOnly } from '@/lib/device';
 import { getDictionary, i18n, IntlMessageFormat } from '@/lib/i18n';
 import {
   CollectionUtils,
@@ -69,7 +70,9 @@ async function Page(props: PageProps) {
         initialCollectionKey={CollectionUtils.schema.defaultKey}
         initialDataset={initialDataset}
       />
-      <SettingsDialog />
+      <DesktopOnly>
+        <SettingsDialog />
+      </DesktopOnly>
     </>
   );
 }

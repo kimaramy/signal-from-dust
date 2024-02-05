@@ -61,11 +61,11 @@ const DatasetBody = React.forwardRef<HTMLDivElement, DatasetBodyProps>(
       <LayoutConsumer>
         {(layoutContext) => {
           switch (layoutContext.key) {
-            case 'GRID':
+            case 'SHORT':
               return (
                 <Sequence2 id={sceneDatasetId} sceneDataset={sceneDataset} />
               );
-            case 'LIST':
+            case 'DETAIL':
             default:
               return (
                 <Sequence id={sceneDatasetId} sceneDataset={sceneDataset} />

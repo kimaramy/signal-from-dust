@@ -9,10 +9,10 @@ import { useSettingsFormDefaultValues, useSettingsModeContext } from '../hooks';
 import SettingsForm, { type SettingsFormValues } from './SettingsForm';
 
 interface SettingsFormContainerProps {
-  devTool: boolean;
+  useDevTool: boolean;
 }
 
-function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
+function SettingsFormContainer({ useDevTool }: SettingsFormContainerProps) {
   const { locale } = useLocaleDictionary();
 
   const navigate = useNavigate();
@@ -33,18 +33,18 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
       }
 
       if (values.mode === 'realtime') {
-        const map = new Map<SchemaName, string>()
-          .set('location', values.locationKey.toLowerCase())
-          .set('dust', values.dustKey.toLowerCase());
+        const newQueryParams = new Map<SchemaName, string>()
+          .set('location', toLowerCase(values.locationKey))
+          .set('dust', toLowerCase(values.dustKey));
 
-        const search = setQueryParams(map, { stringify: true });
+        const search = setQueryParams(newQueryParams, { stringify: true });
 
         return navigate(`/${locale}/today${search}` as TypedRoute, {
           method: 'push',
         });
       }
 
-      const map = new Map<SchemaName, string>()
+      const newQueryParams = new Map<SchemaName, string>()
         .set('location', values.locationKey)
         .set('collection', values.collectionKey)
         .set('dust', values.dustKey)
@@ -52,11 +52,11 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
         .set('season', values.seasonKey)
         .set('month', values.monthKey);
 
-      map.forEach((value, key) => {
-        map.set(key, toLowerCase(value.toString()));
+      newQueryParams.forEach((value, key) => {
+        newQueryParams.set(key, toLowerCase(value));
       });
 
-      const search = setQueryParams(map, { stringify: true });
+      const search = setQueryParams(newQueryParams, { stringify: true });
 
       navigate(`/${locale}/search${search}` as TypedRoute, { method: 'push' });
     },
@@ -65,9 +65,9 @@ function SettingsFormContainer({ devTool }: SettingsFormContainerProps) {
 
   return (
     <SettingsForm
+      useDevTool={useDevTool}
       defaultValues={defaultValues}
       onSubmit={handleSubmit}
-      devTool={devTool}
     />
   );
 }

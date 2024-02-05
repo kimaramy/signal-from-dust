@@ -12,7 +12,7 @@ import { MonthSelect } from '@/components/month';
 
 import { type SettingsFormValues } from './SettingsForm';
 
-function MonthField() {
+function MonthField(props: React.HTMLAttributes<HTMLDivElement>) {
   const {
     dictionary: { settings },
   } = useLocaleDictionary();
@@ -37,7 +37,7 @@ function MonthField() {
       control={control}
       render={({ field }) => {
         return (
-          <FormItem hidden={!isVisible}>
+          <FormItem hidden={!isVisible} {...props}>
             <FormLabel>{settings.form.month.title}</FormLabel>
             <FormControl>
               <MonthSelect

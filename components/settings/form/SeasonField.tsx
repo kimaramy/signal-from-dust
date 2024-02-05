@@ -11,7 +11,7 @@ import { SeasonSelect } from '@/components/season';
 
 import { type SettingsFormValues } from './SettingsForm';
 
-function SeasonField() {
+function SeasonField(props: React.HTMLAttributes<HTMLDivElement>) {
   const {
     dictionary: { settings },
   } = useLocaleDictionary();
@@ -32,7 +32,7 @@ function SeasonField() {
       control={control}
       render={({ field }) => {
         return (
-          <FormItem hidden={!isVisible}>
+          <FormItem hidden={!isVisible} {...props}>
             <FormLabel>{settings.form.season.title}</FormLabel>
             <FormControl>
               <SeasonSelect

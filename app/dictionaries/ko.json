@@ -17,8 +17,8 @@
   },
   "locale": {
     "btn": {
-      "en": "English",
-      "ko": "Korean"
+      "en": "To English",
+      "ko": "To Korean"
     }
   },
   "share": {
@@ -48,6 +48,7 @@
       "author": "김하람",
       "year": 2023
     },
+    "ok_btn": "시작",
     "btn": "프로젝트 설명"
   },
   "settings": {
@@ -57,7 +58,7 @@
       "ok_btn": "시작"
     },
     "sheet": {
-      "title": "조회할 데이터를 선택하세요",
+      "title": "조회할 데이터셋 선택",
       "ok_btn": "적용"
     },
     "form": {

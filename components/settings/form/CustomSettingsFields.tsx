@@ -18,18 +18,18 @@ function CustomSettingsFields() {
   const isHidden = mode !== 'custom';
 
   return (
-    <section className={cn('space-y-3', isHidden && 'hidden')}>
-      <div className="flex justify-between gap-2">
-        <LocationField />
-        <DustField />
+    <section className={cn('space-y-2 md:space-y-3', isHidden && 'hidden')}>
+      <div className="flex flex-wrap gap-2 sm:flex-nowrap md:gap-4">
+        <LocationField className="w-1/2 flex-1 sm:flex-initial" />
+        <DustField className="w-1/2 flex-1 sm:flex-initial" />
       </div>
-      <div className="flex justify-between gap-2">
-        <CollectionField />
+      <div className="flex flex-wrap gap-2 sm:flex-nowrap md:gap-4">
+        <CollectionField className="w-1/2 flex-1 sm:flex-initial" />
       </div>
-      <div className="flex justify-between gap-2">
-        <SeasonField />
-        <YearField />
-        <MonthField />
+      <div className="flex flex-wrap gap-2 sm:flex-nowrap md:gap-4">
+        <SeasonField className="w-1/2 flex-1 sm:flex-initial" />
+        <YearField className="w-1/2 flex-1 sm:flex-initial" />
+        <MonthField className="w-1/2 flex-1 sm:flex-initial" />
       </div>
     </section>
   );

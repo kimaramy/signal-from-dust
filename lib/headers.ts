@@ -31,12 +31,17 @@ function parseOrigin(headers: Headers) {
   return origin;
 }
 
+function parseUserAgent(headers: Headers) {
+  return headers.get('user-agent');
+}
+
 function parseHeader(headers: Headers) {
   const cachedOrigin = parseCachedOrigin(headers);
   const origin = parseOrigin(headers);
+  const userAgent = parseUserAgent(headers);
   process.env.NODE_ENV === 'development' &&
-    console.log({ cachedOrigin, origin });
-  return { origin: cachedOrigin ?? origin };
+    console.log({ cachedOrigin, origin, userAgent });
+  return { origin: cachedOrigin ?? origin, userAgent };
 }
 
 export { parseHeader };

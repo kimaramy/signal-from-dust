@@ -4,8 +4,8 @@ import { useRealtimeListQuery, type RealtimeData } from '@/domains';
 
 import { Spinner } from '@/components/layout';
 
+import DatasetHeader from './DatasetHeader';
 import RealtimeDatasetBody from './RealtimeDatasetBody';
-import RealtimeDatasetHeader from './RealtimeDatasetHeader';
 
 interface RealtimeDatasetProps {
   title: string;
@@ -25,7 +25,7 @@ function RealtimeDataset({
 
   return (
     <>
-      <RealtimeDatasetHeader title={title} dataset={dataset} isSticky />
+      <DatasetHeader title={title} dataset={dataset} />
       <RealtimeDatasetBody initialDataset={dataset} revalidate={revalidate} />
       {isLoading && <Spinner />}
     </>

@@ -17,8 +17,8 @@
   },
   "locale": {
     "btn": {
-      "en": "English",
-      "ko": "Korean"
+      "en": "To English",
+      "ko": "To Korean"
     }
   },
   "share": {
@@ -48,17 +48,18 @@
       "author": "Haram Kim",
       "year": 2023
     },
-    "btn": "About the project"
+    "ok_btn": "Start",
+    "btn": "About this project"
   },
   "settings": {
     "btn": "Change dataset",
     "dialog": {
-      "title": "Select data",
+      "title": "Select dataset to query",
       "ok_btn": "Start"
     },
     "sheet": {
-      "title": "Select the data you want to query",
-      "ok_btn": "Apply"
+      "title": "Select dataset to query",
+      "ok_btn": "Start"
     },
     "form": {
       "preset_title": "Presets",
