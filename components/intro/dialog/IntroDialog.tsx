@@ -17,7 +17,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Separator } from '@/components/ui/separator';
 
 function IntroDialog() {
   const {
@@ -37,9 +36,9 @@ function IntroDialog() {
 
   return (
     <Dialog open={isOpen} onOpenChange={() => setOpen((isOpen) => !isOpen)}>
-      <DialogContent className="min-h-screen overflow-hidden p-0 md:min-h-[480px] ">
+      <DialogContent className="h-full overflow-y-auto overflow-x-hidden p-0 md:min-h-[480px]">
         <DialogHeader className="text-left">
-          <div className="aspect-4/3 relative w-full bg-primary">
+          <div className="relative aspect-4/3 w-full bg-primary">
             <Image
               src={project.link.og_image}
               alt={project.title}
@@ -48,10 +47,11 @@ function IntroDialog() {
               className="object-cover"
             />
           </div>
-          <section className="p-4">
+          <section className="p-4 md:p-6">
             <div className="space-y-2">
-              <DialogTitle>{intro.content.title}</DialogTitle>
-              <Separator />
+              <DialogTitle className="text-xl">
+                {intro.content.title}
+              </DialogTitle>
             </div>
             <div className="space-y-2 py-4">
               <DialogTitle className="text-sm">
@@ -85,7 +85,7 @@ function IntroDialog() {
             </div>
           </section>
         </DialogHeader>
-        <DialogFooter className="p-4">
+        <DialogFooter className="bg-white/15 sticky bottom-0 left-0 p-4 backdrop-blur md:p-6">
           <DialogClose className="w-full" asChild>
             <Button variant="default" size="lg" className="w-full">
               {intro.ok_btn}

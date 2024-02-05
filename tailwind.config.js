@@ -73,7 +73,7 @@ module.exports = {
         nav: 'var(--nav-height)',
         player: 'var(--player-height)',
         main: 'calc(100vh - var(--nav-height))',
-        minimap: 'calc(100vh - var(--nav-height) - var(--player-height))',
+        screen: '100dvh',
       },
       minWidth: {
         ...defaultTheme.spacing,
@@ -111,6 +111,7 @@ module.exports = {
         '2/3': '66.667%',
         '3/4': '75%',
         '4/5': '80%',
+        screen: '100dvh',
       },
       maxHeight: {
         ...defaultTheme.spacing,

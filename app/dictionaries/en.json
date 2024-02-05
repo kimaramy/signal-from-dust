@@ -17,8 +17,8 @@
   },
   "locale": {
     "btn": {
-      "en": "English",
-      "ko": "Korean"
+      "en": "To English",
+      "ko": "To Korean"
     }
   },
   "share": {
@@ -49,17 +49,17 @@
       "year": 2023
     },
     "ok_btn": "Start",
-    "btn": "About the project"
+    "btn": "About this project"
   },
   "settings": {
     "btn": "Change dataset",
     "dialog": {
-      "title": "Select data",
+      "title": "Select dataset to query",
       "ok_btn": "Start"
     },
     "sheet": {
-      "title": "Select the data you want to query",
-      "ok_btn": "Apply"
+      "title": "Select dataset to query",
+      "ok_btn": "Start"
     },
     "form": {
       "preset_title": "Presets",
