@@ -10,7 +10,12 @@ import {
   YearUtils,
   type Locale,
 } from '@/lib/model';
+import { useDustKey } from '@/components/dust';
+import { useLocationKey } from '@/components/location';
+import { useMonthKey } from '@/components/month';
 import { SceneUtils } from '@/components/scene';
+import { useSeasonKey } from '@/components/season';
+import { useYearKey } from '@/components/year';
 
 interface InitialDataset {
   [CollectionUtils.schema.keys.YEARLY]?: Model.YearlyData[];
@@ -147,4 +152,13 @@ function useSceneDataset(params: UseSceneDatasetParams) {
   return sceneDataset;
 }
 
-export { useSceneDataset, type InitialDataset };
+function useDatasetParams() {
+  const locationKey = useLocationKey('query');
+  const dustKey = useDustKey('query');
+  const yearKey = useYearKey('query');
+  const seasonKey = useSeasonKey('query');
+  const monthKey = useMonthKey('query');
+  return { locationKey, dustKey, yearKey, seasonKey, monthKey };
+}
+
+export { useSceneDataset, useDatasetParams, type InitialDataset };

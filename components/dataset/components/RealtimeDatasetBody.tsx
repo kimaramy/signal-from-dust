@@ -1,14 +1,13 @@
 'use client';
 
-import React from 'react';
 import type { RealtimeData } from '@/domains';
 
 import { useLocaleDictionary } from '@/lib/i18n';
 import { toLowerCase } from '@/lib/utils';
-import { useDustKey } from '@/components/dust';
-import { useLocationKey } from '@/components/location';
 import { SceneUtils } from '@/components/scene';
 import { RealtimeSequence } from '@/components/sequence';
+
+import { useRealtimeDatasetParams } from './RealtimeDataset.hooks';
 
 interface RealtimeDatasetBodyProps {
   initialDataset: RealtimeData[];
@@ -21,9 +20,7 @@ function RealtimeDatasetBody({
 }: RealtimeDatasetBodyProps) {
   const { locale } = useLocaleDictionary();
 
-  const locationKey = useLocationKey('query');
-
-  const dustKey = useDustKey('query');
+  const { dustKey, locationKey } = useRealtimeDatasetParams();
 
   const sceneDataset = SceneUtils.toRealtimeSceneDataset<RealtimeData>({
     dataset: initialDataset,
