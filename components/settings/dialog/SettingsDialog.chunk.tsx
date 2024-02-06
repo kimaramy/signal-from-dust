@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/dialog';
 import { DustThumbnail } from '@/components/dust';
 
-import { SettingsModeContext } from '../context';
 import { SettingsFormContainer, SettingsFormSubmitButton } from '../form';
 
 /**
@@ -65,9 +64,7 @@ function SettingsDialog() {
               <DialogTitle>{settings.dialog.title}</DialogTitle>
             </DialogHeader>
             <section className="py-4">
-              <SettingsModeContext.Provider value="preset">
-                <SettingsFormContainer useDevTool={false} />
-              </SettingsModeContext.Provider>
+              <SettingsFormContainer useDevTool={false} />
             </section>
           </div>
           <DialogFooter>

@@ -18,7 +18,7 @@ function SeasonField(props: React.HTMLAttributes<HTMLDivElement>) {
 
   const { control, watch } = useFormContext<SettingsFormValues>();
 
-  const mode = watch('mode');
+  const mode = watch('modeKey');
 
   const collectionKey = watch('collectionKey');
 

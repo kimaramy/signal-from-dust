@@ -9,7 +9,6 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 
-import { SettingsModeContext } from '../context';
 import { SettingsFormContainer, SettingsFormSubmitButton } from '../form';
 
 function SettingsSheetContent() {
@@ -27,9 +26,7 @@ function SettingsSheetContent() {
             </SheetTitle>
           </SheetHeader>
           <section className="pt-6">
-            <SettingsModeContext.Provider value="custom">
-              <SettingsFormContainer useDevTool />
-            </SettingsModeContext.Provider>
+            <SettingsFormContainer useDevTool />
           </section>
         </div>
       </div>

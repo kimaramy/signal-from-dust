@@ -10,6 +10,7 @@ import { CollectionUtils, DustUtils, LocationUtils } from '@/lib/model';
 import { FormField } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
+import { SettingsContextUtils } from '../context';
 import { type SettingsFormValues } from './SettingsForm';
 
 /**
@@ -18,23 +19,23 @@ import { type SettingsFormValues } from './SettingsForm';
 function PresetFields() {
   const { locale } = useLocaleDictionary();
 
-  const { control, formState, watch, reset } =
+  const { control, getValues, watch, reset } =
     useFormContext<SettingsFormValues>();
 
-  const defaultValues = formState.defaultValues;
+  const modeKey = watch('modeKey');
 
-  const mode = watch('mode');
+  const defaultValues = SettingsContextUtils.createDefaultValues(modeKey);
 
   const collectionKey = watch('collectionKey');
 
-  const isPresetMode = mode === 'preset';
+  const isPresetMode = modeKey === 'preset';
 
   const location = LocationUtils.schema.display(
     LocationUtils.schema.defaultKey,
     locale
   );
 
-  const dust = DustUtils.schema.display(defaultValues?.dustKey!, locale);
+  const dust = DustUtils.schema.display(defaultValues.dustKey, locale);
 
   const labelTitle = CollectionUtils.schema.display(
     collectionKey,
@@ -57,7 +58,7 @@ function PresetFields() {
       reset({
         ...defaultValues,
         collectionKey,
-        mode: 'preset',
+        modeKey: 'preset',
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,7 +75,7 @@ function PresetFields() {
     if (isPresetMode) {
       reset({
         ...defaultValues,
-        mode: 'preset',
+        modeKey: 'preset',
       });
     }
   }, [isPresetMode]);
