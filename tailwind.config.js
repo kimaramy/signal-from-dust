@@ -70,10 +70,7 @@ module.exports = {
         sm: 'calc(var(--radius) - 4px)',
       },
       height: {
-        nav: 'var(--nav-height)',
-        player: 'var(--player-height)',
-        main: 'calc(100vh - var(--nav-height))',
-        screen: '100dvh',
+        screen: ['100vh', '100dvh'],
       },
       minWidth: {
         ...defaultTheme.spacing,
@@ -111,7 +108,7 @@ module.exports = {
         '2/3': '66.667%',
         '3/4': '75%',
         '4/5': '80%',
-        screen: '100dvh',
+        screen: ['100vh', '100dvh'],
       },
       maxHeight: {
         ...defaultTheme.spacing,
@@ -124,6 +121,7 @@ module.exports = {
         '2/3': '66.667%',
         '3/4': '75%',
         '4/5': '80%',
+        screen: ['100vh', '100dvh'],
       },
       keyframes: {
         'accordion-down': {
