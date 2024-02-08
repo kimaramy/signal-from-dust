@@ -60,7 +60,6 @@ function Sequence2({ id, sceneDataset, className }: SequenceProps) {
   const handleRef = useCallback((el: HTMLElement | null) => {
     if (el !== null) {
       const offsetY = el.getBoundingClientRect().top;
-      el.style.height = `calc(100vh - ${offsetY}px)`;
       el.style.minHeight = `calc(100dvh - ${offsetY}px)`;
     }
   }, []);
@@ -77,7 +76,7 @@ function Sequence2({ id, sceneDataset, className }: SequenceProps) {
       id={id}
       ref={handleRef}
       className={cn(
-        'grid h-full w-full min-w-[280px] grid-cols-1 content-center items-center gap-2 overflow-x-hidden overflow-y-scroll p-4 scrollbar-hide md:grid-cols-2 md:gap-3 xl:grid-cols-3',
+        'grid h-full w-full min-w-[280px] grid-cols-1 content-start gap-2 overflow-x-hidden overflow-y-scroll p-4 scrollbar-hide md:grid-cols-2 md:gap-3 lg:content-center xl:grid-cols-3',
         className
       )}
     >

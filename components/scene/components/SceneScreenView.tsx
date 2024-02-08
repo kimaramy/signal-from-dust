@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { cn } from '@/lib/css';
 import { Icon } from '@/lib/icon';
@@ -58,6 +58,13 @@ function SceneScreenView({
     }
   }, []);
 
+  const styleCSS = useMemo<React.CSSProperties>(
+    () => ({
+      height: `calc(100dvh - ${offsetY})`,
+    }),
+    [offsetY]
+  );
+
   return (
     <Scene.Root
       id={sceneId}
@@ -65,10 +72,7 @@ function SceneScreenView({
       sceneIdx={sceneIdx}
       sceneData={sceneData}
       sceneLength={sceneLength}
-      style={{
-        height: `calc(100vh - ${offsetY})`, // fallback for browsers not supporting dvh
-        minHeight: `calc(100dvh - ${offsetY})`, // min-height will override height
-      }}
+      style={styleCSS}
     >
       <header className="absolute left-0 top-0 z-10 flex h-auto w-full min-w-md justify-end p-4">
         <div className="flex items-center gap-1 rounded-md bg-primary/10 py-1 pl-1 pr-4 text-muted-foreground">
