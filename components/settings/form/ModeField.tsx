@@ -44,7 +44,7 @@ function ModeField() {
           >
             {SettingsModeUtils.schema
               .getAllKeys()
-              .toSorted(
+              .sort(
                 (a, b) =>
                   SettingsModeUtils.schema.getValue(a).order -
                   SettingsModeUtils.schema.getValue(b).order
