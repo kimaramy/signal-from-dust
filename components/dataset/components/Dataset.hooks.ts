@@ -19,7 +19,7 @@ import { useYearKey } from '@/components/year';
 
 interface InitialDataset {
   [CollectionUtils.schema.keys.YEARLY]?: Model.YearlyData[];
-  [CollectionUtils.schema.keys.SEASONALLY]?: Model.MonthlyData[];
+  [CollectionUtils.schema.keys.SEASONALLY]?: Model.SeasonalData;
   [CollectionUtils.schema.keys.MONTHLY]?: Model.MonthlyData[];
   [CollectionUtils.schema.keys.WEEKLY]?: Model.WeeklyData[];
   [CollectionUtils.schema.keys.WEEKDAILY]?: Model.WeekDailyData[];
@@ -55,9 +55,9 @@ function useSceneDataset(params: UseSceneDatasetParams) {
     select: (dataset) =>
       SceneUtils.toYearlySceneDataset(
         dataset,
-        dustKey,
         initialCollectionKey,
         locationKey,
+        dustKey,
         locale
       ),
   });
@@ -68,12 +68,13 @@ function useSceneDataset(params: UseSceneDatasetParams) {
     {
       initialData: initialDataset?.['SEASONALLY'],
       enabled: initialCollectionKey === 'SEASONALLY',
-      select: (dataset) =>
-        SceneUtils.toMonthlySceneDataset(
-          dataset,
-          dustKey,
+      select: (data) =>
+        SceneUtils.toSeasonalSceneDataset(
+          data,
+          seasonKey,
           initialCollectionKey,
           locationKey,
+          dustKey,
           locale
         ),
     }
@@ -85,9 +86,9 @@ function useSceneDataset(params: UseSceneDatasetParams) {
     select: (dataset) =>
       SceneUtils.toMonthlySceneDataset(
         dataset,
-        dustKey,
         initialCollectionKey,
         locationKey,
+        dustKey,
         locale
       ),
   });
@@ -98,9 +99,9 @@ function useSceneDataset(params: UseSceneDatasetParams) {
     select: (dataset) =>
       SceneUtils.toWeeklySceneDataset(
         dataset,
-        dustKey,
         initialCollectionKey,
         locationKey,
+        dustKey,
         locale
       ),
   });
@@ -111,9 +112,9 @@ function useSceneDataset(params: UseSceneDatasetParams) {
     select: (dataset) =>
       SceneUtils.toWeekDailySceneDataset(
         dataset,
-        dustKey,
         initialCollectionKey,
         locationKey,
+        dustKey,
         locale
       ),
   });
@@ -124,9 +125,9 @@ function useSceneDataset(params: UseSceneDatasetParams) {
     select: (dataset) =>
       SceneUtils.toDailySceneDataset(
         dataset,
-        dustKey,
         initialCollectionKey,
         locationKey,
+        dustKey,
         locale
       ),
   });

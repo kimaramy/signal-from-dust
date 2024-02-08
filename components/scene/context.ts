@@ -1,6 +1,11 @@
 import { createContext } from 'react';
 
-import { CollectionUtils, DustUtils, type Locale } from '@/lib/model';
+import {
+  CollectionUtils,
+  DustUtils,
+  SeasonUtils,
+  type Locale,
+} from '@/lib/model';
 import type { BitData } from '@/components/bit';
 
 interface SceneData {
@@ -22,6 +27,7 @@ interface SceneData {
     locale: Locale;
     dustKey: DustUtils.Key;
     collectionKey?: CollectionUtils.Key;
+    seasonKey?: SeasonUtils.Key;
   };
 }
 

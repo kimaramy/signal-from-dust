@@ -1,4 +1,4 @@
-import { Model, supabaseClient } from '@/lib/model';
+import { Model, SeasonUtils, supabaseClient } from '@/lib/model';
 
 export const fetchMonthlyDataset = async (year: number) => {
   const response = await supabaseClient
@@ -14,8 +14,9 @@ export const fetchMonthlyDataset = async (year: number) => {
 
 export const fetchMonthlyDatasetBySeason = async (
   year: number,
-  months: number[]
-) => {
+  months: number[],
+  seasonKey: SeasonUtils.Key
+): Promise<Model.SeasonalData> => {
   const response = await supabaseClient
     .from('monthly')
     .select('*')
@@ -25,7 +26,7 @@ export const fetchMonthlyDatasetBySeason = async (
 
   if (response.error) throw response.error;
 
-  return response.data;
+  return { [seasonKey]: response.data };
 };
 
 export const fetchMonthlyData = async (dataId: number) => {

@@ -63,15 +63,19 @@ async function Page({ params }: PageProps) {
 
   const initialDataset = await fetchCachedDataset(...datasetKeys);
 
+  const _initialDataset = Array.isArray(initialDataset)
+    ? initialDataset
+    : initialDataset[SeasonUtils.schema.defaultKey]!;
+
   if (process.env.NODE_ENV === 'development') {
-    console.log(`collection_page: %d`, initialDataset.length);
+    console.log(`collection_page: %d`, _initialDataset.length);
   }
 
   return (
     <Dataset
       title={title}
       initialCollectionKey={collectionKey}
-      initialDataset={initialDataset}
+      initialDataset={_initialDataset}
     />
   );
 }

@@ -63,17 +63,21 @@ async function Page({ params, searchParams }: NextPageProps) {
 
   const initialDataset = await fetchCachedDataset(...datasetKeys);
 
+  const _initialDataset = Array.isArray(initialDataset)
+    ? initialDataset
+    : initialDataset[seasonKey]!;
+
   const { userAgent } = parseHeader(headers());
 
   if (process.env.NODE_ENV === 'development') {
-    console.log(`search_page: %d`, initialDataset.length);
+    console.log(`search_page: %d`, _initialDataset?.length);
   }
 
   return (
     <Dataset
       title={title}
       initialCollectionKey={collectionKey}
-      initialDataset={initialDataset}
+      initialDataset={_initialDataset}
       userAgent={userAgent}
     />
   );
