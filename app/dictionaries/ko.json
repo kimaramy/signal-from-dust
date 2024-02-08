@@ -62,9 +62,6 @@
       "ok_btn": "적용"
     },
     "form": {
-      "preset_title": "추천 설정",
-      "custom_title": "직접 설정",
-      "realtime_title": "실시간",
       "location": {
         "title": "측정 장소",
         "placeholder": "측정 장소 선택"

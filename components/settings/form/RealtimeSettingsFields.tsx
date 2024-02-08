@@ -9,9 +9,9 @@ import LocationField from './LocationField';
 import type { SettingsFormValues } from './SettingsForm';
 
 function RealtimeSettingsFields() {
-  const { mode } = useWatch<SettingsFormValues>();
+  const { modeKey } = useWatch<SettingsFormValues>();
 
-  const isHidden = mode !== 'realtime';
+  const isHidden = modeKey !== 'realtime';
 
   return (
     <section className={cn('space-y-3', isHidden && 'hidden')}>

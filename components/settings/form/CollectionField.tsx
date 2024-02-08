@@ -18,9 +18,9 @@ function CollectionField(props: React.HTMLAttributes<HTMLDivElement>) {
 
   const { control, watch } = useFormContext<SettingsFormValues>();
 
-  const mode = watch('mode');
+  const modeKey = watch('modeKey');
 
-  const isDisabled = mode === 'preset';
+  const isDisabled = modeKey === 'preset';
 
   return (
     <FormField

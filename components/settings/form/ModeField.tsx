@@ -2,23 +2,38 @@ import { useFormContext } from 'react-hook-form';
 
 import { DesktopOnly } from '@/lib/device';
 import { useLocaleDictionary } from '@/lib/i18n';
-import { Icon } from '@/lib/icon';
 import { FormField } from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
+import { SettingsModeUtils } from '../schema';
 import { type SettingsFormValues } from './SettingsForm';
 
+function ModeRadio({
+  value,
+  label,
+}: {
+  value: SettingsModeUtils.Key;
+  label: string;
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <RadioGroupItem id={value} value={value} />
+      <Label htmlFor={value} className="cursor-pointer">
+        {label}
+      </Label>
+    </div>
+  );
+}
+
 function ModeField() {
-  const {
-    dictionary: { settings },
-  } = useLocaleDictionary();
+  const { locale } = useLocaleDictionary();
 
   const { control } = useFormContext<SettingsFormValues>();
 
   return (
     <FormField
-      name="mode"
+      name="modeKey"
       control={control}
       render={({ field }) => {
         return (
@@ -27,34 +42,30 @@ function ModeField() {
             defaultValue={field.value}
             onValueChange={field.onChange}
           >
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="preset" id="r1" />
-              <Label htmlFor="r1" className="cursor-pointer">
-                {settings.form.preset_title}
-              </Label>
-            </div>
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="custom" id="r2" />
-              <Label htmlFor="r2" className="cursor-pointer">
-                {settings.form.custom_title}
-              </Label>
-            </div>
-            <DesktopOnly>
-              <div className="hidden items-center gap-2 lg:flex">
-                <RadioGroupItem value="realtime" id="r3" />
-                <div className="flex items-center gap-1">
-                  <Label htmlFor="r3" className="cursor-pointer">
-                    {settings.form.realtime_title}
-                  </Label>
-                  <div className="rounded-full bg-accent p-1">
-                    <Icon.FlaskConical
-                      aria-hidden
-                      className="h-3.5 w-3.5 text-accent-foreground"
-                    />
-                  </div>
-                </div>
-              </div>
-            </DesktopOnly>
+            {SettingsModeUtils.schema
+              .getAllKeys()
+              .sort(
+                (a, b) =>
+                  SettingsModeUtils.schema.getValue(a).order -
+                  SettingsModeUtils.schema.getValue(b).order
+              )
+              .map((modeKey) => {
+                const isDesktopOnly =
+                  SettingsModeUtils.schema.checkDesktopOnly(modeKey);
+
+                const label = SettingsModeUtils.schema.display(modeKey, locale);
+
+                if (isDesktopOnly) {
+                  return (
+                    <DesktopOnly key={modeKey}>
+                      <ModeRadio value={modeKey} label={label} />
+                    </DesktopOnly>
+                  );
+                }
+                return (
+                  <ModeRadio key={modeKey} value={modeKey} label={label} />
+                );
+              })}
           </RadioGroup>
         );
       }}

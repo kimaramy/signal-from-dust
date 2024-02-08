@@ -27,7 +27,7 @@ async function fetchDataset(
     case 'MONTHLY':
       return await fetchMonthlyDataset(year);
     case 'SEASONALLY':
-      return await fetchMonthlyDatasetBySeason(year, monthRange);
+      return await fetchMonthlyDatasetBySeason(year, monthRange, seasonKey);
     case 'WEEKLY':
       return await fetchWeeklyDataset(year);
     case 'WEEKDAILY':

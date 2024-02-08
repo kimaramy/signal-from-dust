@@ -3,17 +3,10 @@
 import { DevTool } from '@hookform/devtools';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import {
-  CollectionUtils,
-  DustUtils,
-  LocationUtils,
-  MonthUtils,
-  SeasonUtils,
-  YearUtils,
-} from '@/lib/model';
 import { Form } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
 
+import { SettingsContextValues } from '../context';
 import CustomSettingsFields from './CustomSettingsFields';
 import ModeField from './ModeField';
 import PresetFields from './PresetFields';
@@ -23,28 +16,18 @@ import RealtimeSettingsFields from './RealtimeSettingsFields';
 
 const SETTINGS_FORM_ID = 'settings-form';
 
-type SettingsMode = 'preset' | 'custom' | 'realtime';
-
-interface SettingsFormValues {
-  mode: SettingsMode;
-  locationKey: LocationUtils.Key;
-  dustKey: DustUtils.Key;
-  collectionKey: CollectionUtils.Key;
-  yearKey: YearUtils.Key;
-  seasonKey: SeasonUtils.Key;
-  monthKey: MonthUtils.Key;
-}
+type SettingsFormValues = Required<SettingsContextValues>;
 
 type SettingsFormSubmitHandler = SubmitHandler<SettingsFormValues>;
 
 interface SettingsFormProps {
-  defaultValues: SettingsFormValues;
+  values: SettingsFormValues;
   onSubmit: SettingsFormSubmitHandler;
   useDevTool?: boolean;
 }
 
 function SettingsForm({
-  defaultValues,
+  values,
   onSubmit,
   useDevTool = false,
 }: SettingsFormProps) {
@@ -52,7 +35,7 @@ function SettingsForm({
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
     shouldUseNativeValidation: false,
-    defaultValues,
+    values,
   });
 
   return (
@@ -83,6 +66,6 @@ function SettingsForm({
 
 export { SETTINGS_FORM_ID };
 
-export type { SettingsMode, SettingsFormValues, SettingsFormSubmitHandler };
+export type { SettingsFormValues, SettingsFormSubmitHandler };
 
 export default SettingsForm;

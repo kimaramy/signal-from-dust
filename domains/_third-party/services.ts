@@ -22,7 +22,7 @@ export class SeoulAirQualityService {
   static serviceName = 'ListAvgOfSeoulAirQualityService';
   static async fetchDataset(fetchOptions?: Omit<RequestInit, 'method'>) {
     const serviceName = SeoulAirQualityService.serviceName;
-    const serviceURL = `${process.env.NEXT_PUBLIC_SEOUL_OPENAPI_URL}/${process.env.NEXT_PUBLIC_SEOUL_OPENAPI_KEY}/json/${serviceName}/1/5/`;
+    const serviceURL = `${process.env.SEOUL_OPENAPI_URL}/${process.env.SEOUL_OPENAPI_KEY}/json/${serviceName}/1/5/`;
 
     try {
       const response = await fetch(serviceURL, {

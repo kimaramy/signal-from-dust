@@ -65,7 +65,7 @@ function Sequence({ id, sceneDataset, className }: SequenceProps) {
   const handleRef = useCallback((el: HTMLElement | null) => {
     if (el !== null) {
       const offsetY = el.getBoundingClientRect().top;
-      el.style.minHeight = `calc(100vh - ${offsetY}px)`;
+      el.style.minHeight = `calc(100dvh - ${offsetY}px)`;
     }
   }, []);
 

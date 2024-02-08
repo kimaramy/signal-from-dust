@@ -24,7 +24,8 @@ export const monthlyQueryKeys = createQueryKeys('monthly', {
           const months = SeasonUtils.schema.getMonthRange(seasonKey);
           return {
             queryKey: [{ months }],
-            queryFn: () => services.fetchMonthlyDatasetBySeason(year, months),
+            queryFn: () =>
+              services.fetchMonthlyDatasetBySeason(year, months, seasonKey),
           };
         },
       },

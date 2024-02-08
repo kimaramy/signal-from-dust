@@ -22,11 +22,11 @@ export function useMonthlyListQuery<T = Model.MonthlyData[]>(
   return data;
 }
 
-export function useMonthlyListQueryBySeason<T = Model.MonthlyData[]>(
+export function useMonthlyListQueryBySeason<T = Model.SeasonalData>(
   yearKey: YearUtils.Key,
   seasonKey: SeasonUtils.Key,
   options?: UseSupabaseSuspenseQueryOptions<
-    Model.MonthlyData[],
+    Model.SeasonalData,
     T,
     MonthlyQueryKeys['list']['_ctx']['seasonally']['queryKey']
   >

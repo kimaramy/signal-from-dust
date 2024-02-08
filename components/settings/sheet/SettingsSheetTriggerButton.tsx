@@ -1,8 +1,11 @@
 'use client';
 
+import { useCallback } from 'react';
+
 import { cn } from '@/lib/css';
 import { useLocaleDictionary } from '@/lib/i18n';
 import { Icon } from '@/lib/icon';
+import type { URLPart } from '@/lib/router';
 import { Button, type ButtonProps } from '@/components/ui/button';
 import { Sheet, SheetTrigger } from '@/components/ui/sheet';
 import {
@@ -12,6 +15,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
+import SettingsProvider from '../SettingsProvider';
 import SettingsSheetContent from './SettingsSheetContent';
 
 interface SettingsSheetTriggerButtonProps extends ButtonProps {
@@ -25,6 +29,20 @@ function SettingsSheetTriggerButton({
   const {
     dictionary: { settings },
   } = useLocaleDictionary();
+
+  const handleInitialModeKey = useCallback((pathname: string) => {
+    return pathname.endsWith('today')
+      ? 'realtime'
+      : pathname.endsWith('search')
+      ? 'custom'
+      : 'preset';
+  }, []);
+
+  const handleCollectionKeyHint = useCallback((pathname: string): URLPart => {
+    return pathname.endsWith('today') || pathname.endsWith('search')
+      ? 'query'
+      : 'path';
+  }, []);
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -41,7 +59,12 @@ function SettingsSheetTriggerButton({
                   <span className="sr-only">{settings.btn}</span>
                 </Button>
               </SheetTrigger>
-              <SettingsSheetContent />
+              <SettingsProvider
+                initialModeKey={handleInitialModeKey}
+                collectionKeyHint={handleCollectionKeyHint}
+              >
+                <SettingsSheetContent />
+              </SettingsProvider>
             </Sheet>
           </div>
         </TooltipTrigger>

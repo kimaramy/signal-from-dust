@@ -10,9 +10,9 @@ import type { SettingsFormValues } from './SettingsForm';
 function SettingsFormResetButton() {
   const { reset, formState, watch } = useFormContext<SettingsFormValues>();
 
-  const mode = watch('mode');
+  const modeKey = watch('modeKey');
 
-  const isHidden = mode === 'preset';
+  const isHidden = modeKey === 'preset';
 
   if (isHidden) return null;
 
@@ -25,7 +25,7 @@ function SettingsFormResetButton() {
       onClick={() =>
         reset({
           ...formState.defaultValues,
-          mode,
+          modeKey,
         })
       }
     >

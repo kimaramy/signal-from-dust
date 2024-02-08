@@ -29,6 +29,7 @@ export async function generateMetadata({
 }: NextPageProps) {
   const locale = params?.locale as Locale;
   const dictionary = await getDictionary(locale);
+  const collectionKey = parseCollectionKey(searchParams);
   const dustKey = parseDustKey(searchParams);
   const yearKey = parseYearKey(searchParams);
   const seasonKey = parseSeasonKey(searchParams);
@@ -37,7 +38,7 @@ export async function generateMetadata({
   const location = LocationUtils.schema.display(locationKey, locale);
   const dust = DustUtils.schema.display(dustKey, locale);
   const monthOrSeason =
-    seasonKey !== SeasonUtils.schema.defaultKey
+    collectionKey === 'SEASONALLY'
       ? SeasonUtils.schema.display(seasonKey, locale)
       : MonthUtils.schema.display(monthKey, 'short', locale);
   const year = YearUtils.schema.display(yearKey, 'short', locale);
@@ -66,7 +67,10 @@ async function Page({ params, searchParams }: NextPageProps) {
   const { userAgent } = parseHeader(headers());
 
   if (process.env.NODE_ENV === 'development') {
-    console.log(`search_page: %d`, initialDataset.length);
+    const _initialDataset = Array.isArray(initialDataset)
+      ? initialDataset
+      : initialDataset[seasonKey]!;
+    console.log(`search_page: %d`, _initialDataset?.length);
   }
 
   return (

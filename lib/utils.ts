@@ -39,3 +39,11 @@ export function isValidJson(value: string) {
     return false;
   }
 }
+
+export function groupArray<T = unknown>(array: T[], unit: number) {
+  const result = [];
+  for (let i = 0; i < array.length; i += unit) {
+    result.push(array.slice(i, i + unit));
+  }
+  return result;
+}

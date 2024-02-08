@@ -5,15 +5,15 @@ import React from 'react';
 import { useLocaleDictionary } from '@/lib/i18n';
 import { CollectionUtils } from '@/lib/model';
 import { toLowerCase } from '@/lib/utils';
-import { useDustKey } from '@/components/dust';
 import { LayoutConsumer } from '@/components/layout';
-import { useLocationKey } from '@/components/location';
-import { useMonthKey } from '@/components/month';
-import { useSeasonKey } from '@/components/season';
 import { Sequence, Sequence2 } from '@/components/sequence';
-import { useYearKey } from '@/components/year';
 
-import { useSceneDataset, type InitialDataset } from './Dataset.hooks';
+import { useDatasetOrderContext } from '../hooks';
+import {
+  useDatasetParams,
+  useSceneDataset,
+  type InitialDataset,
+} from './Dataset.hooks';
 
 export interface DatasetBodyProps {
   initialCollectionKey: CollectionUtils.Key;
@@ -24,18 +24,14 @@ const DatasetBody = React.forwardRef<HTMLDivElement, DatasetBodyProps>(
   function DatasetBody({ initialCollectionKey, initialDataset }, _ref) {
     const { locale } = useLocaleDictionary();
 
-    const locationKey = useLocationKey('query');
+    const { locationKey, dustKey, yearKey, monthKey, seasonKey } =
+      useDatasetParams();
 
-    const dustKey = useDustKey('query');
-
-    const yearKey = useYearKey('query');
-
-    const seasonKey = useSeasonKey('query');
-
-    const monthKey = useMonthKey('query');
+    const { key: datasetOrderKey } = useDatasetOrderContext();
 
     const sceneDataset = useSceneDataset({
       initialDataset,
+      datasetOrderKey,
       initialCollectionKey,
       locationKey,
       dustKey,

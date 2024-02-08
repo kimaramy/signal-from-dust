@@ -6,10 +6,11 @@ import { LayoutUtils } from '@/components/layout/lib/schema';
 
 import DatasetBody, { type DatasetBodyProps } from './DatasetBody';
 import DatasetHeader from './DatasetHeader';
+import DatasetOrderProvider from './DatasetOrderProvider';
 
 interface DatasetProps extends Omit<DatasetBodyProps, 'initialDataset'> {
   title: string;
-  initialDataset: object[];
+  initialDataset: object | object[];
   userAgent?: string | null;
 }
 
@@ -25,11 +26,13 @@ function Dataset({
 
   return (
     <LayoutProvider key={initialLayoutKey} initialLayoutKey={initialLayoutKey}>
-      <DatasetHeader title={title} dataset={initialDataset} />
-      <DatasetBody
-        initialCollectionKey={initialCollectionKey}
-        initialDataset={{ [initialCollectionKey]: initialDataset }}
-      />
+      <DatasetOrderProvider>
+        <DatasetHeader title={title} dataset={initialDataset} />
+        <DatasetBody
+          initialCollectionKey={initialCollectionKey}
+          initialDataset={{ [initialCollectionKey]: initialDataset }}
+        />
+      </DatasetOrderProvider>
     </LayoutProvider>
   );
 }

@@ -62,9 +62,6 @@
       "ok_btn": "Start"
     },
     "form": {
-      "preset_title": "Presets",
-      "custom_title": "Customs",
-      "realtime_title": "Realtime",
       "location": {
         "title": "Location",
         "placeholder": "Select a location"

@@ -1,42 +1,33 @@
 'use client';
 
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 
-import {
-  CollectionUtils,
-  DustUtils,
-  LocationUtils,
-  MonthUtils,
-  SeasonUtils,
-  YearUtils,
-} from '@/lib/model';
+import { useEnumUrlParam, type URLPart } from '@/lib/router';
 
-import { SettingsModeContext } from './context';
-import type { SettingsFormValues, SettingsMode } from './form/SettingsForm';
+import { SettingsContext, SettingsContextError } from './context';
+import { SettingsModeUtils } from './schema';
 
-function useSettingsModeContext() {
-  const mode = useContext(SettingsModeContext);
-  if (!mode) {
-    throw new Error(
-      `Calling useContext with SettingsModeContext must be inside a SettingsModeContext.Provider with a value.`
-    );
+function useSettingsContext() {
+  const settingsContext = useContext(SettingsContext);
+  if (!settingsContext) {
+    throw SettingsContextError(useSettingsContext.name);
   }
-  return mode;
+  return settingsContext;
 }
 
-function useSettingsFormDefaultValues(defaultMode: SettingsMode) {
-  return useMemo<SettingsFormValues>(
-    () => ({
-      mode: defaultMode,
-      locationKey: LocationUtils.schema.defaultKey,
-      dustKey: DustUtils.schema.defaultKey,
-      collectionKey: CollectionUtils.schema.defaultKey,
-      yearKey: YearUtils.schema.defaultKey,
-      seasonKey: SeasonUtils.schema.defaultKey,
-      monthKey: MonthUtils.schema.defaultKey,
-    }),
-    [defaultMode]
+function useSettingsModeKey(
+  part?: URLPart,
+  initialKey?: SettingsModeUtils.Key
+) {
+  const [settingsModeKey] = useEnumUrlParam(
+    SettingsModeUtils.schema.name,
+    initialKey ?? SettingsModeUtils.schema.defaultKey,
+    {
+      enums: SettingsModeUtils.schema.getAllKeys(),
+      part,
+    }
   );
+  return settingsModeKey;
 }
 
-export { useSettingsModeContext, useSettingsFormDefaultValues };
+export { useSettingsContext, useSettingsModeKey };

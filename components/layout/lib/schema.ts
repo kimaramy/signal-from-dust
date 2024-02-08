@@ -26,7 +26,7 @@ const layoutValues: ReadonlyArray<LayoutValue> = [
     order: 0,
     disabled: false,
     i18n: {
-      en: 'Short',
+      en: 'in Short',
       ko: '간략히',
     },
   },
@@ -35,7 +35,7 @@ const layoutValues: ReadonlyArray<LayoutValue> = [
     order: 1,
     disabled: false,
     i18n: {
-      en: 'Detail',
+      en: 'in Detail',
       ko: '자세히',
     },
   },
@@ -44,7 +44,7 @@ const layoutValues: ReadonlyArray<LayoutValue> = [
     order: 2,
     disabled: true,
     i18n: {
-      en: 'Screen',
+      en: 'on Screen',
       ko: '전체화면',
     },
   },

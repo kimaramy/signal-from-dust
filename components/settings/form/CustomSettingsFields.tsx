@@ -13,9 +13,9 @@ import type { SettingsFormValues } from './SettingsForm';
 import YearField from './YearField';
 
 function CustomSettingsFields() {
-  const { mode } = useWatch<SettingsFormValues>();
+  const { modeKey } = useWatch<SettingsFormValues>();
 
-  const isHidden = mode !== 'custom';
+  const isHidden = modeKey !== 'custom';
 
   return (
     <section className={cn('space-y-2 md:space-y-3', isHidden && 'hidden')}>

@@ -19,11 +19,11 @@ function YearField(props: React.HTMLAttributes<HTMLDivElement>) {
 
   const { control, watch, resetField } = useFormContext<SettingsFormValues>();
 
-  const mode = watch('mode');
+  const modeKey = watch('modeKey');
 
   const collectionKey = watch('collectionKey');
 
-  const isDisabled = mode === 'preset';
+  const isDisabled = modeKey === 'preset';
 
   const isVisible =
     collectionKey === 'WEEKLY' ||
