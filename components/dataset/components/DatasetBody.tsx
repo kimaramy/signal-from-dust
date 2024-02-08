@@ -8,6 +8,7 @@ import { toLowerCase } from '@/lib/utils';
 import { LayoutConsumer } from '@/components/layout';
 import { Sequence, Sequence2 } from '@/components/sequence';
 
+import { useDatasetOrderContext } from '../hooks';
 import {
   useDatasetParams,
   useSceneDataset,
@@ -26,8 +27,11 @@ const DatasetBody = React.forwardRef<HTMLDivElement, DatasetBodyProps>(
     const { locationKey, dustKey, yearKey, monthKey, seasonKey } =
       useDatasetParams();
 
+    const { key: datasetOrderKey } = useDatasetOrderContext();
+
     const sceneDataset = useSceneDataset({
       initialDataset,
+      datasetOrderKey,
       initialCollectionKey,
       locationKey,
       dustKey,

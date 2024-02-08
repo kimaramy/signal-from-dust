@@ -17,6 +17,8 @@ import { SceneUtils } from '@/components/scene';
 import { useSeasonKey } from '@/components/season';
 import { useYearKey } from '@/components/year';
 
+import { DatasetOrderUtils } from '../schema';
+
 interface InitialDataset {
   [CollectionUtils.schema.keys.YEARLY]?: Model.YearlyData[];
   [CollectionUtils.schema.keys.SEASONALLY]?: Model.SeasonalData;
@@ -28,6 +30,7 @@ interface InitialDataset {
 
 interface UseSceneDatasetParams {
   initialDataset?: InitialDataset;
+  datasetOrderKey: DatasetOrderUtils.Key;
   initialCollectionKey: CollectionUtils.Key;
   locationKey: LocationUtils.Key;
   dustKey: DustUtils.Key;
@@ -40,6 +43,7 @@ interface UseSceneDatasetParams {
 function useSceneDataset(params: UseSceneDatasetParams) {
   const {
     initialDataset,
+    datasetOrderKey,
     initialCollectionKey,
     locationKey,
     dustKey,
@@ -149,6 +153,12 @@ function useSceneDataset(params: UseSceneDatasetParams) {
         return dailySceneDataset;
     }
   })();
+
+  if (datasetOrderKey === 'GRADE') {
+    return sceneDataset
+      ?.sort((a, b) => (b.value ?? 0) - (a.value ?? 0))
+      .map((sceneData, rank) => ({ ...sceneData, rank }));
+  }
 
   return sceneDataset;
 }
