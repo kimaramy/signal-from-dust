@@ -43,14 +43,18 @@ export async function fetchRealtimeDatasetViaRoute<TData = RealtimeData>(
 ) {
   if (origin === null) return [] as TData[];
 
-  return new Promise<TData[]>((resolve, reject) => {
-    fetch(`${origin}/api/realtime`, {
+  try {
+    const response = await fetch(`${origin}/api/realtime`, {
       method: 'GET',
       cache: 'no-store',
       ...routeFetchOptions,
-    })
-      .then((response) => response.json())
-      .then((data) => resolve(data))
-      .catch((error) => reject(error));
-  });
+    });
+    if (!response.ok) {
+      throw new Error(`${response.status || response.statusText}`);
+    }
+    const data = await response.json();
+    return data as TData[];
+  } catch (error) {
+    throw new Error(`Fetch failed`);
+  }
 }

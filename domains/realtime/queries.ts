@@ -36,7 +36,7 @@ export function useRealtimeListQuery(options?: UseRealtimeListQueryOptions) {
           console.log('Realtime dataset fetch success on client');
         })
         .catch((error) => {
-          console.error(JSON.stringify(error, null, 2));
+          console.error(error);
           throw error; // This will activate the closest `error.ts` Error Boundary
         });
     }

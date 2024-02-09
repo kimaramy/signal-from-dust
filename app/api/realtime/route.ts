@@ -11,6 +11,6 @@ export async function GET(_request: Request) {
     const initialDataset = await fetchRealtimeDataset('SeoulAirQuality');
     return NextResponse.json(initialDataset, { status: 200 });
   } catch (error) {
-    return NextResponse.json(error, { status: 400 });
+    return NextResponse.json(error, { status: 500 });
   }
 }
