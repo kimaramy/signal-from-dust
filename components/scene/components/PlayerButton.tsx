@@ -23,7 +23,10 @@ function PlayerButton({
       {isPlaying ? (
         <Icon.Pause aria-hidden className={cn('h-4 w-4', iconClassName)} />
       ) : (
-        <Icon.Play aria-hidden className={cn('h-4 w-4', iconClassName)} />
+        <Icon.Play
+          aria-hidden
+          className={cn('relative left-px h-4 w-4', iconClassName)}
+        />
       )}
       <span className="sr-only">{isPlaying ? 'Pause' : 'Play'}</span>
     </Button>
@@ -48,7 +51,10 @@ function PlayerOverlayButton({
       {isPlaying ? (
         <Icon.PauseSolid aria-hidden className={cn('h-6 w-6', iconClassName)} />
       ) : (
-        <Icon.PlaySolid aria-hidden className={cn('h-6 w-6', iconClassName)} />
+        <Icon.PlaySolid
+          aria-hidden
+          className={cn('relative left-px h-6 w-6', iconClassName)}
+        />
       )}
       <span className="sr-only">{isPlaying ? 'Pause' : 'Play'}</span>
     </Button>

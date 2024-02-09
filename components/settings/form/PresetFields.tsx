@@ -86,13 +86,13 @@ function PresetFields() {
     <section>
       <h3
         className={cn(
-          'flex items-baseline gap-1 pb-3 text-sm',
+          'flex flex-wrap items-baseline gap-1 pb-3 text-sm',
           locale === 'en'
             ? 'flex-row-reverse justify-end'
             : 'flex-row justify-start'
         )}
       >
-        <span className="inline-block rounded bg-muted px-1.5 py-0.5 font-bold">
+        <span className="inline-block rounded bg-muted px-1 py-0.5 font-bold">
           {labelTitle}
         </span>
         {labelDescription}

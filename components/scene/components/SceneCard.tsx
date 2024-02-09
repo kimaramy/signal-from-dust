@@ -9,6 +9,7 @@ import { DustThumbnail } from '@/components/dust';
 
 import { useSceneContext } from '../hooks';
 import { PlayerOverlayButton } from './PlayerButton';
+import SceneRank from './SceneRank';
 import { SceneSubtitle, SceneTitle } from './SceneTypography';
 
 const sceneCardVariants = cva('group flex flex-nowrap items-center gap-3 p-2', {
@@ -64,7 +65,10 @@ function SceneCard(props: SceneCardProps) {
       </div>
       {/* title */}
       <div className="space-y-0.5 truncate">
-        <SceneTitle>{title}</SceneTitle>
+        <div className="flex items-center gap-1.5">
+          <SceneTitle>{title}</SceneTitle>
+          <SceneRank />
+        </div>
         <SceneSubtitle>{subtitle}</SceneSubtitle>
       </div>
     </div>

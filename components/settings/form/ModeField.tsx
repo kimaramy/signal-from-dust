@@ -9,6 +9,18 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { SettingsModeUtils } from '../schema';
 import { type SettingsFormValues } from './SettingsForm';
 
+const modeItems = SettingsModeUtils.schema
+  .getAllKeys()
+  .sort(
+    (a, b) =>
+      SettingsModeUtils.schema.getValue(a).order -
+      SettingsModeUtils.schema.getValue(b).order
+  )
+  .map((modeKey) => ({
+    modeKey,
+    isDesktopOnly: SettingsModeUtils.schema.checkDesktopOnly(modeKey),
+  }));
+
 function ModeRadio({
   value,
   label,
@@ -42,30 +54,18 @@ function ModeField() {
             defaultValue={field.value}
             onValueChange={field.onChange}
           >
-            {SettingsModeUtils.schema
-              .getAllKeys()
-              .sort(
-                (a, b) =>
-                  SettingsModeUtils.schema.getValue(a).order -
-                  SettingsModeUtils.schema.getValue(b).order
-              )
-              .map((modeKey) => {
-                const isDesktopOnly =
-                  SettingsModeUtils.schema.checkDesktopOnly(modeKey);
+            {modeItems.map(({ modeKey, isDesktopOnly }) => {
+              const label = SettingsModeUtils.schema.display(modeKey, locale);
 
-                const label = SettingsModeUtils.schema.display(modeKey, locale);
-
-                if (isDesktopOnly) {
-                  return (
-                    <DesktopOnly key={modeKey}>
-                      <ModeRadio value={modeKey} label={label} />
-                    </DesktopOnly>
-                  );
-                }
+              if (isDesktopOnly) {
                 return (
-                  <ModeRadio key={modeKey} value={modeKey} label={label} />
+                  <DesktopOnly key={modeKey}>
+                    <ModeRadio value={modeKey} label={label} />
+                  </DesktopOnly>
                 );
-              })}
+              }
+              return <ModeRadio key={modeKey} value={modeKey} label={label} />;
+            })}
           </RadioGroup>
         );
       }}

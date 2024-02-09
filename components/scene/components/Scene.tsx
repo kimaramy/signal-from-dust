@@ -3,6 +3,7 @@ import SceneCard from './SceneCard';
 import SceneHead from './SceneHead';
 import SceneOverview from './SceneOverview';
 import ScenePlayer from './ScenePlayer';
+import SceneRank from './SceneRank';
 import SceneRoot from './SceneRoot';
 import SceneTypography from './SceneTypography';
 import SceneValue from './SceneValue';
@@ -14,6 +15,7 @@ const Scene = Object.freeze({
   Overview: SceneOverview,
   Card: SceneCard,
   Value: SceneValue,
+  Rank: SceneRank,
   Player: ScenePlayer,
   ...SceneTypography,
 });

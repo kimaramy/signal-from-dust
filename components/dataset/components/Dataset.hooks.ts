@@ -157,7 +157,7 @@ function useSceneDataset(params: UseSceneDatasetParams) {
   if (datasetOrderKey === 'GRADE') {
     return sceneDataset
       ?.sort((a, b) => (b.value ?? 0) - (a.value ?? 0))
-      .map((sceneData, rank) => ({ ...sceneData, rank }));
+      .map((sceneData, idx) => ({ ...sceneData, rank: idx + 1 }));
   }
 
   return sceneDataset;

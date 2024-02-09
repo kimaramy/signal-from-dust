@@ -73,17 +73,20 @@ function SceneItemView({
       <Scene.Player sceneIdx={sceneIdx} onPlay={onPlay} onStop={onStop}>
         {({ isPlaying, handlePlayer }) => (
           <>
-            <Scene.Head className="flex flex-row-reverse items-center gap-2">
-              {({ bits }) => (
+            <Scene.Head className="flex flex-initial items-center gap-2">
+              {({ sceneData, bits }) => (
                 <>
-                  <span className="flex-1 truncate font-mono text-xs">
-                    {sceneData.display.dates[0]}
-                  </span>
-                  <PlayerButton
-                    isPlaying={isPlaying}
-                    className="flex-none"
-                    onClick={() => handlePlayer({ bits })}
-                  />
+                  <Scene.Rank className="flex-none" />
+                  <div className="flex flex-1 items-center gap-1 truncate">
+                    <PlayerButton
+                      isPlaying={isPlaying}
+                      className="flex-none"
+                      onClick={() => handlePlayer({ bits })}
+                    />
+                    <span className="flex-1 truncate font-mono text-xs">
+                      {sceneData.display.dates[0]}
+                    </span>
+                  </div>
                 </>
               )}
             </Scene.Head>
@@ -94,7 +97,7 @@ function SceneItemView({
                   <Scene.Body
                     view="listitem"
                     columns={sceneLength}
-                    className="group-hover:ring-1"
+                    className="flex-1 group-hover:ring-1"
                   >
                     {(sceneContext) => (
                       <Bit.Consumer>

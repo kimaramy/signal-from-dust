@@ -14,10 +14,10 @@ function RealtimeSettingsFields() {
   const isHidden = modeKey !== 'realtime';
 
   return (
-    <section className={cn('space-y-3', isHidden && 'hidden')}>
-      <div className="flex gap-4">
-        <LocationField className="w-1/2 flex-auto" />
-        <DustField className="w-1/2 flex-auto" />
+    <section className={cn('space-y-2 md:space-y-3', isHidden && 'hidden')}>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4">
+        <LocationField />
+        <DustField />
       </div>
     </section>
   );

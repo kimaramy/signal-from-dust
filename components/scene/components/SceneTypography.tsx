@@ -6,7 +6,7 @@ interface SceneTypographyProps {
 
 function SceneTitle({ children }: SceneTypographyProps) {
   return typeof children === 'string' ? (
-    <h3 className="w-full truncate text-base font-bold tracking-tight text-foreground sm:text-lg">
+    <h3 className="w-auto max-w-full truncate text-base font-bold tracking-tight text-foreground sm:text-lg">
       {children}
     </h3>
   ) : (
