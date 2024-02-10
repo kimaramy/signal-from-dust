@@ -1,6 +1,7 @@
 import '../globals.css';
 
 import type { Metadata } from 'next';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 import { cn } from '@/lib/css';
 import { fontSans } from '@/lib/fonts';
@@ -63,6 +64,7 @@ async function Layout({ params, children }: NextLayoutProps) {
           </SupabaseQueryClientProvider>
         </ThemeProvider>
         <RouteChangeEventHandlers progressComponent={<Progress />} />
+        <GoogleAnalytics gaId="G-07RT6LJM3W" />
       </body>
     </html>
   );
