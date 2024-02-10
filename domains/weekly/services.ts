@@ -1,10 +1,18 @@
 import { Model, supabaseClient } from '@/lib/model';
 
-export const fetchWeeklyDataset = async (year: number) => {
+import { getFetchOptions, type FetchOptions } from '../utils';
+
+export const fetchWeeklyDataset = async (
+  year: number,
+  options?: FetchOptions
+) => {
+  const { signal } = getFetchOptions(options);
+
   const response = await supabaseClient
     .from('weekly')
     .select('*')
     .eq('year', year)
+    .abortSignal(signal)
     .returns<Model.WeeklyData[]>();
 
   if (response.error) throw response.error;
@@ -12,11 +20,17 @@ export const fetchWeeklyDataset = async (year: number) => {
   return response.data;
 };
 
-export const fetchWeeklyData = async (dataId: number) => {
+export const fetchWeeklyData = async (
+  dataId: number,
+  options?: FetchOptions
+) => {
+  const { signal } = getFetchOptions(options);
+
   const response = await supabaseClient
     .from('weekly')
     .select('*')
     .eq('id', dataId)
+    .abortSignal(signal)
     .returns<Model.WeeklyData>();
 
   if (response.error) throw response.error;

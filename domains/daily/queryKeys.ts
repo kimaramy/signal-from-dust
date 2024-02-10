@@ -11,14 +11,14 @@ export const dailyQueryKeys = createQueryKeys('daily', {
   detail(dataId: number) {
     return {
       queryKey: [dataId],
-      queryFn: () => services.fetchDailyData(dataId),
+      queryFn: ({ signal }) => services.fetchDailyData(dataId, { signal }),
     };
   },
   list(monthKey: MonthUtils.Key) {
     const month = MonthUtils.schema.getValue(monthKey);
     return {
       queryKey: [{ month }],
-      queryFn: () => services.fetchDailyDataset(month),
+      queryFn: ({ signal }) => services.fetchDailyDataset(month, { signal }),
     };
   },
 });

@@ -11,14 +11,14 @@ export const weeklyQueryKeys = createQueryKeys('weekly', {
   detail(dataId: number) {
     return {
       queryKey: [dataId],
-      queryFn: () => services.fetchWeeklyData(dataId),
+      queryFn: ({ signal }) => services.fetchWeeklyData(dataId, { signal }),
     };
   },
   list(yearKey: YearUtils.Key) {
     const year = YearUtils.schema.getValue(yearKey);
     return {
       queryKey: [{ year }],
-      queryFn: () => services.fetchWeeklyDataset(year),
+      queryFn: ({ signal }) => services.fetchWeeklyDataset(year, { signal }),
     };
   },
 });

@@ -9,19 +9,19 @@ export const yearlyQueryKeys = createQueryKeys('yearly', {
   detail(dataId: number) {
     return {
       queryKey: [dataId],
-      queryFn: () => services.fetchYearlyData(dataId),
+      queryFn: ({ signal }) => services.fetchYearlyData(dataId, { signal }),
     };
   },
   list(params = {}) {
     return {
       queryKey: [{ ...params }],
-      queryFn: () => services.fetchYearlyDataset(params),
+      queryFn: ({ signal }) => services.fetchYearlyDataset({ signal }),
     };
   },
   distinctYearList(params = {}) {
     return {
       queryKey: [{ ...params }],
-      queryFn: () => services.fetchDistinctYearDataset(),
+      queryFn: ({ signal }) => services.fetchDistinctYearDataset({ signal }),
     };
   },
 });

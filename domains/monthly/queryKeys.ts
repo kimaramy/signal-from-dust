@@ -11,21 +11,30 @@ export const monthlyQueryKeys = createQueryKeys('monthly', {
   detail(dataId: number) {
     return {
       queryKey: [dataId],
-      queryFn: () => services.fetchMonthlyData(dataId),
+      queryFn: ({ signal }) => services.fetchMonthlyData(dataId, { signal }),
     };
   },
   list(yearKey: YearUtils.Key) {
     const year = YearUtils.schema.getValue(yearKey);
     return {
       queryKey: [{ year }],
-      queryFn: () => services.fetchMonthlyDataset(year),
+      queryFn: ({ signal }) => services.fetchMonthlyDataset(year, { signal }),
       contextQueries: {
         seasonally(seasonKey: SeasonUtils.Key) {
-          const months = SeasonUtils.schema.getMonthRange(seasonKey);
+          const monthRange = SeasonUtils.schema.getMonthRange(seasonKey);
           return {
-            queryKey: [{ months }],
-            queryFn: () =>
-              services.fetchMonthlyDatasetBySeason(year, months, seasonKey),
+            queryKey: [{ monthRange }],
+            queryFn: ({ signal }) =>
+              services.fetchMonthlyDatasetBySeason(
+                {
+                  year,
+                  monthRange,
+                  seasonKey,
+                },
+                {
+                  signal,
+                }
+              ),
           };
         },
       },
