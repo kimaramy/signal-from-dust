@@ -22,6 +22,7 @@ type DustValue = CustomValueTemplate<DustKey>;
 type DustGrades = Record<
   DustGradeKey,
   CustomValueTemplate<DustGradeKey> & {
+    bgColor: string;
     color: string;
   }
 >;
@@ -49,7 +50,8 @@ const dustGrades: DustGrades = {
   GOOD: {
     name: 'GOOD',
     order: 1,
-    color: '#25ce7b',
+    bgColor: '#25ce7b',
+    color: '#0f172a',
     i18n: {
       en: 'Good',
       ko: '좋음',
@@ -58,7 +60,8 @@ const dustGrades: DustGrades = {
   NORMAL: {
     name: 'NORMAL',
     order: 2,
-    color: '#fdc741',
+    bgColor: '#fdc741',
+    color: '#0f172a',
     i18n: {
       en: 'Normal',
       ko: '보통',
@@ -67,7 +70,8 @@ const dustGrades: DustGrades = {
   BAD: {
     name: 'BAD',
     order: 3,
-    color: '#ff6b01',
+    bgColor: '#ff6b01',
+    color: '#0f172a',
     i18n: {
       en: 'Bad',
       ko: '나쁨',
@@ -76,7 +80,8 @@ const dustGrades: DustGrades = {
   WORST: {
     name: 'WORST',
     order: 4,
-    color: '#fc4236',
+    bgColor: '#fc4236',
+    color: '#e2e8f0',
     i18n: {
       en: 'Worst',
       ko: '매우나쁨',
@@ -109,14 +114,18 @@ class DustSchema extends CustomValueMapSchema<
   }
   protected getLargeDustGrade(measures: number) {
     if (measures <= 30) return this.dustGrades.GOOD;
-    if (measures <= 80) return this.dustGrades.NORMAL;
-    if (measures <= 150) return this.dustGrades.BAD;
+    if (measures <= 60) return this.dustGrades.NORMAL;
+    if (measures <= 90) return this.dustGrades.BAD;
+    // if (measures <= 80) return this.dustGrades.NORMAL;
+    // if (measures <= 150) return this.dustGrades.BAD;
     return this.dustGrades.WORST;
   }
   protected getSmallDustGrade(measures: number) {
     if (measures <= 15) return this.dustGrades.GOOD;
-    if (measures <= 35) return this.dustGrades.NORMAL;
-    if (measures <= 75) return this.dustGrades.BAD;
+    if (measures <= 30) return this.dustGrades.NORMAL;
+    if (measures <= 45) return this.dustGrades.BAD;
+    // if (measures <= 35) return this.dustGrades.NORMAL;
+    // if (measures <= 75) return this.dustGrades.BAD;
     return this.dustGrades.WORST;
   }
   getGrade(measures: number, dustKey: DustKey) {
