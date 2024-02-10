@@ -20,9 +20,11 @@ import { ThemeProvider } from '@/components/theme';
 
 import { getBaseMetadata } from '../metadata';
 
-export function generateMetadata({ params }: NextLayoutProps): Metadata {
+export async function generateMetadata({
+  params,
+}: NextLayoutProps): Promise<Metadata> {
   const locale = params?.locale as Locale;
-  return getBaseMetadata(locale, locale === 'en' ? 'ko' : 'en');
+  return await getBaseMetadata(locale, locale === 'en' ? 'ko' : 'en');
 }
 
 async function Layout({ params, children }: NextLayoutProps) {

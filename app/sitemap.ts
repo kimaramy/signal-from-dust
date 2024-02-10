@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 
 import { i18n } from '@/lib/i18n';
 import { CollectionUtils } from '@/lib/model';
-import project from '@/lib/project.json';
+import { project } from '@/lib/project';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const rootPages = i18n.locales.map((locale) => ({

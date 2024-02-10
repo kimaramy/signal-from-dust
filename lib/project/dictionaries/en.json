@@ -1,6 +1,6 @@
 {
   "title": "Signal from dust",
-  "description": "Let's output the signals and patterns found from PM10 and PM2.5 data as audiovisual elements.",
+  "description": "Let's output the signals and patterns found from air pollutant data as audiovisual elements.",
   "keywords": [
     "PM10",
     "PM2.5",
@@ -12,7 +12,7 @@
     "interative art"
   ],
   "author": {
-    "name": "Haram Kim",
+    "name": "김하람(Haram Kim)",
     "url": "https://github.com/kimaramy"
   },
   "domain": "https://signal-from-dust.earth",

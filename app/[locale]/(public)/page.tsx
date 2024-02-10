@@ -26,7 +26,7 @@ export function generateStaticParams() {
   return i18n.locales.map((locale) => ({ locale }));
 }
 
-export async function generateMetadata({ params: { locale } }: PageProps) {
+async function generateMetadata({ params: { locale } }: PageProps) {
   const dictionary = await getDictionary(locale);
   const collection = CollectionUtils.schema.display(
     CollectionUtils.schema.defaultKey,

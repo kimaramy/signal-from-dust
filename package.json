@@ -1,7 +1,7 @@
 {
   "name": "signal-from-dust",
-  "description": "Signals and patterns found from PM10 and PM2.5 data.",
-  "version": "0.4.0",
+  "description": "Let's output the signals and patterns found from air pollutant data as audiovisual elements.",
+  "version": "0.5.0",
   "private": true,
   "author": "kimaramy <fed.haram@gmail.com> (https://github.com/kimaramy)",
   "homepage": "https://github.com/kimaramy/signal-from-dust",

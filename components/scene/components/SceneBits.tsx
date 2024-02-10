@@ -16,8 +16,7 @@ const sceneBitVariants = cva(
   {
     variants: {
       state: {
-        isActive:
-          'bg-primary/10 backdrop-hue-rotate-90 dark:bg-primary dark:text-primary-foreground',
+        isActive: 'bg-primary/10 dark:bg-primary dark:text-primary-foreground',
       },
     },
     defaultVariants: {

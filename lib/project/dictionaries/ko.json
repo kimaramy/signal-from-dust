@@ -1,0 +1,23 @@
+{
+  "title": "미세먼지의 신호",
+  "description": "미세먼지 데이터에서 찾은 신호와 패턴을 시청각적 요소로 출력해 보자.",
+  "keywords": [
+    "미세먼지",
+    "초미세먼지",
+    "대기오염",
+    "데이터 시각화",
+    "데이터 음향화",
+    "데이터 아트",
+    "인터랙티브 아트"
+  ],
+  "author": {
+    "name": "김하람(Haram Kim)",
+    "url": "https://github.com/kimaramy"
+  },
+  "domain": "https://signal-from-dust.earth",
+  "link": {
+    "og_image": "https://ygpfckjmxgbewxkislyq.supabase.co/storage/v1/object/public/imgs/og.webp",
+    "repo": "https://github.com/kimaramy/signal-from-dust",
+    "docs": "https://github.com/kimaramy/signal-from-dust/blob/master/README.md"
+  }
+}

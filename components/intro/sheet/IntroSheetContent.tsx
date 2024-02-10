@@ -2,7 +2,7 @@
 
 import { useLocaleDictionary } from '@/lib/i18n';
 import { Icon } from '@/lib/icon';
-import project from '@/lib/project.json';
+import { project } from '@/lib/project';
 import { Link } from '@/lib/router';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
