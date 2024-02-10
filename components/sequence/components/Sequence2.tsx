@@ -91,6 +91,7 @@ function Sequence2({ id, sceneDataset, className }: SequenceProps) {
             sceneLength={SceneUtils.getSceneLength(Math.max(...values))}
             sceneTitle={handleSceneTitle}
             sceneSubtitle={handleSceneSubtitle}
+            sceneDescription={dictionary.dataset.description}
             isActive={activeSceneIdx === sceneIdx}
             isDisabled={validateOtherSceneActive(sceneIdx)}
             onPlay={setActiveSceneIdx}

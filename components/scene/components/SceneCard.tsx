@@ -24,12 +24,13 @@ const sceneCardVariants = cva('group flex flex-nowrap items-center gap-3 p-2', {
   },
 });
 
-interface SceneCardProps extends VariantProps<typeof sceneCardVariants> {
+interface SceneCardProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title' | 'onPlay'>,
+    VariantProps<typeof sceneCardVariants> {
   title: React.ReactNode;
   subtitle: React.ReactNode;
   isPlayerHidden?: boolean;
   isPlaying?: boolean;
-  className?: string;
   onPlay?: (sceneContext: { bits: BitData[] }) => void;
 }
 
@@ -42,6 +43,7 @@ function SceneCard(props: SceneCardProps) {
     variant,
     className,
     onPlay,
+    ...rest
   } = props;
 
   const { sceneData, bits } = useSceneContext();
@@ -52,9 +54,9 @@ function SceneCard(props: SceneCardProps) {
   );
 
   return (
-    <div className={cn(sceneCardVariants({ variant, className }))}>
+    <div className={cn(sceneCardVariants({ variant, className }))} {...rest}>
       {/* thumbnail */}
-      <div className="relative z-0 aspect-square w-12 flex-none overflow-hidden rounded md:w-16">
+      <div className="relative z-0 aspect-square w-12 flex-none overflow-hidden rounded-md md:w-16">
         <DustThumbnail dustGrade={dustGrade.name} fileSize="360x360" fill />
         <PlayerOverlayButton
           isPlaying={isPlaying}

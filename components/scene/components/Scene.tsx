@@ -1,3 +1,4 @@
+import SceneBits from './SceneBits';
 import SceneBody from './SceneBody';
 import SceneCard from './SceneCard';
 import SceneHead from './SceneHead';
@@ -7,6 +8,7 @@ import SceneRank from './SceneRank';
 import SceneRoot from './SceneRoot';
 import SceneTypography from './SceneTypography';
 import SceneValue from './SceneValue';
+import SceneValueToBits from './SceneValueToBits';
 
 const Scene = Object.freeze({
   Root: SceneRoot,
@@ -14,8 +16,10 @@ const Scene = Object.freeze({
   Body: SceneBody,
   Overview: SceneOverview,
   Card: SceneCard,
-  Value: SceneValue,
   Rank: SceneRank,
+  Bits: SceneBits,
+  Value: SceneValue,
+  ValueToBits: SceneValueToBits,
   Player: ScenePlayer,
   ...SceneTypography,
 });

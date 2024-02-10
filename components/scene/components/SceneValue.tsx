@@ -1,13 +1,20 @@
 'use client';
 
+import { cva } from 'class-variance-authority';
+
 import { cn } from '@/lib/css';
-import { Icon } from '@/lib/icon';
 import { DustUtils } from '@/lib/model';
-import { useBitContext } from '@/components/bit';
 
 import { useSceneContext } from '../hooks';
 
-function DustValueView() {
+const sceneValueVariants = cva(
+  'rounded-md border border-current px-1 py-0.5 text-xs font-semibold !text-black sm:px-2 sm:py-1 sm:text-sm'
+);
+
+function SceneValue({
+  className,
+  ...rest
+}: React.HTMLAttributes<HTMLParagraphElement>) {
   const { sceneData } = useSceneContext();
 
   const dustGrade = DustUtils.schema.getGrade(
@@ -17,55 +24,15 @@ function DustValueView() {
 
   return (
     <p
-      className="rounded border border-current px-2 py-1 text-sm font-semibold !text-black"
+      className={cn(sceneValueVariants({ className }))}
       style={{
         backgroundColor: dustGrade.color,
         borderColor: dustGrade.color,
       }}
+      {...rest}
     >
       {sceneData.value}({DustUtils.schema.unit})
     </p>
-  );
-}
-
-function BitsView() {
-  const sceneContext = useSceneContext();
-
-  const bitContext = useBitContext({ strict: false });
-
-  const _activeBitIdx =
-    sceneContext.getActiveBit()?.id ?? bitContext?.selectedBitIdx;
-
-  return (
-    <p className="inline-block divide-x divide-ring border border-ring font-mono text-base font-semibold tracking-wider text-accent-foreground dark:divide-white dark:border-white">
-      {sceneContext.bits
-        .filter((bit) => !bit.isVacant)
-        .map((bit, bitIdx) => {
-          const isActiveBit = bitIdx === _activeBitIdx;
-          return (
-            <span
-              key={`${bitIdx}`}
-              className={cn(
-                'inline-flex items-center justify-center px-2 py-0.5',
-                isActiveBit &&
-                  'bg-ring dark:bg-primary dark:text-primary-foreground'
-              )}
-            >
-              {bit.value}
-            </span>
-          );
-        })}
-    </p>
-  );
-}
-
-function SceneValue() {
-  return (
-    <div className="flex items-center gap-2">
-      <DustValueView />
-      <Icon.ArrowRight aria-hidden className="h-4 w-4" />
-      <BitsView />
-    </div>
   );
 }
 

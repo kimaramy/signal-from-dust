@@ -127,7 +127,7 @@ function SceneScreenView({
                   />
                   <div className="space-y-2 py-2 pl-4 pr-2">
                     <Scene.Description>{_sceneDescription}</Scene.Description>
-                    <Scene.Value />
+                    <Scene.ValueToBits />
                   </div>
                 </Scene.Overview>
               </div>

@@ -23,48 +23,59 @@ export function useScenePlayer({
   const [kicks, setKicks] = useState<Tone.Sequence | null>(null);
   const [cymbals, setCymbals] = useState<Tone.Sequence | null>(null);
 
+  const handlePlay = useCallback(
+    ({ bits }: Pick<SceneContextValue, 'bits'>) => {
+      const _claps = new Tone.Sequence(
+        (time) => {
+          Instrument.createClap().triggerAttackRelease(time);
+        },
+        bits.map((bit) => (bit.value === '0' ? '0' : null)),
+        bitDurationAsSecond
+      ).start(0);
+      const _kicks = new Tone.Sequence(
+        (time) => {
+          Instrument.createKick().triggerAttackRelease('D1', time);
+        },
+        bits.map((bit) => (bit.value === '1' ? '1' : null)),
+        bitDurationAsSecond
+      ).start(0);
+      const _cymbals = new Tone.Sequence(
+        (time) => {
+          Instrument.createCymbal().triggerAttackRelease('C3', time);
+        },
+        bits.map((bit) => (bit.value === '-1' ? '-1' : null)),
+        bitDurationAsSecond
+      ).start(0);
+      // _claps.loop = 3;
+      // _kicks.loop = 3;
+      // _cymbals.loop = 3;
+      setClaps(_claps);
+      setKicks(_kicks);
+      setCymbals(_cymbals);
+      Tone.Transport.start();
+      setPlaying(true);
+    },
+    [bitDurationAsSecond]
+  );
+
+  const handleStop = useCallback(() => {
+    claps?.stop();
+    kicks?.stop();
+    cymbals?.stop();
+    Tone.Transport.stop();
+    setPlaying(false);
+  }, [claps, cymbals, kicks]);
+
   const handlePlayer = useCallback(
-    async ({ bits }: Pick<SceneContextValue, 'bits'>) => {
-      // console.log({ bits });
+    async (ctx: Pick<SceneContextValue, 'bits'>) => {
       await Tone.start();
       if (!isPlaying && Tone.Transport.state !== 'started') {
-        const _claps = new Tone.Sequence(
-          (time) => {
-            Instrument.createClap().triggerAttackRelease(time);
-          },
-          bits.map((bit) => (bit.value === '0' ? '0' : null)),
-          bitDurationAsSecond
-        ).start(0);
-        const _kicks = new Tone.Sequence(
-          (time) => {
-            Instrument.createKick().triggerAttackRelease('D1', time);
-          },
-          bits.map((bit) => (bit.value === '1' ? '1' : null)),
-          bitDurationAsSecond
-        ).start(0);
-        const _cymbals = new Tone.Sequence(
-          (time) => {
-            Instrument.createCymbal().triggerAttackRelease('C3', time);
-          },
-          bits.map((bit) => (bit.value === '-1' ? '-1' : null)),
-          bitDurationAsSecond
-        ).start(0);
-        // _claps.loop = 3;
-        // _kicks.loop = 3;
-        // _cymbals.loop = 3;
-        setClaps(_claps);
-        setKicks(_kicks);
-        setCymbals(_cymbals);
-        Tone.Transport.start();
+        handlePlay(ctx);
       } else {
-        claps?.stop();
-        kicks?.stop();
-        cymbals?.stop();
-        Tone.Transport.stop();
+        handleStop();
       }
-      setPlaying(!isPlaying);
     },
-    [isPlaying, claps, kicks, cymbals, bitDurationAsSecond]
+    [isPlaying, handlePlay, handleStop]
   );
 
   useEffect(() => {
@@ -80,6 +91,8 @@ export function useScenePlayer({
     bitDurationAsSecond,
     isPlaying,
     handlePlayer,
+    handlePlay,
+    handleStop,
   };
 }
 

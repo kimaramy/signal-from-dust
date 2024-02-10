@@ -34,7 +34,7 @@
     "title": "{secondaryDate} {primaryDate}의 {dust}",
     "year_title": "{year}의 {dust}",
     "realtime_title": "{location}의 실시간 {dust}",
-    "description": "측정 수치를 2진 신호로 출력합니다.",
+    "description": "측정 수치를 2진 신호로 출력합니다",
     "source": "{collection} {dust} 평균, {yearRange}년, {location}",
     "realtime_source": "실시간 대기환경 평균 현황, {location}",
     "download_btn": "데이터 받기"
