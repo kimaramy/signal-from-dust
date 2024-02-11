@@ -1,6 +1,5 @@
-import BitConsumer from './BitConsumer';
+import { BitConsumer, BitProvider } from '../lib';
 import BitOverlay from './BitOverlay';
-import BitProvider from './BitProvider';
 import BitView from './BitView';
 
 const Bit = Object.freeze({

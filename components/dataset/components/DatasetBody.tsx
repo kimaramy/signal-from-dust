@@ -8,7 +8,7 @@ import { toLowerCase } from '@/lib/utils';
 import { LayoutConsumer } from '@/components/layout';
 import { Sequence, Sequence2 } from '@/components/sequence';
 
-import { useDatasetOrderContext } from '../hooks';
+import { useDatasetOrderContext } from '../lib';
 import {
   useDatasetParams,
   useSceneDataset,

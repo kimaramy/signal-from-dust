@@ -13,7 +13,7 @@ import { random } from 'lodash-es';
 import { cn } from '@/lib/css';
 import { Instrument } from '@/lib/tone';
 
-import { bitNoiseId } from './BitNoise';
+import { BIT_NOISE_ID } from './BitNoise';
 import BitOverlay from './BitOverlay';
 
 const turbulenceValue = { val: 0.000001 };
@@ -98,7 +98,7 @@ function BitView(props: BitViewProps) {
     if (is3DView) return;
     if (isEntering) {
       turbulenceRef.current = document.querySelectorAll(
-        `#${bitNoiseId} feTurbulence`
+        `#${BIT_NOISE_ID} feTurbulence`
       )[0] as SVGFETurbulenceElement;
       timelineOne.current = new TimelineLite({
         paused: true,
@@ -163,7 +163,7 @@ function BitView(props: BitViewProps) {
     if (is3DView) return;
     if (_isActive) {
       timelineOne.current?.play();
-      (bitRef.current as HTMLElement).style.filter = `url(#${bitNoiseId})`;
+      (bitRef.current as HTMLElement).style.filter = `url(#${BIT_NOISE_ID})`;
     } else {
       timelineOne.current?.pause();
       timelineTwo.current = new TimelineLite({

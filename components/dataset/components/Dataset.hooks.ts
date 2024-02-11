@@ -13,11 +13,11 @@ import {
 import { useDustKey } from '@/components/dust';
 import { useLocationKey } from '@/components/location';
 import { useMonthKey } from '@/components/month';
-import { SceneUtils } from '@/components/scene';
+import { SceneUtils } from '@/components/scene/lib';
 import { useSeasonKey } from '@/components/season';
 import { useYearKey } from '@/components/year';
 
-import { DatasetOrderUtils } from '../schema';
+import { DatasetOrderUtils } from '../lib';
 
 interface InitialDataset {
   [CollectionUtils.schema.keys.YEARLY]?: Model.YearlyData[];

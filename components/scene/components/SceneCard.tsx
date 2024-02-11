@@ -4,10 +4,10 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/css';
 import { DustUtils } from '@/lib/model';
-import type { BitData } from '@/components/bit';
+import { type BitData } from '@/components/bit/lib';
 import { DustThumbnail } from '@/components/dust';
 
-import { useSceneContext } from '../hooks';
+import { useSceneContext } from '../lib';
 import { PlayerOverlayButton } from './PlayerButton';
 import SceneRank from './SceneRank';
 import { SceneSubtitle, SceneTitle } from './SceneTypography';

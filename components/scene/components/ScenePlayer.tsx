@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useSceneContext } from '../hooks';
+import { useSceneContext } from '../lib';
 import {
   useScenePlayer,
   useScenePlayerEffect,

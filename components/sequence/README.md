@@ -1,11 +1,17 @@
-# 시퀀스
+# Sequence
 
-장면(Scene)의 연속을 시퀀스(Sequence)라고 합니다.
+## Translations
 
-쉽게, Scene 컴포넌트들을 배치하는 레이아웃 역할로 이해하면 좋습니다. 하지만 `@/components/scene` 집합에서 분리한 이유는 Scene 컴포넌트들은 데이터를 출력하는데 책임을 다하도록 두고, Scene 컴포넌트들이 도메인에 의존하지 않고 독립적으로 사용 가능하도록 두기 위함입니다. 이를 통해 요구사항 변경에 대비하고 테스트를 쉽게 하도록 도울 수 있습니다.
+- [한국어](./README.ko.md)
 
-## 역할
+## Description
 
-1. Dataset 컴포넌트에서 전달받은 Scene 데이터 목록을 도메인별로 필요한 부분에 대해 한번 더 매핑을 진행하여 Scene 컴포넌트로 전달합니다.
-2. Scene 컴포넌트 혹은 여러 Scene 컴포넌트를 레이아웃 정책에 따라 배치합니다.
-3. 특정 Scene 컴포넌트가 다른 Scene 컴포넌트들과 상호 작용을 할 수 있도록 하는데 필요한 상태를 관리합니다.
+A series of scenes is called a sequence.
+
+It's easy to think of them as layout roles for laying out a scene or scenes, but the reason for separating them from the `@/components/scene` set is to let the scene components take responsibility for outputting data, and to make them available independently of the domain. This helps to prepare for changing requirements and makes testing easier.
+
+## Roles
+
+1. Take the list of scene data from the dataset and map it one more time for domain-specific needs and pass it to the scenes.
+2. Arrange a scene or multiple scenes according to a layout policy.
+3. Manage the state required to allow a particular scene to interact with other scenes.

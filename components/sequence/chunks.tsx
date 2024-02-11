@@ -2,10 +2,7 @@ import dynamic from 'next/dynamic';
 
 import { Spinner } from '@/components/layout';
 
-export const RealtimeSequence = dynamic(
-  () => import('./components/RealtimeSequence.chunk'),
-  {
-    ssr: false,
-    loading: () => <Spinner />,
-  }
-);
+export const Sequence3 = dynamic(() => import('./components/Sequence3.chunk'), {
+  ssr: false,
+  loading: () => <Spinner />,
+});

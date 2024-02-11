@@ -5,8 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/css';
 
-import type { SceneContextValue } from '../context';
-import { useSceneContext } from '../hooks';
+import { useSceneContext, type SceneContextValue } from '../lib';
 
 const sceneBodyVariants = cva(
   'relative grid h-full w-full list-none bg-fixed p-1',

@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useContext, useState } from 'react';
 
 import { useEnumUrlParam, useSetQueryParam, type URLPart } from '@/lib/router';
@@ -6,8 +8,8 @@ import {
   LayoutContext,
   LayoutContextError,
   type LayoutContextValue,
-} from './context';
-import { LayoutUtils } from './schema';
+} from './contexts';
+import { LayoutUtils } from './schemes';
 
 export function useLayoutKey(
   part?: URLPart,

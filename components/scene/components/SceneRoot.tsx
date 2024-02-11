@@ -4,11 +4,11 @@ import React from 'react';
 
 import { cn } from '@/lib/css';
 
-import SceneProvider, { type SceneProviderProps } from './SceneProvider';
+import { SceneProvider, type UseSceneStateParams } from '../lib';
 
 export interface SceneRootProps
-  extends Omit<SceneProviderProps, 'children'>,
-    React.HTMLAttributes<HTMLDivElement> {
+  extends React.HTMLAttributes<HTMLDivElement>,
+    UseSceneStateParams {
   isActive?: boolean;
   isDisabled?: boolean;
 }

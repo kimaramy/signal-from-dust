@@ -4,7 +4,8 @@ import React, { useCallback, useEffect } from 'react';
 
 import { cn } from '@/lib/css';
 import { IntlMessageFormat, useLocaleDictionary } from '@/lib/i18n';
-import { SceneItemView, SceneUtils, type SceneData } from '@/components/scene';
+import { SceneItemView } from '@/components/scene';
+import { SceneUtils, type SceneData } from '@/components/scene/lib';
 
 import { useActiveScene } from './Sequence.hooks';
 
@@ -12,6 +13,7 @@ export interface SequenceProps {
   id: string;
   sceneDataset: SceneData[];
   className?: string;
+  revalidate?: () => Promise<void>;
 }
 
 function Sequence({ id, sceneDataset, className }: SequenceProps) {

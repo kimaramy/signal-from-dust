@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-export const bitNoiseId = 'bit-noise';
+export const BIT_NOISE_ID = 'bit-noise';
 
 const BitNoise = React.memo(function BitNoise() {
   return (
@@ -14,7 +14,7 @@ const BitNoise = React.memo(function BitNoise() {
         aria-hidden
       >
         <defs>
-          <filter id={bitNoiseId}>
+          <filter id={BIT_NOISE_ID}>
             <feTurbulence
               type="fractalNoise"
               baseFrequency="0.000001"

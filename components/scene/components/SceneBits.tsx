@@ -3,9 +3,9 @@
 import { cva } from 'class-variance-authority';
 
 import { cn } from '@/lib/css';
-import { useBitContext } from '@/components/bit';
+import { useBitContext } from '@/components/bit/lib';
 
-import { useSceneContext } from '../hooks';
+import { useSceneContext } from '../lib';
 
 const sceneBitsVariants = cva(
   'flex divide-x divide-ring border rounded-md overflow-hidden border-ring font-mono text-sm font-semibold tracking-wider text-accent-foreground dark:divide-white dark:border-white sm:text-base'

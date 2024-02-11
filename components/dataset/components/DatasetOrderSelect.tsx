@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { DatasetOrderUtils } from '../schema';
+import { DatasetOrderUtils } from '../lib';
 
 interface DatasetOrderSelectProps {
   value: DatasetOrderUtils.Key;

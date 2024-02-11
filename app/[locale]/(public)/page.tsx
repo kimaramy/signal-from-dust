@@ -14,7 +14,7 @@ import {
 } from '@/lib/model';
 import type { NextPageProps } from '@/lib/router';
 import { Dataset } from '@/components/dataset';
-import { SettingsDialog } from '@/components/settings/dialog';
+import { SettingsDialog } from '@/components/settings/components/dialog';
 
 const fetchCachedDataset = cache(fetchDataset);
 

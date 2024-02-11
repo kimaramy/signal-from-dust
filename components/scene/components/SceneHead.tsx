@@ -4,18 +4,17 @@ import React from 'react';
 
 import { cn } from '@/lib/css';
 
-import type { SceneContextValue } from '../context';
-import { useSceneContext } from '../hooks';
+import { useSceneContext, type SceneContextValue } from '../lib';
 
-type SceneHeadContext = Pick<SceneContextValue, 'sceneData' | 'bits'>;
-
-interface SceneHeadProps {
-  className?: string;
-  children: (context: SceneHeadContext) => React.ReactNode;
+interface SceneHeadProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+  children: (
+    context: Pick<SceneContextValue, 'sceneData' | 'bits'>
+  ) => React.ReactNode;
 }
 
 const SceneHead = React.forwardRef<HTMLDivElement, SceneHeadProps>(
-  function SceneHead({ className, children }, ref) {
+  function SceneHead({ children, className, ...rest }, ref) {
     const { sceneData, bits } = useSceneContext();
 
     return (
@@ -23,6 +22,7 @@ const SceneHead = React.forwardRef<HTMLDivElement, SceneHeadProps>(
         ref={ref}
         style={{ width: `min(9rem, 15vw)` }}
         className={cn('h-full flex-none', className)}
+        {...rest}
       >
         {children({ sceneData, bits })}
       </header>

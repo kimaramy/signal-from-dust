@@ -14,8 +14,8 @@ import { useCollectionKey } from '@/components/collection';
 import { LayoutConsumer, LayoutSelect } from '@/components/layout';
 import { Menu } from '@/components/navigation';
 
+import { DatasetOrderConsumer } from '../lib';
 import DatasetDownloadButton from './DatasetDownloadButton';
-import DatasetOrderConsumer from './DatasetOrderConsumer';
 import DatasetOrderSelect from './DatasetOrderSelect';
 
 export interface DatasetHeaderProps

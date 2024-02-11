@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { LayoutUtils } from '../lib/schema';
+import { LayoutUtils } from '../lib/schemes/layout';
 
 interface LayoutSelectProps {
   value: LayoutUtils.Key;

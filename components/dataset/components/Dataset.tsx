@@ -2,11 +2,11 @@
 
 import { useMobileDetect } from '@/lib/device';
 import { LayoutProvider } from '@/components/layout';
-import { LayoutUtils } from '@/components/layout/lib/schema';
+import { LayoutUtils } from '@/components/layout/lib/schemes/layout';
 
+import { DatasetOrderProvider } from '../lib';
 import DatasetBody, { type DatasetBodyProps } from './DatasetBody';
 import DatasetHeader from './DatasetHeader';
-import DatasetOrderProvider from './DatasetOrderProvider';
 
 interface DatasetProps extends Omit<DatasetBodyProps, 'initialDataset'> {
   title: string;

@@ -1,5 +1,5 @@
 import { ButtonGroup } from '@/components/ui/group';
-import { SettingsSheetTriggerButton } from '@/components/settings/sheet';
+import { SettingsSheetTriggerButton } from '@/components/settings/components/sheet';
 
 function MobileMenu() {
   return (

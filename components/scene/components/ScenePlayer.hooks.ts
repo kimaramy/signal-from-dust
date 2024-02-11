@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { Instrument, Tone } from '@/lib/tone';
 
-import type { SceneContextValue } from '../context';
+import { type SceneContextValue } from '../lib';
 
 export type UseScenePlayerParams = {
   sceneIdx: number;

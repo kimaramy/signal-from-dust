@@ -1,6 +1,6 @@
 import { parseUrlParam } from '@/lib/router';
 
-import { LayoutUtils } from './schema';
+import { LayoutUtils } from './schemes/layout';
 
 export const parseLayoutKey = (
   params?: Parameters<typeof parseUrlParam>[0]

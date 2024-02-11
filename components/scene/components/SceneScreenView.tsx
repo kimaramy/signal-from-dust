@@ -5,9 +5,10 @@ import { useCallback, useMemo, useState } from 'react';
 import { cn } from '@/lib/css';
 import { Icon } from '@/lib/icon';
 import { Button } from '@/components/ui/button';
-import { Bit, BitUtils } from '@/components/bit';
+import { Bit } from '@/components/bit';
+import { BitUtils } from '@/components/bit/lib';
 
-import type { SceneData } from '../context';
+import { type SceneData } from '../lib';
 import Scene from './Scene';
 
 interface SceneScreenViewProps {

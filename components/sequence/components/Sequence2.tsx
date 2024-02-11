@@ -4,7 +4,8 @@ import React, { useCallback, useEffect } from 'react';
 
 import { cn } from '@/lib/css';
 import { IntlMessageFormat, useLocaleDictionary } from '@/lib/i18n';
-import { SceneCardView, SceneUtils, type SceneData } from '@/components/scene';
+import { SceneCardView } from '@/components/scene';
+import { SceneUtils, type SceneData } from '@/components/scene/lib';
 
 import type { SequenceProps } from './Sequence';
 import { useActiveScene } from './Sequence.hooks';

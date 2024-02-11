@@ -8,9 +8,10 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
-import { Bit, BitUtils } from '@/components/bit';
+import { Bit } from '@/components/bit';
+import { BitUtils } from '@/components/bit/lib';
 
-import type { SceneData } from '../context';
+import { type SceneData } from '../lib';
 import { PlayerButton } from './PlayerButton';
 import Scene from './Scene';
 
