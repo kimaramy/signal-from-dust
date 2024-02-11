@@ -1,12 +1,12 @@
 export type FetchOptions = { signal?: AbortSignal };
 
-export const defaultAbortController = new AbortController();
+export const abortController = new AbortController();
 
-const defualtFetchOptions = Object.freeze({
-  signal: AbortSignal.timeout(30000), // max 30 seconds
+const baseFetchOptions = Object.freeze({
+  signal: abortController.signal,
 } satisfies FetchOptions);
 
-export const getFetchOptions = (options?: FetchOptions) => ({
-  ...options,
-  ...defualtFetchOptions,
+export const getFetchOptions = (fetchOptions?: FetchOptions) => ({
+  ...baseFetchOptions,
+  ...fetchOptions,
 });

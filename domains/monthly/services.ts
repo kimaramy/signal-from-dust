@@ -4,9 +4,9 @@ import { getFetchOptions, type FetchOptions } from '../utils';
 
 export const fetchMonthlyDataset = async (
   year: number,
-  options?: FetchOptions
+  fetchOptions?: FetchOptions
 ) => {
-  const { signal } = getFetchOptions(options);
+  const { signal } = getFetchOptions(fetchOptions);
 
   const response = await supabaseClient
     .from('monthly')
@@ -26,9 +26,9 @@ export const fetchMonthlyDatasetBySeason = async (
     monthRange: number[];
     seasonKey: SeasonUtils.Key;
   },
-  options?: FetchOptions
+  fetchOptions?: FetchOptions
 ): Promise<Model.SeasonalData> => {
-  const { signal } = getFetchOptions(options);
+  const { signal } = getFetchOptions(fetchOptions);
 
   const response = await supabaseClient
     .from('monthly')
@@ -45,9 +45,9 @@ export const fetchMonthlyDatasetBySeason = async (
 
 export const fetchMonthlyData = async (
   dataId: number,
-  options?: FetchOptions
+  fetchOptions?: FetchOptions
 ) => {
-  const { signal } = getFetchOptions(options);
+  const { signal } = getFetchOptions(fetchOptions);
 
   const response = await supabaseClient
     .from('monthly')

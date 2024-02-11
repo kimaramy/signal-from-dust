@@ -2,8 +2,8 @@ import { Model, supabaseClient } from '@/lib/model';
 
 import { getFetchOptions, type FetchOptions } from '../utils';
 
-export const fetchYearlyDataset = async (options?: FetchOptions) => {
-  const { signal } = getFetchOptions(options);
+export const fetchYearlyDataset = async (fetchOptions?: FetchOptions) => {
+  const { signal } = getFetchOptions(fetchOptions);
 
   const response = await supabaseClient
     .from('yearly')
@@ -18,9 +18,9 @@ export const fetchYearlyDataset = async (options?: FetchOptions) => {
 
 export const fetchYearlyData = async (
   dataId: number,
-  options?: FetchOptions
+  fetchOptions?: FetchOptions
 ) => {
-  const { signal } = getFetchOptions(options);
+  const { signal } = getFetchOptions(fetchOptions);
 
   const response = await supabaseClient
     .from('yearly')
@@ -34,8 +34,8 @@ export const fetchYearlyData = async (
   return response.data;
 };
 
-export const fetchDistinctYearDataset = async (options?: FetchOptions) => {
-  const { signal } = getFetchOptions(options);
+export const fetchDistinctYearDataset = async (fetchOptions?: FetchOptions) => {
+  const { signal } = getFetchOptions(fetchOptions);
 
   const response = await supabaseClient
     .from('distinct_year')

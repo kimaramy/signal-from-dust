@@ -4,9 +4,9 @@ import { getFetchOptions, type FetchOptions } from '../utils';
 
 export const fetchWeeklyDataset = async (
   year: number,
-  options?: FetchOptions
+  fetchOptions?: FetchOptions
 ) => {
-  const { signal } = getFetchOptions(options);
+  const { signal } = getFetchOptions(fetchOptions);
 
   const response = await supabaseClient
     .from('weekly')
@@ -22,9 +22,9 @@ export const fetchWeeklyDataset = async (
 
 export const fetchWeeklyData = async (
   dataId: number,
-  options?: FetchOptions
+  fetchOptions?: FetchOptions
 ) => {
-  const { signal } = getFetchOptions(options);
+  const { signal } = getFetchOptions(fetchOptions);
 
   const response = await supabaseClient
     .from('weekly')
