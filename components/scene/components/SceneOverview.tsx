@@ -4,7 +4,7 @@ function SceneOverview({
   children,
   className,
   ...rest
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: React.ComponentPropsWithoutRef<'div'>) {
   return (
     <div
       className={cn(

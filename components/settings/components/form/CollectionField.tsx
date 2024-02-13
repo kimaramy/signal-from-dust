@@ -11,7 +11,7 @@ import { CollectionSelect } from '@/components/collection';
 
 import type { SettingsFormValues } from './SettingsForm';
 
-function CollectionField(props: React.HTMLAttributes<HTMLDivElement>) {
+function CollectionField(props: React.ComponentPropsWithoutRef<'div'>) {
   const {
     dictionary: { settings },
   } = useLocaleDictionary();

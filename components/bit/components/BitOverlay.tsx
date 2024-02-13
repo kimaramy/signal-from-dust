@@ -3,7 +3,7 @@ import { cn } from '@/lib/css';
 function BitOverlay({
   className,
   ...rest
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: React.ComponentPropsWithoutRef<'div'>) {
   return (
     <div
       className={cn(

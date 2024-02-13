@@ -11,7 +11,7 @@ import { DustSelect } from '@/components/dust';
 
 import { type SettingsFormValues } from './SettingsForm';
 
-function DustField(props: React.HTMLAttributes<HTMLDivElement>) {
+function DustField(props: React.ComponentPropsWithoutRef<'div'>) {
   const {
     dictionary: { settings },
   } = useLocaleDictionary();

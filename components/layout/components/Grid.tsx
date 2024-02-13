@@ -2,11 +2,7 @@ import React from 'react';
 
 import { cn } from '@/lib/css';
 
-interface GridProps<T>
-  extends React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLUListElement>,
-    HTMLUListElement
-  > {
+interface GridProps<T> extends React.ComponentPropsWithoutRef<'ul'> {
   items: T[];
   renderItem: (item: T, index: number) => React.ReactNode;
   itemKey: string | ((item: T, index: number) => string);

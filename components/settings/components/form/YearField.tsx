@@ -12,7 +12,7 @@ import { YearSelect } from '@/components/year';
 
 import { type SettingsFormValues } from './SettingsForm';
 
-function YearField(props: React.HTMLAttributes<HTMLDivElement>) {
+function YearField(props: React.ComponentPropsWithoutRef<'div'>) {
   const {
     dictionary: { settings },
   } = useLocaleDictionary();

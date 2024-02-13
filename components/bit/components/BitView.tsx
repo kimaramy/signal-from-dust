@@ -20,7 +20,7 @@ const turbulenceValue = { val: 0.000001 };
 const turbulenceValueX = { val: 0.000001 };
 
 interface BitViewProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onBlur'> {
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onBlur'> {
   view: '2d' | '3d';
   bit: string;
   bitId: string;

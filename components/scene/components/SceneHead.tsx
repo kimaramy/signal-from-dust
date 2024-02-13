@@ -7,7 +7,7 @@ import { cn } from '@/lib/css';
 import { useSceneContext, type SceneContextValue } from '../lib';
 
 interface SceneHeadProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'children'> {
   children: (
     context: Pick<SceneContextValue, 'sceneData' | 'bits'>
   ) => React.ReactNode;

@@ -11,7 +11,7 @@ import { LocationSelect } from '@/components/location';
 
 import { SettingsFormValues } from './SettingsForm';
 
-function LocationField(props: React.HTMLAttributes<HTMLDivElement>) {
+function LocationField(props: React.ComponentPropsWithoutRef<'div'>) {
   const { control } = useFormContext<SettingsFormValues>();
 
   const {

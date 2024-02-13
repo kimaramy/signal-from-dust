@@ -25,7 +25,7 @@ const sceneCardVariants = cva('group flex flex-nowrap items-center gap-3 p-2', {
 });
 
 interface SceneCardProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title' | 'onPlay'>,
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'title' | 'onPlay'>,
     VariantProps<typeof sceneCardVariants> {
   title: React.ReactNode;
   subtitle: React.ReactNode;

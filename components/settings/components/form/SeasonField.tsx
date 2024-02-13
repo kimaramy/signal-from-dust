@@ -11,7 +11,7 @@ import { SeasonSelect } from '@/components/season';
 
 import { type SettingsFormValues } from './SettingsForm';
 
-function SeasonField(props: React.HTMLAttributes<HTMLDivElement>) {
+function SeasonField(props: React.ComponentPropsWithoutRef<'div'>) {
   const {
     dictionary: { settings },
   } = useLocaleDictionary();

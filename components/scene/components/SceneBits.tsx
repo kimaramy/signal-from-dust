@@ -28,7 +28,7 @@ const sceneBitVariants = cva(
 function SceneBits({
   className,
   ...rest
-}: React.HTMLAttributes<HTMLOListElement>) {
+}: React.ComponentPropsWithoutRef<'ol'>) {
   const sceneContext = useSceneContext();
 
   const bitContext = useBitContext({ strict: false });

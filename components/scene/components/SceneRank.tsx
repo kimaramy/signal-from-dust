@@ -13,7 +13,7 @@ const sceneRankVariants = cva(
 function SceneRank({
   className,
   ...rest
-}: Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'>) {
+}: Omit<React.ComponentPropsWithoutRef<'span'>, 'children'>) {
   const { sceneData } = useSceneContext();
 
   if (typeof sceneData.rank !== 'number') return null;

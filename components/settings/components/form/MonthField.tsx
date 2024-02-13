@@ -12,7 +12,7 @@ import { MonthSelect } from '@/components/month';
 
 import { type SettingsFormValues } from './SettingsForm';
 
-function MonthField(props: React.HTMLAttributes<HTMLDivElement>) {
+function MonthField(props: React.ComponentPropsWithoutRef<'div'>) {
   const {
     dictionary: { settings },
   } = useLocaleDictionary();

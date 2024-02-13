@@ -7,7 +7,7 @@ import { cn } from '@/lib/css';
 import { SceneProvider, type UseSceneStateParams } from '../lib';
 
 export interface SceneRootProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends React.ComponentPropsWithoutRef<'div'>,
     UseSceneStateParams {
   isActive?: boolean;
   isDisabled?: boolean;

@@ -14,7 +14,7 @@ const sceneValueVariants = cva(
 function SceneValue({
   className,
   ...rest
-}: React.HTMLAttributes<HTMLParagraphElement>) {
+}: React.ComponentPropsWithoutRef<'p'>) {
   const { sceneData } = useSceneContext();
 
   const dustGrade = DustUtils.schema.getGrade(
