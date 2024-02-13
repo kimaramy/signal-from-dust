@@ -1,6 +1,6 @@
 'use client';
 
-import { cva } from 'class-variance-authority';
+import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/css';
 import { DustUtils } from '@/lib/model';
@@ -11,10 +11,17 @@ const sceneValueVariants = cva(
   'rounded-md border border-current px-1 py-0.5 text-xs text-black font-semibold sm:px-2 sm:py-1 sm:text-sm'
 );
 
+interface SceneValueProps
+  extends React.ComponentPropsWithoutRef<'p'>,
+    VariantProps<typeof sceneValueVariants> {
+  isUnitHidden?: boolean;
+}
+
 function SceneValue({
+  isUnitHidden = false,
   className,
   ...rest
-}: React.ComponentPropsWithoutRef<'p'>) {
+}: SceneValueProps) {
   const { sceneData } = useSceneContext();
 
   const dustGrade = DustUtils.schema.getGrade(
@@ -32,7 +39,10 @@ function SceneValue({
       }}
       {...rest}
     >
-      {sceneData.value}({DustUtils.schema.unit})
+      {sceneData.value}
+      <span className={isUnitHidden ? 'hidden' : 'inline'}>
+        ({DustUtils.schema.unit})
+      </span>
     </p>
   );
 }

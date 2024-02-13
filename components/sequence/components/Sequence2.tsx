@@ -15,12 +15,8 @@ function Sequence2({ id, sceneDataset, className }: SequenceProps) {
 
   const { dictionary } = useLocaleDictionary();
 
-  const {
-    activeSceneIdx,
-    setActiveSceneIdx,
-    resetActiveSceneIdx,
-    validateOtherSceneActive,
-  } = useActiveScene();
+  const { activeSceneIdx, setActiveSceneIdx, resetActiveSceneIdx } =
+    useActiveScene();
 
   const handleSceneTitle = useCallback(
     (sceneData: SceneData) => {
@@ -94,7 +90,6 @@ function Sequence2({ id, sceneDataset, className }: SequenceProps) {
             sceneSubtitle={handleSceneSubtitle}
             sceneDescription={dictionary.dataset.description}
             isActive={activeSceneIdx === sceneIdx}
-            isDisabled={validateOtherSceneActive(sceneIdx)}
             onPlay={setActiveSceneIdx}
             onStop={resetActiveSceneIdx}
           />

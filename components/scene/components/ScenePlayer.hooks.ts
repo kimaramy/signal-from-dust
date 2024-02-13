@@ -19,6 +19,8 @@ export function useScenePlayer({
 
   const [isPlaying, setPlaying] = useState(false);
 
+  const [isPaused, setPaused] = useState(false);
+
   const [claps, setClaps] = useState<Tone.Sequence | null>(null);
   const [kicks, setKicks] = useState<Tone.Sequence | null>(null);
   const [cymbals, setCymbals] = useState<Tone.Sequence | null>(null);
@@ -54,21 +56,44 @@ export function useScenePlayer({
       setCymbals(_cymbals);
       Tone.Transport.start();
       setPlaying(true);
+      setPaused(false);
     },
     [bitDurationAsSecond]
   );
 
-  const handleStop = useCallback(() => {
+  const _stopTransport = useCallback(() => {
     claps?.stop();
     kicks?.stop();
     cymbals?.stop();
     Tone.Transport.stop();
-    setPlaying(false);
   }, [claps, cymbals, kicks]);
+
+  const handleStop = useCallback(() => {
+    _stopTransport();
+    setPlaying(false);
+    setPaused(false);
+  }, [_stopTransport]);
+
+  const handlePause = useCallback(() => {
+    _stopTransport();
+    setPaused(true);
+  }, [_stopTransport]);
+
+  const handlePauseablePlayer = useCallback(
+    async (ctx: Pick<SceneContextValue, 'bits'>) => {
+      const isSupported = await Tone.supported();
+      if (isSupported) await Tone.start();
+      if (!isPlaying || isPaused) return handlePlay(ctx);
+      if (isPlaying && !isPaused) return handlePause();
+      return handleStop();
+    },
+    [isPlaying, isPaused, handlePlay, handleStop, handlePause]
+  );
 
   const handlePlayer = useCallback(
     async (ctx: Pick<SceneContextValue, 'bits'>) => {
-      await Tone.start();
+      const isSupported = await Tone.supported();
+      if (isSupported) await Tone.start();
       if (!isPlaying && Tone.Transport.state !== 'started') {
         handlePlay(ctx);
       } else {
@@ -79,7 +104,7 @@ export function useScenePlayer({
   );
 
   useEffect(() => {
-    if (isPlaying && Tone.Transport.state === 'started') {
+    if (isPlaying) {
       onPlay?.(sceneIdx);
     } else {
       onStop?.();
@@ -90,21 +115,26 @@ export function useScenePlayer({
   return {
     bitDurationAsSecond,
     isPlaying,
+    isPaused,
     handlePlayer,
+    handlePauseablePlayer,
     handlePlay,
     handleStop,
+    handlePause,
   };
 }
 
 export interface UseScenePlayerEffectParams {
   sceneContext: SceneContextValue;
   isPlaying: boolean;
+  isPaused: boolean;
   bitDurationAsSecond: number;
 }
 
 export function useScenePlayerEffect({
   sceneContext,
   isPlaying,
+  isPaused,
   bitDurationAsSecond,
 }: UseScenePlayerEffectParams) {
   // Do not add bits to deps cause it'll not trigger single interval context
@@ -113,7 +143,7 @@ export function useScenePlayerEffect({
 
     let _activeBitIdx = 0;
 
-    if (isPlaying) {
+    if (isPlaying && !isPaused) {
       // console.log(`ready: ${_activeBitIdx}`);
       if (_activeBitIdx === 0) {
         // console.log(`init_start: ${_activeBitIdx}`);
@@ -151,5 +181,5 @@ export function useScenePlayerEffect({
       clearInterval(interval);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPlaying, bitDurationAsSecond]);
+  }, [isPlaying, isPaused, bitDurationAsSecond]);
 }

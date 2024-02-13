@@ -124,7 +124,7 @@ function SceneScreenView({
                     title={_sceneTitle}
                     subtitle={_sceneSubtitle}
                     isPlaying={isPlaying}
-                    onPlay={handlePlayer}
+                    onTogglePlay={handlePlayer}
                   />
                   <div className="space-y-2 py-2 pl-4 pr-2">
                     <Scene.Description>{_sceneDescription}</Scene.Description>

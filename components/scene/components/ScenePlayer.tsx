@@ -13,7 +13,13 @@ interface ScenePlayerProps extends UseScenePlayerParams {
   children: (
     scenePlayer: Pick<
       ReturnType<typeof useScenePlayer>,
-      'isPlaying' | 'handlePlayer' | 'handlePlay' | 'handleStop'
+      | 'isPlaying'
+      | 'isPaused'
+      | 'handlePlayer'
+      | 'handlePauseablePlayer'
+      | 'handlePlay'
+      | 'handleStop'
+      | 'handlePause'
     >
   ) => React.ReactNode;
 }
@@ -23,15 +29,35 @@ function ScenePlayer({ children, ...rest }: ScenePlayerProps) {
 
   const {
     isPlaying,
+    isPaused,
     bitDurationAsSecond,
     handlePlayer,
+    handlePauseablePlayer,
     handlePlay,
     handleStop,
+    handlePause,
   } = useScenePlayer(rest);
 
-  useScenePlayerEffect({ sceneContext, isPlaying, bitDurationAsSecond });
+  useScenePlayerEffect({
+    sceneContext,
+    isPlaying,
+    isPaused,
+    bitDurationAsSecond,
+  });
 
-  return <>{children({ isPlaying, handlePlayer, handlePlay, handleStop })}</>;
+  return (
+    <>
+      {children({
+        isPlaying,
+        isPaused,
+        handlePlayer,
+        handlePauseablePlayer,
+        handlePlay,
+        handleStop,
+        handlePause,
+      })}
+    </>
+  );
 }
 
 export default ScenePlayer;

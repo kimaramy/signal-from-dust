@@ -6,7 +6,7 @@ import { SafeArea } from '@/components/ui/safe-area';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 import Scene from './Scene';
-import type { SceneItemViewProps as SceneCardViewProps } from './SceneItemView';
+import type { SceneViewProps } from './SceneItemView';
 
 function SceneCardView({
   sceneId,
@@ -15,12 +15,11 @@ function SceneCardView({
   sceneLength,
   sceneTitle,
   sceneSubtitle,
-  sceneDescription,
   isActive,
   isDisabled,
   onPlay,
   onStop,
-}: SceneCardViewProps) {
+}: SceneViewProps) {
   const _sceneTitle =
     typeof sceneTitle === 'function' ? sceneTitle(sceneData) : sceneTitle;
 
@@ -28,11 +27,6 @@ function SceneCardView({
     typeof sceneSubtitle === 'function'
       ? sceneSubtitle(sceneData)
       : sceneSubtitle;
-
-  const _sceneDescription =
-    typeof sceneDescription === 'function'
-      ? sceneDescription(sceneData)
-      : sceneDescription;
 
   return (
     <Scene.Root
@@ -44,19 +38,20 @@ function SceneCardView({
       isDisabled={isDisabled}
     >
       <Scene.Player sceneIdx={sceneIdx} onPlay={onPlay} onStop={onStop}>
-        {({ isPlaying, handlePlayer, handleStop }) => (
+        {({ isPlaying, isPaused, handlePauseablePlayer, handleStop }) => (
           <Sheet
             open={isPlaying}
-            onOpenChange={() => handleStop()}
+            onOpenChange={(_isOpen) => handleStop()}
             modal={false}
           >
             <SheetTrigger asChild>
               <Scene.Card
-                variant="isolated"
+                view="standalone"
                 title={_sceneTitle}
                 subtitle={_sceneSubtitle}
                 isPlaying={isPlaying}
-                onPlay={handlePlayer}
+                isPaused={isPaused}
+                onTogglePlay={handlePauseablePlayer}
               />
             </SheetTrigger>
 
@@ -66,6 +61,23 @@ function SceneCardView({
               hasCloseButton={false}
             >
               <SafeArea>
+                <Scene.Overview className="mb-4 justify-between sm:hidden sm:justify-start sm:space-x-4">
+                  <Scene.Card
+                    className="truncate p-0"
+                    state={isActive ? 'active' : undefined}
+                    title={_sceneTitle}
+                    subtitle={_sceneSubtitle}
+                    isPlaying={isPlaying}
+                    isPaused={isPaused}
+                    onTogglePlay={handlePauseablePlayer}
+                  />
+                  <div className="flex-none self-stretch pl-2 sm:pl-4">
+                    <Scene.Value
+                      isUnitHidden
+                      className="inline-flex h-full items-center justify-center px-2 text-[1.2em] sm:aspect-square sm:text-[1.6em]"
+                    />
+                  </div>
+                </Scene.Overview>
                 <Scene.Bits className="h-8" />
               </SafeArea>
             </SheetContent>

@@ -15,7 +15,7 @@ import { type SceneData } from '../lib';
 import { PlayerButton } from './PlayerButton';
 import Scene from './Scene';
 
-export interface SceneItemViewProps {
+export interface SceneViewProps {
   sceneId: string;
   sceneIdx: number;
   sceneData: SceneData;
@@ -26,7 +26,7 @@ export interface SceneItemViewProps {
     | React.ReactNode
     | ((sceneData: SceneData) => React.ReactNode);
   isActive: boolean;
-  isDisabled: boolean;
+  isDisabled?: boolean;
   onPlay: (sceneIdx: number) => void;
   onStop: () => void;
 }
@@ -43,7 +43,7 @@ function SceneItemView({
   isDisabled,
   onPlay,
   onStop,
-}: SceneItemViewProps) {
+}: SceneViewProps) {
   const _sceneTitle =
     typeof sceneTitle === 'function' ? sceneTitle(sceneData) : sceneTitle;
 
@@ -145,7 +145,7 @@ function SceneItemView({
                       title={_sceneTitle}
                       subtitle={_sceneSubtitle}
                       isPlayerHidden
-                      onPlay={handlePlayer}
+                      onTogglePlay={handlePlayer}
                     />
                     <div className="space-y-2 py-2 pl-4 pr-2">
                       <Scene.Description>{_sceneDescription}</Scene.Description>

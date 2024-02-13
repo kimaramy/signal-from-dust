@@ -6,6 +6,7 @@ import { Button, ButtonProps } from '@/components/ui/button';
 
 interface PlayerButtonProps extends ButtonProps {
   isPlaying?: boolean;
+  isPaused?: boolean;
   isHidden?: boolean;
   iconClassName?: string;
 }
@@ -35,6 +36,7 @@ function PlayerButton({
 
 function PlayerOverlayButton({
   isPlaying = false,
+  isPaused = false,
   isHidden = false,
   iconClassName,
   ...rest
@@ -48,7 +50,7 @@ function PlayerOverlayButton({
       data-state={isPlaying ? 'playing' : 'paused'}
       {...rest}
     >
-      {isPlaying ? (
+      {isPlaying && !isPaused ? (
         <Icon.PauseSolid aria-hidden className={cn('h-6 w-6', iconClassName)} />
       ) : (
         <Icon.PlaySolid
