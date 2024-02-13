@@ -48,6 +48,7 @@ export async function getBaseMetadata(locale: Locale, altLocale: Locale) {
     viewport: {
       initialScale: 1.0,
       width: 'device-width',
+      viewportFit: 'cover',
     },
     formatDetection: {
       telephone: false,

@@ -73,7 +73,7 @@ function Sequence2({ id, sceneDataset, className }: SequenceProps) {
       id={id}
       ref={handleRef}
       className={cn(
-        'grid h-full w-full min-w-[280px] grid-cols-1 content-start gap-2 overflow-x-hidden overflow-y-scroll p-4 scrollbar-hide md:grid-cols-2 md:gap-3 lg:content-center xl:grid-cols-3',
+        'px-safe-offset-4 grid h-full w-full min-w-[280px] grid-cols-1 content-start gap-2 overflow-x-hidden overflow-y-scroll py-4 scrollbar-hide md:grid-cols-2 md:gap-3 lg:content-center xl:grid-cols-3',
         className
       )}
     >

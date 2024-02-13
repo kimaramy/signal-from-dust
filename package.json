@@ -58,6 +58,7 @@
     "tailwind-merge": "^1.14.0",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animate": "^1.0.7",
+    "tailwindcss-safe-area": "^0.5.1",
     "tone": "^14.7.77",
     "zod": "^3.22.4"
   },

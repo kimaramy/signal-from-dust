@@ -146,5 +146,6 @@ module.exports = {
     require('tailwindcss-animate'),
     require('tailwindcss-animated'),
     require('tailwind-scrollbar-hide'),
+    require('tailwindcss-safe-area'),
   ],
 };

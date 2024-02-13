@@ -34,14 +34,14 @@ const DatasetHeader = React.forwardRef<HTMLDivElement, DatasetHeaderProps>(
       <header
         ref={ref}
         className={cn(
-          'bg-white/15 sticky left-0 top-0 z-50 w-full border-b border-border backdrop-blur dark:border-primary/20',
+          'bg-white/15 pt-safe px-safe sticky left-0 top-0 z-50 w-full border-b border-border backdrop-blur dark:border-primary/20',
           className
         )}
         {...rest}
       >
-        <SafeArea className="flex justify-between gap-2 px-4 py-3 sm:p-4">
-          <div className="flex w-full items-center gap-6 xl:gap-8">
-            <h1 className="truncate text-lg font-bold tracking-tight sm:text-xl md:max-w-2/3 lg:text-2xl">
+        <SafeArea className="flex justify-between gap-2 px-4 py-3 sm:py-4">
+          <div className="flex w-full items-center gap-4 xl:gap-6">
+            <h1 className="truncate px-2 text-lg font-bold tracking-tight sm:text-xl md:max-w-2/3 lg:text-2xl">
               {title}
             </h1>
             <div className="hidden items-center gap-3 md:flex">
