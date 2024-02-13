@@ -1,10 +1,8 @@
 'use client';
 
 import { useLocaleDictionary } from '@/lib/i18n';
-import { Icon } from '@/lib/icon';
 import { project } from '@/lib/project';
-import { Link } from '@/lib/router';
-import { Button } from '@/components/ui/button';
+import { GithubLink, LinkedinLink } from '@/components/ui/links';
 import { Separator } from '@/components/ui/separator';
 import {
   SheetContent,
@@ -42,12 +40,11 @@ function IntroSheetContent() {
             )}
           </ul>
           <div>
-            <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
-              <Link href={project.link.repo} target="_blank">
-                <Icon.Github aria-hidden className="h-4 w-4" />
-                <span className="sr-only">Gitub</span>
-              </Link>
-            </Button>
+            <GithubLink href={project.url.repo} className="h-8 w-8" />
+            <LinkedinLink
+              href={project.author.url.linkedin}
+              className="h-8 w-8"
+            />
           </div>
         </div>
       </SheetHeader>

@@ -4,9 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import { useLocaleDictionary } from '@/lib/i18n';
-import { Icon } from '@/lib/icon';
 import { project } from '@/lib/project';
-import { Link } from '@/lib/router';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -17,6 +15,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+
+import { GithubLink } from '../../../ui/links';
 
 function IntroDialog() {
   const {
@@ -40,7 +40,7 @@ function IntroDialog() {
         <DialogHeader className="text-left">
           <div className="relative aspect-4/3 w-full bg-primary">
             <Image
-              src={project.link.og_image}
+              src={project.url.og_image}
               alt={project.title}
               fill
               loading="eager"
@@ -75,12 +75,7 @@ function IntroDialog() {
                 ))}
               </ul>
               <div>
-                <Button variant="ghost" size="icon" className="h-7 w-7" asChild>
-                  <Link href={project.link.repo} target="_blank">
-                    <Icon.Github aria-hidden className="h-4 w-4" />
-                    <span className="sr-only">Gitub</span>
-                  </Link>
-                </Button>
+                <GithubLink href={project.url.repo} className="h-8 w-8" />
               </div>
             </div>
           </section>

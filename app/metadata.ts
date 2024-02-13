@@ -7,7 +7,7 @@ export async function getBaseMetadata(locale: Locale, altLocale: Locale) {
   const dictionary = await getDictionary(locale);
 
   return {
-    metadataBase: new URL(dictionary.domain),
+    metadataBase: new URL(dictionary.url.domain),
     title: {
       default: dictionary.title,
       template: `%s - ${dictionary.title}`,
@@ -16,13 +16,13 @@ export async function getBaseMetadata(locale: Locale, altLocale: Locale) {
     keywords: dictionary.keywords,
     authors: {
       name: dictionary.author.name,
-      url: dictionary.author.url,
+      url: dictionary.author.url.github,
     },
     alternates: {
-      canonical: dictionary.domain,
+      canonical: dictionary.url.domain,
       languages: {
-        en: `${dictionary.domain}/en`,
-        ko: `${dictionary.domain}/ko`,
+        en: `${dictionary.url.domain}/en`,
+        ko: `${dictionary.url.domain}/ko`,
       },
     },
     openGraph: {
@@ -30,9 +30,9 @@ export async function getBaseMetadata(locale: Locale, altLocale: Locale) {
       siteName: dictionary.title,
       title: dictionary.title,
       description: dictionary.description,
-      url: dictionary.domain,
+      url: dictionary.url.domain,
       images: {
-        url: dictionary.link.og_image,
+        url: dictionary.url.og_image,
         alt: dictionary.title,
         width: 1200,
         height: 630,

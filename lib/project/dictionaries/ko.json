@@ -12,10 +12,13 @@
   ],
   "author": {
     "name": "김하람(Haram Kim)",
-    "url": "https://github.com/kimaramy"
+    "url": {
+      "github": "https://github.com/kimaramy",
+      "linkedin": "https://www.linkedin.com/in/kimaramy"
+    }
   },
-  "domain": "https://signal-from-dust.earth",
-  "link": {
+  "url": {
+    "domain": "https://signal-from-dust.earth",
     "og_image": "https://ygpfckjmxgbewxkislyq.supabase.co/storage/v1/object/public/imgs/og.webp",
     "repo": "https://github.com/kimaramy/signal-from-dust",
     "docs": "https://github.com/kimaramy/signal-from-dust/blob/master/README.md"
