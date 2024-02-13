@@ -63,21 +63,21 @@ function AppErrorBoundary({
       )}
     >
       <section className="space-y-4 p-4">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-nowrap items-center justify-between gap-4">
           <h3 className="flex items-center text-[1em] leading-snug text-primary-foreground">
             {dictionary.error.title}
           </h3>
           <Button
             variant="secondary"
             size="icon"
-            className="h-6 w-6"
+            className="h-6 w-6 flex-none"
             onClick={handleReset}
           >
             <Icon.RefreshCcw aria-hidden className="h-3.5 w-3.5" />
             <span className="sr-only">{dictionary.error.ok_btn}</span>
           </Button>
         </div>
-        <CodeBlock text={serializedError} className="p-4" />
+        <CodeBlock text={serializedError} />
       </section>
     </div>
   );
