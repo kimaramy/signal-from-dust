@@ -10,7 +10,7 @@ import DatasetHeader from './DatasetHeader';
 
 interface DatasetProps extends Omit<DatasetBodyProps, 'initialDataset'> {
   title: string;
-  initialDataset: object | object[];
+  initialDataset: { [key: string]: object[] } | object[];
   userAgent?: string | null;
 }
 

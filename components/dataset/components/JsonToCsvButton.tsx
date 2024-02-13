@@ -1,22 +1,35 @@
 'use client';
 
 import React, { useCallback, useState } from 'react';
-import { Parser, type ParserOptions } from '@json2csv/plainjs';
 
 import { cn } from '@/lib/css';
 import { Icon } from '@/lib/icon';
+import {
+  parseJsonToCsv,
+  type CsvFileName,
+  type JsonToCsvParserOptions,
+} from '@/lib/parsers';
 import { Link } from '@/lib/router';
 import { toast } from '@/lib/toast';
 import { Button, type ButtonProps } from '@/components/ui/button';
 
-type CsvFileName = `${string}.csv`;
+function createParserOptions<T extends object = object>(
+  selectedFields?: string[]
+): JsonToCsvParserOptions<T> {
+  return {
+    fields: selectedFields?.map((field) => ({
+      label: field,
+      value: field,
+    })),
+  };
+}
 
 interface JsonToCsvButtonProps<TData extends object = object>
   extends Omit<ButtonProps, 'onClick'> {
   json: TData[];
   fileName: CsvFileName;
+  parserOptions?: JsonToCsvParserOptions<TData>;
   label: string;
-  parserOptions?: ParserOptions<TData>;
   iconClassName?: string;
 }
 
@@ -33,9 +46,7 @@ function JsonToCsvButton<TData extends object = object>({
   const handleClick = useCallback<React.MouseEventHandler<HTMLAnchorElement>>(
     (evt) => {
       try {
-        const parser = new Parser(parserOptions);
-        const csv = parser.parse(json);
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const blob = parseJsonToCsv(json, parserOptions);
         setFileURL(URL.createObjectURL(blob));
       } catch (err) {
         evt.preventDefault(); // prevent link action
@@ -56,16 +67,7 @@ function JsonToCsvButton<TData extends object = object>({
   );
 }
 
-const getParserOptions = (selectedFields?: string[]): ParserOptions => {
-  return {
-    fields: selectedFields?.map((field) => ({
-      label: field,
-      value: field,
-    })),
-  };
-};
-
-export { getParserOptions };
+export { createParserOptions };
 
 export type { CsvFileName };
 

@@ -19,9 +19,9 @@ import DatasetDownloadButton from './DatasetDownloadButton';
 import DatasetOrderSelect from './DatasetOrderSelect';
 
 export interface DatasetHeaderProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends React.ComponentPropsWithoutRef<'div'> {
   title: string;
-  dataset: object | object[];
+  dataset: { [key: string]: object[] } | object[];
 }
 
 const DatasetHeader = React.forwardRef<HTMLDivElement, DatasetHeaderProps>(

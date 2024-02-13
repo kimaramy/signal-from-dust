@@ -9,14 +9,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-import JsonToCsvButton, {
-  getParserOptions,
-  type CsvFileName,
-} from './JsonToCsvButton';
-
-function generateDownloadFileName(text: string): CsvFileName {
-  return `${text.replace(/\s/g, '_')}.csv`;
-}
+import JsonToCsvButton, { createParserOptions } from './JsonToCsvButton';
 
 interface DatasetDownloadButtonProps extends ButtonProps {
   dataset: object[];
@@ -45,9 +38,9 @@ function DatasetDownloadButton({
         <TooltipTrigger>
           <JsonToCsvButton
             json={dataset}
-            fileName={generateDownloadFileName(datasetName)}
+            fileName={`${datasetName.replace(/\s/g, '_')}.csv`}
+            parserOptions={createParserOptions(selectedFields)}
             label={label}
-            parserOptions={getParserOptions(selectedFields)}
             iconClassName={iconClassName}
             {...rest}
           />
