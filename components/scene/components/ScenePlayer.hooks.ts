@@ -27,6 +27,7 @@ export function useScenePlayer({
 
   const handlePlay = useCallback(
     ({ bits }: Pick<SceneContextValue, 'bits'>) => {
+      if (Tone.Transport.state === 'started') return;
       const _claps = new Tone.Sequence(
         (time) => {
           Instrument.createClap().triggerAttackRelease(time);
@@ -69,6 +70,7 @@ export function useScenePlayer({
   }, [claps, cymbals, kicks]);
 
   const handleStop = useCallback(() => {
+    if (Tone.Transport.state === 'stopped') return;
     _stopTransport();
     setPlaying(false);
     setPaused(false);
@@ -81,8 +83,7 @@ export function useScenePlayer({
 
   const handlePauseablePlayer = useCallback(
     async (ctx: Pick<SceneContextValue, 'bits'>) => {
-      const isSupported = await Tone.supported();
-      if (isSupported) await Tone.start();
+      await Tone.start();
       if (!isPlaying || isPaused) return handlePlay(ctx);
       if (isPlaying && !isPaused) return handlePause();
       return handleStop();
@@ -92,8 +93,7 @@ export function useScenePlayer({
 
   const handlePlayer = useCallback(
     async (ctx: Pick<SceneContextValue, 'bits'>) => {
-      const isSupported = await Tone.supported();
-      if (isSupported) await Tone.start();
+      await Tone.start();
       if (!isPlaying && Tone.Transport.state !== 'started') {
         handlePlay(ctx);
       } else {

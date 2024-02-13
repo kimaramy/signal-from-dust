@@ -11,8 +11,15 @@ import { ThemeToggleButton } from '@/components/theme';
 const Footer = React.forwardRef<HTMLDivElement, React.ComponentProps<'footer'>>(
   function Footer({ className, ...rest }, ref) {
     return (
-      <footer ref={ref} className={cn('bg-body', className)} {...rest}>
-        <SafeArea className="flex items-center justify-between px-4 pb-4 pt-2">
+      <footer
+        ref={ref}
+        className={cn(
+          'border-t border-border bg-body backdrop-blur dark:border-primary/20',
+          className
+        )}
+        {...rest}
+      >
+        <SafeArea className="flex items-center justify-between p-4">
           <p className="flex items-center gap-1 text-xs tracking-tight">
             <span>&copy; {new Date().getFullYear()}.</span>
             <Link href={project.author.url.github}>
