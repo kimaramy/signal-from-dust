@@ -45,7 +45,7 @@ function SceneCardView({
         onStop={onStop}
         onPause={onPause}
       >
-        {({ isPlaying, isPaused, handlePlayer, handleStop, handlePlay }) => (
+        {({ isPlaying, isPaused, handlePlayer, handleStop }) => (
           <Sheet
             onOpenChange={(isOpen) => {
               // console.log(`isOpen: `, isOpen);
@@ -67,7 +67,7 @@ function SceneCardView({
             </SheetTrigger>
 
             <SheetContent
-              className="px-4 py-3"
+              className="rounded-t-2xl px-4 pt-4 pb-safe-offset-3"
               side="bottom"
               hasCloseButton={false}
             >

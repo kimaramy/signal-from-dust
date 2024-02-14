@@ -13,13 +13,10 @@ const Footer = React.forwardRef<HTMLDivElement, React.ComponentProps<'footer'>>(
     return (
       <footer
         ref={ref}
-        className={cn(
-          'border-t border-border bg-body backdrop-blur px-safe pb-safe dark:border-primary/20',
-          className
-        )}
+        className={cn('bg-body px-safe pb-safe-offset-4', className)}
         {...rest}
       >
-        <SafeArea className="flex items-center justify-between p-4">
+        <SafeArea className="flex items-center justify-between px-4">
           <p className="flex items-center gap-1 text-xs tracking-tight">
             <span>&copy; {new Date().getFullYear()}.</span>
             <Link href={project.author.url.github}>
@@ -28,13 +25,13 @@ const Footer = React.forwardRef<HTMLDivElement, React.ComponentProps<'footer'>>(
           </p>
           <ul className="flex gap-2">
             <li>
-              <ThemeToggleButton />
+              <ThemeToggleButton className="h-8 w-8" />
             </li>
             <li>
-              <LocaleToggleButton />
+              <LocaleToggleButton className="h-8 w-8" />
             </li>
             <li>
-              <GithubLink href={project.url.repo} />
+              <GithubLink href={project.url.repo} className="h-8 w-8" />
             </li>
           </ul>
         </SafeArea>

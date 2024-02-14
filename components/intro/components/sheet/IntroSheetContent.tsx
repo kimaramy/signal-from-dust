@@ -18,8 +18,8 @@ function IntroSheetContent() {
   } = useLocaleDictionary();
 
   return (
-    <SheetContent>
-      <SheetHeader>
+    <SheetContent className="overflow-x-hidden p-0 pr-safe pb-safe">
+      <SheetHeader className="h-full p-6">
         <SheetTitle>{intro.content.title}</SheetTitle>
         <Separator />
         <div className="space-y-2 py-4">

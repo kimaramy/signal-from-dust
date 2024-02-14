@@ -17,7 +17,7 @@ function SettingsSheetContent() {
   } = useLocaleDictionary();
 
   return (
-    <SheetContent className="overflow-x-hidden p-0">
+    <SheetContent className="overflow-x-hidden p-0 pr-safe pb-safe">
       <div className="relative h-full">
         <div className="p-4 sm:p-6">
           <SheetHeader className="text-left">
