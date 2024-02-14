@@ -29,6 +29,7 @@ export interface SceneViewProps {
   isDisabled?: boolean;
   onPlay: (sceneIdx: number) => void;
   onStop: () => void;
+  onPause?: (sceneIdx: number) => void;
 }
 
 function SceneItemView({

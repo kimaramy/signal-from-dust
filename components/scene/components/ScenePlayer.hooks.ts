@@ -6,14 +6,18 @@ import { type SceneContextValue } from '../lib';
 
 export type UseScenePlayerParams = {
   sceneIdx: number;
+  isActive?: boolean;
   onPlay?: (sceneIdx: number) => void;
   onStop?: () => void;
+  onPause?: (sceneIdx: number) => void;
 };
 
 export function useScenePlayer({
   sceneIdx,
+  isActive = false,
   onPlay,
   onStop,
+  onPause,
 }: UseScenePlayerParams) {
   const [bitDurationAsSecond] = useState(0.5);
 
@@ -24,6 +28,11 @@ export function useScenePlayer({
   const [claps, setClaps] = useState<Tone.Sequence | null>(null);
   const [kicks, setKicks] = useState<Tone.Sequence | null>(null);
   const [cymbals, setCymbals] = useState<Tone.Sequence | null>(null);
+
+  const togglePlaying = useCallback(
+    () => setPlaying((isPlaying) => !isPlaying),
+    []
+  );
 
   const handlePlay = useCallback(
     ({ bits }: Pick<SceneContextValue, 'bits'>) => {
@@ -70,7 +79,7 @@ export function useScenePlayer({
   }, [claps, cymbals, kicks]);
 
   const handleStop = useCallback(() => {
-    if (Tone.Transport.state === 'stopped') return;
+    if (Tone.Transport.state !== 'started') return;
     _stopTransport();
     setPlaying(false);
     setPaused(false);
@@ -83,6 +92,7 @@ export function useScenePlayer({
 
   const handlePauseablePlayer = useCallback(
     async (ctx: Pick<SceneContextValue, 'bits'>) => {
+      // console.log(`tone.state`, Tone.context.state);
       await Tone.start();
       if (!isPlaying || isPaused) return handlePlay(ctx);
       if (isPlaying && !isPaused) return handlePause();
@@ -105,12 +115,12 @@ export function useScenePlayer({
 
   useEffect(() => {
     if (isPlaying) {
-      onPlay?.(sceneIdx);
+      isPaused ? onPause?.(sceneIdx) : onPlay?.(sceneIdx);
     } else {
       onStop?.();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sceneIdx, isPlaying]);
+  }, [sceneIdx, isPlaying, isPaused, isActive]);
 
   return {
     bitDurationAsSecond,
@@ -121,6 +131,7 @@ export function useScenePlayer({
     handlePlay,
     handleStop,
     handlePause,
+    togglePlaying,
   };
 }
 

@@ -20,6 +20,7 @@ interface ScenePlayerProps extends UseScenePlayerParams {
       | 'handlePlay'
       | 'handleStop'
       | 'handlePause'
+      | 'togglePlaying'
     >
   ) => React.ReactNode;
 }
@@ -36,6 +37,7 @@ function ScenePlayer({ children, ...rest }: ScenePlayerProps) {
     handlePlay,
     handleStop,
     handlePause,
+    togglePlaying,
   } = useScenePlayer(rest);
 
   useScenePlayerEffect({
@@ -55,6 +57,7 @@ function ScenePlayer({ children, ...rest }: ScenePlayerProps) {
         handlePlay,
         handleStop,
         handlePause,
+        togglePlaying,
       })}
     </>
   );

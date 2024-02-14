@@ -17,9 +17,9 @@ function SettingsSheetContent() {
   } = useLocaleDictionary();
 
   return (
-    <SheetContent className="p-0">
-      <div className="relative h-full overflow-y-auto overflow-x-hidden">
-        <div className="p-6">
+    <SheetContent className="overflow-x-hidden p-0">
+      <div className="relative h-full">
+        <div className="p-4 sm:p-6">
           <SheetHeader className="text-left">
             <SheetTitle className="text-base md:text-lg">
               {settings.sheet.title}
@@ -30,7 +30,7 @@ function SettingsSheetContent() {
           </section>
         </div>
       </div>
-      <SheetFooter className="sticky bottom-0 left-0 w-full p-6 backdrop-blur">
+      <SheetFooter className="sticky bottom-0 left-0 w-full p-4 backdrop-blur sm:px-6 sm:py-4">
         <SheetClose className="w-full" asChild>
           <SettingsFormSubmitButton label={settings.sheet.ok_btn} />
         </SheetClose>

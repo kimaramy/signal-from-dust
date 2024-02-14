@@ -19,6 +19,7 @@ function SceneCardView({
   isDisabled,
   onPlay,
   onStop,
+  onPause,
 }: SceneViewProps) {
   const _sceneTitle =
     typeof sceneTitle === 'function' ? sceneTitle(sceneData) : sceneTitle;
@@ -37,21 +38,31 @@ function SceneCardView({
       isActive={isActive}
       isDisabled={isDisabled}
     >
-      <Scene.Player sceneIdx={sceneIdx} onPlay={onPlay} onStop={onStop}>
-        {({ isPlaying, isPaused, handlePauseablePlayer, handleStop }) => (
+      <Scene.Player
+        sceneIdx={sceneIdx}
+        isActive={isActive}
+        onPlay={onPlay}
+        onStop={onStop}
+        onPause={onPause}
+      >
+        {({ isPlaying, isPaused, handlePlayer, handleStop, handlePlay }) => (
           <Sheet
-            open={isPlaying}
-            onOpenChange={(_isOpen) => handleStop()}
+            onOpenChange={(isOpen) => {
+              // console.log(`isOpen: `, isOpen);
+              !isOpen && handleStop();
+            }}
             modal={false}
           >
             <SheetTrigger asChild>
               <Scene.Card
                 view="standalone"
+                state={isActive ? 'active' : undefined}
                 title={_sceneTitle}
                 subtitle={_sceneSubtitle}
+                isPlayerDisabled={isPlaying || isActive}
                 isPlaying={isPlaying}
                 isPaused={isPaused}
-                onTogglePlay={handlePauseablePlayer}
+                onTogglePlay={handlePlayer}
               />
             </SheetTrigger>
 
@@ -64,12 +75,11 @@ function SceneCardView({
                 <Scene.Overview className="mb-4 justify-between sm:hidden sm:justify-start sm:space-x-4">
                   <Scene.Card
                     className="truncate p-0"
-                    state={isActive ? 'active' : undefined}
                     title={_sceneTitle}
                     subtitle={_sceneSubtitle}
                     isPlaying={isPlaying}
                     isPaused={isPaused}
-                    onTogglePlay={handlePauseablePlayer}
+                    onTogglePlay={handlePlayer}
                   />
                   <div className="flex-none self-stretch pl-2 sm:pl-4">
                     <Scene.Value

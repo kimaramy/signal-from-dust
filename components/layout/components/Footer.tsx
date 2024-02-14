@@ -14,7 +14,7 @@ const Footer = React.forwardRef<HTMLDivElement, React.ComponentProps<'footer'>>(
       <footer
         ref={ref}
         className={cn(
-          'pb-safe px-safe border-t border-border bg-body backdrop-blur dark:border-primary/20',
+          'border-t border-border bg-body backdrop-blur px-safe pb-safe dark:border-primary/20',
           className
         )}
         {...rest}

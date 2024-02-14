@@ -8,6 +8,7 @@ interface PlayerButtonProps extends ButtonProps {
   isPlaying?: boolean;
   isPaused?: boolean;
   isHidden?: boolean;
+  isDisabled?: boolean;
   iconClassName?: string;
 }
 
@@ -38,6 +39,7 @@ function PlayerOverlayButton({
   isPlaying = false,
   isPaused = false,
   isHidden = false,
+  isDisabled = false,
   iconClassName,
   ...rest
 }: PlayerButtonProps) {
@@ -47,6 +49,7 @@ function PlayerOverlayButton({
     <Button
       variant="overlay"
       size="fill"
+      disabled={isDisabled}
       data-state={isPlaying ? 'playing' : 'paused'}
       {...rest}
     >

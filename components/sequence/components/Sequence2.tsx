@@ -15,8 +15,12 @@ function Sequence2({ id, sceneDataset, className }: SequenceProps) {
 
   const { dictionary } = useLocaleDictionary();
 
-  const { activeSceneIdx, setActiveSceneIdx, resetActiveSceneIdx } =
-    useActiveScene();
+  const {
+    activeSceneIdx,
+    setActiveSceneIdx,
+    resetActiveSceneIdx,
+    validateOtherSceneActive,
+  } = useActiveScene();
 
   const handleSceneTitle = useCallback(
     (sceneData: SceneData) => {
@@ -73,12 +77,13 @@ function Sequence2({ id, sceneDataset, className }: SequenceProps) {
       id={id}
       ref={handleRef}
       className={cn(
-        'px-safe-offset-4 grid h-full w-full min-w-[280px] grid-cols-1 content-start gap-2 overflow-x-hidden overflow-y-scroll py-4 scrollbar-hide md:grid-cols-2 md:gap-3 lg:content-center xl:grid-cols-3',
+        'grid h-full w-full min-w-[280px] grid-cols-1 content-start gap-2 overflow-x-hidden overflow-y-scroll py-4 scrollbar-hide px-safe-offset-4 md:grid-cols-2 md:gap-3 lg:content-center xl:grid-cols-3',
         className
       )}
     >
       {sceneDataset.map((sceneData, sceneIdx) => {
         const sceneId = SceneUtils.getSceneId(id, sceneData.id);
+        const isActive = activeSceneIdx === sceneIdx;
         return (
           <SceneCardView
             key={sceneId}
@@ -89,9 +94,11 @@ function Sequence2({ id, sceneDataset, className }: SequenceProps) {
             sceneTitle={handleSceneTitle}
             sceneSubtitle={handleSceneSubtitle}
             sceneDescription={dictionary.dataset.description}
-            isActive={activeSceneIdx === sceneIdx}
+            isActive={isActive}
+            isDisabled={validateOtherSceneActive(sceneIdx)}
             onPlay={setActiveSceneIdx}
             onStop={resetActiveSceneIdx}
+            onPause={resetActiveSceneIdx}
           />
         );
       })}

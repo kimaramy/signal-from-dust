@@ -38,6 +38,7 @@ interface SceneCardProps
   title: React.ReactNode;
   subtitle?: React.ReactNode;
   isPlayerHidden?: boolean;
+  isPlayerDisabled?: boolean;
   isPaused?: boolean;
   isPlaying?: boolean;
   onTogglePlay?: (sceneContext: { bits: BitData[] }) => void;
@@ -51,6 +52,7 @@ const SceneCard = React.forwardRef<HTMLDivElement, SceneCardProps>(
       title,
       subtitle,
       isPlayerHidden = false,
+      isPlayerDisabled = false,
       isPaused = false,
       isPlaying = false,
       className,
@@ -77,6 +79,7 @@ const SceneCard = React.forwardRef<HTMLDivElement, SceneCardProps>(
           <PlayerOverlayButton
             isPlaying={isPlaying}
             isPaused={isPaused}
+            isDisabled={isPlayerDisabled}
             isHidden={isPlayerHidden}
             className="z-10"
             onClick={() => onTogglePlay?.({ bits })}

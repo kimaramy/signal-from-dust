@@ -21,6 +21,10 @@ export function useActiveScene() {
     [activeSceneIdx]
   );
 
+  // useEffect(() => {
+  //   console.log(`activeSceneIdx: %d`, activeSceneIdx);
+  // }, [activeSceneIdx]);
+
   return {
     activeSceneIdx,
     setActiveSceneIdx,
