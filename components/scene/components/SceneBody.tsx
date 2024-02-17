@@ -8,7 +8,7 @@ import { cn } from '@/lib/css';
 import { useSceneContext, type SceneContextValue } from '../lib';
 
 const sceneBodyVariants = cva(
-  'relative grid h-full w-full list-none bg-fixed p-1',
+  'relative grid h-full w-full list-none bg-fixed p-1 focus-ring',
   {
     variants: {
       view: {
@@ -56,6 +56,7 @@ const SceneBody = React.forwardRef<HTMLOListElement, SceneBodyProps>(
       <ol
         ref={ref}
         style={styleCSS}
+        tabIndex={0}
         className={cn(sceneBodyVariants({ view, className }))}
       >
         {children(sceneContext)}

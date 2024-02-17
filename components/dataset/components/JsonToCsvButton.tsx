@@ -38,6 +38,7 @@ function JsonToCsvButton<TData extends object = object>({
   fileName,
   label,
   parserOptions,
+  className,
   iconClassName,
   ...rest
 }: JsonToCsvButtonProps<TData>) {
@@ -58,8 +59,13 @@ function JsonToCsvButton<TData extends object = object>({
   );
 
   return (
-    <Button variant="ghost" size="icon" asChild {...rest}>
-      <Link href={fileURL} download={fileName} onClick={handleClick}>
+    <Button variant="ghost" size="icon" className={className} asChild {...rest}>
+      <Link
+        href={fileURL}
+        download={fileName}
+        tabIndex={0}
+        onClick={handleClick}
+      >
         <Icon.Download aria-hidden className={cn('h-4 w-4', iconClassName)} />
         <span className="sr-only">{label}</span>
       </Link>

@@ -30,10 +30,7 @@ const sceneCardVariants = cva('group flex flex-nowrap items-center gap-3 p-2', {
 });
 
 interface SceneCardProps
-  extends Omit<
-      React.ComponentPropsWithoutRef<'div'>,
-      'title' | 'onPlay' | 'onPause'
-    >,
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'title'>,
     VariantProps<typeof sceneCardVariants> {
   title: React.ReactNode;
   subtitle?: React.ReactNode;
@@ -44,7 +41,7 @@ interface SceneCardProps
   onTogglePlay?: (sceneContext: { bits: BitData[] }) => void;
 }
 
-const SceneCard = React.forwardRef<HTMLDivElement, SceneCardProps>(
+const SceneCard = React.forwardRef<React.ElementRef<'div'>, SceneCardProps>(
   function SceneCard(props, ref) {
     const {
       view,
@@ -73,9 +70,13 @@ const SceneCard = React.forwardRef<HTMLDivElement, SceneCardProps>(
         className={cn(sceneCardVariants({ view, state, className }))}
         {...rest}
       >
-        {/* thumbnail */}
-        <div className="relative z-0 aspect-square w-12 flex-none overflow-hidden rounded-md md:w-16">
-          <DustThumbnail dustGrade={dustGrade.name} fileSize="360x360" fill />
+        <div className="relative z-0 aspect-square w-12 flex-none rounded-md md:w-16">
+          <DustThumbnail
+            className="rounded-md"
+            dustGrade={dustGrade.name}
+            fileSize="360x360"
+            fill
+          />
           <PlayerOverlayButton
             isPlaying={isPlaying}
             isPaused={isPaused}
@@ -85,7 +86,6 @@ const SceneCard = React.forwardRef<HTMLDivElement, SceneCardProps>(
             onClick={() => onTogglePlay?.({ bits })}
           />
         </div>
-        {/* title */}
         <div className="w-full flex-auto space-y-0.5 truncate">
           <div className="flex items-center gap-1.5">
             <SceneTitle>{title}</SceneTitle>

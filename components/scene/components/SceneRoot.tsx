@@ -34,8 +34,9 @@ const SceneRoot = React.forwardRef<HTMLDivElement, SceneRootProps>(
       >
         <section
           ref={ref}
+          tabIndex={0}
           className={cn(
-            'relative flex h-full items-center gap-6 rounded-md',
+            'focus-ring relative flex h-full items-center gap-6 rounded-md',
             isActive && 'z-20',
             isDisabled && 'pointer-events-none opacity-50',
             className

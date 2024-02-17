@@ -40,7 +40,7 @@ const DatasetHeader = React.forwardRef<HTMLDivElement, DatasetHeaderProps>(
         {...rest}
       >
         <SafeArea className="flex justify-between gap-2 px-4 py-3 sm:py-4">
-          <div className="flex w-full items-center gap-4 overflow-hidden xl:gap-6">
+          <div className="flex w-full items-center gap-4 xl:gap-6">
             <h1 className="w-auto truncate text-lg font-bold tracking-tight sm:px-1.5 sm:text-xl md:max-w-2/3 lg:text-2xl">
               {title}
             </h1>

@@ -79,16 +79,14 @@ function SceneItemView({
               {({ sceneData, bits }) => (
                 <>
                   <Scene.Rank className="flex-none" />
-                  <div className="flex flex-1 items-center gap-1 truncate">
-                    <PlayerButton
-                      isPlaying={isPlaying}
-                      className="flex-none"
-                      onClick={() => handlePlayer({ bits })}
-                    />
-                    <span className="flex-1 truncate font-mono text-xs">
-                      {sceneData.display.dates[0]}
-                    </span>
-                  </div>
+                  <PlayerButton
+                    isPlaying={isPlaying}
+                    className="flex-none"
+                    onClick={() => handlePlayer({ bits })}
+                  />
+                  <p className="w-full flex-auto items-center font-mono text-xs">
+                    {sceneData.display.dates[0]}
+                  </p>
                 </>
               )}
             </Scene.Head>

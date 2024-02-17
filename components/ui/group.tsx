@@ -10,7 +10,7 @@ function ButtonGroup({ items, className, ...rest }: ButtonGroupProps) {
   return (
     <ul
       className={cn(
-        'flex max-h-9 items-center divide-x divide-primary/20 overflow-hidden rounded-md border border-primary/20 shadow-sm',
+        'flex max-h-9 items-center divide-x divide-primary/20 rounded-md border border-primary/20 shadow-sm hover:overflow-hidden focus-visible:overflow-hidden',
         className
       )}
       {...rest}

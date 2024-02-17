@@ -15,13 +15,13 @@ const Link = forwardRef<HTMLAnchorElement, React.ComponentProps<'a'>>(
 
     return (
       <NextLink
+        ref={ref}
         href={href as Route}
         onClick={(event) => {
           if (shouldTriggerStartEvent(href, event)) progress.start();
           onClick?.(event);
         }}
         {...rest}
-        ref={ref}
       />
     );
   }

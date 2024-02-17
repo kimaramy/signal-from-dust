@@ -35,7 +35,7 @@ function DatasetDownloadButton({
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger tabIndex={-1} className="outline-none">
           <JsonToCsvButton
             json={dataset}
             fileName={`${datasetName.replace(/\s/g, '_')}.csv`}
