@@ -6,11 +6,12 @@ import { useLocaleDictionary } from '@/lib/i18n';
 import { CollectionUtils } from '@/lib/model';
 import { toLowerCase } from '@/lib/utils';
 import { LayoutConsumer } from '@/components/layout';
-import { Sequence, Sequence2 } from '@/components/sequence';
+import { Sequence } from '@/components/sequence';
 
 import { useDatasetOrderContext } from '../lib';
 import {
   useDatasetParams,
+  useSceneContents,
   useSceneDataset,
   type InitialDataset,
 } from './Dataset.hooks';
@@ -41,6 +42,9 @@ const DatasetBody = React.forwardRef<HTMLDivElement, DatasetBodyProps>(
       locale,
     });
 
+    const { createSceneTitle, createSceneSubtitle, createSceneDescription } =
+      useSceneContents();
+
     const sceneDatasetId = [
       initialCollectionKey,
       dustKey,
@@ -55,19 +59,16 @@ const DatasetBody = React.forwardRef<HTMLDivElement, DatasetBodyProps>(
 
     return (
       <LayoutConsumer>
-        {(layoutContext) => {
-          switch (layoutContext.key) {
-            case 'SHORT':
-              return (
-                <Sequence2 id={sceneDatasetId} sceneDataset={sceneDataset} />
-              );
-            case 'DETAIL':
-            default:
-              return (
-                <Sequence id={sceneDatasetId} sceneDataset={sceneDataset} />
-              );
-          }
-        }}
+        {(layoutContext) => (
+          <Sequence
+            id={sceneDatasetId}
+            sceneDataset={sceneDataset}
+            createSceneTitle={createSceneTitle}
+            createSceneSubtitle={createSceneSubtitle}
+            createSceneDescription={createSceneDescription}
+            layoutKey={layoutContext.key}
+          />
+        )}
       </LayoutConsumer>
     );
   }

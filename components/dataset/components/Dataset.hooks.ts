@@ -13,11 +13,13 @@ import {
 import { useDustKey } from '@/components/dust';
 import { useLocationKey } from '@/components/location';
 import { useMonthKey } from '@/components/month';
-import { SceneUtils } from '@/components/scene/lib';
+import { SceneData, SceneUtils } from '@/components/scene/lib';
 import { useSeasonKey } from '@/components/season';
 import { useYearKey } from '@/components/year';
+import { IntlMessageFormat, useLocaleDictionary } from '@/lib/i18n';
 
 import { DatasetOrderUtils } from '../lib';
+import { useCallback } from 'react';
 
 interface InitialDataset {
   [CollectionUtils.schema.keys.YEARLY]?: Model.YearlyData[];
@@ -163,6 +165,52 @@ function useSceneDataset(params: UseSceneDatasetParams) {
   return sceneDataset;
 }
 
+function useSceneContents() {
+  const { dictionary } = useLocaleDictionary();
+
+  const createSceneTitle = useCallback(
+    (sceneData: SceneData) => {
+      const { dust, dates } = sceneData.display;
+      const title =
+        sceneData._ctx.collectionKey === 'YEARLY'
+          ? new IntlMessageFormat(dictionary.dataset.year_title).format({
+              dust,
+              year: dates[0],
+            })
+          : new IntlMessageFormat(dictionary.dataset.title).format({
+              dust,
+              primaryDate: dates[0],
+              secondaryDate: dates[1],
+            });
+      return title as string;
+    },
+    [dictionary]
+  );
+
+  const createSceneSubtitle = useCallback(
+    (sceneData: SceneData) => {
+      const { collection, dust, yearRange, location } = sceneData.display;
+      const title = [
+        dictionary.dataset.label,
+        new IntlMessageFormat(dictionary.dataset.source).format({
+          collection,
+          dust,
+          yearRange,
+          location,
+        }),
+      ].join(' : ');
+      return title;
+    },
+    [dictionary]
+  );
+
+  const createSceneDescription = useCallback(() => {
+    return dictionary.dataset.description
+  }, [dictionary])
+
+  return { createSceneTitle, createSceneSubtitle, createSceneDescription }
+}
+
 function useDatasetParams() {
   const locationKey = useLocationKey('query');
   const dustKey = useDustKey('query');
@@ -172,4 +220,4 @@ function useDatasetParams() {
   return { locationKey, dustKey, yearKey, seasonKey, monthKey };
 }
 
-export { useSceneDataset, useDatasetParams, type InitialDataset };
+export { useSceneDataset, useSceneContents, useDatasetParams, type InitialDataset };

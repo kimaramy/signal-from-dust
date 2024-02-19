@@ -5,9 +5,12 @@ import type { RealtimeData } from '@/domains';
 import { useLocaleDictionary } from '@/lib/i18n';
 import { toLowerCase } from '@/lib/utils';
 import { SceneUtils } from '@/components/scene/lib';
-import { Sequence3 } from '@/components/sequence';
+import { Sequence2 } from '@/components/sequence';
 
-import { useRealtimeDatasetParams } from './RealtimeDataset.hooks';
+import {
+  useRealtimeDatasetParams,
+  useRealtimeSceneContents,
+} from './RealtimeDataset.hooks';
 
 interface RealtimeDatasetBodyProps {
   initialDataset: RealtimeData[];
@@ -31,12 +34,16 @@ function RealtimeDatasetBody({
       dustKey === 'PM_LARGE' ? data.pm_large : data.pm_small,
   });
 
+  const { createSceneTitle, createSceneSubtitle } = useRealtimeSceneContents();
+
   const sceneDatasetId = [locationKey, dustKey].map(toLowerCase).join('-');
 
   return (
-    <Sequence3
+    <Sequence2
       id={sceneDatasetId}
       sceneDataset={sceneDataset}
+      createSceneTitle={createSceneTitle}
+      createSceneSubtitle={createSceneSubtitle}
       revalidate={revalidate}
     />
   );

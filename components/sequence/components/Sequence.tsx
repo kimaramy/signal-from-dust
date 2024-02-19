@@ -1,10 +1,7 @@
 'use client';
 
-import React, { useCallback, useEffect } from 'react';
-
-import { cn } from '@/lib/css';
-import { IntlMessageFormat, useLocaleDictionary } from '@/lib/i18n';
-import { SceneItemView } from '@/components/scene';
+import { LayoutUtils } from '@/components/layout';
+import { SceneCardView, SceneItemView, SceneList } from '@/components/scene';
 import { SceneUtils, type SceneData } from '@/components/scene/lib';
 
 import { useActiveScene } from './Sequence.hooks';
@@ -12,14 +9,24 @@ import { useActiveScene } from './Sequence.hooks';
 export interface SequenceProps {
   id: string;
   sceneDataset: SceneData[];
-  className?: string;
+  createSceneTitle: (sceneData: SceneData) => string;
+  createSceneSubtitle: (sceneData: SceneData) => string;
+  createSceneDescription?: (sceneData: SceneData) => string;
   revalidate?: () => Promise<void>;
+  layoutKey?: LayoutUtils.Key;
 }
 
-function Sequence({ id, sceneDataset, className }: SequenceProps) {
+function Sequence({
+  id,
+  sceneDataset,
+  createSceneTitle,
+  createSceneSubtitle,
+  createSceneDescription,
+  layoutKey = LayoutUtils.schema.defaultKey,
+}: SequenceProps) {
   const values = sceneDataset.map((sceneData) => sceneData.value ?? 0);
 
-  const { dictionary } = useLocaleDictionary();
+  const sceneLength = SceneUtils.getSceneLength(Math.max(...values));
 
   const {
     activeSceneIdx,
@@ -28,88 +35,51 @@ function Sequence({ id, sceneDataset, className }: SequenceProps) {
     validateOtherSceneActive,
   } = useActiveScene();
 
-  const handleSceneTitle = useCallback(
-    (sceneData: SceneData) => {
-      const { dust, dates } = sceneData.display;
-      const title =
-        sceneData._ctx.collectionKey === 'YEARLY'
-          ? new IntlMessageFormat(dictionary.dataset.year_title).format({
-              dust,
-              year: dates[0],
-            })
-          : new IntlMessageFormat(dictionary.dataset.title).format({
-              dust,
-              primaryDate: dates[0],
-              secondaryDate: dates[1],
-            });
-      return title as string;
-    },
-    [dictionary]
-  );
-
-  const handleSceneSubtitle = useCallback(
-    (sceneData: SceneData) => {
-      const { collection, dust, yearRange, location } = sceneData.display;
-      const title = [
-        dictionary.dataset.label,
-        new IntlMessageFormat(dictionary.dataset.source).format({
-          collection,
-          dust,
-          yearRange,
-          location,
-        }),
-      ].join(' : ');
-      return title;
-    },
-    [dictionary]
-  );
-
-  const handleRef = useCallback((el: HTMLElement | null) => {
-    if (el !== null) {
-      const offsetY = el.getBoundingClientRect().top;
-      el.style.minHeight = `calc(100dvh - ${offsetY}px)`;
-    }
-  }, []);
-
-  useEffect(() => {
-    window?.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  }, [sceneDataset]);
-
   return (
-    <article
-      id={id}
-      ref={handleRef}
-      className={cn(
-        'grid h-full w-full min-w-md content-center items-center gap-2 overflow-x-hidden overflow-y-scroll py-4 scrollbar-hide px-safe-offset-4',
-        className
-      )}
-      style={{
-        gridTemplateRows: `repeat(${sceneDataset.length}, 2.25rem)`,
-      }}
-    >
-      {sceneDataset.map((sceneData, sceneIdx) => {
-        const sceneId = SceneUtils.getSceneId(id, sceneData.id);
-        return (
-          <SceneItemView
-            key={sceneId}
-            sceneId={sceneId}
-            sceneIdx={sceneIdx}
-            sceneData={sceneData}
-            sceneLength={SceneUtils.getSceneLength(Math.max(...values))}
-            sceneTitle={handleSceneTitle}
-            sceneSubtitle={handleSceneSubtitle}
-            sceneDescription={dictionary.dataset.description}
-            isActive={activeSceneIdx === sceneIdx}
-            isDisabled={validateOtherSceneActive(sceneIdx)}
-            onPlay={setActiveSceneIdx}
-            onStop={resetActiveSceneIdx}
-          />
-        );
-      })}
-    </article>
+    <SceneList id={id} layoutKey={layoutKey} sceneDataset={sceneDataset}>
+      {(sceneDataset) =>
+        sceneDataset.map((sceneData, sceneIdx) => {
+          const sceneId = SceneUtils.getSceneId(id, sceneData.id);
+          const isActive = activeSceneIdx === sceneIdx;
+          const isDisabled = validateOtherSceneActive(sceneIdx);
+          if (layoutKey === 'SHORT') {
+            return (
+              <SceneCardView
+                key={sceneId}
+                sceneId={sceneId}
+                sceneIdx={sceneIdx}
+                sceneData={sceneData}
+                sceneLength={sceneLength}
+                sceneTitle={createSceneTitle}
+                sceneSubtitle={createSceneSubtitle}
+                sceneDescription={createSceneDescription}
+                isActive={isActive}
+                isDisabled={isDisabled}
+                onPlay={setActiveSceneIdx}
+                onStop={resetActiveSceneIdx}
+                onPause={resetActiveSceneIdx}
+              />
+            );
+          }
+          return (
+            <SceneItemView
+              key={sceneId}
+              sceneId={sceneId}
+              sceneIdx={sceneIdx}
+              sceneData={sceneData}
+              sceneLength={sceneLength}
+              sceneTitle={createSceneTitle}
+              sceneSubtitle={createSceneSubtitle}
+              sceneDescription={createSceneDescription}
+              isActive={isActive}
+              isDisabled={isDisabled}
+              onPlay={setActiveSceneIdx}
+              onStop={resetActiveSceneIdx}
+            />
+          );
+        })
+      }
+    </SceneList>
   );
 }
 
