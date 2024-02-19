@@ -10,3 +10,4 @@ export * from './weekday';
 export * from './day';
 export * from './location';
 export * from './locale';
+export * from './error';

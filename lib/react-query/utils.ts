@@ -1,7 +1,7 @@
 import { cache } from 'react';
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
 
-import { postgrestErrorSchema, type PostgrestError } from '@/lib/model';
+import { ErrorSchema, type PostgrestError } from '@/lib/model';
 import { toast } from '@/lib/toast';
 
 export const getQueryClient = cache(() => new QueryClient());
@@ -27,8 +27,7 @@ export function getSupabaseQueryClient() {
           (unknownError as Error)?.message ??
           '';
 
-        const isPostgrestError =
-          postgrestErrorSchema.safeParse(unknownError).success;
+        const isPostgrestError = ErrorSchema.isPostgrestError(unknownError);
 
         if (isPostgrestError) {
           const error = unknownError as PostgrestError;
@@ -50,8 +49,7 @@ export function getSupabaseQueryClient() {
           (unknownError as Error)?.message ??
           '';
 
-        const isPostgrestError =
-          postgrestErrorSchema.safeParse(unknownError).success;
+        const isPostgrestError = ErrorSchema.isPostgrestError(unknownError);
 
         if (isPostgrestError) {
           const error = unknownError as PostgrestError;
