@@ -1,3 +1,4 @@
+export { default as SceneList } from './components/SceneList';
 export {
   default as SceneItemView,
   type SceneViewProps,

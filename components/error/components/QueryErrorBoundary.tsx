@@ -3,7 +3,7 @@
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { postgrestErrorSchema, type PostgrestError } from '@/lib/model';
+import { ErrorSchema, type PostgrestError } from '@/lib/model';
 
 import AppErrorBoundary from './AppErrorBoundary';
 
@@ -20,8 +20,7 @@ function QueryErrorBoundary({ children }: { children: React.ReactNode }) {
             fallbackRender={({ error, resetErrorBoundary }) => {
               let serializedError = JSON.stringify(error, null, 2);
 
-              const isPostgrestError =
-                postgrestErrorSchema.safeParse(error).success;
+              const isPostgrestError = ErrorSchema.isPostgrestError(error);
 
               if (isPostgrestError) {
                 const { code, message } = error as PostgrestError;

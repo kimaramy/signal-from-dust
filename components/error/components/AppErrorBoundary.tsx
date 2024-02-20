@@ -5,7 +5,7 @@ import React, { useCallback, useEffect } from 'react';
 import { cn } from '@/lib/css';
 import { useLocaleDictionary } from '@/lib/i18n';
 import { Icon } from '@/lib/icon';
-import { PostgrestError, postgrestErrorSchema } from '@/lib/model';
+import { ErrorSchema, type PostgrestError } from '@/lib/model';
 import { Button } from '@/components/ui/button';
 import { CodeBlock } from '@/components/ui/code';
 
@@ -36,7 +36,7 @@ function AppErrorBoundary({
   let serializedError =
     typeof error === 'string' ? error : JSON.stringify(error, null, 2);
 
-  const isQueryError = postgrestErrorSchema.safeParse(error).success;
+  const isQueryError = ErrorSchema.isPostgrestError(error);
 
   if (isQueryError) {
     const { code, message } = error as unknown as PostgrestError;
