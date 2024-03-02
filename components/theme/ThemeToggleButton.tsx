@@ -20,6 +20,8 @@ interface ThemeToggleButtonProps extends ButtonProps {
 function ThemeToggleButton({ iconClassName, ...rest }: ThemeToggleButtonProps) {
   const { setTheme, theme } = useTheme();
 
+  const _theme = theme === 'light' ? 'dark' : 'light';
+
   const { dictionary } = useLocaleDictionary();
 
   return (
@@ -29,7 +31,7 @@ function ThemeToggleButton({ iconClassName, ...rest }: ThemeToggleButtonProps) {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+            onClick={() => setTheme(_theme)}
             {...rest}
           >
             <Icon.Sun
@@ -43,10 +45,10 @@ function ThemeToggleButton({ iconClassName, ...rest }: ThemeToggleButtonProps) {
               aria-hidden
               className={cn('h-4 w-4 dark:hidden', iconClassName)}
             />
-            <span className="sr-only">{dictionary.theme.btn}</span>
+            <span className="sr-only">{dictionary.theme.btn[_theme]}</span>
           </Button>
         </TooltipTrigger>
-        <TooltipContent>{dictionary.theme.btn}</TooltipContent>
+        <TooltipContent>{dictionary.theme.btn[_theme]}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

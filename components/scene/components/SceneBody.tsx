@@ -39,7 +39,11 @@ const SceneBody = React.forwardRef<HTMLOListElement, SceneBodyProps>(
         view === 'screen'
           ? {
               gridTemplateColumns: sceneContext.bits
-                ?.map((bit) => (bit.value === '0' ? '1fr' : '1.5fr'))
+                ?.map((bit) =>
+                  bit.value === '0'
+                    ? 'minmax(auto, 16rem)'
+                    : 'minmax(auto, 20rem)'
+                )
                 .join(' '),
               transform: `translateY(-3em) rotateX(70deg) rotateZ(40deg) translateZ(0em) scaleX(1.15) scaleY(0.9)`,
               transformStyle: 'preserve-3d',

@@ -2,7 +2,7 @@
 
 import { useLocaleDictionary } from '@/lib/i18n';
 import { project } from '@/lib/project';
-import { GithubLink, LinkedinLink } from '@/components/ui/links';
+import { GithubLink } from '@/components/ui/links';
 import { Separator } from '@/components/ui/separator';
 import {
   SheetContent,
@@ -11,6 +11,8 @@ import {
   SheetSubTitle,
   SheetTitle,
 } from '@/components/ui/sheet';
+
+import BookLink from '../BookLink';
 
 function IntroSheetContent() {
   const {
@@ -25,6 +27,9 @@ function IntroSheetContent() {
         <div className="space-y-2 py-4">
           <SheetSubTitle>{intro.content.subtitle}</SheetSubTitle>
           <SheetDescription>{intro.content.description}</SheetDescription>
+          <div>
+            <BookLink variant="text" />
+          </div>
         </div>
         <div className="flex items-center justify-between">
           <ul className="divide flex h-auto items-center divide-x divide-border text-xs">
@@ -41,10 +46,6 @@ function IntroSheetContent() {
           </ul>
           <div>
             <GithubLink href={project.url.repo} className="h-8 w-8" />
-            <LinkedinLink
-              href={project.author.url.linkedin}
-              className="h-8 w-8"
-            />
           </div>
         </div>
       </SheetHeader>

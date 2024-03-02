@@ -19,9 +19,9 @@
     }
   },
   "url": {
-    "domain": "https://signal-from-dust.earth",
-    "og_image": "https://ygpfckjmxgbewxkislyq.supabase.co/storage/v1/object/public/imgs/og.webp",
+    "domain": "https://www.signal-from-dust.earth",
+    "docs": "https://docs.signal-from-dust.earth",
     "repo": "https://github.com/kimaramy/signal-from-dust",
-    "docs": "https://github.com/kimaramy/signal-from-dust/blob/master/README.md"
+    "og_image": "https://ygpfckjmxgbewxkislyq.supabase.co/storage/v1/object/public/imgs/og.webp"
   }
 }

@@ -15,8 +15,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { GithubLink } from '@/components/ui/links';
 
-import { GithubLink } from '../../../ui/links';
+import BookLink from '../BookLink';
 
 function IntroDialog() {
   const {
@@ -58,6 +59,9 @@ function IntroDialog() {
                 {intro.content.subtitle}
               </DialogTitle>
               <DialogDescription>{intro.content.description}</DialogDescription>
+              <div>
+                <BookLink variant="text" />
+              </div>
             </div>
             <div className="flex items-center justify-between">
               <ul className="divide flex h-auto items-center divide-x divide-border text-xs">

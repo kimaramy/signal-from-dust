@@ -2,9 +2,11 @@ import React from 'react';
 import {
   AlertCircle,
   ArrowRight,
+  Book,
   Check,
   CheckCircle,
   ChevronDown,
+  ChevronRight,
   Database,
   Download,
   HelpCircle,
@@ -22,11 +24,13 @@ import {
 type NonLucideIconProps = React.SVGProps<SVGSVGElement>;
 
 const Icon = Object.freeze({
-  ArrowRight,
   AlertCircle,
+  ArrowRight,
+  Book,
   Check,
   CheckCircle,
   ChevronDown,
+  ChevronRight,
   Database,
   Download,
   HelpCircle,

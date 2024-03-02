@@ -1,6 +1,6 @@
 {
   "title": "미세먼지의 신호",
-  "description": "미세먼지 데이터에서 찾은 신호와 패턴을 시청각적 요소로 출력해 보자.",
+  "description": "미세먼지 데이터에서 찾은 신호와 패턴을 시청각적 요소로 표현해보자.",
   "keywords": [
     "미세먼지",
     "초미세먼지",
@@ -19,8 +19,8 @@
   },
   "url": {
     "domain": "https://signal-from-dust.earth",
-    "og_image": "https://ygpfckjmxgbewxkislyq.supabase.co/storage/v1/object/public/imgs/og.webp",
+    "docs": "https://docs.signal-from-dust.earth/ko/intro",
     "repo": "https://github.com/kimaramy/signal-from-dust",
-    "docs": "https://github.com/kimaramy/signal-from-dust/blob/master/README.md"
+    "og_image": "https://ygpfckjmxgbewxkislyq.supabase.co/storage/v1/object/public/imgs/og.webp"
   }
 }
