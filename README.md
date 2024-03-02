@@ -1,13 +1,13 @@
 # Signal from dust
 
+- 🖥️&nbsp; [Website](https://www.signal-from-dust.earth/en)
+- 📖&nbsp; [Documentation](https://docs.signal-from-dust.earth)
+
 ## Translations
 
 - [한국어](./README.ko.md)
 
 ## Overview
-
-- 🖥️&nbsp; [Website](https://www.signal-from-dust.earth)
-- 📖&nbsp; [Documentation](https://docs.signal-from-dust.earth)
 
 ### Signals and patterns found from PM10 and PM2.5 data
 

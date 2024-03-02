@@ -1,9 +1,9 @@
-# Signal from Dust
+# 미세먼지의 신호
+
+- 🖥️&nbsp; [웹사이트](https://www.signal-from-dust.earth/ko)
+- 📖&nbsp; [문서](https://docs.signal-from-dust.earth/ko/intro)
 
 ## 개요
-
-- 🖥️&nbsp; [웹사이트](https://www.signal-from-dust.earth)
-- 📖&nbsp; [문서](https://docs.signal-from-dust.earth/ko/intro)
 
 ### 통계 데이터로부터 찾아낸 미세먼지의 신호와 패턴
 
