@@ -1,49 +1,40 @@
-import { Model, supabaseClient } from '@/lib/model';
+import { supabaseClient } from '@/lib/model';
 
-import { getFetchOptions, type FetchOptions } from '../utils';
+import { fetcher } from '../utils';
 
-export const fetchYearlyDataset = async (fetchOptions?: FetchOptions) => {
-  const { signal } = getFetchOptions(fetchOptions);
-
+export const fetchYearlyDataset = fetcher(async (_, { signal }) => {
   const response = await supabaseClient
     .from('yearly')
     .select('*')
-    .abortSignal(signal)
-    .returns<Model.YearlyData[]>();
+    .abortSignal(signal);
 
   if (response.error) throw response.error;
 
   return response.data;
-};
+});
 
-export const fetchYearlyData = async (
-  dataId: number,
-  fetchOptions?: FetchOptions
-) => {
-  const { signal } = getFetchOptions(fetchOptions);
+export const fetchYearlyData = fetcher(
+  async (params: { dataId: number }, options) => {
+    const response = await supabaseClient
+      .from('yearly')
+      .select('*')
+      .eq('id', params.dataId)
+      .abortSignal(options.signal)
+      .single();
 
-  const response = await supabaseClient
-    .from('yearly')
-    .select('*')
-    .eq('id', dataId)
-    .abortSignal(signal)
-    .returns<Model.YearlyData>();
+    if (response.error) throw response.error;
 
-  if (response.error) throw response.error;
+    return response.data;
+  }
+);
 
-  return response.data;
-};
-
-export const fetchDistinctYearDataset = async (fetchOptions?: FetchOptions) => {
-  const { signal } = getFetchOptions(fetchOptions);
-
+export const fetchDistinctYearDataset = fetcher(async (_, { signal }) => {
   const response = await supabaseClient
     .from('distinct_year')
     .select()
-    .abortSignal(signal)
-    .returns<Model.DistinctYearData[]>();
+    .abortSignal(signal);
 
   if (response.error) throw response.error;
 
   return response.data;
-};
+});

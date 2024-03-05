@@ -23,18 +23,18 @@ async function fetchDataset(
 
   switch (collectionKey) {
     case 'YEARLY':
-      return await fetchYearlyDataset();
+      return await fetchYearlyDataset(null);
     case 'MONTHLY':
-      return await fetchMonthlyDataset(year);
+      return await fetchMonthlyDataset({ year });
     case 'SEASONALLY':
       return await fetchMonthlyDatasetBySeason({ year, monthRange, seasonKey });
     case 'WEEKLY':
-      return await fetchWeeklyDataset(year);
+      return await fetchWeeklyDataset({ year });
     case 'WEEKDAILY':
-      return await fetchWeekDailyDataset(month);
+      return await fetchWeekDailyDataset({ month });
     case 'DAILY':
     default:
-      return await fetchDailyDataset(month);
+      return await fetchDailyDataset({ month });
   }
 }
 

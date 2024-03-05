@@ -1,39 +1,32 @@
-import { Model, supabaseClient } from '@/lib/model';
+import { supabaseClient } from '@/lib/model';
 
-import { getFetchOptions, type FetchOptions } from '../utils';
+import { fetcher } from '../utils';
 
-export const fetchWeekDailyDataset = async (
-  month: number,
-  fetchOptions?: FetchOptions
-) => {
-  const { signal } = getFetchOptions(fetchOptions);
+export const fetchWeekDailyDataset = fetcher(
+  async ({ month }: { month: number }, { signal }) => {
+    const response = await supabaseClient
+      .from('weekdaily')
+      .select('*')
+      .eq('month', month)
+      .abortSignal(signal);
 
-  const response = await supabaseClient
-    .from('weekdaily')
-    .select('*')
-    .eq('month', month)
-    .abortSignal(signal)
-    .returns<Model.WeekDailyData[]>();
+    if (response.error) throw response.error;
 
-  if (response.error) throw response.error;
+    return response.data;
+  }
+);
 
-  return response.data;
-};
+export const fetchWeekDailyData = fetcher(
+  async ({ dataId }: { dataId: number }, { signal }) => {
+    const response = await supabaseClient
+      .from('weekdaily')
+      .select('*')
+      .eq('id', dataId)
+      .abortSignal(signal)
+      .single();
 
-export const fetchWeekDailyData = async (
-  dataId: number,
-  fetchOptions?: FetchOptions
-) => {
-  const { signal } = getFetchOptions(fetchOptions);
+    if (response.error) throw response.error;
 
-  const response = await supabaseClient
-    .from('weekdaily')
-    .select('*')
-    .eq('id', dataId)
-    .abortSignal(signal)
-    .returns<Model.WeekDailyData>();
-
-  if (response.error) throw response.error;
-
-  return response.data;
-};
+    return response.data;
+  }
+);

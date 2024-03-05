@@ -11,7 +11,8 @@ export const weekDailyQueryKeys = createQueryKeys('weekdaily', {
   detail(dataId: number) {
     return {
       queryKey: [dataId],
-      queryFn: ({ signal }) => services.fetchWeekDailyData(dataId, { signal }),
+      queryFn: ({ signal }) =>
+        services.fetchWeekDailyData({ dataId }, { signal }),
     };
   },
   list(monthKey: MonthUtils.Key) {
@@ -19,7 +20,7 @@ export const weekDailyQueryKeys = createQueryKeys('weekdaily', {
     return {
       queryKey: [{ month }],
       queryFn: ({ signal }) =>
-        services.fetchWeekDailyDataset(month, { signal }),
+        services.fetchWeekDailyDataset({ month }, { signal }),
     };
   },
 });
