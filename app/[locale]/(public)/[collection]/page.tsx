@@ -2,7 +2,7 @@ import { cache } from 'react';
 import type { Metadata } from 'next';
 import { fetchDataset } from '@/domains';
 
-import { getDictionary, i18n, IntlMessageFormat } from '@/lib/i18n';
+import { getDictionary, i18n, IntlMessageFormat, Locale } from '@/lib/i18n';
 import {
   CollectionUtils,
   DustUtils,
@@ -11,6 +11,7 @@ import {
   SeasonUtils,
   YearUtils,
 } from '@/lib/model';
+import { project } from '@/lib/project';
 import type { NextPageProps } from '@/lib/router';
 import { Dataset } from '@/components/dataset';
 
@@ -46,7 +47,21 @@ export async function generateMetadata({ params }: Pick<PageProps, 'params'>) {
     dust,
   }) as string;
   const description = dictionary.intro.content.subtitle;
-  return { title, description } satisfies Metadata;
+  const getCanonicalURL = (locale?: Locale) =>
+    locale
+      ? `${project.url.domain}/${locale}/${params.collection}`
+      : `${project.url.domain}/${params.collection}`;
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: getCanonicalURL(),
+      languages: {
+        en: getCanonicalURL('en'),
+        ko: getCanonicalURL('ko'),
+      },
+    },
+  } satisfies Metadata;
 }
 
 async function Page({ params }: PageProps) {

@@ -12,6 +12,7 @@ import {
   SeasonUtils,
   YearUtils,
 } from '@/lib/model';
+import { project } from '@/lib/project';
 import type { NextPageProps } from '@/lib/router';
 import { parseCollectionKey } from '@/components/collection';
 import { Dataset } from '@/components/dataset';
@@ -49,7 +50,21 @@ export async function generateMetadata({
     year,
   }) as string;
   const description = dictionary.intro.content.subtitle;
-  return { title, description } satisfies Metadata;
+  const getCanonicalURL = (locale?: Locale) =>
+    locale
+      ? `${project.url.domain}/${locale}/search`
+      : `${project.url.domain}/search`;
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: getCanonicalURL(),
+      languages: {
+        en: getCanonicalURL('en'),
+        ko: getCanonicalURL('ko'),
+      },
+    },
+  } satisfies Metadata;
 }
 
 async function Page({ params, searchParams }: NextPageProps) {

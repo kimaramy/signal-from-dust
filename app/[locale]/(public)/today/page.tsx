@@ -3,6 +3,7 @@ import { fetchRealtimeDataset } from '@/domains/realtime';
 
 import { getDictionary, IntlMessageFormat, type Locale } from '@/lib/i18n';
 import { DustUtils, LocationUtils } from '@/lib/model';
+import { project } from '@/lib/project';
 import type { NextPageProps } from '@/lib/router';
 import { RealtimeDataset } from '@/components/dataset';
 import { parseDustKey } from '@/components/dust';
@@ -25,7 +26,21 @@ export async function generateMetadata({
     dust,
   }) as string;
   const description = dictionary.intro.content.subtitle;
-  return { title, description } satisfies Metadata;
+  const getCanonicalURL = (locale?: Locale) =>
+    locale
+      ? `${project.url.domain}/${locale}/today`
+      : `${project.url.domain}/today`;
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: getCanonicalURL(),
+      languages: {
+        en: getCanonicalURL('en'),
+        ko: getCanonicalURL('ko'),
+      },
+    },
+  } satisfies Metadata;
 }
 
 async function Page({ params, searchParams }: NextPageProps) {
